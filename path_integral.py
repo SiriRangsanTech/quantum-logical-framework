@@ -2,6 +2,12 @@
 path_integral.py
 Quantum Logical Framework (QLF) – Path Integral Statistics
 ────────────────────────────────────────────────────────────
+The exact (no Monte-Carlo) realization of the generate-then-close firebreak: the
+possibility tree generates every history, and ZFA closure selects the physical
+subset (the multiplicity counted here). This is the constructive form of Feynman's
+sum-over-histories — the discrete engine whose continuum rendering is the path
+integral. See QFT_QLF.md §2, lean/QLF_Firebreak.lean, and Millennium.md "The engine".
+
 Now fully upgraded for RhoQuCalc:
 • Supports parallel processes from engine.parallel()
 • Supports replication via engine.replicate()

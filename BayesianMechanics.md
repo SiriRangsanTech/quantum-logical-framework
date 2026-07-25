@@ -6,7 +6,7 @@ This idea is mathematically isomorphic to Bayesian mechanics: the outcome with t
 
 **In physical systems, this occurs because the number of ways a thing can happen corresponds directly to the number of bits of information. Each bit contributes the energy of one Planck action.** Systems with more microstates are naturally selected because they align with zero-free action.
 
-This principle directly grounds the path integral formulation. See: path_integral.md
+This principle directly grounds the path integral formulation — the *exact* generate-then-close firebreak (all closures happen; ZFA closure selects the physical subset), the constructive form of the Feynman sum-over-histories. See [QFT_QLF.md](QFT_QLF.md) §2, [path_integral.py](path_integral.py), and [Millennium.md](Millennium.md) § *The engine*.
 
 It also connects to Karl Friston's Markov blankets and Bayesian mechanics. See: hadron_markov_blankets.md
 
