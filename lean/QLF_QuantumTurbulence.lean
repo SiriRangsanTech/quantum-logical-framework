@@ -45,7 +45,7 @@ the structural reading of `Turbulence.md` §2/§5. The Navier–Stokes no-blow-u
 
 namespace QLF.QuantumTurbulence
 
-open QLF QLF.StateSpace QLF.Turbulence QLF.PrimeResonance QLF.Consciousness
+open QLF QLF.StateSpace QLF.Turbulence QLF.PrimeResonance QLF.Consciousness QLF.AngularMomentum
 
 /-! ## Onsager–Feynman: circulation is quantized (reuse) -/
 
@@ -82,9 +82,12 @@ theorem phase_quantum_is_quarter_turn :
     Onsager–Feynman quantization at the continuum-rendered level (`toComplex : μ₄ ↪ ℂˣ`). -/
 theorem quarter_turn_primitive :
     Complex.I ^ 4 = 1 ∧ Complex.I ^ 2 ≠ 1 := by
-  constructor
+  refine ⟨?_, ?_⟩
   · rw [show (4 : ℕ) = 2 + 2 by norm_num, pow_add, Complex.I_sq]; norm_num
-  · rw [Complex.I_sq]; intro h; simpa using congrArg Complex.re h
+  · rw [Complex.I_sq]
+    intro h
+    have hre : (-1 : ℂ).re = (1 : ℂ).re := by rw [h]
+    norm_num at hre
 
 /-- The phase group embeds into `ℂ` on the 4th roots of unity — the order parameter's phase is `μ₄`,
     not a continuous `U(1)`. -/
