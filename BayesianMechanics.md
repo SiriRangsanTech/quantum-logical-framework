@@ -8,7 +8,7 @@ This idea is mathematically isomorphic to Bayesian mechanics: the outcome with t
 
 This principle directly grounds the path integral formulation — the *exact* generate-then-close firebreak (all closures happen; ZFA closure selects the physical subset), the constructive form of the Feynman sum-over-histories. See [QFT_QLF.md](QFT_QLF.md) §2, [path_integral.py](path_integral.py), and [Millennium.md](Millennium.md) § *The engine*.
 
-It also connects to Karl Friston's Markov blankets and Bayesian mechanics. See: hadron_markov_blankets.md
+It also connects to Karl Friston's Markov blankets and Bayesian mechanics. See [Hadrons_Markov_Blankets.md](Hadrons_Markov_Blankets.md).
 
 It explains active inference and the emergence of order. See: active_inference.md
 
