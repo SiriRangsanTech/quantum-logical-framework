@@ -166,5 +166,6 @@ lean_lib QLF where
     `QLF_TorusBracket,
     `QLF_PlanarBracket,
     `QLF_CensusBrownian,
-    `QLF_LorentzGeneration
+    `QLF_LorentzGeneration,
+    `QLF_QuantumTurbulence
   ]
