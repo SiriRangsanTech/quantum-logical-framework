@@ -208,6 +208,27 @@ Riding coattails means adopting the licensed division of labor (and inheriting R
 claiming Witten's theorem proves QLF's open bridges — the same discipline as "QLF does not prove Witten's
 theorem."
 
+### 6.1 The path integral = all closures = the shared engine
+
+Why the ride is more than borrowed prestige: Witten's object and QLF's are the *same move* — **generate every
+possibility, then let a selection principle keep the invariant.**
+
+- **Feynman** sums over *every* path `∑ e^{iS/ℏ}`; **stationary phase** selects the physical one.
+- **QLF** generates *every* history (the QuCalc tree, `4ⁿ` paths — [`QLF_Firebreak`](lean/QLF_Firebreak.lean)
+  `generated_count`); **ZFA closure is the firebreak** selecting the `C(2n,n)` closing ones
+  (`not_all_paths_close`). The `e^{iS/ℏ}` phase cancellation is the *continuum rendering* of that discrete
+  firebreak.
+- **Witten** integrates over *all* connections `∫ 𝒟A e^{iS_CS} W(K)`; **Chern–Simons topological invariance**
+  selects the knot invariant.
+
+In the knot sector these coincide *concretely*: the **Kauffman-bracket state-sum** (§4,
+[`QLF_KauffmanBracket`](lean/QLF_KauffmanBracket.lean)) *is* a QLF path integral — generate every `2ⁿ`
+smoothing (all paths), the planar loop-closure is the firebreak — and Witten's Chern–Simons path integral is
+the continuum rendering of exactly that state-sum, already discharged by RT. So "riding the coattails" is
+literal: the same generate-then-select engine, with the continuum leg *finished here*. This is the exemplar for
+the five other Millennium bridges ([`Millennium.md`](Millennium.md) §*The engine*), where the same engine runs
+with its continuum leg still couched as settled-math-to-discharge.
+
 ## 6a. Knot theory *from* QLF — the emergence direction
 
 The sections above run QLF → knot theory: given the substrate, here is the linking number, the bracket, the

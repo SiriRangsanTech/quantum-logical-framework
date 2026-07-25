@@ -1,5 +1,14 @@
 # The Hodge Conjecture in [QLF](README.md) — the cohomological face of ZFA selection
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is QLF's one Millennium move —
+> *generate every possibility, then select the invariant* — the exact/constructive form of the Feynman path
+> integral (all paths happen; stationary phase selects) and of Witten's 1988 Jones-polynomial path integral
+> (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
+> **Generate:** the cohomology closures (`(p,q)` classes). **Select:** the balanced self-dual fixed diagonal
+> `(p,p)` = Hodge classes (`hodge_realized_on_substrate`, no axiom). **Bridge (Class A, couched Witten→RT):**
+> `substrate_realization_is_algebraic` (geometric realization) — carries Hodge's own content; its settled-math
+> neighbour is Lefschetz `(1,1)` / a real cohomology theory of varieties. See [Millennium.md](Millennium.md) § *The engine*.
+
 > **Status: `hodge_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical**
 > Hodge conjecture is not proved here. *What is proven (the reformulation, no axiom):* the Hodge
 > conjugation is machine-verified as an involution with its balanced fixed diagonal, and

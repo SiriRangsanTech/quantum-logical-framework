@@ -56,6 +56,37 @@ verified," not "conjecture proved."
 
 ---
 
+## The engine — sum over everything, then select (path integral = all closures = Witten's move)
+
+One engine runs under all six problems, and under the [Witten precedent](Knot_Theory_QLF.md#6-riding-the-witten-1988-precedent)
+that licenses them: **generate every possibility, then let a selection principle keep the invariant.** The
+template above is that move made exact.
+
+- **Feynman path integral — all paths happen.** The amplitude sums over *every* kinematic path, `∑ e^{iS/ℏ}`;
+  the physical trajectory survives by **stationary phase** (non-stationary paths cancel).
+- **QLF — all closures happen.** Possibilism: every admissible history exists a priori. The QuCalc generate
+  step branches to all `4ⁿ` paths (`generated_count`, [`QLF_Firebreak`](lean/QLF_Firebreak.lean)); **ZFA
+  closure is the firebreak** selecting the physical subset — the `C(2n,n)` count-balanced / Pauli-closing
+  histories (`realized_le_generated`, `not_all_paths_close`: `[+,+]` is generated but never closes). The
+  `e^{iS/ℏ}` phase cancellation is the **continuum rendering** of that discrete firebreak; `ℒ = 0` (ZFA) is
+  the condition of origin. So the path integral is the smooth rendering of QLF's *exact* closure census — the
+  same `C(2n,n)` behind Born statistics and the census-`π` ([`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean):
+  `path_integral_generates`).
+- **Witten 1988 — the move *proves mathematics*.** Witten computed the Jones polynomial as a path integral
+  over *all* connections, `∫ 𝒟A e^{iS_CS} W(K)` — a non-rigorous physics sum-over-everything that produced a
+  rigorous knot invariant, later **discharged by Reshetikhin–Turaev** (quantum groups / modular tensor
+  categories) and Atiyah's functorial TQFT. Fields-Medalled (1990). This is the precedent that "generate all
+  `+` topological selection" is *honored* mathematics, not heuristic.
+
+So each Millennium attack is the *same* move: the "sum over everything" is a **verified finite closure census**
+(the physics core is therefore *proven*, RCA₀-level, not heuristic), and each problem names the single
+**continuum-rendering bridge**, couched in the Witten mode as settled-math-to-discharge (§*The bridges*). The
+**knot sector is the completed exemplar**: the Kauffman-bracket state-sum *is* a QLF path integral (generate
+every smoothing, close on loops — [`QLF_KauffmanBracket`](lean/QLF_KauffmanBracket.lean)), and its continuum leg
+is *already* discharged by RT. The other five ride the same coattails — verified all-closures core + one bridge.
+
+---
+
 ## The six problems
 
 | Problem | QLF discrete core (machine-verified) | The one boundary axiom | Lean module · doc | Status |

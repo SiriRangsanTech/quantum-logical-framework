@@ -1,5 +1,14 @@
 # Birch–Swinnerton-Dyer in [QLF](README.md) — via the Langlands hook
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is QLF's one Millennium move —
+> *generate every possibility, then select the invariant* — the exact/constructive form of the Feynman path
+> integral (all paths happen; stationary phase selects) and of Witten's 1988 Jones-polynomial path integral
+> (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
+> **Generate:** the elliptic-curve closure (computed Frobenius traces `a_p`, `EllipticCurveQLF`). **Select:**
+> the `L(E,s)` self-dual central point `s=1` of `s↦2−s` (`bsd_central_point_self_dual`). **Bridge (Class A,
+> couched Witten→RT):** `modularity_mirror_invariant` — carries BSD's own content; its settled-math neighbour
+> is modularity (Wiles / Langlands). See [Millennium.md](Millennium.md) § *The engine*.
+
 > **Status: `bsd_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical** BSD
 > conjecture is not proved here. *What is proven (the reformulation):* the self-dual central-point
 > structure is machine-verified, and the **elliptic-curve→closure encoding is built** —

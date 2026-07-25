@@ -1,5 +1,14 @@
 # P vs NP in [QLF](README.md)
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is the *most literal* instance of
+> QLF's one Millennium move — *generate every possibility, then select the invariant* — the exact/constructive
+> form of the Feynman path integral (all paths happen; stationary phase selects) and of Witten's 1988
+> Jones-polynomial path integral (a physics sum-over-everything that proved rigorous mathematics, discharged
+> by Reshetikhin–Turaev). **Generate:** the `4ⁿ` candidate histories (`generated_count`). **Select:** the O(n)
+> verify-filter = `C(2n,n)` closing ones (`realized_is_verify_filter`) — generate-cheap, check-cheap, the
+> firebreak ([`QLF_Firebreak`](lean/QLF_Firebreak.lean)). **Bridge (Class A):** `generate_not_reducible_to_verify`
+> — the complexity separation itself. See [Millennium.md](Millennium.md) § *The engine*.
+
 > **Status: `p_vs_np_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical** P
 > vs NP question is not settled here. *What is proven (the reformulation):* the generate/verify
 > asymmetry on real theorems — the realized set *is* the O(n) verify-filter of the candidates, with

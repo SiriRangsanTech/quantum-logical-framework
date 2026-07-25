@@ -1,5 +1,14 @@
 # The Yang–Mills Mass Gap in [QLF](README.md)
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is QLF's one Millennium move —
+> *generate every possibility, then select the invariant* — the exact/constructive form of the Feynman path
+> integral (all paths happen; stationary phase selects) and of Witten's 1988 Jones-polynomial path integral
+> (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
+> **Generate:** the gauge closures (SU(2)/SU(3) verified). **Select:** the lightest non-vacuum closure carries
+> one `log 2` quantum ⟹ positive gap (`mass_gap_quantum_pos`, `gaugeMassGap = log 2 > 0`). **Bridge (Class A,
+> couched Witten→RT):** `yang_mills_continuum_gap` — carries the problem's own content; its settled-math
+> neighbour is constructive QFT / reflection positivity. See [Millennium.md](Millennium.md) § *The engine*.
+
 > **Status: `mass_gap_proven_constructively` (substrate) — a reformulation.** *Contrast (once):* the **classical**
 > Clay problem (constructing the continuum Yang–Mills QFT and proving a gap) is not solved here.
 > *What is proven (the reformulation):* the gap on the substrate, `gaugeMassGap = log 2 > 0`

@@ -111,6 +111,17 @@ canonical status list; when an item moves, update it here and in its owning doc.
 
 ### Axiom dischargeability — which of the 24 axioms could become theorems
 
+**The engine behind every bridge (path integral · all closures · Witten 1988).** Each Millennium bridge axiom
+below sits under QLF's one repeated move — *generate every possibility, then let a selection principle keep the
+invariant* — the exact/constructive form of the Feynman path integral (all paths happen; **ZFA closure is the
+firebreak** selecting the `C(2n,n)` closing histories, [`QLF_Firebreak`](lean/QLF_Firebreak.lean)) and of
+Witten's 1988 Jones-polynomial path integral (a non-rigorous physics sum-over-everything that produced rigorous
+mathematics, **discharged by Reshetikhin–Turaev**). The bridge is the *continuum-rendering* leg, couched in that
+Witten→RT mode. So "dischargeable" = "how close is this bridge to the **knot sector's finished end-state**"
+(verified all-closures core + a settled-math continuum leg *already discharged* by RT). Class B is one settled-
+math lemma from that end-state; Class A carries the problem's own content and, by design, is not (see
+[`Millennium.md`](Millennium.md) § *The engine*).
+
 QLF carries **23 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
 role). Two have already moved *off* the axiom list, setting the model: **`censusTail_eq`** (`QLF_AlphaBound`)
 was **discharged into a theorem** — proved from Mathlib's generalized binomial series

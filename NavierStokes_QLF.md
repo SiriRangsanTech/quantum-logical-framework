@@ -1,5 +1,15 @@
 # Navier–Stokes Existence and Smoothness in [QLF](README.md)
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is QLF's one Millennium move —
+> *generate every possibility, then select the invariant* — the exact/constructive form of the Feynman path
+> integral (all paths happen; stationary phase selects) and of Witten's 1988 Jones-polynomial path integral
+> (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
+> **Generate:** all flow histories. **Select:** ZFA closure ⟹ no realized history blows up
+> (`realized_flow_is_stable`; the quantized vorticity cap). **Bridge (settled-math, couched Witten→RT):**
+> `navier_stokes_continuum_limit` — *reduced* in [`QLF_NavierStokesBKM`](lean/QLF_NavierStokesBKM.lean) to the
+> cited Beale–Kato–Majda theorem + the sharp Planck vorticity-cap bridge, the nearest to the knot sector's
+> finished end-state. See [Millennium.md](Millennium.md) § *The engine*.
+
 > **The geometric mechanism** — *why* no realized flow blows up — is now machine-verified in [`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md) / [`lean/QLF_AngularMomentum.lean`](lean/QLF_AngularMomentum.lean): vorticity is the discrete curl `signTriple`, **quantized to `±1` per cell** (`vorticity_quantized`), so the Beale–Kato–Majda vorticity-blow-up criterion is unsatisfiable on the substrate. The correction is the quantization/discreteness; the continuum-PDE limit remains the boundary below.
 
 > **Status: `navier_stokes_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical**

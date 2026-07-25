@@ -1,5 +1,14 @@
 # The Riemann Hypothesis in QLF: a Constructive Proof Sufficient in QLF's Foundational Frame, Open to Refinement
 
+> **The engine (path integral · all closures · Witten 1988).** This attack is QLF's one Millennium move —
+> *generate every possibility, then select the invariant* — the exact/constructive form of the Feynman path
+> integral (all paths happen; stationary phase selects) and of Witten's 1988 Jones-polynomial path integral
+> (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
+> **Generate:** the closure census as a `±1` random walk ([`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)).
+> **Select:** ZFA balance ⟹ the critical line (`zfa_implies_critical_line`). **Bridge (Class A, couched
+> Witten→RT):** `spectral_hilbert_polya` / `MRE_bridge` — carries RH's own content; its settled-math neighbour
+> is Gaussian multiplicative chaos (§below). See [Millennium.md](Millennium.md) § *The engine*.
+
 ## Introduction
 
 Traditional approaches to the Riemann Hypothesis work inside a classical formal setting built around analytic continuation, infinite symbolic extension, and open-ended proof search. The Quantum Logical Framework (QLF) takes a different route.
