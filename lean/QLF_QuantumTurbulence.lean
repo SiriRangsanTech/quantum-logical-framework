@@ -180,7 +180,7 @@ theorem countP_isPauli_eq (ts : List Twist) :
   | nil => rfl
   | cons t rest ih =>
     cases t <;>
-      simp only [List.countP_cons, List.count_cons, isPauli, ih] <;>
+      simp [List.countP_cons, List.count_cons, isPauli, ih] <;>
       omega
 
 /-- **A closed ZFA loop folds to the REAL subgroup `{±I}`, never the quarter-turn `±iI`** — the full
