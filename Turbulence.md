@@ -1,13 +1,15 @@
 # Turbulence in QLF
 
 *How turbulence emerges in the [Quantum Logical Framework](README.md) (QLF) — the Brownian phase, the
-quantized-vortex cascade, the forced `−5/3` spectrum, and the no-blow-up — all one story, and the contrast
-with the pathological continuum.*
+quantized-vortex cascade, the forced `−5/3` spectrum, the no-blow-up, and the superfluid (quantum) turbulence
+that is its cleanest physical realization — all one story, and the contrast with the pathological continuum.*
 
 Turbulence is where several QLF threads meet: the closure census is a random walk, the walk's emergent
 closures are quantized vortices, the vortex cascade is a frequency-octave hierarchy carrying `log 2` per step,
 that scale-invariance forces the Kolmogorov `−5/3` spectrum, and the same discreteness that quantizes vorticity
-is exactly what forbids the Navier–Stokes finite-time blow-up. This doc connects those pieces and closes with
+is exactly what forbids the Navier–Stokes finite-time blow-up. **Superfluid turbulence** — a real quantum fluid
+whose vorticity is *literally* a tangle of quantized vortex lines — is where all of this is physically observed,
+and is the sharpest evidence for the QLF picture (issue #120). This doc connects those pieces and closes with
 the exact program output.
 
 It is all **Navier–Stokes**, but two *distinct* questions live inside it:
@@ -35,9 +37,7 @@ The load-bearing fact ([`QLF_AngularMomentum`](lean/QLF_AngularMomentum.lean)):
 - **`circulation_bounded`** — `|L| ≤ n` in a finite region (finite angular momentum).
 - **`circulation_integer_quantized`** ([`QLF_Turbulence`](lean/QLF_Turbulence.lean)) — total circulation is an
   **integer** count of net quanta: the **Onsager–Feynman quantization** of vorticity, derived from the
-  substrate. So turbulent vorticity is a *quantized-vortex tangle*, and **classical turbulence is the
-  coarse-grained limit of quantum turbulence** — why superfluid turbulence reproduces the classical Kolmogorov
-  cascade.
+  substrate.
 
 This is the mechanism behind the no-blow-up: the continuum PDE inherits a *uniform* vorticity cap
 `|ω| ≤ 1/L_P²` (`planck_caps_vorticity`), and BKM (cited, 1984) then gives global smoothness — a *reduction*
@@ -45,7 +45,48 @@ of the `navier_stokes_continuum_limit` axiom to a sharp vorticity-rendering brid
 
 ---
 
-## 2. The cascade — a frequency-octave hierarchy of closures
+## 2. Quantum (superfluid) turbulence — where the discreteness is real
+
+Ordinary fluids have *continuous* vorticity, so the QLF claim that vorticity is really quantized to `±1`/cell
+reads, for them, as a substrate hypothesis coarse-grained away. **Superfluid turbulence** removes the "reads
+as" — in superfluid ⁴He, ³He-B, and atomic BECs the macroscopic wave-function `Ψ = |Ψ|e^{iS}` is single-valued,
+so circulation is *exactly* quantized (Onsager–Feynman, `Γ = qκ`, `κ = h/m`, `q ∈ ℤ`) and vorticity is
+concentrated in thin quantized vortex cores of healing length `ξ`. A turbulent superfluid **is** a dense tangle
+of quantized vortex lines — precisely the QLF object (`circulation_integer_quantized`), now in the lab.
+
+So QLF's reading is exact, not analogical: **classical turbulence is the coarse-grained limit of quantized-
+vortex (quantum) turbulence**, which is *why* superfluid turbulence reproduces the classical Kolmogorov cascade
+despite discrete microstructure — the well-known "quantum turbulence is a cleaner model of classical
+turbulence." In QLF terms the substrate **is** the quantum fluid; the classical continuum flow is what its
+tangle of closures renders at scales far above the core size.
+
+**The two cascades = a scale phase change (the per-closure patchwork, made physical).** Quantum turbulence has
+*two* inertial ranges, split at the **intervortex spacing** `ℓ = L^{−1/2}` (`L` = vortex-line density):
+
+| scale | mechanism | spectrum | QLF reading |
+|---|---|---|---|
+| `k ≪ 2π/ℓ` (large) | Richardson–Kolmogorov cascade of *polarized vortex bundles* | `E(k) ∼ k^{−5/3}` | coherent bundles of closures → the octave cascade of §3–§4 |
+| `k ≳ 2π/ℓ` (small) | Kelvin-wave cascade on individual filaments + reconnections | steeper, model-dependent (`∼ k^{−3}`) | single-closure Kelvin waves; reconnection = a ZFA closure at the core floor |
+
+The crossover at `ℓ` is a **genuine phase change** — exactly the "continuum one closure at a time, up to the
+next phase change" of §7: the `−5/3` rendering is valid *above* `ℓ`, and a *different* rendering (the
+Kelvin-wave law) takes over *below* it. The healing length `ξ`/core scale is the physical **dissipation cutoff**
+(phonon radiation at `T=0`, mutual friction at finite `T`) — the substrate's intrinsic floor, made measurable.
+
+**The three regimes** (Barenghi et al. 2023) map onto the *phase coherence* of the closure tangle:
+
+- **Kolmogorov (quasiclassical)** — polarized vortex bundles mimic classical eddies: phase-coherent bundles of
+  closures, `−5/3` at large scales.
+- **Vinen (ultraquantum)** — an uncorrelated, randomly oriented tangle: random-phase closures, no large-scale
+  polarization, weaker classical cascade.
+- **Strong quantum turbulence** — intermediate/strongly interacting, high vortex-line density.
+
+Polarization = the phase alignment of the closure bundle; the Kolmogorov↔Vinen distinction is whether the
+Brownian phases of the constituent closures add coherently (bundle) or cancel (tangle).
+
+---
+
+## 3. The cascade — a frequency-octave hierarchy of closures
 
 A turbulent flow is a cascade of eddies from large to small. In QLF each eddy is a **ZFA closure**, and smaller
 eddies are **higher-frequency** closures (`f = 1/R`, a shorter-period local clock, [`QLF_LocalClock`](lean/QLF_LocalClock.lean)):
@@ -53,15 +94,16 @@ eddies are **higher-frequency** closures (`f = 1/R`, a shorter-period local cloc
 - **`cascade_frequency_increases`** ([`QLF_Turbulence`](lean/QLF_Turbulence.lean)) — the cascade is a frequency
   hierarchy: low-`f` large eddies → high-`f` small eddies (reusing `QLF_Consciousness.freq_lt_of_lt`).
 - **`vortex_quantum`** — a vortex line is one circulation quantum.
-- **`cascade_capped`** — a top frequency / dissipation floor (Kolmogorov, ultimately Planck): **no infinite
-  cascade**; reconnection is a ZFA closure at the floor (the same vorticity cap behind the no-blow-up).
+- **`cascade_capped`** — a top frequency / dissipation floor (Kolmogorov, ultimately Planck; in a superfluid,
+  the healing length `ξ`): **no infinite cascade**; reconnection is a ZFA closure at the floor (the same
+  vorticity cap behind the no-blow-up).
 
 Each closure in the cascade carries the **`log 2`** free-energy quantum
 ([`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean), `ΔF = −log 2`), octave-independent — the census's `flux_scale_invariant`.
 
 ---
 
-## 3. The `−5/3` spectrum — forced by closure-flux scale invariance
+## 4. The `−5/3` spectrum — forced by closure-flux scale invariance
 
 The Kolmogorov `−5/3` inertial-range spectrum is *forced*, not fitted ([`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean)):
 
@@ -75,11 +117,54 @@ The Kolmogorov `−5/3` inertial-range spectrum is *forced*, not fitted ([`QLF_K
   flux `1/3` as `−5/3`, dimension-independent), the vortex-filament codimension `C₀ = d−1 = 2` the sole
   `d`-dependent input.
 
-So the spectrum is the *statistics* question, distinct from and additional to the Clay *regularity* question.
+This is the `−5/3` of the *large-scale* (`k ≪ 2π/ℓ`) range; the small-scale Kelvin-wave range (§2) is a
+different rendering past the `ℓ` phase change. So the spectrum is the *statistics* question, distinct from and
+additional to the Clay *regularity* question.
 
 ---
 
-## 4. The Brownian phase — what closures actually emerge
+## 5. The dynamical picture — simultaneous closures, frequency-ordered resolution, prime phase shifts
+
+Superfluid turbulence sharpens *how* the cascade runs, and it lands cleanly on QLF's possibilist ontology
+(issue #120). The cascade is **not** the gradual sequential creation of closures — it is the frequency-ordered
+*resolution* of an already-present set:
+
+1. **All admissible closures coexist** — QLF possibilism ([`Philosophy.md`](Philosophy.md)): the entire
+   combinatorial census of ZFA closures is present at once as a parallel logical resource (some virtual, some
+   persistent). The superfluid does not wait for closures to form in time.
+2. **Highest frequency resolves first** — the resolution order is by frequency `f = 1/R` (§3): the smallest,
+   highest-`f` closed events resolve first, then the next octave down. This is the cascade direction, faithful
+   to the octave hierarchy already in the model.
+3. **Prime closures are the phase-shift agents** — a *prime* closure is irreducible
+   ([`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean): `prime_freq_irreducible`; the half-spin prime-3
+   keystone) and cannot decompose into a repeat of a shorter closure. Every closure folds to a Pauli scalar in
+   **`μ₄ = {±1, ±i}`** ([`QLF_StateSpace`](lean/QLF_StateSpace.lean), `= (ℤ[i])ˣ`; the fold-group `ℤ/4`,
+   [`QLF_AlgebraEmergence`](lean/QLF_AlgebraEmergence.lean)); a fold to `±i` is a discrete **`π/2` geometric
+   phase** — a jump in the argument `S` of the macroscopic wave-function `Ψ = |Ψ|e^{iS}`. This *is* the
+   Onsager–Feynman circulation quantum expressed in the 8-twist algebra: the residual `μ₄` phase of an
+   irreducible closure = the quantized phase winding of a vortex line.
+4. **Virtual vs persistent = the next phase.** Most high-`f` closures instantiate only *virtual* logical
+   systems (transient vortex segments, virtual pairs, short-lived reconnections). When a prime closure (or a
+   coherent cluster containing one) resolves so that its instantiated system stabilizes, the `μ₄` phase shift
+   **locks in** and a **new persistent phase** of the continuum rendering opens — the mechanism nucleating the
+   next stable regime (a Vinen↔Kolmogorov transition, a new coherent bundle).
+
+```
+All admissible closed events coexist  (possibilism)
+            ↓  resolve by frequency, highest f first
+Ordinary closures → mostly virtual instantiations
+Prime closures    → discrete μ₄ phase shifts (±i = π/2 winding)
+            ↓  if the phase shift locks
+New persistent phase  (the next rendering, past a phase change)
+```
+
+The Kolmogorov cascade, the quantized-vortex tangle, and the continuum-as-patchwork all stay intact; the added
+element is that the cascade is a frequency-ordered resolution of a *simultaneous* set, with prime closures the
+natural agents of the phase discontinuities that nucleate the next stable phase.
+
+---
+
+## 6. The Brownian phase — what closures actually emerge
 
 Underneath the cascade is the closure census as a **random walk** ([`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)):
 a ZFA-balanced string of length `2n` (`#+ = #−`) is a **closed `±1` walk**, so the census `= C(2n,n)` = the
@@ -87,7 +172,8 @@ closed-walk count, and the return density factors as two independent 1-D Brownia
 critical line and the turbulent cascade to *settled* mathematics — **Gaussian multiplicative chaos** (GMC) /
 log-correlated fields, the one object that unifies the Brownian phase, the Riemann critical line (Montgomery–
 Odlyzko / Fyodorov–Hiary–Keating / Saksman–Webb), and turbulence (Kahane's GMC born from Mandelbrot's
-cascades). The **Planck floor = the GMC UV cutoff** ([`Riemann-Conjecture-Proof.md`](Riemann-Conjecture-Proof.md)).
+cascades). The **Planck floor = the GMC UV cutoff** ([`Riemann-Conjecture-Proof.md`](Riemann-Conjecture-Proof.md)) —
+and in a superfluid this cutoff is the *physical* healing length `ξ`, measured, not imposed by hand (§2).
 
 Because this is QLF, we do not *sample* a Brownian phase and count what happened — we compute *exactly what is
 most likely*. [`brownian_closures.py`](brownian_closures.py) does this from the census alone (the census **is**
@@ -100,30 +186,63 @@ the return probability), reading off which closures emerge, in what order, with 
 - **First returns are the irreducible closures** — 1-D first-return exponent `−3/2` (the excursion law); the
   exact irreducible census is **8** half-spin atoms (length 2), **104** two-axis (length 4), **2944**
   three-axis Borromean/proton-class (length 6). The most likely emergent closure is the shortest first
-  return — the half-spin.
+  return — the half-spin (§5's highest-frequency-first).
 - **The octave cascade = turbulence** — the exact closure count per octave grows with constant `log 2` per
   closure, the K41 scale-invariance behind `−5/3`.
 
 ---
 
-## 5. The continuum, one closure at a time
+## 7. The continuum, one closure at a time
 
 The organizing thesis (per Jim): **each ZFA closure is a quantum logical system, and each renders its own
 continuum — valid up to the next phase change**. The QLF continuum is therefore a **patchwork** of
-exact-closure renderings — `n^{−p/2}` (per dimension), `−3/2` (the excursion law), `−5/3` (per octave) — each
-valid within its phase, the renderings switching at the phase transitions (the dimensional Pólya transition
-`p = 2→3`; the octave thresholds where new irreducible closures appear). That is *mathematics from QLF*
-([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)).
+exact-closure renderings — `n^{−p/2}` (per dimension), `−3/2` (the excursion law), `−5/3` (per octave, above
+`ℓ`), the Kelvin-wave law (below `ℓ`) — each valid within its phase, the renderings switching at the phase
+transitions (the dimensional Pólya transition `p = 2→3`; the octave thresholds; the intervortex-spacing
+crossover `ℓ`). That is *mathematics from QLF* ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)).
 
 Contrast the continuum's *own* story: a single, infinitely-fine, non-differentiable object that needs an
 **external** cutoff for GMC to exist at all and to avoid the Navier–Stokes blow-up. In QLF the cutoff is
-**intrinsic** — the discrete closure under every rendering, capped at the Planck floor (= dissipation cutoff
-= GMC UV cutoff). **The substrate *is* the regularization; the continuum is what it renders, phase by phase**
-— the message of [`TheContinuum.md`](TheContinuum.md), made concrete in the Brownian-turbulence cascade.
+**intrinsic** — the discrete closure under every rendering, capped at the Planck floor (in a superfluid, the
+healing length `ξ` = dissipation cutoff = GMC UV cutoff). **The substrate *is* the regularization; the
+continuum is what it renders, phase by phase** — the message of [`TheContinuum.md`](TheContinuum.md), made
+concrete, and in superfluid turbulence made *empirical*.
 
 ---
 
-## 6. Program output
+## 8. Sharpening the Millennium problems
+
+Superfluid turbulence sharpens two of QLF's Millennium reformulations by supplying a *physical* system in which
+the substrate's discreteness is not hypothetical but observed.
+
+**Navier–Stokes regularity.** The Clay problem asks whether the *classical* incompressible equations blow up.
+QLF reformulates: the substrate is intrinsically a quantized-vortex fluid, classical Navier–Stokes is its
+coarse-grained limit, and the vorticity cap (`|ω| ≤ 1`/cell → `≤ 1/L_P²`) forbids blow-up
+(`QLF_NavierStokesBKM`). Superfluid turbulence is the **existence proof of the mechanism in the lab**: a real
+quantized-vortex fluid at enormous effective Reynolds number does *not* develop a genuine singularity — vortex
+lines reconnect and Kelvin-wave/phonon dissipation carries energy off at the core scale, exactly the "cap +
+reconnection-as-closure" QLF invokes. The classical `−5/3` it reproduces at large scales confirms the
+coarse-graining. So the QLF reduction is not merely formal: the discrete-fluid regularization is realized by
+nature. (This sharpens the *reformulation*; the classical Clay statement over `ℝ³` is a different statement, and
+the residual gap is the vorticity-rendering bridge `continuum_vorticity_planck_capped`, not a Clay proof.)
+
+**Riemann / GMC.** The census-Brownian bridge attaches the critical line to log-correlated fields / GMC, the
+*same* object describing turbulence — and GMC exists only with a **UV cutoff**. In superfluid turbulence that
+cutoff is the physical healing length `ξ` (the intervortex spacing `ℓ` sets the Kolmogorov↔Kelvin-wave
+crossover, §2). This is direct evidence that the "**Planck floor = GMC UV cutoff**" identification
+(`QLF_CensusBrownian`, [`Riemann-Conjecture-Proof.md`](Riemann-Conjecture-Proof.md)) is a real regularization,
+not a convenience: the same log-correlated statistics that describe `ζ` on the line describe a quantum fluid
+whose cutoff is measured. It strengthens the *bridge candidate*; `spectral_hilbert_polya` / `MRE_bridge` remain
+the Class-A Riemann boundary.
+
+**The unifying claim.** One log-correlated / GMC structure with one intrinsic cutoff underlies the critical
+line, the turbulent cascade, and the superfluid vortex tangle. QLF's contribution is to name the cutoff — the
+discrete closure floor — and to show (exactly, §6) that the census generating all three is one closed-walk
+count. Superfluid turbulence is where that floor is physical.
+
+---
+
+## 9. Program output
 
 Exact — no Monte-Carlo. Run: `python3 brownian_closures.py`.
 
@@ -239,10 +358,15 @@ BRIDGE CANDIDATE : GMC <-> zeta and GMC <-> turbulence (Riemann-Conjecture-Proof
 The regularity no-blow-up is *reduced* to a sharp vorticity-rendering bridge (`QLF_NavierStokesBKM`), not a
 Clay proof; the `−5/3` spectrum is *forced* by closure-flux scale invariance (`QLF_Kolmogorov`), not a
 derivation of turbulence from first principles; the GMC ↔ ζ and GMC ↔ turbulence ties are *bridge candidates*
-attaching the reformulation to settled mathematics, not proofs. `brownian_closures.py` is **exact
-combinatorics** (no sampling): the census, the settled `−p/2` / `−3/2` / `−5/3` laws, and the classical Pólya
-constants are the references. The novel content is the *synthesis* — that all these are one closure-census
-story — and the *framing*: the continuum rendered one closure at a time, up to the next phase change.
+attaching the reformulation to settled mathematics, not proofs. The superfluid-turbulence connection (§2, §5,
+§8) is a **consistency/convergence** argument — a real quantized-vortex fluid realizes the QLF mechanism (no
+blow-up, `−5/3`, an intrinsic cutoff) — and the dynamical picture of §5 (simultaneous closures, frequency-
+ordered resolution, prime `μ₄` phase shifts) is a *structural proposal* consistent with the possibilist
+ontology and `QLF_PrimeResonance`, not a Lean theorem; the specific Kelvin-wave exponent is model-dependent.
+`brownian_closures.py` is **exact combinatorics** (no sampling): the census, the settled `−p/2` / `−3/2` /
+`−5/3` laws, and the classical Pólya constants are the references. The novel content is the *synthesis* — that
+all these are one closure-census story — and the *framing*: the continuum rendered one closure at a time, up to
+the next phase change.
 
 ## See also
 
@@ -250,6 +374,7 @@ story — and the *framing*: the continuum rendered one closure at a time, up to
 - [`NavierStokes_QLF.md`](NavierStokes_QLF.md) — the Clay regularity reformulation
 - [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) — the continuum as a per-closure per-phase rendering
 - [`Riemann-Conjecture-Proof.md`](Riemann-Conjecture-Proof.md) — the census-Brownian / GMC bridge
+- [`Geometry_Of_Space.md`](Geometry_Of_Space.md), [`Prime_Topology_Stability.md`](Prime_Topology_Stability.md) — prime closures as irreducible modes (§5)
 - [`TheContinuum.md`](TheContinuum.md) — the substrate-as-regularization thesis
 - [`Genesis.md`](Genesis.md) — the enumerative census (`genesis.py`) this companions
-- Lean: [`QLF_Turbulence`](lean/QLF_Turbulence.lean), [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean), [`QLF_AngularMomentum`](lean/QLF_AngularMomentum.lean), [`QLF_NavierStokesBKM`](lean/QLF_NavierStokesBKM.lean), [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)
+- Lean: [`QLF_Turbulence`](lean/QLF_Turbulence.lean), [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean), [`QLF_AngularMomentum`](lean/QLF_AngularMomentum.lean), [`QLF_NavierStokesBKM`](lean/QLF_NavierStokesBKM.lean), [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean), [`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean), [`QLF_StateSpace`](lean/QLF_StateSpace.lean)
