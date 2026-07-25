@@ -9,11 +9,14 @@ physics. Every printed result carries an epistemic tag (`[EXACT]`, `[MEASURED]`,
 
 Pure standard library, no network. Run: `python3 genesis.py`.
 
-**Companion — the dynamics, not the count.** `genesis.py` *counts* the closure census; [`brownian_closures.py`](brownian_closures.py)
-*samples* it — Brownian phase walks over the twist alphabet, cataloguing which ZFA closures **emerge**: Pólya
-recurrence (few-axis phases close, high-D ones are transient), the first-return excursion law (`~m^{−3/2}`, the
-irreducible closures = the half-spin atoms), and the closure-octave cascade read as turbulence (`−5/3`) and
-contrasted with the pathological continuum. See [`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md) §6b.
+**Companion — the dynamics, computed exactly.** `genesis.py` *counts* the closure census; [`brownian_closures.py`](brownian_closures.py)
+reads off the *dynamics* of the Brownian phase **exactly** (no Monte-Carlo — the census *is* the return
+probability): the dimensional **Pólya phase transition** (recurrent `p≤2`, transient `p≥3`, with `P` matching
+the classical constants `0.3406/0.1932/0.1352` to four digits), the first-return **excursion law** `~(2m)^{−3/2}`
+(the irreducible closures = the eight half-spin atoms, then 104 two-axis, 2944 three-axis Borromean), and the
+closure-octave cascade read as turbulence (`−5/3`). Organizing thesis: **each closure is a quantum logical
+system rendering its own continuum, up to the next phase change** — the continuum *one closure at a time*
+([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)). See [`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md) §6b.
 
 ## What to read it for
 
