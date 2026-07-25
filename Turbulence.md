@@ -135,27 +135,34 @@ Superfluid turbulence sharpens *how* the cascade runs, and it lands cleanly on Q
 2. **Highest frequency resolves first** — the resolution order is by frequency `f = 1/R` (§3): the smallest,
    highest-`f` closed events resolve first, then the next octave down. This is the cascade direction, faithful
    to the octave hierarchy already in the model.
-3. **Prime closures are the phase-shift agents** — a *prime* closure is irreducible
-   ([`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean): `prime_freq_irreducible`; the half-spin prime-3
-   keystone) and cannot decompose into a repeat of a shorter closure. Every closure folds to a Pauli scalar in
+3. **Prime closures are the phase-shift agents — via their open forward strand.** A *prime* closure is
+   irreducible ([`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean): `prime_freq_irreducible`; the half-spin
+   prime-3 keystone) and cannot decompose into a repeat of a shorter closure. The fold alphabet is
    **`μ₄ = {±1, ±i}`** ([`QLF_StateSpace`](lean/QLF_StateSpace.lean), `= (ℤ[i])ˣ`; the fold-group `ℤ/4`,
-   [`QLF_AlgebraEmergence`](lean/QLF_AlgebraEmergence.lean)); a fold to `±i` is a discrete **`π/2` geometric
-   phase** — a jump in the argument `S` of the macroscopic wave-function `Ψ = |Ψ|e^{iS}`. This *is* the
-   Onsager–Feynman circulation quantum expressed in the 8-twist algebra: the residual `μ₄` phase of an
-   irreducible closure = the quantized phase winding of a vortex line.
+   [`QLF_AlgebraEmergence`](lean/QLF_AlgebraEmergence.lean)), and a fold to `±i` is a discrete **`π/2` geometric
+   phase** — a jump in the argument `S` of `Ψ = |Ψ|e^{iS}`. But a **closed** ZFA loop pairs every axis, so its
+   Pauli-twist count is *even* and it folds to the **real** subgroup `{±1}` — fermion `−1` (360°) / boson `+1`
+   (720°), **never `±i`** ([`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean): `balanced_pauli_count_even`;
+   `det = (−1)^even = +1 ⟹ λ = ±1`). The `±i` quarter-turn is carried by the **open forward half-strand** of the
+   prime closure — an *odd* Pauli count (e.g. the prime-3 proton strand `>^/` folds to `+i`) = an open vortex
+   line — and **time-reversal** (the Hermitian-conjugate dagger, also odd) closes it: forward-odd `+` backward-odd
+   `=` even ⟹ the real `±1` loop (Jim; the half-spin `3 + 3 = 6`, `half_spin_balanced_steps`, `3` prime). This
+   *is* the Onsager–Feynman circulation quantum in the 8-twist algebra: the open vortex strand carries the
+   quarter-turn, closing to the real loop.
 4. **Virtual vs persistent = the next phase.** Most high-`f` closures instantiate only *virtual* logical
    systems (transient vortex segments, virtual pairs, short-lived reconnections). When a prime closure (or a
-   coherent cluster containing one) resolves so that its instantiated system stabilizes, the `μ₄` phase shift
-   **locks in** and a **new persistent phase** of the continuum rendering opens — the mechanism nucleating the
-   next stable regime (a Vinen↔Kolmogorov transition, a new coherent bundle).
+   coherent cluster containing one) resolves so that its instantiated system stabilizes, its open-strand `±i`
+   quarter-turn **locks in** (closing to a real `±1` loop) and a **new persistent phase** of the continuum
+   rendering opens — the mechanism nucleating the next stable regime (a Vinen↔Kolmogorov transition, a new
+   coherent bundle).
 
 ```
 All admissible closed events coexist  (possibilism)
             ↓  resolve by frequency, highest f first
-Ordinary closures → mostly virtual instantiations
-Prime closures    → discrete μ₄ phase shifts (±i = π/2 winding)
-            ↓  if the phase shift locks
-New persistent phase  (the next rendering, past a phase change)
+Ordinary closures  → mostly virtual instantiations
+Prime closures     → open forward strand carries ±i (π/2, odd Pauli count)
+            ↓  + time-reversed dagger (odd) closes it: forward-odd + backward-odd = even
+Closed ZFA loop    → real ±1 (fermion −1 / boson +1); if it locks → new persistent phase
 ```
 
 The Kolmogorov cascade, the quantized-vortex tangle, and the continuum-as-patchwork all stay intact; the added
@@ -298,7 +305,7 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
         e.g. ^v v^ <> >< /\ \/
       4        168           104   two-axis closures (lepton loops)
         e.g. ^^vv ^<v> ^<>v ^>v< ^><v ^/v\
-      6       5120           2944   three-axis Borromean (proton-class)
+      6       5120          2944   three-axis Borromean (proton-class)
         e.g. ^^^vvv ^^v^vv ^^v<v> ^^v<>v ^^v>v< ^^v><v
 
    -> the MOST LIKELY emergent closure is the shortest first return -- the
@@ -307,7 +314,36 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
       ZFA closure of the phase IS the return to origin.
 
 ============================================================================
-4. THE OCTAVE CASCADE = TURBULENCE  (exact census per octave)
+4. ONSAGER-FEYNMAN CIRCULATION & THE mu4 PHASE QUANTUM  (QLF_QuantumTurbulence)
+============================================================================
+   Every CLOSED loop (count-balanced) folds to the REAL subgroup {+1,-1} of
+   mu4 = {+1,-1,+i,-i}: fermion -1 (360 deg) / boson +1 (720 deg).  The reason is
+   parity: a balanced closure pairs every axis, so its Pauli-twist count is EVEN
+   (det = (-1)^even = +1 => scalar^2 = 1 => real).  Verified on ALL balanced closures;
+   vorticity |w|<=1 per cell, circulation B in Z (Onsager-Feynman quantization):
+
+    len  not-in-mu4  max|w|  B integer   mu4 phase histogram {+1,-1,+i,-i}
+      2           0       0        yes   {+1:0, -1:8, +i:0, -i:0}
+      4           0       0        yes   {+1:144, -1:24, +i:0, -i:0}
+      6           0       1        yes   {+1:1488, -1:3632, +i:0, -i:0}
+   -> not-in-mu4 = 0 (count_balanced_pauli_closed); every closed loop is REAL +-1;
+      NO closed loop folds to +-i (even Pauli count).  max|w|=1, B integer = Onsager-Feynman.
+
+   The pi/2 quarter-turn +-i is the phase of an OPEN FORWARD half-strand (odd Pauli
+   count); the dagger (backward in time, also odd) closes it: forward-odd + backward-odd
+   = EVEN => real +-1 (Jim).  QLF_PrimeResonance: half-spin = 3 forward + 3 back = 6
+   (half_spin_balanced_steps); 3 = prime (half_spin_prime).
+
+   forward strand   nP phase   + dagger (closure)   nP  phase  bal
+   >^/               3    +i   >^/\v<                6     -1 True
+   ^</               3    +i   ^</\>v                6     -1 True
+   ^>/               3    -i   ^>/\<v                6     -1 True
+   ^\<               3    +i   ^\<>/v                6     -1 True
+   -> the open vortex strand carries the quarter-turn +-i; time-reversal (dagger)
+      closes it into the real +-1 loop.  i^2=-1 (half), i^4=+1 (full 2pi) -- quarter_turn_primitive.
+
+============================================================================
+5. THE OCTAVE CASCADE = TURBULENCE  (exact census per octave)
 ============================================================================
    closures of length 2m for p=3 = C(2m,m)*c_3(m) (exact).  Binned by octave:
 
@@ -325,16 +361,16 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
       cascade -5/3 holds within an octave regime -- up to the next phase change.
 
 ============================================================================
-5. THE CONTINUUM, ONE CLOSURE AT A TIME  (mathematics from QLF)
+6. THE CONTINUUM, ONE CLOSURE AT A TIME  (mathematics from QLF)
 ============================================================================
    Each closure is a quantum logical system; each renders its OWN continuum
    (its propagator / power law / mass-frequency), valid UP TO the next phase
    change -- the dimensional Polya transition (sec 2) and the octave
-   thresholds (sec 4).  The continuum is therefore not one global object but
+   thresholds (sec 5).  The continuum is therefore not one global object but
    a PATCHWORK of exact-closure renderings, each valid within its phase:
      * n^{-p/2}   -- the return-density rendering, per dimension p (sec 1)
      * -3/2       -- the first-return / irreducible-closure rendering (sec 3)
-     * -5/3       -- the turbulent-cascade rendering, per octave (sec 4)
+     * -5/3       -- the turbulent-cascade rendering, per octave (sec 5)
    Contrast the continuum's own story: a single, infinitely-fine,
    non-differentiable object that needs an EXTERNAL cutoff (for GMC to exist,
    to avoid the Navier-Stokes blow-up).  In QLF the cutoff is intrinsic --
@@ -345,7 +381,8 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
 ----------------------------------------------------------------------------
 EXACT / ANCHORED : return law = census (QLF_CensusBrownian); ZFA = return
                    (count_balanced_pauli_closed); Polya constants match; -5/3
-                   (QLF_Kolmogorov); no blow-up (QLF_NavierStokesBKM).
+                   (QLF_Kolmogorov); no blow-up (QLF_NavierStokesBKM); circulation
+                   quantized + mu4 pi/2 phase quantum (QLF_QuantumTurbulence, sec 4).
 MATHEMATICS-FROM-QLF : the continuum rendered per closure, per phase, up to
                    the next phase change (Mathematics_From_QLF.md).
 BRIDGE CANDIDATE : GMC <-> zeta and GMC <-> turbulence (Riemann-Conjecture-Proof.md).
@@ -360,9 +397,12 @@ Clay proof; the `−5/3` spectrum is *forced* by closure-flux scale invariance (
 derivation of turbulence from first principles; the GMC ↔ ζ and GMC ↔ turbulence ties are *bridge candidates*
 attaching the reformulation to settled mathematics, not proofs. The superfluid-turbulence connection (§2, §5,
 §8) is a **consistency/convergence** argument — a real quantized-vortex fluid realizes the QLF mechanism (no
-blow-up, `−5/3`, an intrinsic cutoff) — and the dynamical picture of §5 (simultaneous closures, frequency-
-ordered resolution, prime `μ₄` phase shifts) is a *structural proposal* consistent with the possibilist
-ontology and `QLF_PrimeResonance`, not a Lean theorem; the specific Kelvin-wave exponent is model-dependent.
+blow-up, `−5/3`, an intrinsic cutoff). The dynamical picture of §5 is *partly proven*: the closed-loop parity
+(a count-balanced closure folds to the real `{±1}`, never `±i` — `QLF_QuantumTurbulence.balanced_pauli_count_even`
++ the cited determinant bridge, exhaustively reconfirmed in `brownian_closures.py`) and the `μ₄` quarter-turn
+structure are Lean theorems; the "simultaneous coexistence + frequency-ordered resolution + open-strand phase
+nucleation" reading remains a *structural proposal* consistent with the possibilist ontology and
+`QLF_PrimeResonance`; the specific Kelvin-wave exponent is model-dependent.
 `brownian_closures.py` is **exact combinatorics** (no sampling): the census, the settled `−p/2` / `−3/2` /
 `−5/3` laws, and the classical Pólya constants are the references. The novel content is the *synthesis* — that
 all these are one closure-census story — and the *framing*: the continuum rendered one closure at a time, up to

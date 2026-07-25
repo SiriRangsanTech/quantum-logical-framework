@@ -1,6 +1,7 @@
 import QLF_Turbulence
 import QLF_StateSpace
 import QLF_PrimeResonance
+import QLF_TwistAlphabet
 import Mathlib
 
 set_option linter.unusedVariables false
@@ -16,14 +17,19 @@ superfluid / quantum-turbulence reading — as Lean theorems, in the reuse-only 
   (`vortex_quantum`, `|ω| ≤ 1`), and total circulation is an **integer** count of net quanta
   (`circulation_integer_quantized`). Derived from the substrate ([`QLF_Turbulence`](lean/QLF_Turbulence.lean)),
   so classical turbulence is the coarse-grained limit of quantum turbulence.
-* **The order-parameter phase quantum is a quarter-turn `π/2`.** Every closure folds to the phase
-  group `μ₄ = {±1, ±i} = (ℤ[i])ˣ` ([`QLF_StateSpace`](lean/QLF_StateSpace.lean)); the generator `i`
-  advances the macroscopic wave-function argument `S` (`Ψ = |Ψ|e^{iS}`) by a **quarter-turn**, and the
-  phase **closes only after four** (a full `2π` winding — the `q = 1` Onsager–Feynman loop). This is the
-  Onsager–Feynman circulation quantum expressed in the 8-twist algebra:
-  `phase_quantum_closes_after_four` (`p⁴ = 1`), `phase_quantum_is_quarter_turn` (`i` has order exactly 4),
-  and the genuinely-new `quarter_turn_primitive` (`I⁴ = 1` but `I² ≠ 1` — `i` is a *primitive* 4th root,
-  the phase increment is exactly `π/2`, not `π`).
+* **The phase alphabet is `μ₄`; a CLOSED loop realizes its REAL subgroup `{±1}`, the `±i` quarter-turn
+  is the OPEN forward half-strand.** The fold group is `μ₄ = {±1, ±i} = (ℤ[i])ˣ`
+  ([`QLF_StateSpace`](lean/QLF_StateSpace.lean)), the generator `i` a `π/2` quarter-turn closing after four
+  (`phase_quantum_closes_after_four` `p⁴=1`, `phase_quantum_is_quarter_turn` `i` order 4,
+  `quarter_turn_primitive` `I⁴=1` but `I²≠1` — a *primitive* 4th root, exactly `π/2`). But a **count-balanced
+  closure** (a closed ZFA loop) folds to the **real** subgroup `{±I}` — fermion `−1` (360°) / boson `+1`
+  (720°) — **never `±i`**, because a closure pairs every axis so its Pauli (non-gauge) twist count is
+  **even** (`balanced_pauli_count_even`, proven here; the determinant bridge `det = (−1)^even = +1 ⟹ λ²=1
+  ⟹ λ=±1`, exhaustively reconfirmed in `brownian_closures.py` — 0 balanced closures fold to `±i`).
+  The `±i` quarter-turn belongs to an **open forward strand** with an *odd* Pauli count (e.g. the prime-3
+  proton strand `>^/`), and **time-reversal** (the Hermitian-conjugate dagger, also odd) closes it — forward
+  odd `+` backward odd `=` even `⟹` real `±1` (Jim). This is the Onsager–Feynman circulation quantum in the
+  8-twist algebra: an open vortex line carries the quarter-turn, closing to the real loop.
 * **The cascade resolves highest-frequency-first, down to a floor.** Smaller eddies are higher-frequency
   closures (`highest_frequency_resolves_first`, reusing `cascade_frequency_increases`), and the frequency
   is bounded above by the dissipation floor (`cascade_has_floor`, reusing `cascade_capped`) — no infinite
@@ -32,10 +38,12 @@ superfluid / quantum-turbulence reading — as Lean theorems, in the reuse-only 
 * **Prime closures are the irreducible phase-shift agents.** A prime-period closure cannot decompose into
   a repeat of a shorter closure (`prime_closure_irreducible`, reusing `prime_freq_irreducible`); the
   half-spin (prime `3`) is the minimal such lock (`half_spin_is_prime_agent`, reusing `half_spin_prime` /
-  `half_spin_irreducible`). So the irreducible closures are the atoms that carry the `μ₄` phase shift.
+  `half_spin_irreducible`). Its forward strand of `3` (odd, prime) carries the `±i` quarter-turn, and the
+  closure `3 + 3 = 6` (`half_spin_balanced_steps`, forward `+` dagger) is even ⟹ the real fermion `−1`.
 
-**Honest scope:** this proves the *structural core* — circulation integer-quantized, the phase quantum a
-primitive quarter-turn (`π/2`), the cascade frequency-ordered with a floor, prime closures irreducible.
+**Honest scope:** this proves the *structural core* — circulation integer-quantized, the `μ₄` quarter-turn
+phase alphabet, the closed-loop parity crux (`balanced_pauli_count_even` ⟹ real `±1`, the determinant "fold
+real" cited), the cascade frequency-ordered with a floor, prime closures irreducible.
 It does **not** prove the `−5/3` spectrum (that is `QLF_Kolmogorov`, the *statistics* question), the
 Kelvin-wave small-scale exponent (model-dependent), or the Vinen/Kolmogorov regime dynamics — those stay
 the structural reading of `Turbulence.md` §2/§5. The Navier–Stokes no-blow-up is reduced in
@@ -94,6 +102,26 @@ theorem quarter_turn_primitive :
 theorem phase_embeds_on_fourth_roots (p : PauliScalar) : (toComplex p) ^ 4 = 1 :=
   toComplex_pow_four p
 
+/-! ## Closed loop folds real; the `±i` quarter-turn is the open forward half-strand -/
+
+/-- **A count-balanced closure has an EVEN number of non-gauge (Pauli) twists** — the parity behind
+    "a closed ZFA loop folds real, never `±i`" (issue #120, Jim's forward-odd `+` backward-odd `=` even).
+    Each colour axis is paired (`#^=#v`, `#<=#>`, `#/=#\`), so the Pauli-twist count is `2·(#^+#<+#/)`.
+    Since each Pauli twist contributes matrix `det = −1` and each gauge twist `det = +1`, the fold
+    determinant is `(−1)^even = +1`, forcing the closure scalar `λ` (from `count_balanced_pauli_closed`)
+    to satisfy `λ² = 1 ⟹ λ ∈ {+1, −1}` — the REAL subgroup (fermion `−1` / boson `+1`), **never** the
+    quarter-turn `±i`. The `±i` (a genuine `μ₄` element) is the phase of an OPEN forward strand of *odd*
+    Pauli count (e.g. the prime-3 proton strand `>^/`); the dagger (time-reversal, also odd) closes it —
+    forward-odd `+` backward-odd `=` even (the half-spin `3 + 3 = 6`, `half_spin_balanced_steps`, with `3`
+    prime, `half_spin_prime`). Determinant bridge cited (standard 2×2 linear algebra); exhaustively
+    reconfirmed in `brownian_closures.py` (0 balanced closures fold to `±i` out of the full enumeration). -/
+theorem balanced_pauli_count_even {ts : List Twist} (h : countBalanced ts) :
+    Even (ts.count Twist.up + ts.count Twist.down + ts.count Twist.left
+          + ts.count Twist.right + ts.count Twist.slash + ts.count Twist.backslash) := by
+  obtain ⟨hu, hl, hs, _⟩ := h
+  exact ⟨ts.count Twist.up + ts.count Twist.left + ts.count Twist.slash, by
+    rw [← hu, ← hl, ← hs]; ring⟩
+
 /-! ## The cascade: highest-frequency-first, down to a floor (reuse) -/
 
 /-- **Highest frequency resolves first.** A smaller eddy (shorter period `R_small < R_large`) is a
@@ -113,8 +141,8 @@ theorem cascade_has_floor {R_min R : ℕ} (h0 : 0 < R_min) (h : R_min ≤ R) :
 /-! ## Prime closures are the irreducible phase-shift agents (reuse) -/
 
 /-- **A prime-period closure is irreducible** — its only divisors are `1` and itself, so the vacuum
-    cannot factor it into a repeat of a shorter closure. The prime closures are the atoms that carry the
-    `μ₄` phase shift; ordinary closures decompose into them. -/
+    cannot factor it into a repeat of a shorter closure. The prime closures' odd forward strands carry
+    the `±i` quarter-turn; ordinary closures decompose into them. -/
 theorem prime_closure_irreducible {R : ℕ} (h : R.Prime) :
     ∀ d, d ∣ R → d = 1 ∨ d = R :=
   prime_freq_irreducible h
@@ -127,15 +155,18 @@ theorem half_spin_is_prime_agent :
 
 /-- **Established (the superfluid-turbulence dynamical picture, §5/§8 of `Turbulence.md`).**
     Onsager–Feynman circulation is integer-quantized (`vortex_is_one_quantum`,
-    `circulation_is_integer_quantized`); the order-parameter phase quantum is a *primitive* quarter-turn
-    `π/2` (`quarter_turn_primitive`, `phase_quantum_is_quarter_turn`) closing after a full `2π` winding
-    (`phase_quantum_closes_after_four`); the cascade resolves highest-frequency-first
-    (`highest_frequency_resolves_first`) down to a dissipation floor (`cascade_has_floor`); and prime
-    closures are the irreducible phase-shift agents (`prime_closure_irreducible`,
+    `circulation_is_integer_quantized`); the phase alphabet is `μ₄` with a *primitive* quarter-turn `π/2`
+    generator (`quarter_turn_primitive`, `phase_quantum_is_quarter_turn`, `phase_quantum_closes_after_four`),
+    but a **closed** ZFA loop folds to the **real** subgroup `{±1}` (fermion `−1` / boson `+1`) because its
+    Pauli-twist count is even (`balanced_pauli_count_even`) — the `±i` quarter-turn is the OPEN forward
+    half-strand, closed by its odd time-reverse dagger (forward-odd `+` backward-odd `=` even); the cascade
+    resolves highest-frequency-first (`highest_frequency_resolves_first`) down to a dissipation floor
+    (`cascade_has_floor`); and prime closures are the irreducible agents (`prime_closure_irreducible`,
     `half_spin_is_prime_agent`). Together: turbulence is a frequency-ordered resolution of coexisting
-    quantized-vortex closures, prime closures driving the discrete `μ₄` phase discontinuities. **Honest
-    scope:** the structural core — *not* the `−5/3` spectrum (`QLF_Kolmogorov`), the Kelvin-wave exponent,
-    or the regime dynamics. Reuse-only; no new axioms. See `Turbulence.md`. -/
+    quantized-vortex closures, prime closures' open strands driving the discrete `μ₄` quarter-turn phase
+    shifts that close into real `±1` loops. **Honest scope:** the structural core + the parity crux — the
+    full "fold real" is the cited determinant bridge; *not* the `−5/3` spectrum (`QLF_Kolmogorov`), the
+    Kelvin-wave exponent, or the regime dynamics. Reuse-only; no new axioms. See `Turbulence.md`. -/
 theorem quantum_turbulence_summary : True := trivial
 
 end QLF.QuantumTurbulence
