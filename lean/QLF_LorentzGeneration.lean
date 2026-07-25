@@ -142,7 +142,7 @@ theorem realizes_mul {A₁ A₂ : Matrix (Fin 2) (Fin 2) ℂ} {Λ₁ Λ₂ : Mat
 
 /-- The 4×4 real Lorentz **boost matrix** along `z` with parameters `a, b` (`a·b = 1`): it fixes
     `x, y` and mixes `t, z` by `t ↦ (a²+b²)/2·t + (a²−b²)/2·z`, `z ↦ (a²−b²)/2·t + (a²+b²)/2·z`. -/
-def boostMatrix (a b : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+noncomputable def boostMatrix (a b : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
   !![(a ^ 2 + b ^ 2) / 2, 0, 0, (a ^ 2 - b ^ 2) / 2;
      0, 1, 0, 0;
      0, 0, 1, 0;
@@ -155,7 +155,13 @@ theorem boost_realized (a b : ℝ) (hab : a * b = 1) :
     Realizes (boostZ a b) (boostMatrix a b) := by
   intro f
   obtain ⟨t, x, y, z⟩ := f
-  rw [boostZ_action a b hab]
+  have hmv : (boostMatrix a b).mulVec (toCoord ⟨t, x, y, z⟩)
+      = ![(a ^ 2 + b ^ 2) / 2 * t + (a ^ 2 - b ^ 2) / 2 * z, x, y,
+          (a ^ 2 - b ^ 2) / 2 * t + (a ^ 2 + b ^ 2) / 2 * z] := by
+    funext i
+    fin_cases i <;>
+      simp [boostMatrix, toCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring
+  rw [boostZ_action a b hab, ofCoord, hmv]
   have c0 : ((((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) + (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2).re)
       = (a ^ 2 + b ^ 2) / 2 * t + (a ^ 2 - b ^ 2) / 2 * z := by
     rw [show ((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) + (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2
@@ -172,11 +178,8 @@ theorem boost_realized (a b : ℝ) (hab : a * b = 1) :
     rw [show ((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) - (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2
           = (((a ^ 2 - b ^ 2) / 2 * t + (a ^ 2 + b ^ 2) / 2 * z : ℝ) : ℂ) from by push_cast; ring,
        Complex.ofReal_re]
-  simp only [Form.fromMatrix, ofCoord, boostMatrix, toCoord, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply, Matrix.cons_val', Matrix.empty_val',
-    Matrix.cons_val_fin_one, Matrix.head_fin_const, Matrix.mulVec, Matrix.dotProduct,
-    Fin.sum_univ_four, c0, c1, c2, c3]
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> ring
+  simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.of_apply, c0, c1, c2, c3]
 
 /-- **Status: the spinor image is a submonoid containing the boost generators.** On top of the two
     round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid) and now
