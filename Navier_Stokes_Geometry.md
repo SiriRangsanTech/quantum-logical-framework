@@ -192,6 +192,9 @@ scratch; and, separately, the Clay regularity boundary of §5, which self-simila
 
 ## 6b. Emergent closures from a Brownian phase = turbulence, capped — the continuum one closure at a time
 
+> The synthesis of all the turbulence pieces (this geometry + the cascade + the `−5/3` spectrum + the exact
+> Brownian closures + the program output) lives in [`Turbulence.md`](Turbulence.md).
+
 This is QLF, so we do **not** sample a Brownian phase and count what happened — we compute *exactly what is most
 likely*. [`brownian_closures.py`](brownian_closures.py) does this from the census alone (the census **is** the
 return probability, [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)), tying the Brownian phase to turbulence
