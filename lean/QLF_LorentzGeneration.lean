@@ -140,13 +140,53 @@ theorem realizes_mul {A₁ A₂ : Matrix (Fin 2) (Fin 2) ℂ} {Λ₁ Λ₂ : Mat
   rw [hM₂] at key
   rw [spinor_hom, key, h₂ f, toCoord_ofCoord, Matrix.mulVec_mulVec]
 
-/-- **Status: the spinor image is a submonoid (`Realizes 1 1` + `realizes_mul`)** — on top of the
-    two round-trips and Hermiticity preservation. This is the genuine **reduction** of the Lorentz-cover
-    axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content is now proven, so
+/-- The 4×4 real Lorentz **boost matrix** along `z` with parameters `a, b` (`a·b = 1`): it fixes
+    `x, y` and mixes `t, z` by `t ↦ (a²+b²)/2·t + (a²−b²)/2·z`, `z ↦ (a²−b²)/2·t + (a²+b²)/2·z`. -/
+def boostMatrix (a b : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![(a ^ 2 + b ^ 2) / 2, 0, 0, (a ^ 2 - b ^ 2) / 2;
+     0, 1, 0, 0;
+     0, 0, 1, 0;
+     (a ^ 2 - b ^ 2) / 2, 0, 0, (a ^ 2 + b ^ 2) / 2]
+
+/-- **The boost generator is realized.** The spinor `boostZ a b` (with `a·b = 1`) realizes the real
+    Lorentz boost `boostMatrix a b` — so the proven `boostZ_action` places every `z`-boost inside the
+    realized submonoid. -/
+theorem boost_realized (a b : ℝ) (hab : a * b = 1) :
+    Realizes (boostZ a b) (boostMatrix a b) := by
+  intro f
+  obtain ⟨t, x, y, z⟩ := f
+  rw [boostZ_action a b hab]
+  have c0 : ((((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) + (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2).re)
+      = (a ^ 2 + b ^ 2) / 2 * t + (a ^ 2 - b ^ 2) / 2 * z := by
+    rw [show ((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) + (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2
+          = (((a ^ 2 + b ^ 2) / 2 * t + (a ^ 2 - b ^ 2) / 2 * z : ℝ) : ℂ) from by push_cast; ring,
+       Complex.ofReal_re]
+  have c1 : (((x : ℂ) - I * (y : ℂ) + ((x : ℂ) + I * (y : ℂ))) / 2).re = x := by
+    rw [show ((x : ℂ) - I * (y : ℂ) + ((x : ℂ) + I * (y : ℂ))) / 2 = ((x : ℝ) : ℂ) from by ring,
+       Complex.ofReal_re]
+  have c2 : ((I * ((x : ℂ) - I * (y : ℂ) - ((x : ℂ) + I * (y : ℂ)))) / 2).re = y := by
+    rw [show (I * ((x : ℂ) - I * (y : ℂ) - ((x : ℂ) + I * (y : ℂ)))) / 2 = ((y : ℝ) : ℂ) from by
+          linear_combination (-(y : ℂ)) * Complex.I_sq, Complex.ofReal_re]
+  have c3 : ((((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) - (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2).re)
+      = (a ^ 2 - b ^ 2) / 2 * t + (a ^ 2 + b ^ 2) / 2 * z := by
+    rw [show ((a : ℂ) ^ 2 * ((t : ℂ) + (z : ℂ)) - (b : ℂ) ^ 2 * ((t : ℂ) - (z : ℂ))) / 2
+          = (((a ^ 2 - b ^ 2) / 2 * t + (a ^ 2 + b ^ 2) / 2 * z : ℝ) : ℂ) from by push_cast; ring,
+       Complex.ofReal_re]
+  simp only [Form.fromMatrix, ofCoord, boostMatrix, toCoord, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply, Matrix.cons_val', Matrix.empty_val',
+    Matrix.cons_val_fin_one, Matrix.head_fin_const, Matrix.mulVec, Matrix.dotProduct,
+    Fin.sum_univ_four, c0, c1, c2, c3]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> ring
+
+/-- **Status: the spinor image is a submonoid containing the boost generators.** On top of the two
+    round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid) and now
+    `boost_realized` (the `z`-boosts are realized). This is the genuine **reduction** of the
+    Lorentz-cover axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content is proven, so
     `lorentz_generated_by_boosts_rotations` reduces to the **purely real-matrix** fact that boosts and
     rotations generate `SO⁺(1,3)` (the KAK/Cartan decomposition) — a settled-Lie-theory bridge in the
-    Witten-1988 mode, no longer a claim about spinors. The remaining rung is that real generation. No
-    new axioms. -/
+    Witten-1988 mode, no longer a claim about spinors. **Remaining rungs:** `rot_realized` (+ a `rotY`
+    generator, since `rotZ` alone gives only `z`-rotations), then the little-group + Euler decomposition
+    that is the real KAK theorem. No new axioms. -/
 theorem lorentz_image_submonoid : True := trivial
 
 end QLF.LorentzGeneration
