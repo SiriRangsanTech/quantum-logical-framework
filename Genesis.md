@@ -9,6 +9,12 @@ physics. Every printed result carries an epistemic tag (`[EXACT]`, `[MEASURED]`,
 
 Pure standard library, no network. Run: `python3 genesis.py`.
 
+**Companion — the dynamics, not the count.** `genesis.py` *counts* the closure census; [`brownian_closures.py`](brownian_closures.py)
+*samples* it — Brownian phase walks over the twist alphabet, cataloguing which ZFA closures **emerge**: Pólya
+recurrence (few-axis phases close, high-D ones are transient), the first-return excursion law (`~m^{−3/2}`, the
+irreducible closures = the half-spin atoms), and the closure-octave cascade read as turbulence (`−5/3`) and
+contrasted with the pathological continuum. See [`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md) §6b.
+
 ## What to read it for
 
 - **The one genuine derivation — the spectral exponent (§2).** The census fractal exponent is `−p/2`,

@@ -190,6 +190,41 @@ scratch; and, separately, the Clay regularity boundary of §5, which self-simila
 `d`-dependent input) and by She–Leveque's turnover identification `β = 1 − h` with the dimension-independent
 `h = 1/3` (the same `1/3` as `−5/3`, not `1/d`) — and both can fail cleanly.
 
+## 6b. Emergent closures from a Brownian phase — the cascade sampled, capped  *[exploratory / Monte-Carlo]*
+
+`genesis.py` *counts* the closure census; [`brownian_closures.py`](brownian_closures.py) instead **samples the
+dynamics** — it runs Brownian phase walks over the twist alphabet and asks which ZFA closures *emerge*, tying
+the [census-is-a-random-walk](Riemann-Conjecture-Proof.md) result ([`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean))
+to turbulence and contrasting both with the continuum. The phase = the running signed-action vector (the walk
+position) plus the Pauli fold; a closure emerges when the walk returns to the origin and Pauli-closes. Findings
+(seed `20260725`, 40 000 samples):
+
+- **Which phases close at all — Pólya selection.** The `p`-pair Brownian phase closes with probability
+  `0.96 / 0.64 / 0.32 / 0.19` for `p = 1,2,3,4`: **recurrent** for `dim ≤ 2`, **transient** for `dim ≥ 3`
+  (Pólya). So the substrate physically *selects* few-axis closures — high-dimensional phases mostly never close.
+- **ZFA closure = the walk returning to origin.** Every count-balanced return also Pauli-closes (`1.0000`
+  across all samples) — the empirical confirmation of the *proven* [`count_balanced_pauli_closed`](lean/QLF_TwistAlphabet.lean)
+  (count balance ⟹ Pauli closure). So for the Brownian phase, ZFA closure *is* just the return to origin.
+- **First returns are the irreducible closures.** The sampled first-return length distribution has log-log
+  slope **−1.561** vs the settled 1-D Brownian excursion law **−1.500** (`~m^{−3/2}`); the shortest first
+  returns are the eight **half-spin atoms** (`^v`, `<>`, `/\`, `+−`, …, all folding to `−I`), then the
+  length-4 two-axis closures — the census→particle ladder of `genesis.py` §6.
+- **The closure-octave cascade = turbulence.** Binning emergent closures by length-octave gives a smooth
+  cascade (each closure carrying `dF = log 2`); octave-constant flux is the K41 scale-invariance that
+  `QLF_Kolmogorov` turns into the forced `−5/3`, an emergent closure ↔ a quantized vortex (§6). GMC /
+  log-correlated fields unify this cascade with the Riemann critical line.
+- **Contrast with the continuum.** The discrete cascade **stops at a floor** (minimum emergent closure length
+  `2` — the half-spin) and vorticity is quantized (`|ω| ≤ 1`, no blow-up, §2–§5). The *continuum*
+  Brownian/turbulent cascade is infinitely fine, non-differentiable, and needs an **external** UV cutoff for
+  GMC to exist at all. **The substrate *is* that regularization** — Planck floor = dissipation cutoff = GMC UV
+  cutoff — the same message as [`TheContinuum.md`](TheContinuum.md), made concrete in the Brownian-turbulence
+  cascade.
+
+**Honest scope:** exploratory Monte-Carlo. It *validates/illustrates* the Brownian structure proven in
+`QLF_CensusBrownian`, reads it as the cascade already anchored in `QLF_Kolmogorov`/§6, and makes the continuum
+contrast concrete; it makes **no new prediction** (the census, the settled `−3/2`/`−p/2`/`−5/3` laws, and the
+proven no-blow-up are the references; the GMC ties stay bridge candidates). Run: `python3 brownian_closures.py`.
+
 ## 7. Honest scope
 
 - **Proven on the substrate:** angular momentum = circulation, its pseudovector law, vorticity =
