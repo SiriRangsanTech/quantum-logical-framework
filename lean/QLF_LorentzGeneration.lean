@@ -17,10 +17,12 @@ the first rungs — the `Form ↔ Matrix` round-trips that the whole reduction r
 Couched in the **Witten 1988 → Reshetikhin–Turaev mode** (`Millennium.md`): the physics core is proven
 and the single remaining bridge is settled Lie theory (the KAK/Cartan generation of `SO⁺(1,3)`). These
 lemmas turn that settled-math bridge into an in-Lean theorem. Proven here: both `Form↔Matrix`
-round-trips, the realized-image **submonoid** (`realizes_one` + `realizes_mul`), and **both generator
-families realized** — `boost_realized` (the `z`-boosts) and `rot_realized` (the `z`-rotations). So the
-axiom now localizes to the purely real-matrix KAK/Cartan generation of `SO⁺(1,3)`. **Remaining rung:**
-the Euler (`R_z B_z R_z`) assembly. No new axioms.
+round-trips, the realized-image **submonoid** (`realizes_one` + `realizes_mul`), **all generator families
+realized** — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), `rotY_realized` (`y`-rotations,
+a second axis) — and **`euler_form_realized`** (their products compose to realized Lorentz
+transformations). So the realized submonoid contains every Euler/KAK product, and the axiom localizes to
+the single purely real-matrix fact that every `L` **is** such a product (angle extraction / KAK). **Remaining
+rung:** that surjectivity (real-analysis Euler-angle recovery). No new axioms.
 -/
 
 namespace QLF.LorentzGeneration
@@ -309,16 +311,19 @@ theorem euler_form_realized (w₁ w₂ : ℂ) (hw₁ : w₁ * star w₁ = 1) (c 
     Realizes (rotZ w₁ * boostZ a b * rotY c s) (rotMatrix w₁ * boostMatrix a b * rotYMatrix c s) :=
   realizes_mul (realizes_mul (rot_realized w₁ hw₁) (boost_realized a b hab)) (rotY_realized c s hcs)
 
-/-- **Status: the spinor image is a submonoid containing BOTH generator families.** On top of the two
-    round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), `boost_realized`
-    (the `z`-boosts) and now **`rot_realized`** (the `z`-rotations). This is the genuine **reduction** of
-    the Lorentz-cover axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content is proven — every
-    boost and every rotation is in the realized submonoid — so `lorentz_generated_by_boosts_rotations`
-    reduces to the **purely real-matrix** fact that boosts and rotations generate `SO⁺(1,3)` (the
-    KAK/Cartan decomposition) — a settled-Lie-theory bridge in the Witten-1988 mode, no longer a claim
-    about spinors. **Remaining rung:** assembling the little-group + Euler (`R_z B_z R_z`) decomposition,
-    the real KAK theorem itself (a second rotation axis follows by conjugating `rotZ` with a fixed
-    `π/2` boost/rotation). No new axioms. -/
+/-- **Status: the realized submonoid contains all generators AND their Euler products.** On top of the
+    two round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), the generator
+    families are all realized — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), and
+    **`rotY_realized`** (`y`-rotations, a *second* independent rotation axis) — and **`euler_form_realized`**
+    shows a `z`-rotation · `z`-boost · `y`-rotation composes (via `realizes_mul`) to a realized Lorentz
+    transformation mixing all three types. So the realized submonoid contains **every finite product** of
+    boosts and two-axis rotations, i.e. every Euler/KAK form. This is the genuine **reduction** of the
+    Lorentz-cover axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content — generators *and* their
+    composition — is proven, so `lorentz_generated_by_boosts_rotations` reduces to the single **purely
+    real-matrix** fact that every proper orthochronous `L` **is** such a product (the KAK/Cartan
+    decomposition of `SO⁺(1,3)` — angle extraction), a settled-Lie-theory bridge in the Witten-1988 mode,
+    no longer a claim about spinors. **Remaining rung:** the angle-extraction surjectivity (a
+    real-analysis Lie-theory proof — `arccos`/Euler-angle recovery). No new axioms. -/
 theorem lorentz_image_submonoid : True := trivial
 
 end QLF.LorentzGeneration
