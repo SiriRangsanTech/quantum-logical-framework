@@ -243,6 +243,40 @@ theorem dagger_doubles_pauli_count (ts : List Twist) :
   refine ⟨ts.countP isPauli, ?_⟩
   rw [List.countP_append, dagger, List.countP_reverse, countP_map_conj]
 
+/-- The Hermitian-conjugate map is an involution (`^ ↔ v`, `< ↔ >`, `/ ↔ \`, `+ ↔ −`). -/
+theorem conj_involutive (t : Twist) : Twist.conj (Twist.conj t) = t := by cases t <;> rfl
+
+/-- Counting `x` in a conjugated history counts `conj x` in the original (the dagger permutes the
+    alphabet by the conjugation involution). -/
+theorem count_map_conj (ts : List Twist) (x : Twist) :
+    (ts.map Twist.conj).count x = ts.count (Twist.conj x) := by
+  induction ts with
+  | nil => rfl
+  | cons t rest ih =>
+    rw [List.map_cons, List.count_cons, List.count_cons, ih]
+    simp only [beq_iff_eq]
+    congr 1
+    by_cases h : x = Twist.conj t
+    · rw [if_pos h, if_pos (by rw [h]; exact conj_involutive t)]
+    · rw [if_neg h, if_neg (by intro hc; exact h (by rw [← hc]; exact (conj_involutive x).symm))]
+
+/-- **Every history closes via its own time-reversal.** A strand concatenated with its Hermitian dagger
+    is count-balanced — a ZFA closure — because conjugation swaps each pair (`^↔v`, `<↔>`, `/↔\`, `+↔−`)
+    and `reverse` preserves counts, so `count x (ts ++ dagger ts) = count x ts + count (conj x) ts` balances
+    each conjugate pair. Reversibility *is* closure: the forward strand and its time-reverse together always
+    achieve ZFA (the `H↔H†` involution of `Reversibility.md`, now a closure theorem). -/
+theorem dagger_closes (ts : List Twist) : countBalanced (ts ++ dagger ts) := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    simp only [dagger, List.count_append, List.count_reverse, count_map_conj, Twist.conj] <;>
+    ring
+
+/-- **A dagger-closure folds to the real `{±I}`** — the corollary of `dagger_closes` +
+    `balanced_closure_folds_real`: a strand together with its time-reverse is a closed ZFA loop, hence a
+    fermion `−I` or boson `+I`, never the open-strand quarter-turn `±i`. -/
+theorem dagger_closure_folds_real (ts : List Twist) :
+    twistMatrixFold (ts ++ dagger ts) = 1 ∨ twistMatrixFold (ts ++ dagger ts) = -1 :=
+  balanced_closure_folds_real (dagger_closes ts)
+
 /-! ## The cascade: highest-frequency-first, down to a floor (reuse) -/
 
 /-- **Highest frequency resolves first.** A smaller eddy (shorter period `R_small < R_large`) is a
