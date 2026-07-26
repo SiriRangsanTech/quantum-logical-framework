@@ -534,11 +534,15 @@ theorem exists_boost_params (u : ℝ) (hu : 1 ≤ u) :
     — angle extraction), a settled-Lie-theory bridge in the Witten-1988 mode, no longer a claim about
     spinors. This is the **geometric/spacetime counterpart of the Millennium continuum bridges**
     (`navier_stokes_continuum_limit` etc.): a verified discrete/algebraic core recovering the continuum
-    object through one explicit, scrutinized bridge. **Reconstruction progress:** the *boost/rapidity*
-    extraction is now **constructive** (`exists_boost_params` — every target time-stretch `Λ⁰₀ ≥ 1` reached
-    by a `z`-boost via nested square roots, no `arccosh`). **Remaining rung:** the `SO(3)` rotation
-    extraction (Euler angles / a matrix→quaternion square-root recovery + reconstruction) — the one
-    real-analysis piece still on the bridge. No new axioms. -/
+    object through one explicit, scrutinized bridge. **Reconstruction progress:** (1) the *boost/rapidity*
+    extraction is **constructive** (`exists_boost_params` — every `Λ⁰₀ ≥ 1` reached by a `z`-boost via
+    nested square roots, no `arccosh`); (2) the **entire `SU(2) → SO(3)` rotation cover is realized**
+    (`su2_realized` — a general unit quaternion `(a,b,c,d)` realizes its rotation `su2Matrix`, the explicit
+    native quaternion identification, generalizing `rot_realized`/`rotY_realized`). **Remaining rung:** the
+    *reverse* `SO(3) → SU(2)` recovery — extract the quaternion from `R` via the elementary trace identities
+    `1 + R₀₀ + R₁₁ + R₂₂ = 4q₀²` (Chiaverini–Siciliano; square‑root, `nlinarith`‑closable, no Euler/gimbal
+    lock) and reconstruct — plus the `L`→KAK factor extraction. All pieces now present; the `tr R = −1`
+    case split is the interactive part. No new axioms. -/
 theorem lorentz_image_submonoid : True := trivial
 
 end QLF.LorentzGeneration
