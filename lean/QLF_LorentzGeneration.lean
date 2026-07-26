@@ -487,6 +487,26 @@ theorem su2_realized (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = 1) :
   rw [hM, fromMatrix_toMatrix]
   simp [ofCoord, hmv]
 
+/-- **The reverse `SO(3) → SU(2)` recovery formulas are exactly correct (Chiaverini–Siciliano).** For
+    the rotation `su2Matrix a b c d` of a unit quaternion, the four trace combinations recover `4q_i²`:
+    `4a² = 1 + R₁₁ + R₂₂ + R₃₃`, `4b² = 1 + R₁₁ − R₂₂ − R₃₃`, `4c² = 1 − R₁₁ + R₂₂ − R₃₃`,
+    `4d² = 1 − R₁₁ − R₂₂ + R₃₃`. So given a rotation `R`, the quaternion magnitudes are recovered by the
+    **square roots** `q_i = ½√(trace combo)` — the elementary, gimbal‑lock‑free recovery (no Euler angles,
+    no `arccos`; the boost analog is `exists_boost_params`). This is the reverse map's arithmetic core;
+    the full surjectivity (arbitrary `R ∈ SO(3)` ⟹ `su2Matrix q = R`, with the sign choices from the skew
+    off‑diagonals and the `tr R = −1` pivot) is the reconstruction that composes these with the `SO(3)`
+    orthonormality — the interactive remaining rung. -/
+theorem su2Matrix_recovery (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = 1) :
+    4 * a ^ 2 = 1 + su2Matrix a b c d 1 1 + su2Matrix a b c d 2 2 + su2Matrix a b c d 3 3 ∧
+    4 * b ^ 2 = 1 + su2Matrix a b c d 1 1 - su2Matrix a b c d 2 2 - su2Matrix a b c d 3 3 ∧
+    4 * c ^ 2 = 1 - su2Matrix a b c d 1 1 + su2Matrix a b c d 2 2 - su2Matrix a b c d 3 3 ∧
+    4 * d ^ 2 = 1 - su2Matrix a b c d 1 1 - su2Matrix a b c d 2 2 + su2Matrix a b c d 3 3 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    simp only [su2Matrix, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+      Matrix.cons_val_fin_one] <;>
+    linear_combination hu
+
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
 
     The KAK reconstruction of a general `L` needs three extractions: the boost rapidity and two `SO(3)`
