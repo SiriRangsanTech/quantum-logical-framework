@@ -502,9 +502,8 @@ theorem su2Matrix_recovery (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 =
     4 * c ^ 2 = 1 - su2Matrix a b c d 1 1 + su2Matrix a b c d 2 2 - su2Matrix a b c d 3 3 ∧
     4 * d ^ 2 = 1 - su2Matrix a b c d 1 1 - su2Matrix a b c d 2 2 + su2Matrix a b c d 3 3 := by
   refine ⟨?_, ?_, ?_, ?_⟩ <;>
-    simp only [su2Matrix, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
-      Matrix.cons_val_fin_one] <;>
+    simp only [su2Matrix] <;>
+    simp <;>
     linear_combination hu
 
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
