@@ -148,7 +148,9 @@ Superfluid turbulence sharpens *how* the cascade runs, and it lands cleanly on Q
    prime closure — an *odd* Pauli count (e.g. the prime-3 proton strand `>^/` folds to `+i`) = an open vortex
    line — and **time-reversal** (the Hermitian-conjugate dagger, also odd) closes it: forward-odd `+` backward-odd
    `=` even ⟹ the real `±1` loop — proven `dagger_doubles_pauli_count` (Jim; the half-spin `3 + 3 = 6`,
-   `half_spin_balanced_steps`, `3` prime). This
+   `half_spin_balanced_steps`, `3` prime). In fact **every** strand closes via its own time-reverse:
+   `dagger_closes` (`ts ++ dagger ts` is count-balanced) with `dagger_closure_folds_real` — reversibility *is*
+   closure ([`Reversibility.md`](Reversibility.md)). This
    *is* the Onsager–Feynman circulation quantum in the 8-twist algebra: the open vortex strand carries the
    quarter-turn, closing to the real loop.
 4. **Virtual vs persistent = the next phase.** Most high-`f` closures instantiate only *virtual* logical

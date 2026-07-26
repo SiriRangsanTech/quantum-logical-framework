@@ -36,6 +36,15 @@ symmetric ⟺ the mode is scalar × identity** — self-adjoint (`spectral_symme
 The bra is the dagger of the ket, `⟨ψ| = |ψ⟩†` — a balanced state is consistent with its own time-reverse
 (`bra_ket_always_balanced`, `BraKetRhoQuCalc`).
 
+**Reversibility *is* closure — a theorem.** Stronger than "consistent with": *every* open strand closes when
+joined to its own dagger. **`dagger_closes`** ([`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean)) proves
+`ts ++ dagger ts` is count-balanced — a ZFA closure — because the Hermitian conjugation swaps each pair
+(`^↔v`, `<↔>`, `/↔\`, `+↔−`, `conj_involutive`) and `reverse` preserves counts, so every conjugate pair
+balances (`count x (ts ++ dagger ts) = count x ts + count (conj x) ts`, `count_map_conj`). And the resulting
+loop folds to a **real** scalar — fermion `−I` or boson `+I`, never the open-strand quarter-turn `±i`
+(**`dagger_closure_folds_real`**, via `balanced_closure_folds_real`). So the `H↔H†` involution is not just a
+symmetry of the laws: forward strand + time-reverse *always* achieves ZFA — reversibility realized as closure.
+
 ## 3. The arrow is in the *sequencing*, not the laws
 
 If each closure is `H = H†` (no per-event arrow) and the dagger is an involution (reversible), where does
@@ -181,6 +190,8 @@ conservation has mistaken the present-local balance of the closure for the whole
 | charge conjugation = motional/time reversal | `C_eq_motional_reversal` (`QLF_Spin`) |
 | every closure's mode is Hermitian | `toSpectralMode_hermitian` (`QLF_Spectral`) |
 | **balanced ⟺ `H = H†`** (self-time-reverse) | `spectral_symmetric_eq_scalar_id` (`QLF_Spectral`) |
+| **strand + its dagger is always a ZFA closure** (reversibility *is* closure) | `dagger_closes` (`QLF_QuantumTurbulence`) |
+| a dagger-closure folds to a real `±I` (never `±i`) | `dagger_closure_folds_real` (`QLF_QuantumTurbulence`) |
 | forward closure is many-to-one (`C(2n,n)` histories → 1) | `disjunct_count_eq_central_binomial` (`QLF_InfoSynthesis`) |
 | reachability is an antisymmetric partial order (no un-reaching) | `reachable_antisymm`, `futureCone_subset` (`QLF_ReachableEvent`) |
 | each closure synthesizes one bit `ΔF = −log 2` | `zfa_closure_minimizes_free_energy` (`QLF_FreeEnergy`) |
