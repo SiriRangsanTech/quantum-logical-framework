@@ -215,7 +215,7 @@ theorem rot_realized (w : ℂ) (hw : w * star w = 1) :
     rw [← map_pow (starRingEnd ℂ) w 2]; exact Complex.conj_im _
   simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.of_apply, c0, c3, hcr, hci]
-  constructor <;> ring
+  ring
 
 /-- **Status: the spinor image is a submonoid containing the boost generators.** On top of the two
     round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid) and now
