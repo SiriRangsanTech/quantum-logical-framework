@@ -59,8 +59,8 @@ open QLF QLF.StateSpace QLF.Turbulence QLF.PrimeResonance QLF.Consciousness QLF.
 
 /-- `Twist`'s derived `BEq` is lawful (needed for `List.count`/`List.count_cons_of_ne`). -/
 instance : LawfulBEq Twist where
-  eq_of_beq {a b} h := by revert h; revert a b; decide
-  rfl {a} := by revert a; decide
+  eq_of_beq {a b} h := by cases a <;> cases b <;> first | rfl | exact absurd h (by decide)
+  rfl {a} := by cases a <;> decide
 
 /-! ## Onsager–Feynman: circulation is quantized (reuse) -/
 
@@ -188,7 +188,7 @@ theorem countP_isPauli_eq (ts : List Twist) :
       intro b
       rcases eq_or_ne t b with h | h
       · subst h; rw [List.count_cons_self]; simp
-      · rw [List.count_cons_of_ne (Ne.symm h)]; simp [h]
+      · rw [List.count_cons_of_ne h]; simp [h]
     rw [List.countP_cons, key Twist.up, key Twist.down, key Twist.left, key Twist.right,
         key Twist.slash, key Twist.backslash]
     cases t <;> simp only [isPauli] <;> omega
