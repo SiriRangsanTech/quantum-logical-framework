@@ -137,9 +137,12 @@ was **discharged into a theorem** — proved from Mathlib's generalized binomial
 **Bottom line.** The axioms that *can* be proven are the **Class B** "settled math" ones — chiefly
 **`lorentz_generated_by_boosts_rotations`** (the standard Lie-generation fact; its generators `boostZ_action`,
 `rotZ_action`, the `{±I}` kernel, **all generator families realized** (`boost_realized` + `rot_realized` +
-`rotY_realized`, two rotation axes) **and their Euler products** (`euler_form_realized`, `QLF_LorentzGeneration`)
-are proven, so only "every `L` **is** such a product" — the KAK angle-extraction surjectivity — is axiomatic).
-But **none is a quick win**: each needs Mathlib machinery not yet assembled. The **Class A**
+`rotY_realized`, two rotation axes), **their KAK products** (`so3_euler_realized` + `kak_realized`), **and the
+forward inclusion** — all three generators preserve the Minkowski metric (`boostMatrix_preserves_metric` etc.,
+so `{realized} = {KAK products} ⊆ O(1,3)`) — are proven in `QLF_LorentzGeneration`, so only the *reverse*
+inclusion "every `L` **is** such a product" — the KAK angle-extraction surjectivity — is axiomatic; the
+geometric counterpart of the Millennium continuum bridges). But **none is a quick win**: each needs Mathlib
+machinery not yet assembled. The **Class A**
 axioms cannot be proven without solving the underlying conjecture — that is their purpose. The one clean
 discharge available (`censusTail_eq`) is done, and `navier_stokes_continuum_limit` is reduced; QLF refines
 these boundaries as the machinery arrives (`QLF_RiemannMRE`, `QLF_NavierStokesBKM`) rather than

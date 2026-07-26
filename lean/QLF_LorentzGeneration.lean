@@ -389,13 +389,19 @@ theorem rotMatrix_preserves_metric (w : ℂ) (hw : w * star w = 1) :
     **`rotY_realized`** (`y`-rotations, a *second* independent rotation axis) — and the composition is
     proven: **`so3_euler_realized`** (`R_z R_y R_z ∈ SO(3)`) and **`kak_realized`** (the full Cartan form
     `R · B_z · R`) show the entire KAK product family is realized via `realizes_mul`. So the realized
-    submonoid contains **every** Euler/KAK product of boosts and two-axis rotations. This is the genuine **reduction** of the
+    submonoid contains **every** Euler/KAK product of boosts and two-axis rotations. And the **forward
+    direction** is proven too: every generator is a genuine metric-preserving Lorentz matrix
+    (`boostMatrix_preserves_metric`, `rotMatrix_preserves_metric`, `rotYMatrix_preserves_metric`:
+    `Λᵀ η Λ = η`), so every KAK product lies in `O(1,3)`. This is the genuine **reduction** of the
     Lorentz-cover axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content — generators *and* their
-    composition — is proven, so `lorentz_generated_by_boosts_rotations` reduces to the single **purely
-    real-matrix** fact that every proper orthochronous `L` **is** such a product (the KAK/Cartan
-    decomposition of `SO⁺(1,3)` — angle extraction), a settled-Lie-theory bridge in the Witten-1988 mode,
-    no longer a claim about spinors. **Remaining rung:** the angle-extraction surjectivity (a
-    real-analysis Lie-theory proof — `arccos`/Euler-angle recovery). No new axioms. -/
+    composition — is proven and the forward inclusion `{realized} = {KAK products} ⊆ O(1,3)` is checked, so
+    `lorentz_generated_by_boosts_rotations` reduces to the single **purely real-matrix** *reverse* inclusion
+    — that every proper orthochronous `L` **is** such a product (the KAK/Cartan decomposition of `SO⁺(1,3)`
+    — angle extraction), a settled-Lie-theory bridge in the Witten-1988 mode, no longer a claim about
+    spinors. This is the **geometric/spacetime counterpart of the Millennium continuum bridges**
+    (`navier_stokes_continuum_limit` etc.): a verified discrete/algebraic core recovering the continuum
+    object through one explicit, scrutinized bridge. **Remaining rung:** that angle-extraction surjectivity
+    (a real-analysis Lie-theory proof — `arccos`/Euler-angle recovery). No new axioms. -/
 theorem lorentz_image_submonoid : True := trivial
 
 end QLF.LorentzGeneration
