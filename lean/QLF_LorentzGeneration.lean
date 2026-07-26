@@ -506,6 +506,26 @@ theorem su2Matrix_recovery (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 =
     simp <;>
     linear_combination hu
 
+/-- **Recovered-quaternion norm — the first reconstruction rung (division-free).** For `R ∈ SO(3)`
+    (columns orthonormal, `det = 1`), the un-normalized recovered quaternion
+    `(1+tr, R₂₁−R₁₂, R₀₂−R₂₀, R₁₀−R₀₁)` has squared norm `4(1+tr)`. So for `1+tr > 0` the normalization
+    `q = (…)/√(4(1+tr))` is a genuine unit quaternion — the well-definedness of the reverse recovery. The
+    identity is `Σ Rᵢⱼ² = 3` (column orthonormality) plus the cofactor relation `Σ(principal 2×2 minors) =
+    tr` (`cof R = R` for `SO(3)`), both in the `SO(3)` ideal — a polynomial identity, no square roots. -/
+theorem recovered_quaternion_norm (R : Matrix (Fin 3) (Fin 3) ℝ)
+    (h00 : R 0 0 ^ 2 + R 1 0 ^ 2 + R 2 0 ^ 2 = 1)
+    (h11 : R 0 1 ^ 2 + R 1 1 ^ 2 + R 2 1 ^ 2 = 1)
+    (h22 : R 0 2 ^ 2 + R 1 2 ^ 2 + R 2 2 ^ 2 = 1)
+    (h01 : R 0 0 * R 0 1 + R 1 0 * R 1 1 + R 2 0 * R 2 1 = 0)
+    (h02 : R 0 0 * R 0 2 + R 1 0 * R 1 2 + R 2 0 * R 2 2 = 0)
+    (h12 : R 0 1 * R 0 2 + R 1 1 * R 1 2 + R 2 1 * R 2 2 = 0)
+    (hdet : R 0 0 * (R 1 1 * R 2 2 - R 1 2 * R 2 1) - R 0 1 * (R 1 0 * R 2 2 - R 1 2 * R 2 0)
+          + R 0 2 * (R 1 0 * R 2 1 - R 1 1 * R 2 0) = 1) :
+    (1 + R 0 0 + R 1 1 + R 2 2) ^ 2 + (R 2 1 - R 1 2) ^ 2 + (R 0 2 - R 2 0) ^ 2 + (R 1 0 - R 0 1) ^ 2
+      = 4 * (1 + R 0 0 + R 1 1 + R 2 2) := by
+  nlinarith [h00, h11, h22, h01, h02, h12, hdet, sq_nonneg (R 0 0), sq_nonneg (R 1 1),
+    sq_nonneg (R 2 2), mul_self_nonneg (R 2 1 - R 1 2)]
+
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
 
     The KAK reconstruction of a general `L` needs three extractions: the boost rapidity and two `SO(3)`
