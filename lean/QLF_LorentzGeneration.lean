@@ -383,6 +383,63 @@ theorem rotMatrix_preserves_metric (w : ℂ) (hw : w * star w = 1) :
       Matrix.cons_val_fin_one, Matrix.of_apply] <;>
     ring_nf <;> nlinarith [hn]
 
+/-! ## A general `SU(2)` element realizes its quaternion `SO(3)` rotation
+
+    The explicit spinor↔quaternion↔rotation map: `su2 a b c d = !![a+di, −c+bi; c+bi, a−di]` (the unit
+    quaternion `(a,b,c,d)` as an `SU(2)` matrix) acts on the Form as the standard quaternion `SO(3)`
+    rotation, fixing `t` and rotating `(x,y,z)`. Generalizes `rotZ_action` (`b=c=0`) and `rotY_action`
+    (`b=d=0`). This is the native identification (`QLF`'s `Q₈ ⊂ SU(2)`, `BraKetRhoQuCalc`) made fully
+    explicit — the forward `SU(2) →` rotation map the reconstruction plugs into. -/
+
+/-- A general `SU(2)` spinor from a quaternion `(a,b,c,d)`: `!![a+di, −c+bi; c+bi, a−di]`. -/
+noncomputable def su2 (a b c d : ℝ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  !![(a : ℂ) + (d : ℂ) * I, -(c : ℂ) + (b : ℂ) * I; (c : ℂ) + (b : ℂ) * I, (a : ℂ) - (d : ℂ) * I]
+
+/-- The conjugate transpose of the general `SU(2)` spinor. -/
+theorem su2_conjTranspose (a b c d : ℝ) :
+    (su2 a b c d)ᴴ =
+      !![(a : ℂ) - (d : ℂ) * I, (c : ℂ) - (b : ℂ) * I; -(c : ℂ) - (b : ℂ) * I, (a : ℂ) + (d : ℂ) * I] := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [su2, Matrix.conjTranspose_apply, Complex.conj_ofReal, Complex.conj_I] <;> ring
+
+set_option maxHeartbeats 2000000 in
+/-- **The general `SU(2)` action is the quaternion `SO(3)` rotation.** `X ↦ A X A†` for `A = su2 a b c d`
+    fixes `t` (up to the norm factor `‖q‖² = a²+b²+c²+d²`) and rotates `(x,y,z)` by the quaternion rotation
+    `x' = (a²−d²−c²+b²)x + (2ad−2bc)y + (2ac+2db)z`, etc. Unconditional (the norm factor is explicit). -/
+theorem su2_action (a b c d : ℝ) (f : Form) :
+    spinorAct (su2 a b c d) f.toMatrix =
+      !![((a : ℂ) ^ 2 + (b : ℂ) ^ 2 + (c : ℂ) ^ 2 + (d : ℂ) ^ 2) * (f.t : ℂ)
+           + (((a : ℂ) ^ 2 + (d : ℂ) ^ 2 - (c : ℂ) ^ 2 - (b : ℂ) ^ 2) * (f.z : ℂ)
+              - 2 * ((a : ℂ) * (c : ℂ) - (d : ℂ) * (b : ℂ)) * (f.x : ℂ)
+              - 2 * ((a : ℂ) * (b : ℂ) + (d : ℂ) * (c : ℂ)) * (f.y : ℂ)),
+         (((a : ℂ) ^ 2 - (d : ℂ) ^ 2 - (c : ℂ) ^ 2 + (b : ℂ) ^ 2) * (f.x : ℂ)
+            + (2 * (a : ℂ) * (d : ℂ) - 2 * (b : ℂ) * (c : ℂ)) * (f.y : ℂ)
+            + (2 * (a : ℂ) * (c : ℂ) + 2 * (d : ℂ) * (b : ℂ)) * (f.z : ℂ))
+           - I * (((-2 * (a : ℂ) * (d : ℂ) - 2 * (b : ℂ) * (c : ℂ)) * (f.x : ℂ)
+              + ((a : ℂ) ^ 2 - (d : ℂ) ^ 2 + (c : ℂ) ^ 2 - (b : ℂ) ^ 2) * (f.y : ℂ)
+              + (-2 * (d : ℂ) * (c : ℂ) + 2 * (a : ℂ) * (b : ℂ)) * (f.z : ℂ)));
+         (((a : ℂ) ^ 2 - (d : ℂ) ^ 2 - (c : ℂ) ^ 2 + (b : ℂ) ^ 2) * (f.x : ℂ)
+            + (2 * (a : ℂ) * (d : ℂ) - 2 * (b : ℂ) * (c : ℂ)) * (f.y : ℂ)
+            + (2 * (a : ℂ) * (c : ℂ) + 2 * (d : ℂ) * (b : ℂ)) * (f.z : ℂ))
+           + I * (((-2 * (a : ℂ) * (d : ℂ) - 2 * (b : ℂ) * (c : ℂ)) * (f.x : ℂ)
+              + ((a : ℂ) ^ 2 - (d : ℂ) ^ 2 + (c : ℂ) ^ 2 - (b : ℂ) ^ 2) * (f.y : ℂ)
+              + (-2 * (d : ℂ) * (c : ℂ) + 2 * (a : ℂ) * (b : ℂ)) * (f.z : ℂ))),
+           ((a : ℂ) ^ 2 + (b : ℂ) ^ 2 + (c : ℂ) ^ 2 + (d : ℂ) ^ 2) * (f.t : ℂ)
+           - (((a : ℂ) ^ 2 + (d : ℂ) ^ 2 - (c : ℂ) ^ 2 - (b : ℂ) ^ 2) * (f.z : ℂ)
+              - 2 * ((a : ℂ) * (c : ℂ) - (d : ℂ) * (b : ℂ)) * (f.x : ℂ)
+              - 2 * ((a : ℂ) * (b : ℂ) + (d : ℂ) * (c : ℂ)) * (f.y : ℂ))] := by
+  rw [spinorAct, su2_conjTranspose]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp only [Fin.mk_zero, Fin.mk_one, su2, Form.toMatrix, Matrix.mul_apply, Fin.sum_univ_two,
+      Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.head_fin_const, Matrix.empty_val', Matrix.cons_val_fin_one] <;>
+    apply Complex.ext <;>
+    simp [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.sub_re,
+      Complex.sub_im, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
+      Complex.ofReal_im] <;> ring
+
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
 
     The KAK reconstruction of a general `L` needs three extractions: the boost rapidity and two `SO(3)`
