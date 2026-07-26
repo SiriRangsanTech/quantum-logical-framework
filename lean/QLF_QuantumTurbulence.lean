@@ -256,9 +256,9 @@ theorem count_map_conj (ts : List Twist) (x : Twist) :
     rw [List.map_cons, List.count_cons, List.count_cons, ih]
     simp only [beq_iff_eq]
     congr 1
-    by_cases h : x = Twist.conj t
-    · rw [if_pos h, if_pos (by rw [h]; exact conj_involutive t)]
-    · rw [if_neg h, if_neg (by intro hc; exact h (by rw [← hc]; exact (conj_involutive x).symm))]
+    by_cases h : Twist.conj t = x
+    · rw [if_pos h, if_pos (by rw [← h, conj_involutive])]
+    · rw [if_neg h, if_neg (by intro hc; exact h (by rw [hc, conj_involutive]))]
 
 /-- **Every history closes via its own time-reversal.** A strand concatenated with its Hermitian dagger
     is count-balanced — a ZFA closure — because conjugation swaps each pair (`^↔v`, `<↔>`, `/↔\`, `+↔−`)
