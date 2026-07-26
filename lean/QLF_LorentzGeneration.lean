@@ -218,6 +218,96 @@ theorem rot_realized (w : ℂ) (hw : w * star w = 1) :
     Matrix.of_apply, c0, c3, hcr, hci]
   ring
 
+/-! ## A second rotation axis (`y`), so the two families generate all of `SO⁺(1,3)` -/
+
+/-- The real `SU(2)` spinor for a rotation about the `y`-axis: `!![c, −s; s, c]` with `c² + s² = 1`
+    (`c = cos(θ/2)`, `s = sin(θ/2)`). `det = c² + s² = 1`. -/
+noncomputable def rotY (c s : ℝ) : Matrix (Fin 2) (Fin 2) ℂ := !![(c : ℂ), -(s : ℂ); (s : ℂ), (c : ℂ)]
+
+/-- The conjugate transpose of the `y`-rotation spinor (real ⇒ conj is trivial, transpose swaps `∓s`). -/
+theorem rotY_conjTranspose (c s : ℝ) : (rotY c s)ᴴ = !![(c : ℂ), (s : ℂ); -(s : ℂ), (c : ℂ)] := by
+  ext i j; fin_cases i <;> fin_cases j <;>
+    simp [rotY, Matrix.conjTranspose_apply, Complex.conj_ofReal]
+
+set_option maxHeartbeats 1000000 in
+/-- **The `y`-rotation acts as a rotation in the `x`–`z` plane.** `X ↦ A X A†` for `A = rotY c s`
+    (`c² + s² = 1`) fixes `t` and `y` and rotates `x, z` by `2·arg` — `cos = c² − s²`, `sin = 2cs`. -/
+theorem rotY_action (c s : ℝ) (h : c ^ 2 + s ^ 2 = 1) (f : Form) :
+    spinorAct (rotY c s) f.toMatrix =
+      !![(f.t : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (f.z : ℂ) - 2 * (c : ℂ) * (s : ℂ) * (f.x : ℂ),
+           2 * (c : ℂ) * (s : ℂ) * (f.z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (f.x : ℂ) - I * (f.y : ℂ);
+         2 * (c : ℂ) * (s : ℂ) * (f.z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (f.x : ℂ) + I * (f.y : ℂ),
+           (f.t : ℂ) - ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (f.z : ℂ) + 2 * (c : ℂ) * (s : ℂ) * (f.x : ℂ)] := by
+  have hc : (c : ℂ) ^ 2 + (s : ℂ) ^ 2 = 1 := by exact_mod_cast h
+  rw [spinorAct, rotY_conjTranspose]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp only [Fin.mk_zero, Fin.mk_one, rotY, Form.toMatrix, Matrix.mul_apply, Fin.sum_univ_two,
+      Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.head_fin_const, Matrix.empty_val', Matrix.cons_val_fin_one]
+  · linear_combination (f.t : ℂ) * hc
+  · linear_combination (-I * (f.y : ℂ)) * hc
+  · linear_combination (I * (f.y : ℂ)) * hc
+  · linear_combination (f.t : ℂ) * hc
+
+/-- The 4×4 real `y`-axis rotation (`cos = c²−s²`, `sin = 2cs`): fixes `t, y`, rotates the `x`–`z` plane. -/
+noncomputable def rotYMatrix (c s : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![1, 0, 0, 0;
+     0, c ^ 2 - s ^ 2, 0, 2 * c * s;
+     0, 0, 1, 0;
+     0, -(2 * c * s), 0, c ^ 2 - s ^ 2]
+
+/-- **The second rotation generator is realized.** `rotY c s` (`c² + s² = 1`) realizes the real
+    `y`-axis rotation `rotYMatrix c s`. With `rot_realized` (`z`-rotations) this gives two independent
+    rotation axes — enough for the Euler decomposition of `SO(3)`, hence (with `boost_realized`) the KAK
+    generation of `SO⁺(1,3)`. -/
+theorem rotY_realized (c s : ℝ) (h : c ^ 2 + s ^ 2 = 1) :
+    Realizes (rotY c s) (rotYMatrix c s) := by
+  intro f
+  obtain ⟨t, x, y, z⟩ := f
+  have hmv : (rotYMatrix c s).mulVec (toCoord ⟨t, x, y, z⟩)
+      = ![t, (c ^ 2 - s ^ 2) * x + 2 * c * s * z, y, -(2 * c * s) * x + (c ^ 2 - s ^ 2) * z] := by
+    funext i
+    fin_cases i <;>
+      simp [rotYMatrix, toCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring
+  rw [rotY_action c s h, ofCoord, hmv]
+  have c0 : (((t : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) - 2 * (c : ℂ) * (s : ℂ) * (x : ℂ)
+        + ((t : ℂ) - ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) + 2 * (c : ℂ) * (s : ℂ) * (x : ℂ))) / 2).re
+      = t := by
+    rw [show ((t : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) - 2 * (c : ℂ) * (s : ℂ) * (x : ℂ)
+          + ((t : ℂ) - ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) + 2 * (c : ℂ) * (s : ℂ) * (x : ℂ))) / 2
+        = ((t : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  have c1 : ((2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) - I * (y : ℂ)
+        + (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) + I * (y : ℂ))) / 2).re
+      = (c ^ 2 - s ^ 2) * x + 2 * c * s * z := by
+    rw [show (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) - I * (y : ℂ)
+          + (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) + I * (y : ℂ))) / 2
+        = (((c ^ 2 - s ^ 2) * x + 2 * c * s * z : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  have c2 : ((I * (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) - I * (y : ℂ)
+        - (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) + I * (y : ℂ)))) / 2).re
+      = y := by
+    rw [show (I * (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) - I * (y : ℂ)
+          - (2 * (c : ℂ) * (s : ℂ) * (z : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (x : ℂ) + I * (y : ℂ)))) / 2
+        = ((y : ℝ) : ℂ) from by linear_combination (-(y : ℂ)) * Complex.I_sq, Complex.ofReal_re]
+  have c3 : (((t : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) - 2 * (c : ℂ) * (s : ℂ) * (x : ℂ)
+        - ((t : ℂ) - ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) + 2 * (c : ℂ) * (s : ℂ) * (x : ℂ))) / 2).re
+      = -(2 * c * s) * x + (c ^ 2 - s ^ 2) * z := by
+    rw [show ((t : ℂ) + ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) - 2 * (c : ℂ) * (s : ℂ) * (x : ℂ)
+          - ((t : ℂ) - ((c : ℂ) ^ 2 - (s : ℂ) ^ 2) * (z : ℂ) + 2 * (c : ℂ) * (s : ℂ) * (x : ℂ))) / 2
+        = ((-(2 * c * s) * x + (c ^ 2 - s ^ 2) * z : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.of_apply, c0, c1, c2, c3]
+
+/-- **The Euler/KAK form is realized.** A `z`-rotation, then a `z`-boost, then a `y`-rotation composes —
+    via `realizes_mul` — to a realized Lorentz transformation mixing all three generator types. So the
+    realized submonoid contains every finite product of boosts and rotations across two axes; the only
+    remaining fact is that *every* proper orthochronous `L` **is** such a product (the KAK/Cartan
+    decomposition, a settled real-matrix Lie theorem — the localized bridge). -/
+theorem euler_form_realized (w₁ w₂ : ℂ) (hw₁ : w₁ * star w₁ = 1) (c s : ℝ) (hcs : c ^ 2 + s ^ 2 = 1)
+    (a b : ℝ) (hab : a * b = 1) :
+    Realizes (rotZ w₁ * boostZ a b * rotY c s) (rotMatrix w₁ * boostMatrix a b * rotYMatrix c s) :=
+  realizes_mul (realizes_mul (rot_realized w₁ hw₁) (boost_realized a b hab)) (rotY_realized c s hcs)
+
 /-- **Status: the spinor image is a submonoid containing BOTH generator families.** On top of the two
     round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), `boost_realized`
     (the `z`-boosts) and now **`rot_realized`** (the `z`-rotations). This is the genuine **reduction** of
