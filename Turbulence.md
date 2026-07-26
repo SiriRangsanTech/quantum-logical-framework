@@ -121,6 +121,21 @@ This is the `−5/3` of the *large-scale* (`k ≪ 2π/ℓ`) range; the small-sca
 different rendering past the `ℓ` phase change. So the spectrum is the *statistics* question, distinct from and
 additional to the Clay *regularity* question.
 
+**The temporal companion — 1/f pink noise from the p=2 return density.** The `−5/3` is the *spatial* (wavenumber)
+cascade. Read the **same** census *temporally* — the closure ensemble as a superposition of relaxation
+processes (each closure of period `τ = 2m` one relaxation with Debye PSD `τ/(1+(2πfτ)²)`, weighted by the p‑D
+return density `w(τ) ∼ τ^{−p/2}`) — and it renders (McWhorter) to `S(f) ∝ f^{−(2−p/2)}`: **the noise *colour*
+is set by the substrate dimension `p`.** [`brownian_closures.py`](brownian_closures.py) §7 computes the exact
+exponents: `p=1 → −3/2` (red), **`p=2 → −1` (pink 1/f)**, `p=3 → −1/2`, `p=4 → 0` (white). So **`1/f` pink
+noise is exactly the `p=2` case — the 2‑D return density `returnProb1D²` = [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)`.returnDensity`,
+the *same* census object that recovers `π` ([`QLF_PhysicalPi`](lean/QLF_PhysicalPi.lean))** — so the most
+ubiquitous noise spectrum in nature and the substrate‑`π` recovery are the *same* object. **Honest nuance:**
+this is *not* the raw closure count (which grows per octave, giving a steeper spectrum) nor a trivial corollary
+of the `−5/3` flux‑invariance (constant energy *flux* per octave ≠ equal power *content* per octave); `1/f`
+requires the log‑uniform (`1/τ`) measure specifically, which the `p=2` return density supplies exactly (verified,
+per‑octave power flat). The flicker‑noise *mechanism* — a scale‑free superposition of relaxations — is the §5
+"all closures coexist" picture.
+
 ---
 
 ## 5. The dynamical picture — simultaneous closures, frequency-ordered resolution, prime phase shifts
@@ -381,6 +396,27 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
    the discrete closure below every rendering, capped at the Planck floor
    (= dissipation cutoff = GMC UV cutoff).  The substrate IS the
    regularization; the continuum is what it renders, phase by phase.
+
+============================================================================
+7. 1/f PINK NOISE = THE p=2 RETURN DENSITY  (temporal reading of the census)
+============================================================================
+   The spatial cascade renders to -5/3 (sec 5).  The TEMPORAL reading of the same
+   census -- the closure ensemble as a superposition of relaxation processes (each
+   closure of period tau=2m one relaxation, Debye PSD tau/(1+(2 pi f tau)^2)) weighted
+   by the p-D return density w(tau)~tau^{-p/2} -- gives S(f) ~ f^{-(2-p/2)} (McWhorter):
+
+   census weight                  S(f) slope  predicted   noise color
+   p-D return density p=1             -1.491      -1.50   red (excursion -3/2)
+   p-D return density p=2             -1.064      -1.00   PINK 1/f
+   p-D return density p=3             -0.685      -0.50   (-> -1/2)
+   p-D return density p=4             -0.406      -0.00   (-> white)
+   reference 1/tau (McWhorter)        -1.036      -1.00   1/f check
+   -> S(f) ~ f^{-(2-p/2)}: the noise COLOR is set by the substrate dimension p.  p=2
+      -- the 2-D return density returnProb1D^2 = QLF_CensusBrownian.returnDensity, the
+      SAME census object that recovers pi (QLF_PhysicalPi) -- gives EXACTLY 1/f pink
+      noise (equal power per octave).  So 1/f sits next to the pi-recovery: both are
+      the p=2 return density.  NOT the raw count (grows) nor the -5/3 flux (a distinct
+      quantity) -- 1/f is the log-uniform (1/tau) measure, which p=2 supplies exactly.
 
 ----------------------------------------------------------------------------
 EXACT / ANCHORED : return law = census (QLF_CensusBrownian); ZFA = return

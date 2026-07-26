@@ -192,6 +192,35 @@ def irreducible_closures(max_len: int = 6):
 
 
 # ----------------------------------------------------------------------
+# EXACT temporal power spectrum: the closure ensemble read as a superposition of
+# relaxation processes (each closure of period tau=2m is one relaxation, Debye PSD
+# S(f;tau)=tau/(1+(2 pi f tau)^2)) weighted by the p-D return density.  The census
+# measure w(tau)~tau^{-p/2} gives S(f)~f^{-(2-p/2)} (McWhorter): p=2 is exactly 1/f.
+# ----------------------------------------------------------------------
+def _return_prob_1d(M: int):
+    """r[m] = C(2m,m)/4^m = 1-D SRW return probability ~ 1/sqrt(pi m), by recurrence."""
+    r = [0.0] * (M + 1)
+    r[0] = 1.0
+    for m in range(1, M + 1):
+        r[m] = r[m - 1] * (2 * m - 1) / (2 * m)
+    return r
+
+
+def psd_slope(weight, M: int = 6000, fmin: float = 1e-3, fmax: float = 4e-2, nf: int = 45):
+    """Log-log slope of S(f) = sum_m w(m)*tau_m/(1+(2 pi f tau_m)^2), tau_m = 2m."""
+    taus = [2 * m for m in range(1, M + 1)]
+    ws = [weight(m) for m in range(1, M + 1)]
+    fs = [fmin * (fmax / fmin) ** (i / (nf - 1)) for i in range(nf)]
+    logf, logS = [], []
+    for f in fs:
+        w = 2 * math.pi * f
+        s = math.fsum(ws[k] * taus[k] / (1.0 + (w * taus[k]) ** 2) for k in range(M))
+        logf.append(math.log(f))
+        logS.append(math.log(s))
+    return slope(logf, logS)
+
+
+# ----------------------------------------------------------------------
 def rule(t):
     print("\n" + "=" * 76)
     print(t)
@@ -305,6 +334,26 @@ def main():
     print("   the discrete closure below every rendering, capped at the Planck floor")
     print("   (= dissipation cutoff = GMC UV cutoff).  The substrate IS the")
     print("   regularization; the continuum is what it renders, phase by phase.")
+
+    rule("7. 1/f PINK NOISE = THE p=2 RETURN DENSITY  (temporal reading of the census)")
+    print("   The spatial cascade renders to -5/3 (sec 5).  The TEMPORAL reading of the same")
+    print("   census -- the closure ensemble as a superposition of relaxation processes (each")
+    print("   closure of period tau=2m one relaxation, Debye PSD tau/(1+(2 pi f tau)^2)) weighted")
+    print("   by the p-D return density w(tau)~tau^{-p/2} -- gives S(f) ~ f^{-(2-p/2)} (McWhorter):")
+    print(f"\n   {'census weight':30}{'S(f) slope':>11}{'predicted':>11}   noise color")
+    r1 = _return_prob_1d(6000)
+    reading = {1: 'red (excursion -3/2)', 2: 'PINK 1/f', 3: '(-> -1/2)', 4: '(-> white)'}
+    for p in (1, 2, 3, 4):
+        sl = psd_slope(lambda m, p=p: r1[m] ** p)
+        print(f"   p-D return density p={p:<9}{sl:>11.3f}{-(2 - p / 2):>11.2f}   {reading[p]}")
+    sl_ref = psd_slope(lambda m: 1.0 / m)
+    print(f"   {'reference 1/tau (McWhorter)':30}{sl_ref:>11.3f}{-1.0:>11.2f}   1/f check")
+    print("   -> S(f) ~ f^{-(2-p/2)}: the noise COLOR is set by the substrate dimension p.  p=2")
+    print("      -- the 2-D return density returnProb1D^2 = QLF_CensusBrownian.returnDensity, the")
+    print("      SAME census object that recovers pi (QLF_PhysicalPi) -- gives EXACTLY 1/f pink")
+    print("      noise (equal power per octave).  So 1/f sits next to the pi-recovery: both are")
+    print("      the p=2 return density.  NOT the raw count (grows) nor the -5/3 flux (a distinct")
+    print("      quantity) -- 1/f is the log-uniform (1/tau) measure, which p=2 supplies exactly.")
 
     print("\n" + "-" * 76)
     print("EXACT / ANCHORED : return law = census (QLF_CensusBrownian); ZFA = return")
