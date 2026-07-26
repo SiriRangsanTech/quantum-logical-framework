@@ -209,28 +209,13 @@ theorem rot_realized (w : ℂ) (hw : w * star w = 1) :
   have c3 : (((t : ℂ) + (z : ℂ) - ((t : ℂ) - (z : ℂ))) / 2).re = z := by
     rw [show ((t : ℂ) + (z : ℂ) - ((t : ℂ) - (z : ℂ))) / 2 = ((z : ℝ) : ℂ) from by push_cast; ring,
        Complex.ofReal_re]
-  have c1 : ((w ^ 2 * ((x : ℂ) - I * (y : ℂ)) + star w ^ 2 * ((x : ℂ) + I * (y : ℂ))) / 2).re
-      = (w ^ 2).re * x + (w ^ 2).im * y := by
-    have hnum : w ^ 2 * ((x : ℂ) - I * (y : ℂ)) + star w ^ 2 * ((x : ℂ) + I * (y : ℂ))
-        = ((2 * ((w ^ 2).re * x + (w ^ 2).im * y) : ℝ) : ℂ) := by
-      apply Complex.ext <;>
-        simp [pow_two, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
-          Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
-          Complex.ofReal_im, Complex.conj_re, Complex.conj_im] <;> ring
-    rw [hnum, show ((2 * ((w ^ 2).re * x + (w ^ 2).im * y) : ℝ) : ℂ) / 2
-          = (((w ^ 2).re * x + (w ^ 2).im * y : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
-  have c2 : ((I * (w ^ 2 * ((x : ℂ) - I * (y : ℂ)) - star w ^ 2 * ((x : ℂ) + I * (y : ℂ)))) / 2).re
-      = -(w ^ 2).im * x + (w ^ 2).re * y := by
-    have hnum : I * (w ^ 2 * ((x : ℂ) - I * (y : ℂ)) - star w ^ 2 * ((x : ℂ) + I * (y : ℂ)))
-        = ((2 * (-(w ^ 2).im * x + (w ^ 2).re * y) : ℝ) : ℂ) := by
-      apply Complex.ext <;>
-        simp [pow_two, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
-          Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
-          Complex.ofReal_im, Complex.conj_re, Complex.conj_im] <;> ring
-    rw [hnum, show ((2 * (-(w ^ 2).im * x + (w ^ 2).re * y) : ℝ) : ℂ) / 2
-          = ((-(w ^ 2).im * x + (w ^ 2).re * y : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  have hcr : ((starRingEnd ℂ) w ^ 2).re = (w ^ 2).re := by
+    rw [← map_pow (starRingEnd ℂ) w 2]; exact Complex.conj_re _
+  have hci : ((starRingEnd ℂ) w ^ 2).im = -(w ^ 2).im := by
+    rw [← map_pow (starRingEnd ℂ) w 2]; exact Complex.conj_im _
   simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    Matrix.of_apply, c0, c1, c2, c3]
+    Matrix.of_apply, c0, c3, hcr, hci]
+  constructor <;> ring
 
 /-- **Status: the spinor image is a submonoid containing the boost generators.** On top of the two
     round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid) and now
