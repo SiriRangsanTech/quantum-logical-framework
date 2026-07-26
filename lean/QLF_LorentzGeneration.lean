@@ -383,6 +383,36 @@ theorem rotMatrix_preserves_metric (w : ℂ) (hw : w * star w = 1) :
       Matrix.cons_val_fin_one, Matrix.of_apply] <;>
     ring_nf <;> nlinarith [hn]
 
+/-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
+
+    The KAK reconstruction of a general `L` needs three extractions: the boost rapidity and two `SO(3)`
+    Euler rotations. The **boost/rapidity extraction is fully constructive** — for any target timelike
+    stretch `u = Λ⁰₀ ≥ 1` there is an explicit `z`-boost achieving it, with parameters recovered by nested
+    **square roots** (no transcendental `arccosh`): `a = √(u + √(u²−1))`, `b = √(u − √(u²−1))`. This is the
+    boost side of the angle-extraction surjectivity, done. -/
+
+/-- **Constructive rapidity extraction.** For any `u ≥ 1` there exist boost parameters `a, b > 0` with
+    `a·b = 1` and `(a² + b²)/2 = u` — i.e. a `z`-boost whose time-stretch `Λ⁰₀` is exactly `u`. The `a, b`
+    are explicit nested square roots (roots of `t² − 2u·t + 1 = 0`), so the boost part of the KAK
+    reconstruction needs no transcendental function. -/
+theorem exists_boost_params (u : ℝ) (hu : 1 ≤ u) :
+    ∃ a b : ℝ, 0 < a ∧ 0 < b ∧ a * b = 1 ∧ (a ^ 2 + b ^ 2) / 2 = u := by
+  have hu0 : (0 : ℝ) < u := lt_of_lt_of_le zero_lt_one hu
+  have hd : (0 : ℝ) ≤ u ^ 2 - 1 := by nlinarith
+  have hr2 : Real.sqrt (u ^ 2 - 1) ^ 2 = u ^ 2 - 1 := Real.sq_sqrt hd
+  have hrlt : Real.sqrt (u ^ 2 - 1) < u := by
+    have h := Real.sqrt_lt_sqrt hd (show u ^ 2 - 1 < u ^ 2 by linarith)
+    rwa [Real.sqrt_sq hu0.le] at h
+  have hup : (0 : ℝ) < u + Real.sqrt (u ^ 2 - 1) := by
+    have := Real.sqrt_nonneg (u ^ 2 - 1); linarith
+  have hum : (0 : ℝ) < u - Real.sqrt (u ^ 2 - 1) := by linarith
+  refine ⟨Real.sqrt (u + Real.sqrt (u ^ 2 - 1)), Real.sqrt (u - Real.sqrt (u ^ 2 - 1)),
+    Real.sqrt_pos.mpr hup, Real.sqrt_pos.mpr hum, ?_, ?_⟩
+  · rw [← Real.sqrt_mul hup.le,
+        show (u + Real.sqrt (u ^ 2 - 1)) * (u - Real.sqrt (u ^ 2 - 1)) = 1 from by
+          linear_combination -hr2, Real.sqrt_one]
+  · rw [Real.sq_sqrt hup.le, Real.sq_sqrt hum.le]; ring
+
 /-- **Status: the realized submonoid contains all generators AND their Euler products.** On top of the
     two round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), the generator
     families are all realized — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), and
