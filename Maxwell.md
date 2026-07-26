@@ -95,6 +95,22 @@ The homogeneous equation (∇·B = 0) is purely algebraic; ∇·E = ρ/ε₀ is 
 
 ---
 
+## The continuum bridge — Brownian motion renders the curl/wave operators
+
+The one thing the [`QLF_MaxwellCurl`](lean/QLF_MaxwellCurl.lean) core leaves as "the continuum rendering" — the smooth `∇×` / d'Alembertian `□` on the synthesized metric — is exactly the kind of *lattice‑difference → continuum‑differential* limit that has a **named, settled‑math bridge**: the **random‑walk → Brownian‑motion → continuum‑Laplacian** scaling limit. So Maxwell's continuum face is discharged in the same "verified discrete core + one scrutinized continuum bridge" pattern as the [Millennium](Millennium.md) problems — it is the **field‑theory counterpart** of the Navier–Stokes limit and the [Einstein‑curvature CST limit](Einstein_Equations.md).
+
+**The chain is native and classical:**
+
+1. **Discrete substrate = a random walk.** The closure census is a `±1` walk on `ℤ^p` — a ZFA‑balanced string of length `2n` is a closed walk that returns to origin ([`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean): `census_is_closed_walk_count`, `returnDensity_eq_sq_1d`). This is the same census whose exact dynamics [`brownian_closures.py`](brownian_closures.py) computes.
+2. **Scaling limit = Brownian motion, generator = the Laplacian.** Under the diffusive scaling the census walk converges to `p`‑dimensional **Brownian motion** (Donsker's invariance principle), and the discrete lattice Laplacian converges to the continuum Laplacian `∇²` (settled potential theory). The Planck floor is the UV cutoff, so the walk is discrete *below* it and Brownian *above* — the continuum, one closure at a time ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md), [`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md) §6b).
+3. **Maxwell = built from Laplacians.** In Lorenz gauge Maxwell is `□Aμ = μ₀Jμ`, `□ = (1/c²)∂ₜ² − ∇²` — a wave operator built from the very Laplacian the walk renders. Its Green's function (the photon propagator) **is** the Brownian/heat kernel: **Feynman–Kac** writes the EM propagator as an expectation over Brownian paths. So the continuum `∇×`/`□` of §Faraday/§Ampère is the scaling‑limit rendering of the discrete flux‑telescoping closures, carried by Brownian motion.
+
+**It is the same census→Brownian rendering already used for turbulence.** The photon is the *abelian, gauge‑fold‑free* closure ([`QLF_GaugeUnification`](lean/QLF_GaugeUnification.lean): `em_gauge_abelian` — trivial holonomy, massless long‑range), so its rendered propagator is the massless/Coulombic Brownian kernel — the log‑correlated / GMC substrate that already unifies the census, turbulence, and the Riemann critical line ([`Riemann-Conjecture-Proof.md`](Riemann-Conjecture-Proof.md)). Brownian → Maxwell is not a new mechanism; it is the census→Brownian→continuum limit pointed at the EM sector, with the abelian closure selecting the massless kernel.
+
+**Honest scope.** Like every QLF continuum bridge, this *relocates* the continuum to one named, settled‑math scaling‑limit (Donsker + lattice‑Laplacian convergence + Feynman–Kac) over the verified discrete Maxwell core — it does not eliminate it. What it buys: the EM `∇×`/`□` rendering ceases to be an opaque "continuum rendering" and becomes a specific, classical, discharged‑in‑the‑literature limit, of the same rigor class as `navier_stokes_continuum_limit` and `benincasa_dowker_limit`. See [`TheContinuum.md`](TheContinuum.md) for the substrate‑as‑regularization thesis this instantiates.
+
+---
+
 ## Why This Matters
 
 Standard physics postulates Maxwell's equations. QLF derives them as consequences of:
