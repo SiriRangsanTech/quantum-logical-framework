@@ -57,6 +57,11 @@ namespace QLF.QuantumTurbulence
 
 open QLF QLF.StateSpace QLF.Turbulence QLF.PrimeResonance QLF.Consciousness QLF.AngularMomentum
 
+/-- `Twist`'s derived `BEq` is lawful (needed for `List.count`/`List.count_cons_of_ne`). -/
+instance : LawfulBEq Twist where
+  eq_of_beq {a b} h := by revert h; revert a b; decide
+  rfl {a} := by revert a; decide
+
 /-! ## Onsager–Feynman: circulation is quantized (reuse) -/
 
 /-- **A vortex line is one circulation quantum** (`|ω| ≤ 1` per cell) — Onsager–Feynman, derived. -/
