@@ -136,8 +136,10 @@ was **discharged into a theorem** — proved from Mathlib's generalized binomial
 
 **Bottom line.** The axioms that *can* be proven are the **Class B** "settled math" ones — chiefly
 **`lorentz_generated_by_boosts_rotations`** (the standard Lie-generation fact; its generators `boostZ_action`,
-`rotZ_action` and the `{±I}` kernel are already proven, only "they generate the identity component" is
-axiomatic). But **none is a quick win**: each needs Mathlib machinery not yet assembled. The **Class A**
+`rotZ_action`, the `{±I}` kernel, **and now both generator families realized in the submonoid**
+(`boost_realized` + `rot_realized`, `QLF_LorentzGeneration`) are proven, so only "boosts + rotations generate
+the identity component" — the Euler/KAK assembly — is axiomatic). But **none is a quick win**: each needs
+Mathlib machinery not yet assembled. The **Class A**
 axioms cannot be proven without solving the underlying conjecture — that is their purpose. The one clean
 discharge available (`censusTail_eq`) is done, and `navier_stokes_continuum_limit` is reduced; QLF refines
 these boundaries as the machinery arrives (`QLF_RiemannMRE`, `QLF_NavierStokesBKM`) rather than
