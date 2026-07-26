@@ -440,6 +440,53 @@ theorem su2_action (a b c d : ℝ) (f : Form) :
       Complex.sub_im, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
       Complex.ofReal_im] <;> ring
 
+/-- The 4×4 real `SO(3)` rotation of the unit quaternion `(a,b,c,d)`, embedded in `SO⁺(1,3)` (fixes `t`). -/
+noncomputable def su2Matrix (a b c d : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![1, 0, 0, 0;
+     0, a ^ 2 - d ^ 2 - c ^ 2 + b ^ 2, 2 * a * d - 2 * b * c, 2 * a * c + 2 * d * b;
+     0, -2 * a * d - 2 * b * c, a ^ 2 - d ^ 2 + c ^ 2 - b ^ 2, -2 * d * c + 2 * a * b;
+     0, -2 * a * c + 2 * d * b, -2 * a * b - 2 * d * c, a ^ 2 + d ^ 2 - c ^ 2 - b ^ 2]
+
+/-- **A general `SU(2)` element is realized as its `SO(3)` rotation.** For a unit quaternion
+    `a²+b²+c²+d² = 1`, `su2 a b c d` (an arbitrary `SU(2)` matrix) realizes the real rotation
+    `su2Matrix a b c d`. So the *entire* rotation cover `SU(2) → SO(3)` is in the realized spinor
+    submonoid — the explicit quaternion identification `QLF` needs, generalizing `rot_realized`/`rotY_realized`. -/
+theorem su2_realized (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = 1) :
+    Realizes (su2 a b c d) (su2Matrix a b c d) := by
+  intro f
+  obtain ⟨t, x, y, z⟩ := f
+  have hu' : (a : ℂ) ^ 2 + (b : ℂ) ^ 2 + (c : ℂ) ^ 2 + (d : ℂ) ^ 2 = 1 := by exact_mod_cast hu
+  have hmv : (su2Matrix a b c d).mulVec (toCoord ⟨t, x, y, z⟩)
+      = ![t, (a ^ 2 - d ^ 2 - c ^ 2 + b ^ 2) * x + (2 * a * d - 2 * b * c) * y
+              + (2 * a * c + 2 * d * b) * z,
+            (-2 * a * d - 2 * b * c) * x + (a ^ 2 - d ^ 2 + c ^ 2 - b ^ 2) * y
+              + (-2 * d * c + 2 * a * b) * z,
+            (-2 * a * c + 2 * d * b) * x + (-2 * a * b - 2 * d * c) * y
+              + (a ^ 2 + d ^ 2 - c ^ 2 - b ^ 2) * z] := by
+    funext i
+    fin_cases i <;>
+      simp [su2Matrix, toCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring
+  have hM : spinorAct (su2 a b c d) (Form.mk t x y z).toMatrix
+      = (Form.mk t ((a ^ 2 - d ^ 2 - c ^ 2 + b ^ 2) * x + (2 * a * d - 2 * b * c) * y
+              + (2 * a * c + 2 * d * b) * z)
+            ((-2 * a * d - 2 * b * c) * x + (a ^ 2 - d ^ 2 + c ^ 2 - b ^ 2) * y
+              + (-2 * d * c + 2 * a * b) * z)
+            ((-2 * a * c + 2 * d * b) * x + (-2 * a * b - 2 * d * c) * y
+              + (a ^ 2 + d ^ 2 - c ^ 2 - b ^ 2) * z)).toMatrix := by
+    rw [su2_action a b c d]
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Form.toMatrix, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+        Matrix.cons_val_fin_one] <;>
+      push_cast
+    · linear_combination (t : ℂ) * hu'
+    · ring
+    · ring
+    · linear_combination (t : ℂ) * hu'
+  rw [hM, fromMatrix_toMatrix]
+  simp [ofCoord, hmv]
+
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
 
     The KAK reconstruction of a general `L` needs three extractions: the boost rapidity and two `SO(3)`
