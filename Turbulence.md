@@ -142,11 +142,13 @@ Superfluid turbulence sharpens *how* the cascade runs, and it lands cleanly on Q
    [`QLF_AlgebraEmergence`](lean/QLF_AlgebraEmergence.lean)), and a fold to `±i` is a discrete **`π/2` geometric
    phase** — a jump in the argument `S` of `Ψ = |Ψ|e^{iS}`. But a **closed** ZFA loop pairs every axis, so its
    Pauli-twist count is *even* and it folds to the **real** subgroup `{±1}` — fermion `−1` (360°) / boson `+1`
-   (720°), **never `±i`** ([`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean): `balanced_pauli_count_even`;
-   `det = (−1)^even = +1 ⟹ λ = ±1`). The `±i` quarter-turn is carried by the **open forward half-strand** of the
+   (720°), **never `±i`** — a full theorem, [`QLF_QuantumTurbulence.balanced_closure_folds_real`](lean/QLF_QuantumTurbulence.lean)
+   (even Pauli count `balanced_pauli_count_even` ⟹ `det(fold) = (−1)^even = +1` via `det_twistMatrixFold` ⟹
+   `λ² = 1 ⟹ λ = ±1`). The `±i` quarter-turn is carried by the **open forward half-strand** of the
    prime closure — an *odd* Pauli count (e.g. the prime-3 proton strand `>^/` folds to `+i`) = an open vortex
    line — and **time-reversal** (the Hermitian-conjugate dagger, also odd) closes it: forward-odd `+` backward-odd
-   `=` even ⟹ the real `±1` loop (Jim; the half-spin `3 + 3 = 6`, `half_spin_balanced_steps`, `3` prime). This
+   `=` even ⟹ the real `±1` loop — proven `dagger_doubles_pauli_count` (Jim; the half-spin `3 + 3 = 6`,
+   `half_spin_balanced_steps`, `3` prime). This
    *is* the Onsager–Feynman circulation quantum in the 8-twist algebra: the open vortex strand carries the
    quarter-turn, closing to the real loop.
 4. **Virtual vs persistent = the next phase.** Most high-`f` closures instantiate only *virtual* logical
@@ -397,10 +399,11 @@ Clay proof; the `−5/3` spectrum is *forced* by closure-flux scale invariance (
 derivation of turbulence from first principles; the GMC ↔ ζ and GMC ↔ turbulence ties are *bridge candidates*
 attaching the reformulation to settled mathematics, not proofs. The superfluid-turbulence connection (§2, §5,
 §8) is a **consistency/convergence** argument — a real quantized-vortex fluid realizes the QLF mechanism (no
-blow-up, `−5/3`, an intrinsic cutoff). The dynamical picture of §5 is *partly proven*: the closed-loop parity
-(a count-balanced closure folds to the real `{±1}`, never `±i` — `QLF_QuantumTurbulence.balanced_pauli_count_even`
-+ the cited determinant bridge, exhaustively reconfirmed in `brownian_closures.py`) and the `μ₄` quarter-turn
-structure are Lean theorems; the "simultaneous coexistence + frequency-ordered resolution + open-strand phase
+blow-up, `−5/3`, an intrinsic cutoff). The dynamical picture of §5 is *partly proven*: the closed-loop "fold
+real" is a **full theorem** (`QLF_QuantumTurbulence.balanced_closure_folds_real` — a count-balanced closure
+folds to the real `{±1}`, never `±i`, via even Pauli count + the fold determinant `det_twistMatrixFold`), with
+Jim's forward-odd + backward-odd = even (`dagger_doubles_pauli_count`) and the `μ₄` quarter-turn structure also
+Lean theorems, exhaustively reconfirmed in `brownian_closures.py`; the "simultaneous coexistence + frequency-ordered resolution + open-strand phase
 nucleation" reading remains a *structural proposal* consistent with the possibilist ontology and
 `QLF_PrimeResonance`; the specific Kelvin-wave exponent is model-dependent.
 `brownian_closures.py` is **exact combinatorics** (no sampling): the census, the settled `−p/2` / `−3/2` /
