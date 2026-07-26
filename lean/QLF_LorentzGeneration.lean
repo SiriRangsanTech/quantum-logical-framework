@@ -181,6 +181,57 @@ theorem boost_realized (a b : ℝ) (hab : a * b = 1) :
   simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.of_apply, c0, c1, c2, c3]
 
+/-- The 4×4 real Lorentz **rotation matrix** about `z` for a unit spinor phase `w` (`|w| = 1`): fixes
+    `t, z` and rotates the `x`–`y` plane by `2·arg w`, with `cos = (w²).re`, `sin = (w²).im`. -/
+noncomputable def rotMatrix (w : ℂ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![1, 0, 0, 0;
+     0, (w ^ 2).re, (w ^ 2).im, 0;
+     0, -(w ^ 2).im, (w ^ 2).re, 0;
+     0, 0, 0, 1]
+
+/-- **The rotation generator is realized.** The unitary spinor `rotZ w` (with `w·w̄ = 1`) realizes the
+    real spatial rotation `rotMatrix w` about `z` — so the proven `rotZ_action` places every `z`-rotation
+    inside the realized submonoid, alongside `boost_realized`. Together the boosts and rotations are the
+    two generator families whose composition is the KAK/Cartan decomposition of `SO⁺(1,3)`. -/
+theorem rot_realized (w : ℂ) (hw : w * star w = 1) :
+    Realizes (rotZ w) (rotMatrix w) := by
+  intro f
+  obtain ⟨t, x, y, z⟩ := f
+  have hmv : (rotMatrix w).mulVec (toCoord ⟨t, x, y, z⟩)
+      = ![t, (w ^ 2).re * x + (w ^ 2).im * y, -(w ^ 2).im * x + (w ^ 2).re * y, z] := by
+    funext i
+    fin_cases i <;>
+      simp [rotMatrix, toCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring
+  rw [rotZ_action w hw, ofCoord, hmv]
+  have c0 : (((t : ℂ) + (z : ℂ) + ((t : ℂ) - (z : ℂ))) / 2).re = t := by
+    rw [show ((t : ℂ) + (z : ℂ) + ((t : ℂ) - (z : ℂ))) / 2 = ((t : ℝ) : ℂ) from by push_cast; ring,
+       Complex.ofReal_re]
+  have c3 : (((t : ℂ) + (z : ℂ) - ((t : ℂ) - (z : ℂ))) / 2).re = z := by
+    rw [show ((t : ℂ) + (z : ℂ) - ((t : ℂ) - (z : ℂ))) / 2 = ((z : ℝ) : ℂ) from by push_cast; ring,
+       Complex.ofReal_re]
+  have c1 : ((w ^ 2 * ((x : ℂ) - I * (y : ℂ)) + star w ^ 2 * ((x : ℂ) + I * (y : ℂ))) / 2).re
+      = (w ^ 2).re * x + (w ^ 2).im * y := by
+    have hnum : w ^ 2 * ((x : ℂ) - I * (y : ℂ)) + star w ^ 2 * ((x : ℂ) + I * (y : ℂ))
+        = ((2 * ((w ^ 2).re * x + (w ^ 2).im * y) : ℝ) : ℂ) := by
+      apply Complex.ext <;>
+        simp [pow_two, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
+          Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
+          Complex.ofReal_im, Complex.conj_re, Complex.conj_im] <;> ring
+    rw [hnum, show ((2 * ((w ^ 2).re * x + (w ^ 2).im * y) : ℝ) : ℂ) / 2
+          = (((w ^ 2).re * x + (w ^ 2).im * y : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  have c2 : ((I * (w ^ 2 * ((x : ℂ) - I * (y : ℂ)) - star w ^ 2 * ((x : ℂ) + I * (y : ℂ)))) / 2).re
+      = -(w ^ 2).im * x + (w ^ 2).re * y := by
+    have hnum : I * (w ^ 2 * ((x : ℂ) - I * (y : ℂ)) - star w ^ 2 * ((x : ℂ) + I * (y : ℂ)))
+        = ((2 * (-(w ^ 2).im * x + (w ^ 2).re * y) : ℝ) : ℂ) := by
+      apply Complex.ext <;>
+        simp [pow_two, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
+          Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
+          Complex.ofReal_im, Complex.conj_re, Complex.conj_im] <;> ring
+    rw [hnum, show ((2 * (-(w ^ 2).im * x + (w ^ 2).re * y) : ℝ) : ℂ) / 2
+          = ((-(w ^ 2).im * x + (w ^ 2).re * y : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
+  simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.of_apply, c0, c1, c2, c3]
+
 /-- **Status: the spinor image is a submonoid containing the boost generators.** On top of the two
     round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid) and now
     `boost_realized` (the `z`-boosts are realized). This is the genuine **reduction** of the
