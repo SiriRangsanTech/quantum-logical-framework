@@ -430,8 +430,11 @@ theorem exists_boost_params (u : ℝ) (hu : 1 ≤ u) :
     — angle extraction), a settled-Lie-theory bridge in the Witten-1988 mode, no longer a claim about
     spinors. This is the **geometric/spacetime counterpart of the Millennium continuum bridges**
     (`navier_stokes_continuum_limit` etc.): a verified discrete/algebraic core recovering the continuum
-    object through one explicit, scrutinized bridge. **Remaining rung:** that angle-extraction surjectivity
-    (a real-analysis Lie-theory proof — `arccos`/Euler-angle recovery). No new axioms. -/
+    object through one explicit, scrutinized bridge. **Reconstruction progress:** the *boost/rapidity*
+    extraction is now **constructive** (`exists_boost_params` — every target time-stretch `Λ⁰₀ ≥ 1` reached
+    by a `z`-boost via nested square roots, no `arccosh`). **Remaining rung:** the `SO(3)` rotation
+    extraction (Euler angles / a matrix→quaternion square-root recovery + reconstruction) — the one
+    real-analysis piece still on the bridge. No new axioms. -/
 theorem lorentz_image_submonoid : True := trivial
 
 end QLF.LorentzGeneration
