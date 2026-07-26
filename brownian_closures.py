@@ -335,7 +335,7 @@ def main():
     print("   (= dissipation cutoff = GMC UV cutoff).  The substrate IS the")
     print("   regularization; the continuum is what it renders, phase by phase.")
 
-    rule("7. 1/f PINK NOISE = THE p=2 RETURN DENSITY  (temporal reading of the census)")
+    rule("7. 1/f PINK NOISE + ZIPF'S LAW  (temporal & rank readings of the census)")
     print("   The spatial cascade renders to -5/3 (sec 5).  The TEMPORAL reading of the same")
     print("   census -- the closure ensemble as a superposition of relaxation processes (each")
     print("   closure of period tau=2m one relaxation, Debye PSD tau/(1+(2 pi f tau)^2)) weighted")
@@ -354,6 +354,26 @@ def main():
     print("      noise (equal power per octave).  So 1/f sits next to the pi-recovery: both are")
     print("      the p=2 return density.  NOT the raw count (grows) nor the -5/3 flux (a distinct")
     print("      quantity) -- 1/f is the log-uniform (1/tau) measure, which p=2 supplies exactly.")
+
+    print("\n   ZIPF'S LAW (rank reading).  Rank closure TYPES by firebreak frequency: N(m) types")
+    print("   at length 2m (closed-path count), each occurring with prob (2p)^{-2m}.  Rank r =")
+    print("   cumulative type count; Zipf f(r) ~ 1/r.  The exponentials cancel (random-text/Li):")
+    print(f"\n   {'p':>3}{'Zipf exponent':>16}   reading")
+    for p in (1, 2, 3):
+        mmax = 150 if p <= 2 else 120
+        cum = 0
+        logR, logf = [], []
+        for m in range(1, mmax + 1):
+            cum += multipair_census(p, m)[1]
+            if m >= 12:
+                logR.append(math.log(cum)); logf.append(-2 * m * math.log(2 * p))
+        z = -slope(logR, logf)
+        print(f"   {p:>3}{z:>16.3f}   {'ZIPF (~1)' if abs(z-1) < 0.1 else f'{z:.2f}'}")
+    print("   -> exponent ~ 1 for ALL p = Zipf's law, ROBUST and p-INDEPENDENT (unlike 1/f, which")
+    print("      is p=2-specific).  N(m) ~ (2p)^{2m} m^{-p/2} types x prob (2p)^{-2m}: the")
+    print("      exponentials cancel, freq(r) ~ (1/r)(log r)^{-p/2}; p only shifts the log")
+    print("      correction.  So closures are Zipfian in the true (type) sense -- one census -> pi,")
+    print("      1/f, -5/3, AND Zipf.  (Zipf is discrete-native: no clean continuum form.)")
 
     print("\n" + "-" * 76)
     print("EXACT / ANCHORED : return law = census (QLF_CensusBrownian); ZFA = return")

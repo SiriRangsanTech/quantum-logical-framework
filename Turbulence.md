@@ -136,6 +136,16 @@ requires the log‑uniform (`1/τ`) measure specifically, which the `p=2` return
 per‑octave power flat). The flicker‑noise *mechanism* — a scale‑free superposition of relaxations — is the §5
 "all closures coexist" picture.
 
+**And Zipf's law falls out too — robustly, for *all* `p`.** Rank the closure *types* by their firebreak
+frequency (`N(m) ∼ (2p)^{2m}·m^{−p/2}` types of length `2m`, each occurring with probability `(2p)^{−2m}`) and
+the rank–frequency law is `f(r) ∝ 1/r` — **Zipf** — because the exponential type‑count and the exponential
+per‑type probability *cancel* (the Li/Miller "random‑text" mechanism). §7 measures the exponent at
+**`1.006, 1.005, 1.008`** for `p = 1, 2, 3` — `p`‑independent at leading order (`p` only shifts the
+slowly‑varying `(log r)^{−p/2}` correction), unlike the `p=2`‑specific `1/f`. So the *one* census yields `π`
+(`QLF_PhysicalPi`), `1/f`, `−5/3`, **and Zipf**. Zipf is *discrete‑native* — a rank‑frequency law over integer
+ranks with no clean continuum form — so it is native evidence that the discrete substrate is fundamental and
+the continuum is the (here, lossy) rendering ([`TheContinuum.md`](TheContinuum.md)).
+
 ---
 
 ## 5. The dynamical picture — simultaneous closures, frequency-ordered resolution, prime phase shifts
@@ -398,7 +408,7 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
    regularization; the continuum is what it renders, phase by phase.
 
 ============================================================================
-7. 1/f PINK NOISE = THE p=2 RETURN DENSITY  (temporal reading of the census)
+7. 1/f PINK NOISE + ZIPF'S LAW  (temporal & rank readings of the census)
 ============================================================================
    The spatial cascade renders to -5/3 (sec 5).  The TEMPORAL reading of the same
    census -- the closure ensemble as a superposition of relaxation processes (each
@@ -417,6 +427,20 @@ brownian_closures.py — the ZFA closures of a Brownian phase, computed EXACTLY.
       noise (equal power per octave).  So 1/f sits next to the pi-recovery: both are
       the p=2 return density.  NOT the raw count (grows) nor the -5/3 flux (a distinct
       quantity) -- 1/f is the log-uniform (1/tau) measure, which p=2 supplies exactly.
+
+   ZIPF'S LAW (rank reading).  Rank closure TYPES by firebreak frequency: N(m) types
+   at length 2m (closed-path count), each occurring with prob (2p)^{-2m}.  Rank r =
+   cumulative type count; Zipf f(r) ~ 1/r.  The exponentials cancel (random-text/Li):
+
+     p   Zipf exponent   reading
+     1           1.006   ZIPF (~1)
+     2           1.005   ZIPF (~1)
+     3           1.008   ZIPF (~1)
+   -> exponent ~ 1 for ALL p = Zipf's law, ROBUST and p-INDEPENDENT (unlike 1/f, which
+      is p=2-specific).  N(m) ~ (2p)^{2m} m^{-p/2} types x prob (2p)^{-2m}: the
+      exponentials cancel, freq(r) ~ (1/r)(log r)^{-p/2}; p only shifts the log
+      correction.  So closures are Zipfian in the true (type) sense -- one census -> pi,
+      1/f, -5/3, AND Zipf.  (Zipf is discrete-native: no clean continuum form.)
 
 ----------------------------------------------------------------------------
 EXACT / ANCHORED : return law = census (QLF_CensusBrownian); ZFA = return
