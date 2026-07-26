@@ -311,13 +311,36 @@ theorem euler_form_realized (w₁ w₂ : ℂ) (hw₁ : w₁ * star w₁ = 1) (c 
     Realizes (rotZ w₁ * boostZ a b * rotY c s) (rotMatrix w₁ * boostMatrix a b * rotYMatrix c s) :=
   realizes_mul (realizes_mul (rot_realized w₁ hw₁) (boost_realized a b hab)) (rotY_realized c s hcs)
 
+/-- **Every `SO(3)` Euler rotation `R_z R_y R_z` is realized.** Two rotation axes suffice for the Euler
+    decomposition of `SO(3)`, so the whole rotation group's spinor cover is in the realized submonoid. -/
+theorem so3_euler_realized (w₁ w₂ : ℂ) (h₁ : w₁ * star w₁ = 1) (h₂ : w₂ * star w₂ = 1)
+    (c s : ℝ) (hcs : c ^ 2 + s ^ 2 = 1) :
+    Realizes (rotZ w₁ * rotY c s * rotZ w₂) (rotMatrix w₁ * rotYMatrix c s * rotMatrix w₂) :=
+  realizes_mul (realizes_mul (rot_realized w₁ h₁) (rotY_realized c s hcs)) (rot_realized w₂ h₂)
+
+/-- **The full KAK/Cartan product `R·B_z·R` is realized** (`R = R_z R_y R_z ∈ SO(3)`). This is the exact
+    form of the Cartan decomposition of `SO⁺(1,3)`: every proper orthochronous Lorentz transformation
+    equals `R₁ · B_z(ζ) · R₂` for rotations `R₁, R₂` and a single `z`-boost. So the **entire KAK product
+    family is in the realized spinor submonoid** — the composition side of the Lorentz-cover axiom is
+    fully discharged; the sole remaining fact is the *surjectivity* (every `L` admits such a
+    decomposition — the angle-extraction Lie theorem). -/
+theorem kak_realized (w₁ w₂ w₃ w₄ : ℂ) (h₁ : w₁ * star w₁ = 1) (h₂ : w₂ * star w₂ = 1)
+    (h₃ : w₃ * star w₃ = 1) (h₄ : w₄ * star w₄ = 1) (c₁ s₁ c₂ s₂ : ℝ)
+    (hcs₁ : c₁ ^ 2 + s₁ ^ 2 = 1) (hcs₂ : c₂ ^ 2 + s₂ ^ 2 = 1) (a b : ℝ) (hab : a * b = 1) :
+    Realizes (rotZ w₁ * rotY c₁ s₁ * rotZ w₂ * boostZ a b * (rotZ w₃ * rotY c₂ s₂ * rotZ w₄))
+      (rotMatrix w₁ * rotYMatrix c₁ s₁ * rotMatrix w₂ * boostMatrix a b
+        * (rotMatrix w₃ * rotYMatrix c₂ s₂ * rotMatrix w₄)) :=
+  realizes_mul
+    (realizes_mul (so3_euler_realized w₁ w₂ h₁ h₂ c₁ s₁ hcs₁) (boost_realized a b hab))
+    (so3_euler_realized w₃ w₄ h₃ h₄ c₂ s₂ hcs₂)
+
 /-- **Status: the realized submonoid contains all generators AND their Euler products.** On top of the
     two round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), the generator
     families are all realized — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), and
-    **`rotY_realized`** (`y`-rotations, a *second* independent rotation axis) — and **`euler_form_realized`**
-    shows a `z`-rotation · `z`-boost · `y`-rotation composes (via `realizes_mul`) to a realized Lorentz
-    transformation mixing all three types. So the realized submonoid contains **every finite product** of
-    boosts and two-axis rotations, i.e. every Euler/KAK form. This is the genuine **reduction** of the
+    **`rotY_realized`** (`y`-rotations, a *second* independent rotation axis) — and the composition is
+    proven: **`so3_euler_realized`** (`R_z R_y R_z ∈ SO(3)`) and **`kak_realized`** (the full Cartan form
+    `R · B_z · R`) show the entire KAK product family is realized via `realizes_mul`. So the realized
+    submonoid contains **every** Euler/KAK product of boosts and two-axis rotations. This is the genuine **reduction** of the
     Lorentz-cover axiom (the `QLF_NavierStokesBKM` pattern): all the spinor content — generators *and* their
     composition — is proven, so `lorentz_generated_by_boosts_rotations` reduces to the single **purely
     real-matrix** fact that every proper orthochronous `L` **is** such a product (the KAK/Cartan
