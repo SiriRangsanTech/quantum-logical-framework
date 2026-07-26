@@ -354,6 +354,35 @@ theorem boostMatrix_preserves_metric (a b : ℝ) (hab : a * b = 1) :
       Matrix.cons_val_fin_one, Matrix.of_apply] <;>
     ring_nf <;> nlinarith [hab2]
 
+/-- **The `y`-rotation matrix preserves the Minkowski metric** (`c² + s² = 1`). -/
+theorem rotYMatrix_preserves_metric (c s : ℝ) (h : c ^ 2 + s ^ 2 = 1) :
+    (rotYMatrix c s)ᵀ * minkowskiMetric * rotYMatrix c s = minkowskiMetric := by
+  have h2 : (c ^ 2 - s ^ 2) ^ 2 + (2 * c * s) ^ 2 = 1 := by linear_combination (c ^ 2 + s ^ 2 + 1) * h
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [rotYMatrix, minkowskiMetric, Matrix.mul_apply, Matrix.transpose_apply,
+      Matrix.diagonal_apply, Fin.sum_univ_four, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+      Matrix.cons_val_fin_one, Matrix.of_apply] <;>
+    ring_nf <;> nlinarith [h, h2]
+
+/-- **The `z`-rotation matrix preserves the Minkowski metric** (`|w| = 1 ⇒ |w²| = 1`). -/
+theorem rotMatrix_preserves_metric (w : ℂ) (hw : w * star w = 1) :
+    (rotMatrix w)ᵀ * minkowskiMetric * rotMatrix w = minkowskiMetric := by
+  have hn : ((w ^ 2).re) ^ 2 + ((w ^ 2).im) ^ 2 = 1 := by
+    have h1 : Complex.normSq w = 1 := by
+      have hc : w * (starRingEnd ℂ) w = 1 := by rw [starRingEnd_apply]; exact hw
+      rw [Complex.mul_conj] at hc; exact_mod_cast hc
+    have h2 : Complex.normSq (w ^ 2) = 1 := by rw [map_pow, h1]; norm_num
+    rw [Complex.normSq_apply] at h2; nlinarith [h2]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [rotMatrix, minkowskiMetric, Matrix.mul_apply, Matrix.transpose_apply,
+      Matrix.diagonal_apply, Fin.sum_univ_four, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+      Matrix.cons_val_fin_one, Matrix.of_apply] <;>
+    ring_nf <;> nlinarith [hn]
+
 /-- **Status: the realized submonoid contains all generators AND their Euler products.** On top of the
     two round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), the generator
     families are all realized — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), and
