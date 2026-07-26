@@ -334,6 +334,26 @@ theorem kak_realized (w₁ w₂ w₃ w₄ : ℂ) (h₁ : w₁ * star w₁ = 1) (
     (realizes_mul (so3_euler_realized w₁ w₂ h₁ h₂ c₁ s₁ hcs₁) (boost_realized a b hab))
     (so3_euler_realized w₃ w₄ h₃ h₄ c₂ s₂ hcs₂)
 
+/-! ## The generators are genuine metric-preserving Lorentz matrices (the forward direction)
+
+    These show `{realized matrices} = {KAK products} ⊆ O(1,3)` — every generator (hence every KAK
+    product) preserves the Minkowski metric. Together with `kak_realized` this pins the remaining
+    `lorentz_generated_by_boosts_rotations` axiom to exactly the *reverse* inclusion (surjectivity /
+    angle extraction), nothing else. -/
+
+/-- **The boost matrix preserves the Minkowski metric** (`Λᵀ η Λ = η`, using `a·b = 1`). -/
+theorem boostMatrix_preserves_metric (a b : ℝ) (hab : a * b = 1) :
+    (boostMatrix a b)ᵀ * minkowskiMetric * boostMatrix a b = minkowskiMetric := by
+  have hab2 : a ^ 2 * b ^ 2 = 1 := by
+    rw [show a ^ 2 * b ^ 2 = (a * b) ^ 2 from by ring, hab]; norm_num
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [boostMatrix, minkowskiMetric, Matrix.mul_apply, Matrix.transpose_apply,
+      Matrix.diagonal_apply, Fin.sum_univ_four, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+      Matrix.cons_val_fin_one, Matrix.of_apply] <;>
+    ring_nf <;> nlinarith [hab2]
+
 /-- **Status: the realized submonoid contains all generators AND their Euler products.** On top of the
     two round-trips + Hermiticity preservation, `Realizes 1 1` + `realizes_mul` (submonoid), the generator
     families are all realized — `boost_realized` (`z`-boosts), `rot_realized` (`z`-rotations), and
