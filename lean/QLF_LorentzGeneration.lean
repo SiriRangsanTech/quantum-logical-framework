@@ -436,7 +436,7 @@ theorem su2_action (a b c d : ℝ) (f : Form) :
       Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
       Matrix.head_fin_const, Matrix.empty_val', Matrix.cons_val_fin_one] <;>
     apply Complex.ext <;>
-    simp [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.sub_re,
+    simp [pow_two, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.sub_re,
       Complex.sub_im, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
       Complex.ofReal_im] <;> ring
 
