@@ -179,9 +179,14 @@ theorem countP_isPauli_eq (ts : List Twist) :
   induction ts with
   | nil => rfl
   | cons t rest ih =>
-    cases t <;>
-      simp_all [List.countP_cons, List.count_cons, isPauli] <;>
-      omega
+    have key : ∀ b : Twist, (t :: rest).count b = rest.count b + (if t = b then 1 else 0) := by
+      intro b
+      rcases eq_or_ne t b with h | h
+      · subst h; rw [List.count_cons_self]; simp
+      · rw [List.count_cons_of_ne (Ne.symm h)]; simp [h]
+    rw [List.countP_cons, key Twist.up, key Twist.down, key Twist.left, key Twist.right,
+        key Twist.slash, key Twist.backslash]
+    cases t <;> simp only [isPauli] <;> omega
 
 /-- **A closed ZFA loop folds to the REAL subgroup `{±I}`, never the quarter-turn `±iI`** — the full
     determinant statement, now a theorem (previously the cited bridge). A count-balanced closure has an
