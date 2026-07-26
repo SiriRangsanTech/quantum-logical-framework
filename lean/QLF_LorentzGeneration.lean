@@ -297,6 +297,7 @@ theorem rotY_realized (c s : ℝ) (h : c ^ 2 + s ^ 2 = 1) :
         = ((-(2 * c * s) * x + (c ^ 2 - s ^ 2) * z : ℝ) : ℂ) from by push_cast; ring, Complex.ofReal_re]
   simp [Form.fromMatrix, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.of_apply, c0, c1, c2, c3, ← Complex.ofReal_pow]
+  constructor <;> ring
 
 /-- **The Euler/KAK form is realized.** A `z`-rotation, then a `z`-boost, then a `y`-rotation composes —
     via `realizes_mul` — to a realized Lorentz transformation mixing all three generator types. So the
