@@ -38,6 +38,21 @@ QLF spans **more than a hundred machine-verified Lean modules** (zero `sorry`) c
 
 **Six of these have ZERO empirical input** (#1, #2, #3, #6, #10 are zero; #4 is just m_e). **g−2** at #6 and **Ω_Λ = log 2** at #9 are the headline zero-empirical-input wins — the electron anomalous magnetic moment and the dark-energy fraction both substrate-derived to better than 1.2%. (The `H_0` listed for #9 is the **single residual calibration** of the cosmological sector — and it is the *same* input behind the **age of the universe**, which is **not** empirical but a derived **count of Planck ticks** `t₀ = N·τ_Planck`: `ℏ` fixes the tick, the substrate fixes the count `N` — so "deriving `H_0`" *is* "deriving `N`." See [`UniversalRelativity.md`](UniversalRelativity.md) §5.)
 
+### One discrete census, four continuum universals
+
+The closure census is a **closed `±1` random walk** ([`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean): a ZFA-balanced string of length `2n` is a walk that returns to origin, count `C(2n,n)`). Four of the most ubiquitous scaling laws in nature are each *one reading* of that single object — no fitting, no free parameter:
+
+<p align="center"><img src="diagrams/census_four_universals.svg" alt="One discrete census — four continuum universals: π, Kolmogorov −5/3, 1/f pink noise, Zipf's law" width="680"></p>
+
+| Universal | Reading of the census | Anchor |
+|---|---|---|
+| **π** | `1/(n · returnDensity) → π` (Wallis) | [`QLF_PhysicalPi`](lean/QLF_PhysicalPi.lean) |
+| **Kolmogorov `−5/3`** | constant `log 2` flux per octave forces `E(k) ∝ k^{−5/3}` | [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean) |
+| **`1/f` pink noise** | the `p=2` return density is the log-uniform (`1/τ`) relaxation measure | [`Turbulence.md`](Turbulence.md) §4 |
+| **Zipf's law** | rank the closure *types* by census frequency → `f(r) ∝ 1/r`, exponent `1.00`, **`p`-independent** | [`Turbulence.md`](Turbulence.md) §7 |
+
+All four are computed exactly (no Monte-Carlo) in [`brownian_closures.py`](brownian_closures.py). **Zipf is discrete-native** — a rank-frequency law over integer ranks with no clean continuum form, yet it falls straight out of the count: native evidence that the discrete substrate is fundamental and the continuum is its (here, lossy) rendering ([`TheContinuum.md`](TheContinuum.md)).
+
 **Beyond the headline ten**, the program reaches across the whole of physics, each result honestly scoped (a verified core + an explicitly-named open piece):
 - **Standard Model structure** — spin demystified as the twists (720°/SU(2)→SO(3), `QLF_Spin`); the Majorana neutrino → 0νββ (`QLF_Majorana`); **three generations = the 3 axes** + the Koide relation (`QLF_Generations`, `QLF_Koide`); the Weinberg angle `sin²θ_W=3/8` at unification (`QLF_WeinbergAngle`); CKM/PMNS counting + Kobayashi–Maskawa (`QLF_FlavorMixing`); the strong `SU(3)` and the QCD `b₀=7` from `N_c=3, n_f=6` (`QLF_StrongAlgebra`, `QLF_BetaFunction`); **strong CP `θ̄=0` with no axion** (`QLF_StrongCP`); the pion ratio and hadron quantum black holes (`QLF_PionMassRatio`, `QLF_QuantumBlackHole`).
 - **Gravity & cosmology** — the **Einstein field equations as the substrate's equation of state** (Jacobson; `8πG=2π/η`, `Λ=log 2`), tied to **Hitoshi Kitada's local time** — every horizon is a Markov-blanket clock (`QLF_EinsteinEquations`, `QLF_LocalClock`); the **curvature side from the causal order** (Sorkin/Benincasa–Dowker on the closure graph — number↔volume, BD layers, dimension from combining histories; `QLF_ReachableEvent`, `QLF_CausalInterval`, `QLF_CausalDimension`); Unruh/Hawking/de Sitter as one relation (`QLF_HorizonTemperature`); **dark matter** as denser logic — the closure-balance Radial Acceleration Relation, **blind-tested parameter-free on 147 SPARC galaxies** at the observational floor (`a₀=cH₀/2π` derived, = best-fit MOND, vs NFW's 294 fit params; `QLF_DarkMatter`, `SPARC.md`); **inflation = high-scale dark energy, no inflaton** (`QLF_CosmicInflation`); baryogenesis (Sakharov met, `QLF_Baryogenesis`); BBN's quarter-helium universe (`QLF_Nucleosynthesis`); gravitational-wave speed/spin (`QLF_GravitationalWaves`).

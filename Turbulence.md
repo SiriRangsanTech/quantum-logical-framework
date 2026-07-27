@@ -146,6 +146,12 @@ slowly‑varying `(log r)^{−p/2}` correction), unlike the `p=2`‑specific `1/
 ranks with no clean continuum form — so it is native evidence that the discrete substrate is fundamental and
 the continuum is the (here, lossy) rendering ([`TheContinuum.md`](TheContinuum.md)).
 
+<p align="center"><img src="diagrams/census_four_universals.svg" alt="One discrete census — four continuum universals: π, Kolmogorov −5/3, 1/f pink noise, Zipf's law" width="680"></p>
+
+So the *one* closure census yields **π** (`QLF_PhysicalPi`), **Kolmogorov `−5/3`** (`QLF_Kolmogorov`), **`1/f` pink
+noise** (§4), and **Zipf's law** (§7) — four of the most ubiquitous scaling laws in nature, each a single
+reading of one discrete object.
+
 ---
 
 ## 5. The dynamical picture — simultaneous closures, frequency-ordered resolution, prime phase shifts
