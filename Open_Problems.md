@@ -109,7 +109,7 @@ canonical status list; when an item moves, update it here and in its owning doc.
 | **Planck scale / substrate granularity** | **The Planck *scale* is the closure floor by construction — not a free input.** The minimal coherent Markov-blanket closure is the Compton–Schwarzschild self-dual point `μ²=1/2`: below the Planck length a blanket is inside its own horizon and cannot close (`coherent_iff_subplanck`, `planck_length_floor`, `planck_self_dual`, reusing the `QLF_QuantumBlackHole` crossing). What remains is **not a flaw**: the SI *value in metres* is a unit convention, and the matter-depth-above-floor is the `14π` hierarchy (`QLF_AlphaS`, tracked at *Cosmic depth / hierarchy*) | [`lean/QLF_PlanckScale.lean`](lean/QLF_PlanckScale.lean), [`Planck_Scale.md`](Planck_Scale.md) |
 | **Bethe constant `k(n,0)`** (Lamb shift) | 🧱 **Boundary** — continuum-dominated (`I_1S ≈ 19.77 Ry`, all bound `ΔE < 1 Ry`); free-electron sector above the RCA₀ floor | [`Lamb_Shift.md`](Lamb_Shift.md) §6.1, [`bethe_log_demo.py`](bethe_log_demo.py) |
 
-### Axiom dischargeability — which of the 24 axioms could become theorems
+### Axiom dischargeability — which of the 23 axioms could become theorems
 
 **The engine behind every bridge (path integral · all closures · Witten 1988).** Each Millennium bridge axiom
 below sits under QLF's one repeated move — *generate every possibility, then let a selection principle keep the
@@ -140,7 +140,11 @@ was **discharged into a theorem** — proved from Mathlib's generalized binomial
 `rotY_realized`, two rotation axes), **their KAK products** (`so3_euler_realized` + `kak_realized`), **and the
 forward inclusion** — all three generators preserve the Minkowski metric (`boostMatrix_preserves_metric` etc.,
 so `{realized} = {KAK products} ⊆ O(1,3)`) — are proven in `QLF_LorentzGeneration`, so only the *reverse*
-inclusion "every `L` **is** such a product" — the KAK angle-extraction surjectivity — is axiomatic; the
+inclusion "every `L` **is** such a product" — the KAK angle-extraction surjectivity — is axiomatic. **The
+reverse recovery is now partly built too:** `su2_realized` (general `SU(2)→SO(3)` from a unit quaternion),
+`exists_boost_params` (constructive boost rapidity, nested √, no `arccosh`), and `su2Matrix_recovery` +
+`recovered_quaternion_norm` (the reverse quaternion trace identities and the division-free `‖·‖²=4(1+tr)`
+normalization well-definedness) — localizing the residual to the `SO(3)` angle-extraction case split (the
 geometric counterpart of the Millennium continuum bridges). But **none is a quick win**: each needs Mathlib
 machinery not yet assembled. The **Class A**
 axioms cannot be proven without solving the underlying conjecture — that is their purpose. The one clean
