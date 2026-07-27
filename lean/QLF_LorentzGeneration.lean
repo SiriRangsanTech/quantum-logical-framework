@@ -513,18 +513,18 @@ theorem su2Matrix_recovery (a b c d : ℝ) (hu : a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 =
     identity is `Σ Rᵢⱼ² = 3` (column orthonormality) plus the cofactor relation `Σ(principal 2×2 minors) =
     tr` (`cof R = R` for `SO(3)`), both in the `SO(3)` ideal — a polynomial identity, no square roots. -/
 theorem recovered_quaternion_norm (R : Matrix (Fin 3) (Fin 3) ℝ)
+    -- columns are unit vectors (from `RᵀR = 1`), giving `Σ Rᵢⱼ² = 3`
     (h00 : R 0 0 ^ 2 + R 1 0 ^ 2 + R 2 0 ^ 2 = 1)
     (h11 : R 0 1 ^ 2 + R 1 1 ^ 2 + R 2 1 ^ 2 = 1)
     (h22 : R 0 2 ^ 2 + R 1 2 ^ 2 + R 2 2 ^ 2 = 1)
-    (h01 : R 0 0 * R 0 1 + R 1 0 * R 1 1 + R 2 0 * R 2 1 = 0)
-    (h02 : R 0 0 * R 0 2 + R 1 0 * R 1 2 + R 2 0 * R 2 2 = 0)
-    (h12 : R 0 1 * R 0 2 + R 1 1 * R 1 2 + R 2 1 * R 2 2 = 0)
-    (hdet : R 0 0 * (R 1 1 * R 2 2 - R 1 2 * R 2 1) - R 0 1 * (R 1 0 * R 2 2 - R 1 2 * R 2 0)
-          + R 0 2 * (R 1 0 * R 2 1 - R 1 1 * R 2 0) = 1) :
+    -- `cof R = R` — the diagonal cofactors equal the diagonal entries (the `SO(3)` content: the
+    -- adjugate `= det·R⁻¹ = Rᵀ`, standard Mathlib `Matrix.adjugate` for an orthogonal `det=1` matrix)
+    (hc0 : R 1 1 * R 2 2 - R 1 2 * R 2 1 = R 0 0)
+    (hc1 : R 0 0 * R 2 2 - R 0 2 * R 2 0 = R 1 1)
+    (hc2 : R 0 0 * R 1 1 - R 0 1 * R 1 0 = R 2 2) :
     (1 + R 0 0 + R 1 1 + R 2 2) ^ 2 + (R 2 1 - R 1 2) ^ 2 + (R 0 2 - R 2 0) ^ 2 + (R 1 0 - R 0 1) ^ 2
       = 4 * (1 + R 0 0 + R 1 1 + R 2 2) := by
-  nlinarith [h00, h11, h22, h01, h02, h12, hdet, sq_nonneg (R 0 0), sq_nonneg (R 1 1),
-    sq_nonneg (R 2 2), mul_self_nonneg (R 2 1 - R 1 2)]
+  linear_combination h00 + h11 + h22 + 2 * hc0 + 2 * hc1 + 2 * hc2
 
 /-! ## The reconstruction — boost/rapidity extraction is constructive (nested square roots)
 
