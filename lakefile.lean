@@ -169,5 +169,6 @@ lean_lib QLF where
     `QLF_LorentzGeneration,
     `QLF_QuantumTurbulence,
     `QLF_HiggsTurbulence,
-    `QLF_TopYukawaRunning
+    `QLF_TopYukawaRunning,
+    `QLF_ClosureBinding
   ]
