@@ -51,7 +51,7 @@ theorem higgs_v_ratio_sq (lam v : ℝ) (hv : v ≠ 0) : higgsMassSq lam v / v ^ 
   unfold higgsMassSq; field_simp
 
 /-- Tree-level top mass-squared from the Yukawa: `m_t = y_t v/√2`, so `m_t² = y_t² v²/2`. -/
-def topMassSq (yt v : ℝ) : ℝ := yt ^ 2 * v ^ 2 / 2
+noncomputable def topMassSq (yt v : ℝ) : ℝ := yt ^ 2 * v ^ 2 / 2
 
 theorem top_mass_sq_from_yukawa (yt v : ℝ) : topMassSq yt v = yt ^ 2 * v ^ 2 / 2 := rfl
 
