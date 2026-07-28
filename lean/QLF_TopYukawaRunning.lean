@@ -79,6 +79,15 @@ theorem qcd_fixed_point_balances (g3 : ℝ) :
     9 / 2 * topYukawaSqQCDFixedPoint g3 - 8 * g3 ^ 2 = 0 := by
   unfold topYukawaSqQCDFixedPoint; ring
 
+/-- **The electroweak sector is ONE scale `v`.** At `y_t = 1` the Higgs and top masses satisfy
+    `M_H² = 4λ · m_t²` — so the ratio `M_H/m_t = 2√λ` is **`v`-independent**, fixed by `λ` alone
+    (`λ ≈ 0.13 ⟹ M_H/m_t ≈ 0.72`, matching `125/173`). Every electroweak mass (`m_t`, `M_H`, and
+    `M_W = gv/2`, `M_Z = √(g²+g'²)v/2`) is `v` times a dimensionless coupling, so `v` is the single
+    electroweak scale — the one anchor everything else is measured against. -/
+theorem higgs_eq_four_lam_top (lam v : ℝ) :
+    higgsMassSq lam v = 4 * lam * topMassSq 1 v := by
+  unfold higgsMassSq topMassSq; ring
+
 /-- The top-Yukawa contribution to the one-loop `16π² β_λ`: the `−6 y_t⁴` term. -/
 def betaLambdaTop (yt : ℝ) : ℝ := -6 * yt ^ 4
 
