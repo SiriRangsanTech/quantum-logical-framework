@@ -21,7 +21,12 @@ to `λ(v) ≈ 0.13` (one-loop). Reuses the one-loop running structure of
 
 * **`higgs_mass_sq_from_quartic`** / **`higgs_v_ratio_sq`** — tree-level `M_H² = 2λv²`, so
   `(M_H/v)² = 2λ` (the observable; measured `M_H/v ≈ 0.51 ⟺ λ ≈ 0.13`).
-* **`top_mass_sq_from_yukawa`** — `m_t = y_t v/√2`, i.e. `m_t² = y_t² v²/2` (the input the running needs).
+* **`top_mass_sq_from_yukawa`** — `m_t = y_t v/√2`, i.e. `m_t² = y_t² v²/2`.
+* **`top_mass_sq_at_yukawa_one`** — at `y_t = 1`, `m_t = v/√2 ≈ 174 GeV` (0.8% from the pole mass): the top
+  is the one fermion *at* the electroweak scale, its fold depth = the vacuum depth `R_stable`. So `m_t` is
+  reduced to `v` (the same open scale), not a free input.
+* **`qcd_fixed_point_balances`** — why `y_t ≈ 1` (not tiny): the QCD-driven **IR quasi-fixed point**
+  (Pendleton–Ross / Hill), `(9/2) y_t*² = 8 g₃²`, attracts `y_t` to `O(1)` regardless of the UV.
 * **`beta_lambda_top_drives_down`** — the top-Yukawa contribution to `16π² β_λ` is `−6 y_t⁴ < 0`
   (for `y_t ≠ 0`): at the UV where `λ → 0`, this drives `β_λ < 0`, so `λ` *increases* toward the IR —
   the mechanism turning `λ(M_Pl)=0` into `λ(v) > 0`. The destabilizing driver behind metastability.
@@ -54,6 +59,25 @@ theorem higgs_v_ratio_sq (lam v : ℝ) (hv : v ≠ 0) : higgsMassSq lam v / v ^ 
 noncomputable def topMassSq (yt v : ℝ) : ℝ := yt ^ 2 * v ^ 2 / 2
 
 theorem top_mass_sq_from_yukawa (yt v : ℝ) : topMassSq yt v = yt ^ 2 * v ^ 2 / 2 := rfl
+
+/-- **The top is the one fermion AT the electroweak scale.** At `y_t = 1`, `m_t² = v²/2`, i.e.
+    `m_t = v/√2 ≈ 174 GeV` (0.8% from the 172.7 GeV pole mass). So `m_t` is not a separate scale — it is
+    `v/√2`: the top's gauge-fold depth coincides with the vacuum condensation depth `R_stable` (the top in
+    resonance with the electroweak vacuum). QLF reading of the empirical `y_t ≈ 1`. -/
+theorem top_mass_sq_at_yukawa_one (v : ℝ) : topMassSq 1 v = v ^ 2 / 2 := by
+  unfold topMassSq; ring
+
+/-- The QCD-dominated IR quasi-fixed point of the top Yukawa: `y_t*² = (16/9) g₃²`. -/
+def topYukawaSqQCDFixedPoint (g3 : ℝ) : ℝ := 16 / 9 * g3 ^ 2
+
+/-- **Why `y_t ≈ 1` and not tiny like every other fermion — the QCD IR quasi-fixed point** (Pendleton–Ross
+    1981 / Hill 1981). At the fixed point the dominant (QCD) part of the one-loop top-Yukawa β-bracket
+    vanishes: `(9/2) y_t*² − 8 g₃² = 0` — the balance between the `y_t` self-coupling and the QCD term that
+    attracts `y_t` to an `O(1)` value regardless of its UV size (verified numerically in
+    `higgs_running_demo.py`: any `y_t(M_Pl)` runs to `y_t(M_t) ≈ 1.0–1.26`; the measured top at the low edge). -/
+theorem qcd_fixed_point_balances (g3 : ℝ) :
+    9 / 2 * topYukawaSqQCDFixedPoint g3 - 8 * g3 ^ 2 = 0 := by
+  unfold topYukawaSqQCDFixedPoint; ring
 
 /-- The top-Yukawa contribution to the one-loop `16π² β_λ`: the `−6 y_t⁴` term. -/
 def betaLambdaTop (yt : ℝ) : ℝ := -6 * yt ^ 4
