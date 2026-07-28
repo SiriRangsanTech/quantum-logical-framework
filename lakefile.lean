@@ -168,5 +168,6 @@ lean_lib QLF where
     `QLF_CensusBrownian,
     `QLF_LorentzGeneration,
     `QLF_QuantumTurbulence,
-    `QLF_HiggsTurbulence
+    `QLF_HiggsTurbulence,
+    `QLF_TopYukawaRunning
   ]
