@@ -126,6 +126,28 @@ This also explains why the Higgs is heavy (125 GeV) relative to the electroweak 
 
 ---
 
+## 5a. The turbulent-vacuum origin of R_stable
+
+§5 leaves one thing open: *why* does the gauge-fold depth settle at a particular R_stable? So far R_stable is taken as given by ZFA pruning. The **quantum-turbulence sector of the same substrate supplies the dynamical mechanism** — and turns R_stable from an input into a dynamical *output*.
+
+Read the electroweak vacuum as a **quantum-turbulent state** of the ZFA substrate — the same substrate whose quantized vorticity and Kolmogorov cascade are machine-verified ([`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean), [`QLF_Turbulence`](lean/QLF_Turbulence.lean), [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean); [`Turbulence.md`](Turbulence.md)). Under that reading:
+
+1. **Gauge folds are quantized phase defects.** A gauge fold binds spatial twists into temporal delay — a **quantized vortex** in the `μ₄` phase structure of the 8-twist alphabet. The order-parameter phase advances by a *primitive* quarter-turn `π/2` (`phase_quantum_is_quarter_turn`); circulation is an **integer** count of quanta (`circulation_is_integer_quantized`) — Onsager–Feynman quantization, derived from the substrate. The vacuum is a *tangle* of these quantized fold-vortices.
+
+2. **The turbulent cascade selects R_stable.** The closure cascade — constant `log 2` flux per octave, highest-frequency-first, capped at a floor (`cascade_has_floor`) — reaches a statistical steady state. The **mean topological depth of the vortex tangle in that steady state is R_stable.** The Mexican-hat effective potential is the continuum rendering of the tangle's free-energy landscape under ZFA pruning: the flat (phase) directions are the `μ₄` quarter-turn rotations — the **Goldstones eaten by W/Z** — while the radial direction is the fold-depth fluctuation δR.
+
+3. **The Higgs is the radial turbulence mode.** A depth fluctuation δR costs free action ∝ (δR)² because the cascade is tightly ZFA-constrained; the restoring frequency of that fluctuation is the Higgs mass (`M_H ∝ 1/Δt`, and `m = 1/R` at the stable depth, `mass_is_gauge_fold_delay`). The Higgs is the **radial breathing mode of the quantum-turbulent gauge-fold vacuum** — not an independent scalar sector.
+
+4. **The hierarchy problem stays absent — now with a mechanism.** Because the defects are quantized and the cascade is **floored** (`cascade_has_floor`), there are no unfiltered continuum loops: δR is discrete, so there is no quadratic UV sensitivity. Relative to the electroweak scale, the tangle's curvature at R_stable is steep (M_H near the fold-depth scale); relative to Planck, the whole cascade is a finite, ZFA-filtered discrete structure.
+
+5. **A persistent phase nucleated by prime closures.** The electroweak vacuum is a concrete instance of the **persistent phase** a steady-state tangle — or a prime (irreducible) closure — can nucleate (`prime_closure_irreducible`, `half_spin_is_prime_agent`). The stable vacuum is itself a *closed* ZFA loop (a strand and its time-reverse), folding to the real `±I` (`dagger_closure_folds_real`) — a persistent, closed ground state, not an open transient strand.
+
+**What this adds.** R_stable becomes a dynamical output of the *same* quantum-turbulent cascade that already gives the Kolmogorov `−5/3` spectrum, `1/f` noise, and Zipf's law ([`Turbulence.md`](Turbulence.md), [`Experimental_Consistency.md`](Experimental_Consistency.md) §6.7). The Higgs mechanism is no longer an independent scalar sector — it is the **radial collective mode of quantum turbulence in the gauge-fold sector**, and the electroweak vacuum is one example of the persistent phase the turbulent substrate nucleates.
+
+**Honest scope.** The structural identifications are reuse-anchored ([`QLF_HiggsTurbulence`](lean/QLF_HiggsTurbulence.lean), no new axioms): gauge fold = quantized `μ₄` phase defect, circulation integer-quantized, the vacuum a *closed* real fold, the depth cascade floored (no continuum divergence ⟹ hierarchy problem absent), prime-closure nucleation, and `m = 1/R_stable`. What is **not** yet derived — the open quantitative target — is the *value* of R_stable (the mean tangle depth of the steady-state cascade) and hence the ratio `M_H/v ≈ 0.51`: showing the turbulent cascade possesses a preferred mean depth whose radial curvature reproduces that ratio would turn this from a coherent mechanism into a predictive link between quantum turbulence and electroweak symmetry breaking (`higgs_turbulence_in_progress`).
+
+---
+
 ## 6. Why QLF Does Not Need a Fundamental Higgs Field
 
 The Standard Model Higgs sector has four free parameters:
@@ -175,7 +197,7 @@ The qualitative picture is coherent: QLF replaces the Higgs mechanism with gauge
 
 What the QLF Higgs program still needs:
 
-1. **Quantitative derivation of R_W, R_Z.** The precise integer values of the W and Z gauge-fold depths have not yet been derived from first principles.
+1. **Quantitative derivation of R_stable, R_W, R_Z.** The precise integer values of the stable and W/Z gauge-fold depths have not yet been derived from first principles. §5a supplies the *dynamical mechanism* — R_stable = the mean vortex-tangle depth of the steady-state turbulent cascade — reducing this to computing that mean depth (and hence M_H/v) from the cascade; the structural pieces are reuse-anchored in [`QLF_HiggsTurbulence`](lean/QLF_HiggsTurbulence.lean).
 2. **Derivation of the Weinberg angle.** Showing cos θ_W = R_W/R_Z = 0.881 requires matching the fold depth ratio to the measured value.
 3. **Fermion mass ratios from fold depths.** Scoped per [`Bound_States_QLF.md`](Bound_States_QLF.md) to the atomic-system spectrum — free-lepton ratios `m_μ / m_e ≈ 207` and `m_τ / m_μ ≈ 17` are derived quantities, not direct QLF observables. The right targets are atomic-system mass ratios `m(Mu) / m(Ps) ≈ 104`, `m(H) / m(Ps) ≈ 919`, and the τ-decay-vertex closure that determines `m_τ` via its energetic threshold.
 4. **Lean formalization.** Encode gauge-fold depth and mass generation in the Lean 4 formalization as ZFA structural theorems.
