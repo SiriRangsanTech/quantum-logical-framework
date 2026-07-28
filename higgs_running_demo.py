@@ -125,6 +125,24 @@ for yUV in [0.5, 1.0, 2.0, 3.0]:
 print("  -> a narrow attractor y_t(M_t) ~ 1.0-1.26 (m_t ~ 178-220 GeV); the measured top sits at its")
 print("     LOW edge (y_t~0.94, m_t=173). The fixed point forces y_t = O(1); the exact value is the residual.")
 
+rule("D. R_stable = the condensation scale: the NJL / BHL top-condensation gap equation")
+# Leading NJL gap equation (heavy top, cutoff Lam, dimensionless g = G Nc Lam^2/(4 pi^2)):
+#   condensation (v != 0) for g > 1; near critical  (v/Lam)^2 * ln(Lam^2/v^2) = g - 1.
+Lam = MPL
+xg = (V / Lam) ** 2
+eps = xg * math.log(1.0 / xg)      # = g - 1, the proximity to critical the observed v requires
+print(f"  cutoff Lam = M_Planck = {Lam:.2e} GeV;  observed v = {V:.1f} GeV")
+print(f"  gap eqn:  (v/Lam)^2 ln(Lam/v)^2 = g - 1 = {eps:.2e}")
+print(f"  => the four-fermion coupling must sit g = 1 + {eps:.0e} above critical -- tuned to ~32 digits.")
+print("     THAT fine-tuning IS the hierarchy problem in composite language (naive NJL, Planck cutoff).")
+print("  QLF resolution: the cascade is FLOORED and discrete (cascade_has_floor / QLF_PlanckScale), so there")
+print("  is no continuum coupling to fine-tune -- the near-critical condensation is the SOC attractor (the")
+print("  SAME self-organized criticality that fixes lambda), generating v << M_Pl WITHOUT tuning.")
+print(f"  The RG-improved compositeness condition = the sec-C IR fixed point: m_t ~ 220 GeV, v ~ {220*math.sqrt(2):.0f}")
+print(f"  GeV -- ~{(220*math.sqrt(2)-V)/V*100:.0f}% above observed, the known BHL overshoot; the closest the")
+print("  condensation dynamics comes to an ABSOLUTE prediction. Exact value (real m_t=173 at the fixed-point")
+print("  low edge) + a first-principles substrate four-fermion coupling = the open frontier (higgs_turbulence).")
+
 rule("SCOPE (honest)")
 print("  * ONE-LOOP: the qualitative near-criticality is robust, but the zero-crossing lands at")
 print("    ~1e8 GeV here vs the two-loop ~1e10-1e11 GeV, and lambda(M_Pl) is more negative than the")
