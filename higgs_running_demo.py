@@ -143,6 +143,21 @@ print(f"  GeV -- ~{(220*math.sqrt(2)-V)/V*100:.0f}% above observed, the known BH
 print("  condensation dynamics comes to an ABSOLUTE prediction. Exact value (real m_t=173 at the fixed-point")
 print("  low edge) + a first-principles substrate four-fermion coupling = the open frontier (higgs_turbulence).")
 
+rule("E. The substrate four-fermion coupling: gravitational part (computable) + closure-binding (open)")
+Nc = 3
+print("  G (four-fermion) and R_stable are the SAME unknown (tied by the sec-D gap equation), so G is an")
+print("  INDEPENDENT input only if computed from the substrate's INTERACTING closure dynamics.")
+print("  One piece IS computable -- the coupling induced by QLF's emergent gravity (Einstein-Cartan torsion):")
+for c, lab in [(3 * math.pi / 2, "3pi/2 (Kibble-Sciama)"), (math.pi, "pi")]:
+    g = c * Nc / (4 * math.pi ** 2)
+    print(f"    torsion coeff {lab:22s}: g_grav = {g:.2f}   (SUBcritical; g_crit = 1)")
+print("  => gravity alone is SUBcritical (~0.1-0.4) -- too weak to condense (the known result). The")
+print("     closure-binding (how gauge folds attract) must supply the rest to reach the SOC critical point.")
+print("  THE FRONTIER: QLF formalizes the FREE closure census (counting); the four-fermion coupling is the")
+print("  INTERACTING closure-binding, not yet formalized. Every step of the chain")
+print("  (M_H -> lambda -> m_t -> v -> R_stable -> G) bottoms out HERE: the substrate INTERACTION, the one")
+print("  irreducible frontier beyond the free-census core.")
+
 rule("SCOPE (honest)")
 print("  * ONE-LOOP: the qualitative near-criticality is robust, but the zero-crossing lands at")
 print("    ~1e8 GeV here vs the two-loop ~1e10-1e11 GeV, and lambda(M_Pl) is more negative than the")
