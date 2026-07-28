@@ -68,7 +68,7 @@ theorem top_mass_sq_at_yukawa_one (v : ℝ) : topMassSq 1 v = v ^ 2 / 2 := by
   unfold topMassSq; ring
 
 /-- The QCD-dominated IR quasi-fixed point of the top Yukawa: `y_t*² = (16/9) g₃²`. -/
-def topYukawaSqQCDFixedPoint (g3 : ℝ) : ℝ := 16 / 9 * g3 ^ 2
+noncomputable def topYukawaSqQCDFixedPoint (g3 : ℝ) : ℝ := 16 / 9 * g3 ^ 2
 
 /-- **Why `y_t ≈ 1` and not tiny like every other fermion — the QCD IR quasi-fixed point** (Pendleton–Ross
     1981 / Hill 1981). At the fixed point the dominant (QCD) part of the one-loop top-Yukawa β-bracket
