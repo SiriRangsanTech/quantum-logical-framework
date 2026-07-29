@@ -1,4 +1,5 @@
 import ER_EPR_QLF
+import QLF_QuantumTurbulence
 
 set_option linter.unusedVariables false
 
@@ -41,7 +42,7 @@ claim. See `Creation.md`, `SpaceTime.md`.
 
 namespace QLF.LogicalBang
 
-open QLF QLF.ReachableEvent
+open QLF QLF.ReachableEvent QLF.QuantumTurbulence QLF.Consciousness
 
 /-- **The logical bang — the first distinction is one balanced bit.** The primordial ZFA event is the
     minimal closure: the conjugate pair `[+, −]` closes (`conjugate_pair_closes`). The origin is *logical*
@@ -79,6 +80,26 @@ theorem causal_order_not_total :
     `{B | A ≼ B}` — the concentric shell the continuum light cone renders. -/
 theorem phase_is_future_cone {α : Type _} (A B : Event α) (h : B ∈ futureCone A) : reachable A B :=
   h
+
+/-! ## Fractal (scale-free) emergence — fast logic before slow, at every scale -/
+
+/-- **Fast logic resolves before slow — inside every phase.** Within any ring the cascade runs from
+    rapid, short (high-frequency) closures toward longer-lived slow ones: a shorter period
+    `R_small < R_large` is a *higher* frequency `freq R_large < freq R_small`
+    (`highest_frequency_resolves_first`). The persistent outer shell is the depth at which the *slowest*
+    stable composites of that stage lock — and the same fast→slow progression recurs at the next scale. -/
+theorem fast_resolves_before_slow {R_small R_large : ℕ} (h0 : 0 < R_small) (h : R_small < R_large) :
+    freq R_large < freq R_small :=
+  highest_frequency_resolves_first h0 h
+
+/-- **The same rule at every octave — the pattern is fractal (scale-free).** At *every* scale the cascade
+    bottoms at the same floor (`cascade_has_floor`: `freq R ≤ freq R_min`), and the closure census that
+    governs each ring is the *same* scale-free object — its Zipf / `1/f` / `−5/3` fingerprints are
+    octave-independent (`QLF_Kolmogorov`, `Turbulence.md`). So zoom into any ring and find another
+    logical-bang-like cascade, only running slower: self-similar emergence at every scale. -/
+theorem cascade_floored_at_every_scale {R_min R : ℕ} (h0 : 0 < R_min) (h : R_min ≤ R) :
+    freq R ≤ freq R_min :=
+  cascade_has_floor h0 h
 
 /-- **Established (the logical-bang cosmology, `Creation.md` §8a).** The first distinction is the minimal
     ZFA closure (`first_distinction_closes`) — a *logical* origin, not a metric singularity; the successive
