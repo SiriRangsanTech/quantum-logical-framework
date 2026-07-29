@@ -185,7 +185,9 @@ The singular Big Bang is replaced by a **logical origin plus nested phase struct
 circles seen from within, it reads directly off the substrate ([`lean/QLF_LogicalBang.lean`](lean/QLF_LogicalBang.lean),
 reuse-only, no new axioms):
 
-<p align="center"><img src="diagrams/logical_bang.svg" alt="The logical bang: a central first distinction, concentric phase rings, time arrows in every direction, nucleons on the outer ring" width="700"></p>
+<p align="center"><img src="diagrams/logical_bang.svg" alt="The logical bang: a central first distinction (phase 0) surrounded by numbered concentric phase rings — 1 conjugate pairs, 2 octave cascade, 3 light nuclei, 4 nucleons (protons p, neutrons n) — with time arrows radiating in every direction" width="720"></p>
+
+*Phases (inner → outer): **0** the logical bang (first distinction) · **1** conjugate pairs · **2** the octave cascade (turbulence) · **3** light nuclei · **4** nucleons — the Borromean baryons `p`, `n` on the outer ring.*
 
 - **Center — the logical bang.** Not an explosion from a singularity: a single self-balanced closed event
   is instantiated — the **first distinction**, the minimal ZFA closure, the conjugate pair `[+, −]`
