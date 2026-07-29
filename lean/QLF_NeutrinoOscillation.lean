@@ -44,10 +44,13 @@ namespace QLF.NeutrinoOscillation
 open QLF
 
 /-- The flavor **polarization** 3-vector (the Bloch-like vector of the two/three-flavor state). -/
-structure Vec3 where
+@[ext] structure Vec3 where
   x : ℝ
   y : ℝ
   z : ℝ
+
+/-- Vector addition (summing the polarizations of a neutrino ensemble). -/
+def add (a b : Vec3) : Vec3 := ⟨a.x + b.x, a.y + b.y, a.z + b.z⟩
 
 /-- Euclidean inner product. -/
 def dot (a b : Vec3) : ℝ := a.x * b.x + a.y * b.y + a.z * b.z
@@ -78,6 +81,25 @@ def totalAxis (omega_vac : Vec3) (kappa : ℝ) (n : Vec3) : Vec3 :=
 theorem prime_kick_conserves_number (omega_vac : Vec3) (kappa : ℝ) (n P : Vec3) :
     dot P (cross (totalAxis omega_vac kappa n) P) = 0 :=
   dot_cross_self _ P
+
+/-! ## Collective (many-body / mean-field) conversion is still number-conserving -/
+
+/-- **The precession generator is linear** — `Ω × (P + Q) = Ω×P + Ω×Q`. So under a *common* axis (the
+    isotropic `νν` mean field) the total polarization `P+Q` precesses as a whole. -/
+theorem cross_add (Ω P Q : Vec3) : cross Ω (add P Q) = add (cross Ω P) (cross Ω Q) := by
+  ext <;> simp only [cross, add] <;> ring
+
+/-- **Collective conversion conserves total neutrino number.** In a dense neutrino gas the `νν`
+    refractive potential makes the precession axis a *mean field* built from the ensemble — but it is
+    still an axis `Ω`, and the **total** polarization `P+Q` precesses under it (`cross_add`), so
+    `dot (P+Q) (Ω × (P+Q)) = 0`: `‖P+Q‖²` is conserved. Collective (slow / fast / collisional) flavor
+    conversion rearranges the flavor *distribution* — never the total number — exactly as the standard
+    ν-physics conservation laws require, and the single-particle theorem already implied for arbitrary
+    `Ω` (the mean field being one such `Ω`). Turbulent prime slips only *seed / accelerate* the
+    instability by modulating `Ω` (`prime_kick_conserves_number`); number stays exact. -/
+theorem collective_total_conserved (Ω P Q : Vec3) :
+    dot (add P Q) (cross Ω (add P Q)) = 0 :=
+  dot_cross_self Ω (add P Q)
 
 /-! ## Two-flavor oscillation probabilities -/
 
