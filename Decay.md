@@ -113,16 +113,47 @@ destroying neutrinos. Locked flavor conversion reshapes the local lepton chemist
 ### 2.2 Muonium / muon — resonant unlocking of a gauge fold
 
 Muonium (`μ⁺e⁻`) is a hydrogen‑like ZFA bound state — a gauge‑folded closure of moderate depth (the muon
-is a deeper fold than the electron; **mass = gauge‑fold depth**, `mass_is_gauge_fold_delay`,
-[`QLF_HiggsMechanism`](lean/QLF_HiggsMechanism.lean); the lepton ratios of
-[`Experimental_Consistency.md`](Experimental_Consistency.md) §5.5). Its vacuum lifetime is set by ordinary
-weak muon decay. When the turbulent prime flux at the muonium octave becomes resonant with `ω_b`, the
-synchronization `S → 1` and the rate jumps: `Γ_μ = Γ₀^μ + Γ_p Φ_p S`. In a supernova core the high
-density and the already‑present *muonization* amplify `Φ_p`, so muon‑like closures are driven out of
-balance far faster than in vacuum — softening the equation of state and injecting energy that feeds the
-next stage. (This is the §2.1‑style resonance of §1, applied to a deeper fold.)
+is a deeper fold than the electron; **mass = gauge‑fold depth** `m = 1/R`, so the internal frequency is
+`ω_b = 1/R_μ`, `mass_is_gauge_fold_delay`, [`QLF_HiggsMechanism`](lean/QLF_HiggsMechanism.lean); the lepton
+ratios of [`Experimental_Consistency.md`](Experimental_Consistency.md) §5.5).
+
+**This is where the mechanism drives a *true* decay — not a rotation.** The sharp contrast with §2.1: the
+neutrino's flavor evolution is a norm‑preserving precession (neutrino number conserved,
+`flavor_precession_conserves_number`). The muon is different — it is a *gauge‑folded, massive* closure of
+finite depth `R_μ`, and when a synchronized prime slip drives its twist counts out of ZFA balance the
+closure **ends** — it receives no receipt (`slip_out_of_balance_ends_closure`, [`Decay.md`](Decay.md) §1)
+and resolves into decay products (`μ → e ν̄ ν`). So here the prime kick **changes particle number**; the
+same turbulent bath that merely *rotates* the neutral neutrino *destroys* the charged muon fold.
+
+The rate is the resonant form ([`QLF_PrimeCascadeDecay`](lean/QLF_PrimeCascadeDecay.lean),
+`resonantRate`):
+
+```
+Γ_μ(t) = Γ₀^μ + Γ_p · Φ_p(t) · S(ω_b, Φ_p)
+```
+
+with two machine‑verified limits:
+
+- **Vacuum limit.** `Φ_p → 0 ⟹ Γ_μ = Γ₀^μ` (`vacuum_limit_constant_hazard`) — away from the turbulent
+  bath the ordinary constant‑hazard muon lifetime is recovered, hence the ordinary exponential decay
+  `N(t)=N₀e^{−Γ₀t}` (`exponential_decay_from_constant_hazard`, §1a).
+- **Enhancement only.** For non‑negative flux the rate is `≥ Γ₀^μ` (`resonant_enhances`): turbulence can
+  only *shorten* the lifetime, never lengthen it, jumping when `S → 1` at commensurability.
+
+In a supernova core the high density and the already‑present *muonization* amplify `Φ_p`, so muon‑like
+closures are driven out of balance far faster than in vacuum — softening the equation of state and
+injecting energy that feeds the next stage. **Honest scope:** exactly as the neutrino mixing *angles* and
+absolute `Δm²` are left open, the muon couplings `Γ_p` and the precise form of `S` are named open
+parameters (the phenomenological [`prime_cascade_decay.py`](prime_cascade_decay.py), the coupling‑strength
+residual `higgs_turbulence_in_progress`); what is *anchored* is the vacuum limit, the enhancement‑only
+monotonicity, and the number‑changing decay condition.
 
 ### 2.3 Neutron — disrupting the Pauli block
+
+*Bridge from §2.2:* the same resonant form `Γ_n = Γ₀^n + Γ_p Φ_p S_n` (`resonantRate`) carries to the free
+neutron — a number‑changing decay like the muon — once its in‑medium stabilization is expressed as a **ZFA
+stability condition** (the Pauli block); the sketch below stays at that structural level and is not yet
+expanded.
 
 The free neutron is a weakly‑unstable ZFA closure (`n → p e⁻ ν̄_e`). Inside a nucleus or the dense core it
 is *stabilized* by additional binding closures — `pn` pairing and **Pauli blocking** of the identical
