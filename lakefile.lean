@@ -171,5 +171,6 @@ lean_lib QLF where
     `QLF_HiggsTurbulence,
     `QLF_TopYukawaRunning,
     `QLF_ClosureBinding,
-    `QLF_PrimeCascadeDecay
+    `QLF_PrimeCascadeDecay,
+    `QLF_NeutrinoOscillation
   ]
