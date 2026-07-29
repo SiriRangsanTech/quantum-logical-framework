@@ -73,6 +73,22 @@ analogue of supernova collective oscillations / the collisional flavor instabili
 destroying neutrinos. So the QLF-internal supernova mechanism ([`Decay.md`](Decay.md) §2.4) seeds the
 lepton chemistry by *converting* flavor, not by number non-conservation.
 
+**Collective conversion in a dense gas — still number-conserving.** In a supernova core or neutron-star
+merger the neutrinos are dense enough that the `νν` refractive potential makes each neutrino's precession
+axis a **mean field** built from the whole ensemble — the driver of *collective* flavor conversion (slow
+bipolar, fast ELN-crossing, collisional). QLF renders this as the many-body extension of the *same*
+rotation: the mean field is just another axis `Ω`, so the single-particle theorem already applies, and the
+**total** polarization `P₁+P₂+…` precesses as a whole (`cross_add`, the generator is linear), giving
+`dot(ΣP)(Ω×ΣP)=0` — the total neutrino number is **exactly conserved** (`collective_total_conserved`).
+Collective conversion rearranges the flavor *distribution*, never the number, matching the standard
+conservation laws. And QLF supplies a concrete **seed** the ordinary theory has to assume: correlated
+turbulent prime `±i` slips across an ensemble sitting near an ELN crossing act as the discrete seed of the
+fast instability, adding a `∝ Φ_p` piece to its growth rate — the collective equations stay of precession
+form, only the effective axis/seed is modified. **Open (named formal targets):** the many-body mean-field
+limit that recovers the standard `νν` Hamiltonian `H_νν ∼ √2 G_F ∫(1−v̂·v̂')(ϱ−ϱ̄) d³p′`, the discrete
+analogue of an **ELN angular crossing** (an imbalance in the distribution of closure orientations), and the
+prime-kick strength `κ` / synchronization `S` — left open exactly as the mixing angles and absolute `Δm²`.
+
 **Honest scope.** The oscillation *structure* — unitarity, number conservation, the fold-depth `Δm²`
 driver — is machine-verified; the mixing *angles* and the absolute `Δm²` values are the open Yukawa/mass
 sector (`pmns_in_progress`), and the *rate* of the prime-driven conversion is the phenomenological
