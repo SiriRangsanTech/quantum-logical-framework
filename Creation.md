@@ -217,6 +217,67 @@ depth as a count of Planck ticks).
 
 ---
 
+## 8b. From turbulence to supernova — the arc of a closure world
+
+The rings of §8a are not static. Followed outward in combinatorial depth they trace a single continuous
+story — the substrate cascade condensing into matter, gathering into stars, and returning itself in a
+synchronized release. Every stage is an already-anchored QLF object; this is their arc, told once.
+
+1. **The cascade *is* turbulence.** The nested phases resolving highest-frequency-first, each octave
+   carrying the constant `log 2` quantum, are exactly the quantum-turbulent cascade
+   ([`Turbulence.md`](Turbulence.md), [`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean),
+   [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean)). Its statistical fingerprints — `π`, Kolmogorov `−5/3`,
+   `1/f`, **Zipf** — are one reading of the closure census ([`Experimental_Consistency.md`](Experimental_Consistency.md) §6.7):
+   the young cosmos is a self-organized, scale-free tangle of quantized folds.
+
+2. **Matter condenses.** Where the tangle reaches the depth/density at which a three-axis **Borromean**
+   fold locks, the first *persistent* closures appear — nucleons ([`QLF_QuarkStructure`](lean/QLF_QuarkStructure.lean),
+   the outer ring of §8a) — and primordial nucleosynthesis funnels surviving neutrons into ⁴He
+   (`Y_p = 1/4`, [`QLF_Nucleosynthesis`](lean/QLF_Nucleosynthesis.lean)). Deeper rings render atoms and
+   chemistry ([`QLF_AtomicStructure`](lean/QLF_AtomicStructure.lean)): pure phase structure has become
+   ordinary matter.
+
+3. **Gravity gathers.** Mass is *denser logic* ([`DarkMatter.md`](DarkMatter.md)); the residual radial
+   bias of un-cancelled closures is gravity ([`QLF_GravityFromDelay`](lean/QLF_GravityFromDelay.lean)). It
+   draws the matter rings into stars — local regions where the logical density climbs back toward the
+   fusion threshold.
+
+4. **Stars fuse — and the weak keystone gates them.** Fusion is the merger of two Markov blankets
+   ([`Fusion.md`](Fusion.md)); two *identical* proton blankets are Pauli-insulated, so the first join
+   *requires* a weak β⁺ conversion (`pp_join_requires_distinguishability`, [`QLF_Fusion`](lean/QLF_Fusion.lean),
+   §3a). Its weak rarity is why stars burn slowly. Fusion climbs the binding curve to the ⁵⁶Fe resonance —
+   the deepest stable vacuum peak, the terminator of stellar burning ([`Experimental_Consistency.md`](Experimental_Consistency.md) §5.6).
+
+5. **Collapse → the supernova cascade dump.** Past iron the core cannot gain by fusing; it collapses, and
+   the density drives a **prime-synchronized cascade dump** ([`Decay.md`](Decay.md) §2.4): the turbulent
+   prime `±i` flux drives the chain — neutrino flavor conversion (a number-conserving *rotation*,
+   [`QLF_NeutrinoOscillation`](lean/QLF_NeutrinoOscillation.lean)) seeds the lepton chemistry; muon and
+   neutron closures are driven *out of balance* and **unlock** (true, number-changing decays,
+   [`QLF_PrimeCascadeDecay`](lean/QLF_PrimeCascadeDecay.lean)); and because the flux is octave-organized at
+   constant `log 2`, the synchronized unlockings release a coherent, scale-invariant burst. Stored
+   fold-depth (binding) converts to the neutrino burst and the shock. The unlockings are **deterministic
+   and synchronized** ([`Decay.md`](Decay.md) §1a) — which is *why* they can spike coherently rather than
+   smearing into a random average.
+
+6. **The release seeds the next generation — the nested cycle.** The dump forges and scatters heavier
+   closures (explosive nucleosynthesis), whose gravity gathers new rings of matter into the next stars.
+   And each ZFA event, at every stage, still *creates* energy — half lent to the future as the `w = −1`
+   synthesis field that is inflation early and dark energy now ([`QLF_CosmicInflation`](lean/QLF_CosmicInflation.lean),
+   `inflation_and_dark_energy_same_field`; [`Curvature.md`](Curvature.md) §8). So the arc is not a line to
+   heat death but a **nested cycle**: a collapsed core is an inner boundary that, from within, reads as a
+   fresh logical bang (§8a, the child-universe reading).
+
+The whole arc — **logical bang → turbulent cascade → matter → stars → supernova → new matter** — is one
+continuous ZFA generate-and-select process, each closure enabling the next. **Honest scope:** every stage
+*object* is a verified or structurally-anchored QLF result (cited above); the *astrophysical dynamics* that
+sequence them — collapse timescales, the supernova energy budget, the couplings of the cascade dump
+(`Γ_p, S`) — are phenomenological ([`prime_cascade_decay.py`](prime_cascade_decay.py), the open
+coupling-strength residual), **not** a simulation of, or a quantitative claim about, real core-collapse
+supernovae. It is the QLF *story* connecting anchored pieces, told from the logical origin to the
+synchronized return.
+
+---
+
 ## Honest scope
 
 - The **possibilist + ZFA ontology** — nothing from nothing; everything possible a priori; the actual is
