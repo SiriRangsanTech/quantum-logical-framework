@@ -104,6 +104,19 @@ theorem cascade_bath_highest_first {R_small R_large : ℕ} (h0 : 0 < R_small) (h
 theorem cascade_bath_floored {R_min R : ℕ} (h0 : 0 < R_min) (h : R_min ≤ R) : freq R ≤ freq R_min :=
   cascade_has_floor h0 h
 
+/-- **Deterministic decay ⟹ the exponential law (a QLF finding, `Decay.md` §1a).** A constant hazard
+    rate `Γ₀` — the ensemble statistics of the *incoherent* prime bath — is *exactly* the exponential
+    decay law: `N(t) = N₀ e^{−Γ₀ t}` has derivative `dN/dt = −Γ₀·N(t)` at every `t`. So the textbook
+    "random" exponential is the statistics of a **deterministic** substrate (each unlocking is a
+    determined prime-lock event), not fundamental indeterminism. -/
+theorem exponential_decay_from_constant_hazard (N0 Γ t : ℝ) :
+    HasDerivAt (fun s => N0 * Real.exp (-Γ * s)) (-Γ * (N0 * Real.exp (-Γ * t))) t := by
+  have hlin : HasDerivAt (fun s : ℝ => -Γ * s) (-Γ) t := by
+    simpa using (hasDerivAt_id t).const_mul (-Γ)
+  have hfull := (hlin.exp).const_mul N0
+  convert hfull using 1
+  ring
+
 /-- **Established (the structure of turbulence-forced decay + the cascade dump, `Turbulence.md`).** The
     prime phase-slip is an irreducible `±i` quarter-turn agent (`prime_slip_is_quarter_turn`,
     `prime_slip_irreducible`); driving a stable closure out of balance ends it — no receipt
