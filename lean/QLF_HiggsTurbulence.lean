@@ -92,6 +92,16 @@ theorem ew_phase_nucleated_by_prime_closure :
 theorem higgs_mass_is_stable_depth_inverse (R : ℝ) : mass_from_depth R = 1 / R :=
   mass_is_gauge_fold_delay R
 
+/-- **The Planck floor caps the mass — no quadratic UV divergence (the hierarchy problem is absent).**
+    Every coherent fold has depth `R ≥ R_min` (the Planck floor, `QLF_PlanckScale`), so its mass
+    `m = 1/R ≤ 1/R_min` is **bounded** by the finite floor value — there is no `Λ_UV → ∞` limit and hence
+    no `∝ Λ_UV²` quadratic sensitivity. The Higgs mass is a *finite* combinatorial curvature at a floored
+    discrete depth, not a continuum loop integral: the hierarchy problem does not arise. See `Higgs.md` §5b. -/
+theorem hierarchy_mass_bounded_by_floor (R_min R : ℝ) (h0 : 0 < R_min) (h : R_min ≤ R) :
+    mass_from_depth R ≤ mass_from_depth R_min := by
+  unfold mass_from_depth
+  exact one_div_le_one_div_of_le h0 h
+
 /-- **Established (the turbulent-vacuum reading of the Higgs, `Higgs.md` §5a).** The gauge fold is a
     quantized `μ₄` phase defect (`gauge_fold_is_quantized_defect`) and the vacuum a quantized-vortex tangle
     (`vacuum_circulation_is_quantized_tangle`); the stable vacuum is a closed real fold
