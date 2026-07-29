@@ -116,6 +116,28 @@ theorem exponential_decay_from_constant_hazard (N0 Γ t : ℝ) :
   rw [show -Γ * (N0 * Real.exp (-Γ * t)) = N0 * (Real.exp (-Γ * t) * -Γ) from by ring]
   exact (hlin.exp).const_mul N0
 
+/-! ## The resonant decay rate — vacuum limit and enhancement (the muon stage, `Decay.md` §2.2) -/
+
+/-- The resonant decay rate of a stable structure in the prime bath: `Γ(t) = Γ₀ + Γ_p·Φ_p·S` — the
+    vacuum rate `Γ₀` plus the prime-flux term (`Φ_p` = prime flux at the octave nearest `ω_b`, `S` the
+    synchronization factor). -/
+def resonantRate (Γ0 Γp Φp S : ℝ) : ℝ := Γ0 + Γp * Φp * S
+
+/-- **Vacuum limit — no prime flux recovers ordinary decay.** `Φ_p → 0` gives `Γ = Γ₀`: away from the
+    turbulent bath a muon / muonium closure decays at its ordinary constant-hazard rate `Γ₀`, hence the
+    ordinary exponential lifetime (`exponential_decay_from_constant_hazard`). -/
+theorem vacuum_limit_constant_hazard (Γ0 Γp S : ℝ) : resonantRate Γ0 Γp 0 S = Γ0 := by
+  simp [resonantRate]
+
+/-- **The prime flux only *shortens* the lifetime.** For `Γ_p, Φ_p, S ≥ 0` the resonant rate is `≥ Γ₀`:
+    turbulence can only *accelerate* a true (number-changing) decay, never lengthen it — the muon stage,
+    where — unlike the number-conserving neutrino precession (`QLF_NeutrinoOscillation`) — an unbalancing
+    slip **ends** the closure (`slip_out_of_balance_ends_closure`). -/
+theorem resonant_enhances (Γ0 Γp Φp S : ℝ) (hp : 0 ≤ Γp) (hΦ : 0 ≤ Φp) (hS : 0 ≤ S) :
+    Γ0 ≤ resonantRate Γ0 Γp Φp S := by
+  have h : 0 ≤ Γp * Φp * S := mul_nonneg (mul_nonneg hp hΦ) hS
+  simp only [resonantRate]; linarith
+
 /-- **Established (the structure of turbulence-forced decay + the cascade dump, `Turbulence.md`).** The
     prime phase-slip is an irreducible `±i` quarter-turn agent (`prime_slip_is_quarter_turn`,
     `prime_slip_irreducible`); driving a stable closure out of balance ends it — no receipt
