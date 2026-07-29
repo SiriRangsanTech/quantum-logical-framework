@@ -102,8 +102,13 @@ the discrete analogue of supernova *collective flavor conversion* / the collisio
 dP/dt = ω_vac × P  +  Γ_p Φ_p(t) S(t) · n̂_prime × P
 ```
 
-with `P` the flavor polarization vector and the second term the prime‑driven kick. Locked flavor
-conversion reshapes the local lepton chemistry and heating — the *seed* of the collective event.
+with `P` the flavor polarization vector and the second term the prime‑driven kick. **Both terms are cross
+products**, so the evolution is a *precession* `dP/dt = Ω × P` (`Ω = ω_vac + Γ_p Φ_p S·n̂_prime`), which
+**conserves neutrino number** (`‖P‖²` constant, since `P·(Ω×P)=0`) — now machine‑verified
+([`QLF_NeutrinoOscillation`](lean/QLF_NeutrinoOscillation.lean): `flavor_precession_conserves_number`,
+`prime_kick_conserves_number`). So the prime bath *converts and accelerates* flavor without creating or
+destroying neutrinos. Locked flavor conversion reshapes the local lepton chemistry and heating — the
+*seed* of the collective event — while conserving total number ([`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) §3).
 
 ### 2.2 Muonium / muon — resonant unlocking of a gauge fold
 

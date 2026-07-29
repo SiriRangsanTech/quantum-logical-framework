@@ -39,4 +39,45 @@ before the blankets can join into a deuteron. The weak β⁺ is therefore the pr
 Markov-blanket join, and its weak-mediated rarity is what makes the Sun burn slowly; see
 [`Fusion.md`](Fusion.md) §3a and [`SEX.md`](SEX.md) (the deuteron distinguishability condition).
 
+## 3. Neutrino oscillation — a norm-preserving closure rotation
+
+Oscillation is the **slow phase evolution** of the neutrino's three-axis closure. The flavor eigenstates
+`ν_e, ν_μ, ν_τ` are different *orientations* of the same twist combinatorics, mixed unitarily by the PMNS
+matrix — and because the neutrino is Majorana, that mixing carries `N−1 = 2` extra phases beyond the CKM
+count (`majorana_phases`, [`lean/QLF_PMNS.lean`](lean/QLF_PMNS.lean); [`Standard_Model.md`](Standard_Model.md) §4.2).
+Machine-verified in [`lean/QLF_NeutrinoOscillation.lean`](lean/QLF_NeutrinoOscillation.lean):
+
+- **Driven by fold-depth mass splittings.** In QLF mass is gauge-fold depth, `m = 1/R`
+  ([`QLF_HiggsMechanism`](lean/QLF_HiggsMechanism.lean)), so the oscillation phase runs on the
+  mass-squared splitting `Δm² = m_i² − m_j² = 1/R_i² − 1/R_j²` (`deltaMSq`). It **vanishes iff the fold
+  depths are equal** (`no_oscillation_iff_degenerate`): oscillation *requires* non-degenerate depths — i.e.
+  nonzero (Majorana) masses ([`QLF_NeutrinoMass`](lean/QLF_NeutrinoMass.lean)). Degenerate closures don't
+  oscillate; the empirical fact that neutrinos *do* oscillate is the statement that their fold depths differ.
+- **Unitary — total number conserved.** The two-flavor probabilities `P_surv = 1 − sin²2θ·sin²(Δm²L/4E)`
+  and `P_app = sin²2θ·sin²(Δm²L/4E)` sum to `1` (`two_flavor_unitarity`) and lie in `[0,1]`
+  (`two_flavor_prob_bounds`), rooted in PMNS unitarity `cos²θ + sin²θ = 1` (`mixing_unitary`). Flavor is
+  rotated, not lost.
+- **Oscillation is a rotation, not a decay.** Writing the state as a flavor polarization vector `P`, the
+  evolution is a **precession** `dP/dt = Ω × P`. Because `P·(Ω×P) = 0` (`dot_cross_self`), `P` is always
+  orthogonal to its own rate of change, so `‖P‖²` — the total neutrino number — is **conserved**
+  (`flavor_precession_conserves_number`). This is the sharp distinction from §2's β-decay: oscillation
+  *reorients* a persisting closure, whereas decay *ends* one (drives it out of ZFA balance,
+  [`Decay.md`](Decay.md) §1).
+
+**Turbulence-driven (collective) conversion.** In a dense turbulent cascade the rain of prime `±i`
+phase-slips ([`Turbulence.md`](Turbulence.md), [`Decay.md`](Decay.md) §2.1) adds a term
+`Γ_p Φ_p(t) S(t)·n̂_prime × P` to the precession — but this only *adds to the rotation axis*
+`Ω = ω_vac + κ·n̂_prime`, so it **still conserves neutrino number** (`prime_kick_conserves_number`): the
+bath *re-orients and accelerates* the oscillation (rapid, collective flavor conversion — the discrete
+analogue of supernova collective oscillations / the collisional flavor instability) without creating or
+destroying neutrinos. So the QLF-internal supernova mechanism ([`Decay.md`](Decay.md) §2.4) seeds the
+lepton chemistry by *converting* flavor, not by number non-conservation.
+
+**Honest scope.** The oscillation *structure* — unitarity, number conservation, the fold-depth `Δm²`
+driver — is machine-verified; the mixing *angles* and the absolute `Δm²` values are the open Yukawa/mass
+sector (`pmns_in_progress`), and the *rate* of the prime-driven conversion is the phenomenological
+[`prime_cascade_decay.py`](prime_cascade_decay.py) coupling (the open coupling-strength residual).
+
+---
+
 See also: [Annihilation.md](Annihilation.md) — develops the LH `^<v>` vs RH `^>v<` chiral twist patterns as Hermitian pairs whose composition folds to identity (the algebraic content of pair annihilation); the unspooling described in §2 is the same topological unwinding read at the hadron scale. [Weak_Force.md](Weak_Force.md) — consolidates the weak sector and flags the tension that this account mediates β decay by a gauge-fold pair-flip *operation* without an explicit W *particle* (which appears only in the τ-decay vertex). [`lean/QLF_Majorana.lean`](lean/QLF_Majorana.lean) — the machine-verified self-conjugacy of the neutrino loop.
