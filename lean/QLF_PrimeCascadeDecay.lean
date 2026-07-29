@@ -51,7 +51,7 @@ no new axioms. See `Turbulence.md`.
 
 namespace QLF.PrimeCascadeDecay
 
-open QLF QLF.QuantumTurbulence QLF.ContradictionReceipt
+open QLF QLF.QuantumTurbulence QLF.ContradictionReceipt QLF.Consciousness
 
 /-- **The prime phase-slip is a primitive quarter-turn `±i`.** The order-parameter phase increment is a
     genuine `π/2` (`i, i², i³ ≠ 1`): each prime injects a discrete `±i` kick — the phase-slip agent. -/
