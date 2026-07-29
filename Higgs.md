@@ -180,6 +180,31 @@ The **bare** cascade cannot do it alone: the census pruning free energy `F(n) = 
 
 ---
 
+## 5b. The hierarchy problem — absent by construction
+
+The hierarchy problem is: *why is the Higgs light (125 GeV) when a fundamental scalar's mass is quadratically sensitive to the UV, `δM_H² ∼ Λ_UV²`, dragging it to the Planck scale `10¹⁹ GeV` unless a `10⁻³⁴` cancellation is tuned?* Every standard resolution supplies a cancellation or a dynamical scan. **QLF's resolution is stronger: the quadratically‑divergent object never exists.**
+
+- **There is no fundamental continuum scalar whose mass runs quadratically.** The Higgs is the *radial (amplitude) mode* of the composite turbulent gauge‑fold vacuum (§5a, `QLF_HiggsTurbulence`), so its mass is a **finite combinatorial curvature** `M_H² ∝ ∂²V_ZFA/∂R²` at the stable depth `R_stable`, not a loop integral over continuum momenta.
+- **There is no `Λ_UV → ∞` limit to diverge into.** The closure cascade is *floored and discrete* (`cascade_has_floor`, `QLF_PlanckScale`): every coherent fold has depth `R ≥ R_min`, so its mass is **bounded** by the finite floor value — machine‑verified, `hierarchy_mass_bounded_by_floor` (`m = 1/R ≤ 1/R_min`). No continuum UV, no `Λ_UV²` counter‑term, no cancellation to tune. Unstable histories are pruned by `full_zeno_prune` before they propagate, so there are no unfiltered continuum loops.
+
+**Where QLF sits among the standard approaches:**
+
+| Approach | Core idea | Relation to QLF |
+|---|---|---|
+| **Supersymmetry** | quadratic divergences cancel between partners | QLF keeps the SUSY *algebra* (half‑spin parity, `QLF_Supersymmetry`) but **rejects the doubled spectrum** — no superpartners, so no cancellation is *needed* (⟹ the §9a LHC nulls) |
+| **Composite Higgs / technicolor / extra dim.** | Higgs not elementary; scale dynamical | **closest analogue** — QLF's Higgs is the radial mode of a quantized gauge‑fold tangle; the EW scale is generated dynamically (top condensation, §5a), like `Λ_QCD` |
+| **Anthropic / landscape** | we sit in a mild‑hierarchy vacuum | **not used** — QLF claims the hierarchy is *absent by construction*, not selected |
+| **Asymptotic safety / UV fixed point** | couplings hit a safe UV fixed point | **partially resonant** — QLF's SOC boundary `λ=β_λ=0` at the floor (§5a) is the Shaposhnikov–Wetterich condition, but the cascade is *floored and discrete*, so there is simply no continuum UV to run into |
+| **Clockwork / relaxion** | dynamical scan of the Higgs mass | **not present** — QLF scans no continuum parameter |
+
+**Zipf / `1/f` — the statistical signature.** The vacuum that sets `R_stable` is a **self‑organized‑critical, scale‑free** tangle of quantized folds. Scale‑free statistics (Zipf, `1/f`) are the *fingerprint* of exactly that state — and they fall out of the *same* closure census that produces the turbulent cascade ([`Turbulence.md`](Turbulence.md), [`Experimental_Consistency.md`](Experimental_Consistency.md) §6.7). Zipf is **not a solution** to the hierarchy problem; it is *evidence the substrate is already discrete and scale‑free*, which is *why* a continuum hierarchy problem never forms.
+
+**What remains — finite residuals, not fine‑tuning.** The quadratic sensitivity is gone; what stays open is a *finite set of combinatorial / mean‑field numbers* the cascade must still determine: the stable depth `R_stable` (↦ `v ≈ 246 GeV`); the ratio `M_H/v ≈ 0.51`; the absolute `W/Z` masses (once `R_W, R_Z` fixed); the ~26 % top‑mass fixed‑point residual (§5a); and the electroweak‑to‑Planck log once the floor and the binding strength `g` are known. These are the *same* open pieces the reduction chain already named — the interacting closure‑binding strength ([`QLF_ClosureBinding`](lean/QLF_ClosureBinding.lean), `higgs_turbulence_in_progress`) — **not** a tuned cancellation against the Planck scale.
+
+**The minimal model (three layers).** (1) *Discrete substrate:* closures with integer fold depth `R`, ZFA pruning potential `V_ZFA(R)` whose second difference at the minimum sets `M_H² ∝ ∂²V/∂R²` — a *finite* discrete curvature (the floor‑cap `hierarchy_mass_bounded_by_floor`). (2) *Turbulent / Zipf census:* the steady‑state depth distribution is drawn from the same scale‑free measure that gives Zipf and `1/f`, under the constant‑`log 2`‑per‑octave flux. (3) *Continuum rendering:* coarse‑graining recovers an effective Higgs potential whose quadratic term is *already finite*, set by the discrete curvature — no `Λ_UV²` counter‑term. **Honest scope:** this is a *demonstration that the problem is absent* (finite discrete curvature, floored cascade), **not** a fine‑tuning calculation — and the *bare* census free energy is monotone (no minimum, §5a), so extracting `R_stable` and `∂²V/∂R²` needs the interacting closure‑binding, the one named open residual.
+
+---
+
 ## 6. Why QLF Does Not Need a Fundamental Higgs Field
 
 The Standard Model Higgs sector has four free parameters:
@@ -195,7 +220,7 @@ None of these require a new fundamental field. They are consequences of ZFA clos
 
 **Fermion masses.** In the Standard Model, fermion masses come from Yukawa couplings — 12 independent parameters with no derivation. In QLF, every massive fermion is a gauge-folded closure with its own topological depth R_fermion. The electron is lighter than the muon because its gauge-fold closure has smaller topological depth. The quark mass hierarchy reflects the hierarchy of gauge-fold depths in the quark sector. The precise values of these depths are a program for further work (`Primordial_Entanglement.md` establishes that particle generations emerge at fold depths N = 4, 8, 12 — the three generations of the Standard Model).
 
-**The hierarchy problem.** In the Standard Model, the Higgs mass is quadratically sensitive to any new UV physics scale. This is the hierarchy problem: why is M_H = 125 GeV when the Planck scale is 10¹⁹ GeV? In QLF there is no hierarchy problem because there is no fundamental scalar with a mass that runs quadratically. The Higgs mass is the radial oscillation frequency of a ZFA stable state — a finite discrete quantity set by the combinatorial depth of the closure, not by any continuous integral over loop momenta. There is no continuum loop integration; the ZFA filter prunes unstable histories before they propagate.
+**The hierarchy problem.** In the Standard Model, the Higgs mass is quadratically sensitive to any new UV physics scale. This is the hierarchy problem: why is M_H = 125 GeV when the Planck scale is 10¹⁹ GeV? In QLF there is no hierarchy problem because there is no fundamental scalar with a mass that runs quadratically. The Higgs mass is the radial oscillation frequency of a ZFA stable state — a finite discrete quantity set by the combinatorial depth of the closure, not by any continuous integral over loop momenta. There is no continuum loop integration; the ZFA filter prunes unstable histories before they propagate. (The full treatment — the comparison with SUSY/composite/asymptotic-safety, the Zipf/`1/f` signature, the residuals, and the floor-cap theorem `hierarchy_mass_bounded_by_floor` — is **§5b** above.)
 
 **Summary comparison:**
 
