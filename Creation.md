@@ -179,6 +179,44 @@ selection (and evolution) non-vacuous; it is worked out as three tiers and five 
 
 ---
 
+## 8a. The logical bang — nested phases, drawn from the inside
+
+The singular Big Bang is replaced by a **logical origin plus nested phase structure**. Drawn as concentric
+circles seen from within, it reads directly off the substrate ([`lean/QLF_LogicalBang.lean`](lean/QLF_LogicalBang.lean),
+reuse-only, no new axioms):
+
+<p align="center"><img src="diagrams/logical_bang.svg" alt="The logical bang: a central first distinction, concentric phase rings, time arrows in every direction, nucleons on the outer ring" width="700"></p>
+
+- **Center — the logical bang.** Not an explosion from a singularity: a single self-balanced closed event
+  is instantiated — the **first distinction**, the minimal ZFA closure, the conjugate pair `[+, −]`
+  (`first_distinction_closes` = `conjugate_pair_closes`; §3 above). The origin is *logical* (the one closed
+  event that makes every later balanced event possible), not metric.
+- **Concentric rings — the phases.** Each ring is a new layer of ZFA events that become possible once the
+  inner layer has locked — discrete combinatorial depths / octave shells, not continuous radii. They form a
+  **causal partial order** (`causal_order_refl/trans/antisymm`, the `reachable` order of
+  [`QLF_ReachableEvent`](lean/QLF_ReachableEvent.lean)); each phase boundary is a **future cone**
+  (`phase_is_future_cone`) — a Markov blanket / closed-event surface.
+- **Time in every direction.** Time is *local constructing delay*, not a global axis pointing outward from
+  the center. The causal order is **not total** — machine-checked `causal_order_not_total`: incomparable
+  (spacelike) events exist (`[+]` and `[−]`, neither reaching the other), so no single global time line is
+  shared. From inside any ring the *inward* direction looks like a beginning — exactly as a black-hole
+  interior can look like a cosmological origin (the nested-horizon / child-universe picture,
+  [`Primordial_Markov_Blankets.md`](Primordial_Markov_Blankets.md), [`ER_EPR_QLF.md`](ER_EPR_QLF.md)).
+- **Nucleons on the outer ring.** The first *persistent, long-lived* composite closures: baryons lock once
+  the cascade reaches the depth/density where a three-axis **Borromean** fold can close
+  (`baryon_needs_all_three_axes`, [`QLF_QuarkStructure`](lean/QLF_QuarkStructure.lean)) — the transition
+  from pure phase structure to ordinary matter. It is **not a hard wall**: atoms, chemistry, and the
+  rendered continuum are still-higher-order rings further out; the logical bang remains the single central
+  distinction beneath them all.
+
+The apparent radial "expansion" is the **continuum rendering** of ever more events synthesized at larger
+combinatorial depth — the order→metric step (`order_metric_continuum_limit`, [`QLF_OrderMetric`](lean/QLF_OrderMetric.lean));
+this section makes no metric or quantitative-cosmology claim, only the structural picture. See
+[`SpaceTime.md`](SpaceTime.md) (order → geometry) and [`AgeOfUniverse.md`](AgeOfUniverse.md) (the cosmic
+depth as a count of Planck ticks).
+
+---
+
 ## Honest scope
 
 - The **possibilist + ZFA ontology** — nothing from nothing; everything possible a priori; the actual is
