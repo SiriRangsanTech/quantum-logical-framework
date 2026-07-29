@@ -158,6 +158,43 @@ production cost and α-sticking that keep μCF ≈2× energy-negative are SM/eng
 gaps (`muon_catalysis_in_progress`). Net-energy cold fusion this way needs cheaper muons or lower
 α-sticking.
 
+## 3c. Neutron decay and the cold-fusion boundary — the decay-chain link
+
+The same resonant prime-phase mechanism that governs muonium ([`Decay.md`](Decay.md) §2.2) governs the
+**free neutron**, closing the loop between fusion and decay:
+
+- **Free-neutron β-decay is the unlocking of an unstable ZFA closure** (`n → p + e⁻ + ν̄_e`). Its lifetime
+  obeys the resonant rate `Γ_n(t) = Γ₀^n + Γ_p Φ_p S` ([`QLF_PrimeCascadeDecay`](lean/QLF_PrimeCascadeDecay.lean),
+  `resonantRate`): in ordinary conditions the prime flux is negligible (`Φ_p → 0`), recovering the ordinary
+  **~880 s** vacuum lifetime (`vacuum_limit_constant_hazard`); inside a dense turbulent cascade (supernova
+  core) it can only *shorten* (`resonant_enhances`, `Γ ≥ Γ₀`), never lengthen — accelerated neutronization
+  ([`Decay.md`](Decay.md) §2.3).
+- **Bound neutrons are stabilized by the Markov-blanket / Pauli block.** Inside a nucleus the extra `pn`
+  closures supply the distinguishability that keeps the net free action zero — the same §3a insulation read
+  the other way: the decay is *gated* until that binding is removed or overcome. This is why a neutron
+  lives ~15 min free but effectively forever when bound.
+
+This places the cold-fusion question precisely. QLF's fusion rule is restrictive — two *identical* proton
+blankets are Pauli-insulated, so **pp fusion always requires the weak β⁺ step** (§3a): obligatory, not
+optional. So the status of the candidate channels is fixed:
+
+| Process | QLF status | Key point |
+|---|---|---|
+| Free-neutron β-decay | unstable ZFA closure | ~880 s vacuum lifetime; resonantly *enhanceable* by prime flux (`resonant_enhances`), never lengthened |
+| Bound neutron | stabilized closure | Pauli / Markov-blanket block (§3a insulation) — decay gated |
+| pp fusion (stellar) | **requires weak β⁺** | two identical proton blankets cannot join by the strong sector alone (§3a keystone) |
+| Muon-catalyzed fusion | **legitimate cold fusion** | rate enhanced (deeper-generation blanket, §3b); the weak β⁺ step is *still required* |
+| Classic electrolytic cold fusion | **not supported** | would bypass the weak necessity / Pauli insulation — forbidden by the ZFA rule |
+
+The only cold-fusion channel QLF accepts is the well-known **muon-catalyzed** one (§3b): catalysis
+accelerates tunneling but never removes the weak β⁺ keystone. Room-temperature pp fusion that *bypasses*
+the weak interaction would violate the Pauli-insulation / zero-free-action rule the framework treats as
+fundamental — so QLF does **not** endorse the Fleischmann–Pons electrolytic claims, nor any mechanism that
+would fuse two identical protons without the obligatory `u→d` conversion. **Honest scope:** the neutron
+*resonant-enhancement* is the phenomenological decay-chain model ([`prime_cascade_decay.py`](prime_cascade_decay.py),
+couplings `Γ_p, S` open); the β⁺ *necessity* and the Pauli insulation are the Lean-anchored keystones
+(§3a); the ~880 s value and the muon economy are SM/experimental inputs, not QLF derivations.
+
 ## 4. Computational Demonstration (`fusion_sim.py`)
 
 Fusion is fully simulatable with the new `fusion_sim.py` module, which reuses the exact `IntuitionisticEngine` from `particles.py` v2.2.
@@ -209,6 +246,7 @@ This output demonstrates the full QLF narrative in action: gauge-fold handshake,
 
 - `SEX.md` & `lean/PauliExclusion.lean`: the **β⁺ keystone** (§3a) — two identical proton blankets are Pauli-insulated, so the first join needs a β⁺ distinguishability step (the dynamic face of the deuteron condition).  
 - `Beta_Decay_Neutrino_Nature.md`: β decay as blanket restructuring — the same `u→d` step read here as the fusion-enabling key.  
+- `Decay.md` & `lean/QLF_PrimeCascadeDecay.lean`: the turbulence-forced decay chain (neutrino → muon → **neutron** → supernova); §3c's neutron resonant-enhancement is the neutron stage (`Decay.md` §2.3), the *same* `resonantRate` as muonium — vacuum recovers the ~880 s lifetime, a dense cascade only shortens it.  
 - `Hadrons_Markov_Blankets.md`: Fusion = blanket merger + active inference.  
 - `BLACK-HOLES.md` & `Particles.md`: Gauge folding determines fusability (primordial-BH-like behavior at nuclear scale).  
 - `Frequency_Synchronization.md` & `Entropy.md`: High \(f\) and logical density enable the merger; entropy balance gives exact Q-value.  
