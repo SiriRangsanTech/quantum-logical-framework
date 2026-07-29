@@ -113,9 +113,8 @@ theorem exponential_decay_from_constant_hazard (N0 Γ t : ℝ) :
     HasDerivAt (fun s => N0 * Real.exp (-Γ * s)) (-Γ * (N0 * Real.exp (-Γ * t))) t := by
   have hlin : HasDerivAt (fun s : ℝ => -Γ * s) (-Γ) t := by
     simpa using (hasDerivAt_id t).const_mul (-Γ)
-  have hfull := (hlin.exp).const_mul N0
-  convert hfull using 1
-  ring
+  rw [show -Γ * (N0 * Real.exp (-Γ * t)) = N0 * (Real.exp (-Γ * t) * -Γ) from by ring]
+  exact (hlin.exp).const_mul N0
 
 /-- **Established (the structure of turbulence-forced decay + the cascade dump, `Turbulence.md`).** The
     prime phase-slip is an irreducible `±i` quarter-turn agent (`prime_slip_is_quarter_turn`,
