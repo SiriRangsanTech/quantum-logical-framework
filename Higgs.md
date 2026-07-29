@@ -62,6 +62,22 @@ where α is the unit-conversion factor from topological depth to rest mass (α =
 
 ---
 
+## 2a. Does the Higgs *give* mass? It is the collective depth ledger
+
+A natural question follows: if the Higgs is not a fundamental field, in what sense does it "give particles mass"? The honest QLF answer is that **it does not *give* mass — it *is* the collective bookkeeping of the fold depth that already constitutes mass.** It is best described as *collective accounting*:
+
+- **Particles do not acquire mass by coupling to a background field; they *are* closures that already carry a fold depth `R`** (§2, `m = αR`; the gauge-fold delay `mass_is_gauge_fold_delay`). Mass is intrinsic to the closure's logical structure — the constructing delay of resolving its own gauge folds — not a message received from an external condensate.
+- **The vacuum is a self-organized, scale-free (Zipf / `1/f`) turbulent tangle of quantized gauge folds** (§5a). Its *stable mean depth* `R_stable` is a **mean-field / census property of the whole cascade** — not the expectation value of a point-like scalar. This is the QLF re-reading of the electroweak VEV: `v ↔ R_stable`, a collective statistic of the tangle, not a field sitting at every point of space.
+- **The physical Higgs boson (125 GeV) is the radial oscillation of that collective depth** about `R_stable` (§5) — the fluctuation of the *ledger itself*, not a particle that hands out mass.
+
+So the "Higgs mechanism" in QLF is the **collective selection and stabilization of a preferred fold depth** in the vacuum tangle. Each particle's mass is its own *entry* in that depth ledger (`m = αR`); `W`/`Z` are massive because they are gauge-folded (`R ≠ 0`) while the photon/gluon are massless because unfolded (`R = 0`, §2), the "eaten Goldstones" being the `μ₄` phase directions the folds absorb (§5a); and the 125 GeV resonance is the radial fluctuation of the ledger.
+
+> **The Higgs does not *give* mass; it *is* the collective bookkeeping of the stable fold depth that already constitutes mass. Individual particle masses are the discrete entries in that ledger; the 125 GeV resonance is its radial fluctuation.**
+
+This is *why* there is no hierarchy problem (§5b): there is never a fundamental continuum scalar whose mass must be fine-tuned against ultraviolet loops — only a finite, discrete, collectively-stabilized depth, capped by the Planck floor (`hierarchy_mass_bounded_by_floor`). It is collective accounting, anchored at each piece: mass = fold depth (`mass_is_gauge_fold_delay`, §2), the Higgs = the radial mode of the *collective* depth (`QLF_HiggsTurbulence`, §5/§5a), the ledger finite because the depth is floored (§5b).
+
+---
+
 ## 3. Gauge Folding as Constructive Symmetry Breaking
 
 In the Standard Model, spontaneous symmetry breaking is described as a vacuum that "chooses" one direction on the Higgs manifold. In QLF this is not mysterious — it is the selection of a ZFA closure from the full possibility space.
