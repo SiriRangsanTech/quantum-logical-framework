@@ -172,5 +172,6 @@ lean_lib QLF where
     `QLF_TopYukawaRunning,
     `QLF_ClosureBinding,
     `QLF_PrimeCascadeDecay,
-    `QLF_NeutrinoOscillation
+    `QLF_NeutrinoOscillation,
+    `QLF_LogicalBang
   ]
