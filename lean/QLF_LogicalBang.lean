@@ -104,7 +104,8 @@ theorem cascade_floored_at_every_scale {R_min R : ℕ} (h0 : 0 < R_min) (h : R_m
 /-! ## No heat death — no terminal phase (Creation.md §8c) -/
 
 /-- The minimal balanced pair `[+, −]` is a closure (the census generator adjoined below). -/
-private theorem pair_balanced : countBalanced [Twist.plus, Twist.minus] := by decide
+private theorem pair_balanced : countBalanced [Twist.plus, Twist.minus] := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> decide
 
 /-- **No terminal phase — no heat death.** For *every* closure `w` there is a **strictly deeper** closure
     (`w ++ [+, −]`, count-balanced by `pair_balanced`, and strictly longer): the cascade has **no maximal

@@ -297,6 +297,68 @@ synchronized return.
 
 ---
 
+## 8c. No heat death — phase exhaustion in a nested, scale-free cascade
+
+Classical **heat death** says an isolated universe evolves to a single maximum-entropy state with no
+free-energy gradients and no further work possible. QLF does not inherit that end-state — for structural
+reasons, not by adding a new rule.
+
+- **There is no single global thermodynamic arena.** Spacetime and its continuum thermodynamics are
+  *renderings* of discrete closures; time is *local* constructing delay, not a universal parameter from a
+  common origin to a common end. The causal order is provably **not total** (`causal_order_not_total`,
+  §8a) — there is no single global state the whole cosmos must occupy, hence no single global entropy to
+  be forced to a maximum. Each nested phase carries its own local accounting.
+- **The cascade is floored (UV) but has no terminal depth (IR).** The ultraviolet is discrete and floored
+  (`cascade_floored_at_every_scale`); the infrared direction is the progressive dominance of slower,
+  longer-lived closures (`fast_resolves_before_slow`). And crucially there is **no maximal locking
+  depth** — machine-checked **`no_terminal_phase`**: for *every* closure there is a strictly deeper one
+  (adjoin the minimal pair `[+,−]`). What looks like thermalization inside one ring is only the
+  exhaustion of *that ring's high-frequency budget*; a deeper, slower closure can always still lock, and
+  the future cone is never empty (`future_cone_never_empty`). The outer rings continue.
+- **Free action is already zero by construction.** ZFA means every instantiated event *already* has zero
+  free action; an unbalanced ledger is a contradiction that receives no receipt (`contradiction_no_receipt`,
+  [`QLF_ContradictionReceipt`](lean/QLF_ContradictionReceipt.lean)). So there is no reservoir of leftover
+  unbalanced gradients to be "used up" — the classical engine-room picture of heat death loses its
+  substrate. The second law still holds *inside* any continuum rendering (rendered-field entropy
+  non-decreases), but it does not drive the whole nested structure to a featureless end
+  ([`Reversibility.md`](Reversibility.md), [`Conservation.md`](Conservation.md) §2b: energy is *created*
+  per event, half lent to the future as the `w=−1` field).
+- **Nested domains replace a terminal equilibrium.** Black-hole-like closures can invert interior/exterior
+  and nucleate child domains with their own emergent clocks (§8a, the child-universe reading,
+  [`Primordial_Markov_Blankets.md`](Primordial_Markov_Blankets.md)); each begins a fresh high-frequency
+  cascade. **Heat death of a parent phase can be the birth surface of a child phase.**
+
+> Heat death is the continuum appearance of a single phase whose fast closures have all resolved. Because
+> the cascade is scale-free, nested, and floored only at the UV, exhausting one phase exhausts neither the
+> slower closures nor new domains. There is no global thermodynamic end-state — only the ongoing
+> resolution of ZFA events from fast to slow at every scale.
+
+**Future phases — what we can and cannot say.** A "phase" is the combinatorial depth at which stable
+closures lock, and resolution always runs fast → slow, so **future phases are simply the next slower
+locking depths** — deeper composite folds, larger Markov blankets, longer constructing delays. `no_terminal_phase`
+guarantees they always exist. But the level of specificity is *structural, not chemical*:
+
+| Scale of locking | Character |
+|---|---|
+| Nuclear / nucleonic | already realized (the outer ring, §8a) |
+| Atomic / chemical | the currently dominant local phase |
+| Molecular / condensed / biological | slower logic already under way *inside* the atomic shell |
+| Larger collective blankets (planetary → galactic organization) | next combinatorial depths |
+| Nested horizon-born domains | an entirely new high-frequency cascade with its own "first distinction" |
+
+So **heavier atoms are not a new cosmological phase** — they are later, more elaborate products of the
+*same* nucleonic → atomic cascade (stellar nucleosynthesis is its continuum appearance, §8b, and its
+iron terminator + `Y_p=1/4` funnel are anchored, [`QLF_Nucleosynthesis`](lean/QLF_Nucleosynthesis.lean)).
+A *true* next phase sits outside the present atomic shell: a larger stable blanket, or a nested domain
+whose internal cascade begins again. **What we cannot yet say** (calculation, not principle — the same
+open census of fold depths that limits the absolute Higgs mass and the `α` residual): which specific
+super-heavy nuclei stabilize, the exhaustion *rate* of a phase's high-frequency budget, the precise depth
+of the next major phase boundary, or the conditions under which a nested horizon nucleates a new cascade.
+These are continuum-bridge targets ([`QLF_OrderMetric`](lean/QLF_OrderMetric.lean)), not revisions of the
+foundational rule.
+
+---
+
 ## Honest scope
 
 - The **possibilist + ZFA ontology** — nothing from nothing; everything possible a priori; the actual is
