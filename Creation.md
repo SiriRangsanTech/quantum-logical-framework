@@ -189,6 +189,23 @@ reuse-only, no new axioms):
 
 *Phases (inner → outer): **0** the logical bang (first distinction) · **1** conjugate pairs · **2** the octave cascade (turbulence) · **3** light nuclei · **4** nucleons — the Borromean baryons `p`, `n` on the outer ring.*
 
+Two features are essential and drawn explicitly (the orange radial + the self-similar inset):
+
+- **Fast logic resolves before slow — inside every phase.** Resolution is always highest-frequency-first
+  (`fast_resolves_before_slow`, reuse `highest_frequency_resolves_first`): within any ring the cascade runs
+  from rapid, short (high-`f`) closures toward longer-lived, slower ones. The persistent outer shell is
+  simply the depth at which the *slowest, most stable* composite of that stage can lock — nucleons here;
+  atoms, chemistry, hydrodynamics further out. "Expansion" is the progressive dominance of slower closures
+  as one moves outward in combinatorial depth, not motion through a pre-existing space.
+- **The pattern is fractal (scale-free) — the same ZFA logic at every scale.** The rule is identical at
+  every octave: each ring bottoms at the same floor (`cascade_floored_at_every_scale`, reuse
+  `cascade_has_floor`), governed by the *same* scale-free closure census — which is *why* Zipf, `1/f`, and
+  Kolmogorov `−5/3` appear universally ([`Experimental_Consistency.md`](Experimental_Consistency.md) §6.7,
+  [`Turbulence.md`](Turbulence.md)). So each concentric ring is not a unique layer but another instance of
+  the same logical structure at a lower frequency: **zoom into any ring and find another logical-bang-like
+  cascade, only running slower** (the inset). The child-universe reading of §8a is this self-similarity —
+  a collapsed inner boundary is a fresh logical bang because the rule downshifts, it does not change.
+
 - **Center — the logical bang.** Not an explosion from a singularity: a single self-balanced closed event
   is instantiated — the **first distinction**, the minimal ZFA closure, the conjugate pair `[+, −]`
   (`first_distinction_closes` = `conjugate_pair_closes`; §3 above). The origin is *logical* (the one closed
