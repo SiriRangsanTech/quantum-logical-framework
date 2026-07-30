@@ -333,6 +333,19 @@ reasons, not by adding a new rule.
 > slower closures nor new domains. There is no global thermodynamic end-state — only the ongoing
 > resolution of ZFA events from fast to slow at every scale.
 
+**Does this falsify the second law globally? No — it *localizes* it.** The second law is a theorem about a
+*single closed thermodynamic system*: entropy of an isolated box does not decrease. QLF does not contradict
+that — the second law holds *inside every continuum rendering* (rendered-field entropy non-decreases). What
+QLF denies is the **premise** the *global heat-death* conclusion needs — that there is *one* isolated box
+containing everything. There is not: the causal order is provably **not total** (`causal_order_not_total`),
+so there is no single global system, no single global entropy, and nothing for a global second law to drive
+to a maximum. This is not a violation; it is the absence of the arena the violation would require.
+**Entropy is local.** And **order emerges on every scale** — machine-checked `order_at_every_scale`: for
+*every* depth `n` there is a closure (a balanced, low-free-action ordered structure) of length `≥ n`, so
+fresh order keeps locking at arbitrarily large combinatorial depth. A rendering can run down locally while
+new order self-organizes at the next scale — exactly the scale-free (fractal) emergence of §8a, and why the
+substrate never reaches a featureless end.
+
 **Future phases — what we can and cannot say.** A "phase" is the combinatorial depth at which stable
 closures lock, and resolution always runs fast → slow, so **future phases are simply the next slower
 locking depths** — deeper composite folds, larger Markov blankets, longer constructing delays. `no_terminal_phase`
