@@ -174,5 +174,6 @@ lean_lib QLF where
     `QLF_PrimeCascadeDecay,
     `QLF_NeutrinoOscillation,
     `QLF_LogicalBang,
-    `QLF_QuantumLogic
+    `QLF_QuantumLogic,
+    `QLF_Casimir
   ]
