@@ -98,6 +98,35 @@ This produces a **nearly scale-invariant spectrum** that peaks in the sub-microw
 
 See the detailed experimental mapping in [`Experimental_Consistency.md`](Experimental_Consistency.md).
 
+### 4.0 The Casimir effect — a finite census, not a subtracted infinity
+
+The Casimir effect is the cleanest test of the discrete-bounded-vacuum claim, and it is machine-anchored
+([`lean/QLF_Casimir.lean`](lean/QLF_Casimir.lean)):
+
+- **No divergent zero-point sum.** Continuum QFT gets the Casimir force by ζ-regularizing an *infinite*
+  `Σ½ℏω` — subtracting infinities. QLF's vacuum is the discrete `ℒ=0` identity closure whose per-mode
+  quantum is the **finite** `log 2` (`casimir_vacuum_quantum` = `binary_kl_delta_uniform`), so the force is
+  a **finite difference** of two closed-mode censuses (boundary-restricted vs. free) — the infinity that
+  regularization removes was a continuum artifact that never arises on the substrate ([`QFT_QLF.md`](QFT_QLF.md) §4).
+- **The `1/a⁴` force law is parameter-free.** Between the plates the vacuum has only `ℏ`, `c`, and the gap
+  `a` to work with — no `G`, mass, or cutoff — so dimensional analysis *forces* the energy density
+  `E/A ∝ 1/a³` and the pressure `P ∝ 1/a⁴` (`casimir_scaling`, exponents `−3`/`−4`, the same
+  `kolmogorov_exponents`-style dimensional theorem). QLF reproduces the measured scaling with no free
+  parameter; the exact coefficient `−π²/240` is the `ζ(−3)` mode sum — the continuum-QFT computation
+  (a named continuum piece, not derived here).
+- **Accelerated boundary = Unruh.** An accelerating plate (the *dynamical* Casimir effect) sees a thermal
+  vacuum at the **Unruh master relation** `T = ℏa/(2πc k_B)` (`accelerated_boundary_is_unruh`, reusing
+  [`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean)) — the *same* relation behind Hawking and de
+  Sitter, the `2π` the substrate loop phase (as in `g−2 = α/2π`). So the constructing-delay geometry that
+  gives gravitational time dilation ([`GR_Schwarzschild.md`](GR_Schwarzschild.md) §2a) also gives the
+  accelerated-vacuum phenomenology — one mechanism, three scales (mm redshift, μm–nm Casimir, horizon
+  temperatures). **Open:** the dynamical-Casimir photon-pair-creation *rate* (time-dependent-boundary QFT),
+  the named continuum piece.
+
+Casimir gaps are micron-to-nanometre — far closer to the discrete floor than the mm-scale redshift — so
+this is where the continuum rendering must be shown to *stay* accurate; QLF passes by construction (finite
+census → the standard force law), with any discrete correction still far below current sensitivity.
+
 ### 4.1 Predictions from the alignment principle (§6)
 
 Three additional falsifiable predictions follow from reading the vacuum as the near-maxent alignment substrate articulated in §6:
