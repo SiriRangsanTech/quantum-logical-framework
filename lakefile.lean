@@ -173,5 +173,6 @@ lean_lib QLF where
     `QLF_ClosureBinding,
     `QLF_PrimeCascadeDecay,
     `QLF_NeutrinoOscillation,
-    `QLF_LogicalBang
+    `QLF_LogicalBang,
+    `QLF_QuantumLogic
   ]
