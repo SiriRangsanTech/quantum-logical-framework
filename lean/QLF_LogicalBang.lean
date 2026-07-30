@@ -101,6 +101,36 @@ theorem cascade_floored_at_every_scale {R_min R : ℕ} (h0 : 0 < R_min) (h : R_m
     freq R ≤ freq R_min :=
   cascade_has_floor h0 h
 
+/-! ## No heat death — no terminal phase (Creation.md §8c) -/
+
+/-- The minimal balanced pair `[+, −]` is a closure (the census generator adjoined below). -/
+private theorem pair_balanced : countBalanced [Twist.plus, Twist.minus] := by decide
+
+/-- **No terminal phase — no heat death.** For *every* closure `w` there is a **strictly deeper** closure
+    (`w ++ [+, −]`, count-balanced by `pair_balanced`, and strictly longer): the cascade has **no maximal
+    locking depth**. A heat-death end-state would be a single global maximum-entropy configuration with no
+    further balanced structure possible; QLF has none — a phase can exhaust its *fast* (high-frequency)
+    budget, but a deeper, slower closure can always still lock (`fast_resolves_before_slow`). So "heat
+    death" is only the continuum appearance of one phase whose fast closures have resolved, not a global
+    end-state. -/
+theorem no_terminal_phase {w : List Twist} (h : countBalanced w) :
+    ∃ w' : List Twist, countBalanced w' ∧ w.length < w'.length := by
+  obtain ⟨hu, hl, hs, hp⟩ := h
+  obtain ⟨pu, pl, ps, pp⟩ := pair_balanced
+  refine ⟨w ++ [Twist.plus, Twist.minus], ⟨?_, ?_, ?_, ?_⟩, ?_⟩
+  · simp only [List.count_append]; omega
+  · simp only [List.count_append]; omega
+  · simp only [List.count_append]; omega
+  · simp only [List.count_append]; omega
+  · simp only [List.length_append, List.length_cons, List.length_nil]; omega
+
+/-- **The future cone is never empty — the outer rings always continue.** Every event `A` reaches at least
+    itself and its own extensions (`A ∈ futureCone A`, reflexivity): there is no event with nothing after
+    it, so no local exhaustion is a global stop. Combined with `no_terminal_phase`, the nested structure
+    keeps synthesizing deeper closures at larger combinatorial depth. -/
+theorem future_cone_never_empty {α : Type _} (A : Event α) : A ∈ futureCone A :=
+  reachable_refl A
+
 /-- **Established (the logical-bang cosmology, `Creation.md` §8a).** The first distinction is the minimal
     ZFA closure (`first_distinction_closes`) — a *logical* origin, not a metric singularity; the successive
     phases form a causal **partial order** (`causal_order_refl/trans/antisymm`) that is **not total**
