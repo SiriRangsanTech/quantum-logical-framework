@@ -26,6 +26,46 @@ Quantum field theory is the most accurate framework physics has — and the most
 
 ---
 
+## 1a. The priority — quantum truth is prior to space and time
+
+The load-bearing move, under everything below, is an **ordering of priority**. In QLF a proposition is a
+phase-string distinction, and its truth is decided by **ZFA closure** — balanced or not. That is a *logical
+fact about the history*, and it does **not** presuppose a location in a pre-existing continuum: a substrate
+event is a finite list of closure steps with **no coordinates** (`Event = List α`, `reachable A B := A <+: B`
+— a pre-geometric causal set, [`lean/QLF_ReachableEvent.lean`](lean/QLF_ReachableEvent.lean)), and the logic
+of those closures is an orthomodular lattice that needs no metric (the minimal quantum logic `MO2`,
+[`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean)). Spacetime is **not** the stage on which truth is
+evaluated; it is the *rendering* of the pattern of closures that have already been decided — local time is
+constructing delay, spatial structure is the mutual relation of closed events, and there is no global time
+line the whole cosmos shares (`causal_order_not_total`, [`lean/QLF_LogicalBang.lean`](lean/QLF_LogicalBang.lean)).
+Both appear *after* the logical selection, not before it.
+
+**This priority is exactly what lets QLF read QFT as a derived continuum shadow rather than a fundamental
+continuum theory.** Standard QFT writes fields `φ(x)` on a manifold and integrates over all modes at every
+point — the ultraviolet divergences are the price of assuming spacetime is already there, with infinitely
+many degrees of freedom at every point. QLF reverses the order:
+
+1. Truth is decided by discrete ZFA closure — **independent of continuum coordinates**.
+2. **Only closed histories are realized** (`QLF_Firebreak`: the possibility tree generates all `4ⁿ` paths,
+   ZFA closure is the firebreak; the realized sum is finite at every causal horizon).
+3. The continuum fields and their path integral are the **statistical limit** of those closed histories.
+4. Because the underlying decisions were **never continuum-indexed**, there is no infinite tower of modes to
+   integrate — the Planck-scale closure floor is intrinsic, not imposed.
+
+So the independence of quantum truth from time and space is the premise; "the path integral is a sum over
+already-decided closed histories" (§2), "renormalization is bookkeeping for a continuum that was never
+fundamental" (§4), and "local field operators are coarse-grained descriptions of patterns of closures" (§3)
+are its consequences. Without this priority, fields would have to be fundamental on a manifold and the
+discrete substrate would be only an approximation; with it, the discrete logic is prior and the continuum is
+the approximation.
+
+> Quantum truth is independent of time and space because truth *is* ZFA closure, and spacetime is
+> synthesized *from* closures. That priority is what allows QLF to keep the empirical content of quantum
+> field theory while reading its ultraviolet divergences as continuum artifacts rather than physical
+> necessities.
+
+---
+
 ## 2. The path integral *is* the possibility tree
 
 Feynman's sum over histories is, in QLF, literal and primary: the amplitude is the phase-weighted sum over admissible ZFA-closed micro-histories, with the path space **restricted to Pauli-closed strings and finite at each causal horizon** (the BFS saturation of [`MRE.md`](MRE.md) §2.2, [`Born_Rule.md`](Born_Rule.md)):
