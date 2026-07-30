@@ -23,6 +23,12 @@ The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7
 Root reading: **everything derives from the 8-twist substrate under Zero Free Action** —
 [`Philosophy.md`](Philosophy.md) (possibilist ontology), [`WHITE_PAPER.md`](WHITE_PAPER.md).
 
+**Foundational logic & mathematics:** the substrate's *logic* is **quantum logic** — argued as the correct
+foundation of mathematics (bottom-up, sound vs. exploding) in [`Quantum_Logic_Foundations.md`](Quantum_Logic_Foundations.md),
+with the minimal quantum logic `MO2` machine-verified on the substrate (orthomodular + non-distributive,
+[`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean)); and ordinary mathematics *emerging* from it (ℕ,
+the ring, `μ₄`, su(2)/su(3), the continuum as completion) in the companion [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md).
+
 **Harmonic-closure model:** reality and constructable truth are the *closing spectrum* of frequency-component closures — each frequency `f = 1/R` is one ZFA closure, i.e. a quantum-logical **computation** (a set of Feynman diagrams: path integral = generate, ZFA closure = the firebreak selecting the physical ones) ([`Frequency_Synchronization.md`](Frequency_Synchronization.md) §0).
 
 ---
@@ -146,7 +152,7 @@ What QLF derives that the SM treats as free input, and the falsifiable predictio
 
 ## See also
 
-- [`README.md`](README.md) · [`lean/README.md`](lean/README.md) — project overview + the 89-module Lean
+- [`README.md`](README.md) · [`lean/README.md`](lean/README.md) — project overview + the full Lean module
   table.
 - [`Open_Problems.md`](Open_Problems.md) — the honest gap registry (closed / principled-boundary / open).
 - [`Beyond_Standard_Model.md`](Beyond_Standard_Model.md) — the derived / predicted / open scorecard.
