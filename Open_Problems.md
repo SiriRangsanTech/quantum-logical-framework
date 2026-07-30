@@ -41,7 +41,13 @@ irreversible all reduce to the one postulate, leaving orthomodularity the residu
 `substrate_dagger_proper`) **+ (a2) the projection-lattice identification + the Baer-`*`-ring bridge**
 (settled math Mathlib lacks) **+ (b) the Gleason-hard uniqueness**. So the target is no longer "five
 independent postulates → ZFA" but **"the one postulate + two named settled-math bridges + the Gleason
-uniqueness"**, with the substrate-side facts proven. Its defeaters are axion detection, α drift, an exhaustive 0νββ null, and
+uniqueness"**, with the substrate-side facts proven. **And the orthomodular residue is now *concretely
+realized* at the minimal quantum level** (`QLF_QuantumLogic`, `Quantum_Logic_Foundations.md` §2): the
+substrate realizes the smallest genuinely-quantum logic `MO2` — orthocomplemented, **orthomodular**
+(`orthomodular`), and provably **non-distributive** (`not_distributive`, from the *incompatible* x/z-spin
+closures whose Paulis don't commute, `incompatibility_source`) — a complete axiom-free theorem; only the
+*general* orthomodular-lattice→Hilbert representation (Piron/Solèr) stays the Gleason-hard (a2)+(b) bridge.
+Its defeaters are axion detection, α drift, an exhaustive 0νββ null, and
 a QRNG deviation (gravity is emergent, so it cannot be a hidden influence —
 [`Beyond_Standard_Model.md`](Beyond_Standard_Model.md) §3b). So these are the
 *calculational frontier* of a complete foundation, the same way "derive the proton mass from QCD" is
