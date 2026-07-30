@@ -55,6 +55,30 @@ $$g_{tt} \;=\; -\left(\frac{f(r)}{f_\infty}\right)^2 \;\approx\; -\left(1 + \fra
 
 This **matches Schwarzschild at leading order**, with the substrate origin being the Markov-blanket frequency shift from Cross-Frequency Lorentz.
 
+### §2a Millimeter-scale redshift — the JILA/NIST optical-clock test
+
+The near-Earth weak-field limit of the above is the standard fractional shift between two clocks separated
+by height `Δh`:
+
+$$\frac{\Delta\nu}{\nu} \;=\; \frac{\Delta\varphi}{c^2} \;=\; \frac{g\,\Delta h}{c^2} \;\approx\; 1.1\times10^{-19}\ \text{per mm}.$$
+
+This was resolved **across a single ~1 mm sample** of ultracold strontium in an optical lattice clock
+(Bothwell et al., *Nature* **602**, 420 (2022); confirmed over a multiplexed few-mm array by Zheng et al.,
+*Nature* **602**, 425 (2022)). The measured gradient — of order `−1×10⁻¹⁹` mm⁻¹ — agreed with `g Δh/c²`
+within the experimental uncertainty.
+
+**How well does QLF predict it?** Exactly as well as GR — and **parameter-free**. In QLF the mechanism is
+native, not bolted on: time is *local constructing delay* (`f = 1/t`, deeper gauge-fold depth ⟹ slower
+clock, §2 above), so a clock lower in the potential ticks slower *by construction*. The leading fractional
+shift is `Δν/ν = gΔh/c²` — and note it depends **only on `g` (measured), `Δh` (measured), and `c`
+(substrate-derived, [`QLF_SubstrateLightSpeed`](lean/QLF_SubstrateLightSpeed.lean))**; it does **not**
+involve `G`, so QLF's one open gravitational residual (the ~37% absolute `G` in SI) is *irrelevant here* —
+the prediction is clean. Because the millimetre scale sits ~30 orders of magnitude above the Planck closure
+floor, the continuum rendering is identical to the GR formula and **QLF claims no distinctive deviation** at
+this scale: the experiment is a successful test of the continuum limit QLF already asserts, not one that
+separates QLF from GR. A genuine QLF signature would require regimes where the discrete floor or the cascade
+structure becomes visible — far finer than an optical clock can currently reach.
+
 ---
 
 ## §3 g_rr from substrate radial event scaling
