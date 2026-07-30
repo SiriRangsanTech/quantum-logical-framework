@@ -113,6 +113,19 @@ coarse-grained statistical average of a dense-but-discrete event stream
 the decidable filter `full_zeno_prune`. Infinity appears only where finitely-closing events
 accumulate. Nothing in the foundation has no finite construction.
 
+The full **emergence ladder** — how ordinary mathematics is *generated* from this quantum-logical
+substrate rather than assumed — is worked out in [Mathematics_From_QLF.md](Mathematics_From_QLF.md):
+ℕ from counting closures, `+`/`×` as parallel/sequence composition, the unit group `μ₄ = (ℤ[i])ˣ`,
+the Lie algebras su(2)/su(3), and the continuum as the *completion* of the discrete — with the
+bootstrapping resolution (the substrate *generates*, Mathlib *renders*, and conservativity makes
+verifying QLF in Mathlib non-circular). It is the companion to this document: here we argue quantum
+logic is the correct *foundation* of mathematics; there we exhibit the mathematics emerging from it —
+including **why mathematics is so effective in physics** (Wigner dissolved: effective math = realizable
+math = the substrate; effectiveness tracks realizability, which also explains where it fails). This is
+not analogy — the substrate's own algebra is a machine-verified Mathlib group `ℤ/4` derived from the
+folds ([`QLF_AlgebraEmergence`](lean/QLF_AlgebraEmergence.lean)), and the minimal *quantum* logic `MO2`
+is realized on it (§2).
+
 This is what "correct logic" means: a foundation with **no non-constructive ground floor**,
 hence no exploding infinities, hence no ultraviolet catastrophe — and one whose
 computational core sits at the **RCA₀** bedrock of reverse mathematics, below choice, below
