@@ -45,6 +45,27 @@ The logic of the universe is not classical Boolean logic over pre-existing facts
   algebra. The lattice of quantum propositions — historically *postulated* as the logic of
   Hilbert space — is here *derived* as the logic of phase-string closure.
 
+- **The defining feature — non-distributivity — is machine-verified, not analogized.** What makes
+  quantum logic *quantum* (rather than classical Boolean) is that it is **orthomodular but not
+  distributive**: for *incompatible* propositions the distributive law fails. QLF proves the substrate
+  realizes the **minimal genuinely-quantum logic `MO2`** — the height-2 lattice `0 < {x, x⊥, z, z⊥} < 1`
+  of two incompatible propositions — as a *complete, axiom-free* theorem
+  ([`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean)): the ZFA propositions form a partial order
+  (`le_refl/trans/antisymm`), **orthocomplemented** by the Hermitian-conjugate closure (`compl_involutive`
+  `a⊥⊥=a`, `compl_antitone`, `inf_compl_bot` `a∧a⊥=⊥`, `sup_compl_top` `a∨a⊥=⊤`), satisfying the
+  **orthomodular law** `a≤b ⟹ b = a∨(a⊥∧b)` (`orthomodular`) but provably **not distributive**
+  (`not_distributive`: `x∧(z∨z⊥)=x` yet `(x∧z)∨(x∧z⊥)=⊥≠x`). The two atoms are the **x-spin and z-spin
+  closures**, incompatible *because their Pauli operators do not commute* (`incompatibility_source` =
+  `QLF_Spin.su2_comm_zx`, `σz σx − σx σz = 2i σy ≠ 0`) — so the non-distributivity traces directly to the
+  substrate's proven non-commutativity. The **general** representation (an *arbitrary* orthomodular ZFA
+  lattice ≅ a Hilbert projection lattice, Piron/Solèr, dim ≥ 3) is the **Gleason-hard reconstruction
+  bridge** already located — the substrate dagger is a proper involution
+  ([`QLF_ProperInvolution`](lean/QLF_ProperInvolution.lean)), finite measure-uniqueness is done
+  ([`QLF_Reconstruction`](lean/QLF_Reconstruction.lean)), the projection-lattice / Baer-`*`-ring step is
+  the named settled-math bridge ([`Completeness_Evidence.md`](Completeness_Evidence.md) §6c). So the
+  minimal quantum logic is **proven**; the general Hilbert representation is the one named bridge — the
+  "verified discrete core + one bridge" Millennium pattern.
+
 Quantum logic, in QLF, is not an exotic alternative bolted onto physics. It is the native
 logic of distinction-and-closure, and physics is what that logic does.
 
