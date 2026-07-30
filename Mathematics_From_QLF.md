@@ -1,6 +1,6 @@
 # How Mathematics Emerges from QLF
 
-Where do the numbers, the rings, the groups come from? The [Quantum Logical Framework (QLF)](README.md) is offered as a *foundation* — a constructive replacement for ZFC for the part of mathematics that is not [mathematical fantasy](Active_Inference_Mathematics.md). So a fair challenge is: **does QLF generate the mathematics it uses, or does it presuppose it?** The Lean proofs run in Mathlib, which already has rings and fields — is that circular?
+Where do the numbers, the rings, the groups come from? The [Quantum Logical Framework (QLF)](README.md) is offered as a *foundation* — a constructive replacement for ZFC for the part of mathematics that is not [mathematical fantasy](Active_Inference_Mathematics.md). The *logic* of that foundation is **quantum logic**, and the case that quantum logic is the *correct* foundation of mathematics — bottom-up rather than top-down, sound rather than exploding, with the minimal quantum logic `MO2` machine-verified on the substrate — is the companion document [Quantum_Logic_Foundations.md](Quantum_Logic_Foundations.md). This doc is its constructive other half: *there* we argue quantum logic is the right foundation; *here* we exhibit ordinary mathematics **emerging** from it. So a fair challenge is: **does QLF generate the mathematics it uses, or does it presuppose it?** The Lean proofs run in Mathlib, which already has rings and fields — is that circular?
 
 This doc answers both halves. First, the **emergence ladder**: numbers, then the ring operations, then the unit group and the Lie algebras, all fall out of *counting closures* and *the two ways closures combine* — and every rung is already machine-checked. Then the **bootstrapping resolution**: the substrate *generates* the core structure; Mathlib's continuum algebra is its *rendering*, conservative over the computable base — using it to verify is not circular. Finally, **how this is distinct from reverse mathematics**, since QLF lives on reverse mathematics' floor but is not reverse mathematics.
 
@@ -189,6 +189,7 @@ So QLF does not merely say "mathematics is effective because reality is mathemat
 
 ## See also
 
+- [`Quantum_Logic_Foundations.md`](Quantum_Logic_Foundations.md) — the companion: quantum logic as the *correct foundation* of mathematics (bottom-up, sound vs. exploding, the RCA₀ floor), with the minimal quantum logic `MO2` machine-verified on the substrate ([`QLF_QuantumLogic`](lean/QLF_QuantumLogic.lean)). *There* the foundation is argued; *here* the mathematics is exhibited emerging from it.
 - [`Active_Inference_Mathematics.md`](Active_Inference_Mathematics.md) — mathematical objects as admissible Markov-blanket trajectories; QLF as a constructive ZFC replacement with active inference built in.
 - [`ReverseMathematics.md`](ReverseMathematics.md) — the `RCA₀` floor and the subsystem hierarchy; where each bridge axiom sits.
 - [`TheContinuum.md`](TheContinuum.md) — the continuum as a rendering; the five-strike "gratuitous" case; the conservativity result.
