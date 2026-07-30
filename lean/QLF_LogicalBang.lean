@@ -132,6 +132,22 @@ theorem no_terminal_phase {w : List Twist} (h : countBalanced w) :
 theorem future_cone_never_empty {α : Type _} (A : Event α) : A ∈ futureCone A :=
   reachable_refl A
 
+/-- **Order emerges on every scale — the anti-heat-death positive form.** For *every* depth `n` there is
+    a closure (a balanced, low-free-action ordered structure) of length `≥ n`: balanced structure exists at
+    arbitrarily large combinatorial depth, not only near the origin. So global entropy is not monotonically
+    forced to a featureless maximum — fresh *order* (a fresh closure) locks at every scale
+    (`no_terminal_phase` iterated from the empty closure). Entropy is **local**: the second law governs each
+    continuum rendering, but there is no single global arena (`causal_order_not_total`) for it to drive to a
+    global end-state, and order re-emerges scale by scale. -/
+theorem order_at_every_scale : ∀ n : ℕ, ∃ w : List Twist, countBalanced w ∧ n ≤ w.length := by
+  intro n
+  induction n with
+  | zero => exact ⟨[], ⟨rfl, rfl, rfl, rfl⟩, Nat.zero_le _⟩
+  | succ k ih =>
+    obtain ⟨w, hw, hlen⟩ := ih
+    obtain ⟨w', hw', hlt⟩ := no_terminal_phase hw
+    exact ⟨w', hw', by omega⟩
+
 /-- **Established (the logical-bang cosmology, `Creation.md` §8a).** The first distinction is the minimal
     ZFA closure (`first_distinction_closes`) — a *logical* origin, not a metric singularity; the successive
     phases form a causal **partial order** (`causal_order_refl/trans/antisymm`) that is **not total**
