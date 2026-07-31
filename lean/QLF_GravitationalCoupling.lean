@@ -104,7 +104,7 @@ theorem em_gravity_coupling_ratio :
   rw [alpha_G_eq_exp_neg_28pi]
   have h : Real.exp (-28 * Real.pi) = (Real.exp (28 * Real.pi))⁻¹ := by
     rw [← Real.exp_neg]; congr 1; ring
-  rw [h, div_inv_eq]; ring
+  rw [h, div_eq_mul_inv, inv_inv]; ring
 
 /-- **Established.** The dimensionless gravitational coupling `α_G = G m_p²/ℏc = (m_p/M_Pl)²`
     (`alpha_G_is_ratio_sq`) is `exp(−28π)` at QLF's `14π` mass hierarchy (`alpha_G_eq_exp_neg_28pi`), and
