@@ -177,5 +177,6 @@ lean_lib QLF where
     `QLF_QuantumLogic,
     `QLF_Casimir,
     `QLF_CondensateGap,
-    `QLF_HolographicDensity
+    `QLF_HolographicDensity,
+    `QLF_GravitationalCoupling
   ]
