@@ -57,6 +57,8 @@ This is the QLF derivation of quark confinement, **machine-verified** as the sin
 
 From [Maxwell.md](Maxwell.md) and [Conservation.md §4](Conservation.md): the gauge pair `+` / `−` is the carrier of charge. The U(1) gauge symmetry is the `+` ↔ `−` swap symmetry of the 8-twist algebra; charge conservation is Lean-verified as `no_magnetic_monopoles` (ZFA closure requires net gauge count = 0 per closed event; for non-neutral systems the count is constant because gauge folds are created/destroyed only in Hermitian pairs).
 
+**Anomaly cancellation / matter neutrality is a ZFA charge-balance** ([`lean/QLF_ChargeBalance.lean`](lean/QLF_ChargeBalance.lean)). Electric charge is a *signed twist count* (`QLF_BMinusL`), so a complete generation's charge ledger *closes*: with QLF's derived charges (neutrino `0`, lepton `−1`, quarks `+2/3`/`−1/3` — the thirds forced by the 3 colours), one generation sums to **`Σ Q = 0 + (−1) + 3·(2/3) + 3·(−1/3) = 0`** (`gen_electric_neutral`). This is not a trivial `0 = 0`: the up-type `+2` balances the charged-lepton-plus-down-type `−2` (`gen_charge_balanced`) — the quark thirds are *exactly* what make the ledger close, so the 3 colours are what make matter neutral. Concrete closures: proton `uud = +1`, neutron `udd = 0`, hydrogen atom neutral (`hydrogen_neutral`). The *squared*-charge census — the QED vacuum-polarization running weight — is the complementary **`Σ Nᶜ Q_f² = 8 = 2³`** (leptonic 3 + hadronic 5, [`lean/QLF_ChargeCensus.lean`](lean/QLF_ChargeCensus.lean)), feeding the census derivation of the α running ([Alpha.md §4a](Alpha.md), issue [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117)).
+
 ## 3. The partial sector
 
 ### 3.1 Higgs mechanism
