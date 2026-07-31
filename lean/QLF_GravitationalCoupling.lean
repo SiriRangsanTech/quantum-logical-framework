@@ -75,6 +75,37 @@ theorem substrate_gravitational_coupling :
   rw [hierarchy_log_eq_fourteen_pi]
   exact alpha_G_eq_exp_neg_28pi
 
+/-! ## Bracketing `α_G` (hence `G`) from the hierarchy band -/
+
+/-- **The `α_G` bracket — the tightest value-bracket QLF gives on the strength of gravity.** Because
+    `α_G = exp(−2·hierLog)` is exp-sensitive, the *value* bracket comes from the mass-hierarchy band
+    `ln(M_Pl/m_p) ∈ [14π, 104π/7]` (`QLF_AlphaS.hierarchy_log_band`, the running-consistent `α_s ∈ [1/52,1/49]`
+    window). This gives `α_G ∈ [exp(−208π/7), exp(−28π)]` — machine-verified. Numerically
+    `[2.87×10⁻⁴¹, 6.27×10⁻³⁹]`, which **contains** the measured `α_G = 5.91×10⁻³⁹`, sitting near the *upper*
+    (`14π`, `b₀²=49`) edge — so `G = α_G·ℏc/m_p²` is bracketed likewise. **The bracket width is set by `α_s`
+    (strong), not `α` (EM):** tightening it means tightening the QCD coupling window, not using `α`. -/
+theorem alpha_G_bracket {hierLog : ℝ} (hlo : 14 * Real.pi ≤ hierLog)
+    (hhi : hierLog ≤ 104 * Real.pi / 7) :
+    Real.exp (-208 * Real.pi / 7) ≤ gravitationalCoupling hierLog ∧
+      gravitationalCoupling hierLog ≤ Real.exp (-28 * Real.pi) := by
+  unfold gravitationalCoupling
+  refine ⟨Real.exp_le_exp.mpr ?_, Real.exp_le_exp.mpr ?_⟩
+  · linarith
+  · linarith
+
+/-- **Where `α` meets gravity — the EM/gravity coupling ratio.** The dimensionless ratio of the
+    electromagnetic to the gravitational coupling between two protons is `α/α_G = (1/137)/exp(−28π) =
+    exp(28π)/137`, combining *both* substrate constants (`α⁻¹=137`, `QLF_FineStructureSubstrate`; `α_G=
+    exp(−28π)`). Numerically `exp(28π)/137 = 1.16×10³⁶` vs. measured `1.24×10³⁶` (6%, the `14π`
+    exp-sensitivity). So `α` brackets the gravity-vs-EM *comparison* — it does **not** tighten the absolute
+    `G` bracket (that is the `α_s` window). -/
+theorem em_gravity_coupling_ratio :
+    (1 / 137 : ℝ) / gravitationalCoupling (14 * Real.pi) = Real.exp (28 * Real.pi) / 137 := by
+  rw [alpha_G_eq_exp_neg_28pi]
+  have h : Real.exp (-28 * Real.pi) = (Real.exp (28 * Real.pi))⁻¹ := by
+    rw [← Real.exp_neg]; congr 1; ring
+  rw [h, div_inv_eq]; ring
+
 /-- **Established.** The dimensionless gravitational coupling `α_G = G m_p²/ℏc = (m_p/M_Pl)²`
     (`alpha_G_is_ratio_sq`) is `exp(−28π)` at QLF's `14π` mass hierarchy (`alpha_G_eq_exp_neg_28pi`), and
     end-to-end from the substrate integer `b₀=7` (`substrate_gravitational_coupling`) — the *strength* of
