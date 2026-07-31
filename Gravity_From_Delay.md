@@ -20,6 +20,20 @@ The SI numerical value 6.67430 × 10⁻¹¹ reflects the calibration of substrat
 
 **The deeper question.** Why does gravity have the *form* `F ∝ M m / r²`, with `G` as the coefficient? This is the Verlinde-style entropic-gravity question, and QLF substrate primitives answer it directly.
 
+### §1.1 The strength of gravity: `α_G = exp(−28π)`
+
+The SI *value* of `G` is a unit convention (what a kilogram is), but the **physics** content of `G` — *how weak gravity is* — is dimensionless and **derived**. The gravitational coupling (the "gravitational fine-structure constant") is
+
+$$\alpha_G \;=\; \frac{G\,m_p^2}{\hbar c} \;=\; \left(\frac{m_p}{M_{\rm Planck}}\right)^2 \;\approx\; 5.9\times10^{-39}.$$
+
+QLF already derives the mass hierarchy `ln(M_Planck/m_p) = 14π` (dimensional transmutation from the single integer `b₀ = 7`, [`QLF_AlphaS`](lean/QLF_AlphaS.lean)). Since `m_p/M_Planck = exp(−ln(M_Planck/m_p))`, the coupling is its square:
+
+$$\alpha_G \;=\; \exp\!\bigl(-2\,\ln(M_{\rm Planck}/m_p)\bigr) \;=\; \exp(-28\pi).$$
+
+**Machine-verified** ([`lean/QLF_GravitationalCoupling.lean`](lean/QLF_GravitationalCoupling.lean)): `alpha_G_is_ratio_sq` (`α_G = (m_p/M_Pl)²`), `alpha_G_eq_exp_neg_28pi` (at `14π`), and `substrate_gravitational_coupling` (end-to-end from `b₀ = 7`). Numerically `exp(−28π) = 6.27×10⁻³⁹` vs. measured `5.91×10⁻³⁹` — **0.068% on the log**, 6.2% on the value (the exp-sensitivity of the `14π` hierarchy, exactly as `QLF_AlphaS.hierarchy_log_band`). So *the strength of gravity is derived from the single substrate integer `7`*, and the absolute SI `G = α_G·ℏc/m_p²` needs only `m_p`'s SI value (a kilogram convention) — not new physics. (The electron coupling is `α_G^e = (m_e/M_Pl)²` with `m_e = m_p/6π⁵`, so it too follows from the one hierarchy.)
+
+The *other* piece of the absolute `G` — the **entropy normalization** `η`/the Bekenstein–Hawking `4 log 2` residual (§4, [`QLF_HolographicDensity`](lean/QLF_HolographicDensity.lean)) — is separate: it touches the absolute *entropy*, not `α_G`, and the `1/r²` law is normalization-independent. The accelerating-Casimir / Unruh temperature is the relevant tool *there* (shared Unruh `T`), not for `α_G`.
+
 ---
 
 ## §2 Substrate event quantum and the time delay
