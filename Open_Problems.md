@@ -164,7 +164,8 @@ enforces) — see [`Active_Inference_Mathematics.md`](Active_Inference_Mathemati
 
 ## Open — quantitative (the hard front)
 
-**Frontier consolidation — the remaining value-open targets collapse to *three* numbers, not a dozen.**
+**Frontier consolidation — the remaining value-open targets collapse to *three* numbers, not a dozen**
+(and, with the QED running structure now census-complete, effectively toward *two*).
 The honest structure of what's left (see the per-item rows below): most of the open quantitative targets
 are **the same open number** wearing different hats, so they are not separately "nail-able" — deriving one
 closes many at once. The three genuinely-distinct open quantities are:
@@ -222,10 +223,18 @@ closes many at once. The three genuinely-distinct open quantities are:
    area-element — is open). This is the entropy-normalization half of the absolute `G`.
 
 So "nailing" the frontier is really **two hard problems + one classification**: the interacting-substrate
-coupling `g` (1), the census running coefficient (2), and the entropy packing (3). CKM/PMNS *angles* and the
-Jarlskog invariant are a fourth, Yukawa-sector target (structure done, `QLF_CKM`/`QLF_PMNS`); `H₀` is the
-same absolute-time-delay calibration as `g`. Attempting the `g`-family targets by *counting* is a fit-trap
-(as `b_EW` showed); the disciplined next levers are (2) and building the interacting-closure dynamics for (1).
+coupling `g` (1), the census running coefficient (2), and the entropy packing (3). **Update — (2)'s
+*structure* is now census-complete** (`QLF_VacuumPolarization`/`…Tower`/`QLF_ChargeCensus`, #117): the
+coefficient `2/(3π)` (split census + Wallis, the `→1/6` limit **proven**), the running *function* (the
+QED log = the census octave count), and the charge weighting `Σ Nᶜ Q_f² = 8 = 2³` are all derived
+value-free — so (2) is no longer a *distinct* open number: its residual *value* is precisely the
+threshold octaves (the mass spectrum, i.e. **(1)'s scale `g`**) **plus** the non-perturbative hadronic
+`Δα_had` (**open in the Standard Model itself**, not a QLF gap). The frontier is thus really **`g` (1) +
+the entropy classification (3)**, with an SM-external hadronic problem attached to the α-value. CKM/PMNS
+*angles* and the Jarlskog invariant are a fourth, Yukawa-sector target (structure done,
+`QLF_CKM`/`QLF_PMNS`); `H₀` is the same absolute-time-delay calibration as `g`. Attempting the `g`-family
+targets by *counting* is a fit-trap (as `b_EW` showed); the disciplined lever is building the
+interacting-closure dynamics for (1).
 
 | Item | Status | Where |
 |---|---|---|
