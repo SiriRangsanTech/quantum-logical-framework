@@ -164,6 +164,35 @@ enforces) — see [`Active_Inference_Mathematics.md`](Active_Inference_Mathemati
 
 ## Open — quantitative (the hard front)
 
+**Frontier consolidation — the remaining value-open targets collapse to *three* numbers, not a dozen.**
+The honest structure of what's left (see the per-item rows below): most of the open quantitative targets
+are **the same open number** wearing different hats, so they are not separately "nail-able" — deriving one
+closes many at once. The three genuinely-distinct open quantities are:
+
+1. **The self-organized-critical closure-binding coupling `g`** (the interacting *substrate-dynamics*
+   problem — *not* a counting exercise, established at #121 / `Higgs.md` §5a). Fixing `g` fixes the absolute
+   scale `R_stable = v`, and with it: the electroweak `v`/`m_t`/`M_H`/`G_F` (#121); the absolute lepton &
+   quark mass *values* (the ratios like `m_p/m_e=6π⁵` are already derived — only the overall scale is `g`);
+   the neutrino absolute `Δm²` (oscillation *structure* done, `QLF_NeutrinoOscillation`); `α_s(M_Z)`'s
+   absolute value (`b₀=7` done, only the `Λ_QCD`-to-floor scale is `g`); and the mass-scale half of the
+   absolute SI `G` (`α_G = exp(−28π)` done, `QLF_GravitationalCoupling`). **Diagnosis (#121):** this is
+   condensation criticality, so it is *not* a clean count (`b_EW` has none) — it needs the interacting
+   many-closure density at the critical point.
+2. **The QED one-loop running coefficient `2/(3π)` per charged fermion** (the α-residual / running,
+   [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117)) — a *value-free* census
+   vacuum-polarization target (horizon-weighted, `closedAtHorizon`), distinct from `g`. Success also
+   tightens `α(M_Z)` and the `sin²θ_W` running.
+3. **The holographic-density resolution** — *why* the realized horizon entropy is `N/4` not `N log 2`
+   (the residual is **exactly `4 log 2 = 4 × log 2`**, quantified + decomposed into derived constants,
+   `QLF_HolographicDensity`; the *classification* — floor deviation vs. `1/(4 log 2)` packing vs.
+   area-element — is open). This is the entropy-normalization half of the absolute `G`.
+
+So "nailing" the frontier is really **two hard problems + one classification**: the interacting-substrate
+coupling `g` (1), the census running coefficient (2), and the entropy packing (3). CKM/PMNS *angles* and the
+Jarlskog invariant are a fourth, Yukawa-sector target (structure done, `QLF_CKM`/`QLF_PMNS`); `H₀` is the
+same absolute-time-delay calibration as `g`. Attempting the `g`-family targets by *counting* is a fit-trap
+(as `b_EW` showed); the disciplined next levers are (2) and building the interacting-closure dynamics for (1).
+
 | Item | Status | Where |
 |---|---|---|
 | **Nuclear fusion / the β⁺ keystone** | 🔵 **Open — quantitative (necessity Lean-anchored)** — fusion is two Markov blankets joining; two *identical* proton blankets have **no** bound fermionic channel (`pauli_exclusion`, no diproton), so the pp-chain's first join `p+p→²H+e⁺+ν` *must* convert one proton to a neutron by a weak β⁺ step to make the pair distinguishable — the proton/neutron "sex" (`pp_join_requires_distinguishability`). Open: the β⁺ **rate** (the weak `G_F` that sets how slow the pp-chain is — same open weak sector, `fusion_weak_rate_in_progress`) | [`lean/QLF_Fusion.lean`](lean/QLF_Fusion.lean), [`Fusion.md`](Fusion.md) §3a, [`SEX.md`](SEX.md) |
