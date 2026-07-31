@@ -175,5 +175,6 @@ lean_lib QLF where
     `QLF_NeutrinoOscillation,
     `QLF_LogicalBang,
     `QLF_QuantumLogic,
-    `QLF_Casimir
+    `QLF_Casimir,
+    `QLF_CondensateGap
   ]
