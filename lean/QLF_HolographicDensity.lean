@@ -61,7 +61,6 @@ theorem holographic_bh_ratio {R : ℝ} (hR : R ≠ 0) :
   have hN : holographic_event_count R ≠ 0 := by unfold holographic_event_count; positivity
   unfold holographic_entropy bekensteinHawkingEntropy per_event_entropy
   field_simp
-  ring
 
 /-- **The residual is a product of two derived constants — not a free parameter.** `4·log 2 = 4 ×
     per_event_entropy`: the **`4`** is the Einstein `8π = 4π·2` factor / the `η = 1/4G` quarter (fixed in
