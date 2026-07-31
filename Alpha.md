@@ -220,9 +220,46 @@ catastrophe ([`TheContinuum.md`](TheContinuum.md) §3.1). The strong β-coeffici
 `b₀=7` (`beta_coefficient_eq_seven`, [`lean/QLF_BetaFunction.lean`](lean/QLF_BetaFunction.lean)), feeding
 the `14π` hierarchy ([`lean/QLF_AlphaS.lean`](lean/QLF_AlphaS.lean)).
 
-**Honest scope:** the dimension-flow gives the right *direction* + a geometric *contribution*; the full
-running *magnitude* (`α(M_Z)≈1/128`) is matter vacuum-polarization — the open β-coefficient sector
-(`running_couplings_structural`).
+### 4a. The QED vacuum-polarization running from the census (issue [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117))
+
+The *matter* vacuum-polarization running — the piece the dimension-flow leaves to the β-coefficient
+sector — is now derived from census counting, three modules, every factor value-free (committed
+before comparison to QED, Step-0):
+
+* **The coefficient `2/(3π)`** ([`lean/QLF_VacuumPolarization.lean`](lean/QLF_VacuumPolarization.lean)).
+  The one-loop coefficient decomposes `2/(3π) = 2·(1/6)·2·(1/π)`; the two non-trivial factors are
+  counted. The **`3`** is the **two-vertex split census**: a fermion loop cut at its two photon
+  vertices splits into arcs `k` and `n−k`, the two-vertex insertion count is `k(n−k)`, and
+  `∑_{k=0}^{n} k(n−k) = C(n+1,3)` (`census_split`), so the split-average `→ 1/6 = 1/3!` — **proven** to
+  be the Feynman parameter integral `∫₀¹ x(1−x) dx` as a genuine limit (`splitRiemannSum_tendsto`, via
+  the exact `= 1/6 − 1/(6n²)`), not just a closed-form match. The **`π`** is the Wallis census return
+  density (`QLF_PhysicalPi`). The two `2`s (e⁺e⁻ pair, `μ²=2ln μ` round-trip) are rendered vertex
+  structure. Yields `b = −4/3` per unit-charge fermion (`qed_beta_coeff_per_fermion`, screening sign).
+
+* **The running function** ([`lean/QLF_VacuumPolarizationTower.lean`](lean/QLF_VacuumPolarizationTower.lean)):
+  **the QED logarithm IS the census octave count.** The horizon map `Q(R)=Q₀·2^R` makes the
+  `closedAtHorizon` resolution pass `R` the octave counter (`log_scale_additive`); each octave adds the
+  *scale-free* increment `(2/3π)Q_f²·log 2` (octave-independence reused from Kolmogorov's
+  `flux_scale_invariant`); and the discrete octave count renders *exactly* to the smooth `ln(Q/m_f)`
+  (`octave_tower_recovers_qed_log`). Fermion thresholds are automatic (ℕ-truncated `R_Q−R_f → 0` below
+  threshold), and `α⁻¹` decreases monotonically toward the UV (`towerRunning_le_alpha0`, screening).
+
+* **The charge census** ([`lean/QLF_ChargeCensus.lean`](lean/QLF_ChargeCensus.lean)): summed over QLF's
+  own Standard-Model content — 3 generations (the axes), 3 colours, charges `1, 2/3, 1/3` (thirds from
+  the 3 colours), neutrinos neutral — the vacuum-polarization weight is **`Σ Nᶜ Q_f² = 8 = 2³`**
+  (`totalChargeCensus_eq_eight`/`_two_cubed`): the charge census *equals the 8-twist alphabet size*
+  (cousin of the `128 = 2⁷` in `α⁻¹ = 128 + d²`), split **leptonic 3 + hadronic 5** (the `Δα_lep ≈
+  Δα_had` near-equality). The fully-active slope is `16/(3π)` per `ln Q` (`smRunningSlope_eq`).
+
+So `α⁻¹(Q²) = α⁻¹₀ − Σ_f (2/3π)Q_f²·ln(Q²/m_f²)` is assembled with every factor census-sourced —
+coefficient, log, and charges. This **tightens `α(M_Z)`** and complements the `3→2` dimension-flow
+reading above (the geometric contribution) with the matter-loop contribution.
+
+**Honest scope:** the dimension-flow gives the right *direction* + a geometric *contribution*, and
+§4a now derives the matter vacuum-polarization *structure* (coefficient + running function + charge
+census) value-free; the residual for the full running *magnitude* / the `0.036` value is the
+**threshold octaves** `R_f` (the fermion mass spectrum — ratios derived, absolute scale the open `g`)
+plus the **non-perturbative hadronic** `Δα_had` (open in the Standard Model itself). **Not fitted.**
 
 ---
 
