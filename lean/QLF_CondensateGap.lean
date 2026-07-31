@@ -85,18 +85,18 @@ def condenses (g : ℚ) (N : ℕ) : Prop := 1 ≤ g * gapSum N
 /-- **Condensation ⟺ super-critical coupling.** For `N ≥ 1`, `1 ≤ g·gapSum N` iff `g ≥ 1/gapSum N`. -/
 theorem condenses_iff_ge_critical (g : ℚ) {N : ℕ} (hN : 1 ≤ N) :
     condenses g N ↔ criticalCoupling N ≤ g := by
+  have hp := gapSum_pos hN
   unfold condenses criticalCoupling
-  rw [div_le_iff₀ (gapSum_pos hN), one_mul, mul_comm]
+  constructor
+  · intro h; rw [div_le_iff₀ hp]; linarith
+  · intro h; have := (div_le_iff₀ hp).mp h; linarith
 
 /-- **The critical coupling decreases as the cutoff deepens** — a deeper census needs weaker binding to
     condense (reciprocal of the increasing positive `gapSum`). -/
 theorem criticalCoupling_antitone {N N' : ℕ} (hN : 1 ≤ N) (h : N ≤ N') :
     criticalCoupling N' ≤ criticalCoupling N := by
   unfold criticalCoupling
-  apply one_div_le_one_div_of_le (gapSum_pos hN)
-  rcases eq_or_lt_of_le h with rfl | hlt
-  · le_refl _
-  · exact le_of_lt (gapSum_strictMono hlt)
+  exact one_div_le_one_div_of_le (gapSum_pos hN) (gapSum_strictMono.monotone h)
 
 /-- **Condensation is stable under deepening the cutoff** — if `g` condenses at `N`, it condenses at every
     `N' ≥ N` (the census loop only grows). So once super-critical, always super-critical: the deeper Planck
@@ -104,12 +104,9 @@ theorem criticalCoupling_antitone {N N' : ℕ} (hN : 1 ≤ N) (h : N ≤ N') :
 theorem condenses_mono {g : ℚ} (hg : 0 ≤ g) {N N' : ℕ} (h : N ≤ N') (hc : condenses g N) :
     condenses g N' := by
   unfold condenses at *
-  have hmono : gapSum N ≤ gapSum N' := by
-    rcases eq_or_lt_of_le h with rfl | hlt
-    · le_refl _
-    · exact le_of_lt (gapSum_strictMono hlt)
+  have hmono : gapSum N ≤ gapSum N' := gapSum_strictMono.monotone h
   calc (1 : ℚ) ≤ g * gapSum N := hc
-    _ ≤ g * gapSum N' := by apply mul_le_mul_of_nonneg_left hmono hg
+    _ ≤ g * gapSum N' := mul_le_mul_of_nonneg_left hmono hg
 
 /-- **Established (issue #121, `Higgs.md` §5a).** The interacting closure-binding is an **NJL gap equation
     with the census as the loop**: `gapSum` is the census loop (`censusWeight_pos`, `gapSum_strictMono`),
