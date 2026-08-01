@@ -261,6 +261,18 @@ census) value-free; the residual for the full running *magnitude* / the `0.036` 
 **threshold octaves** `R_f` (the fermion mass spectrum — ratios derived, absolute scale the open `g`)
 plus the **non-perturbative hadronic** `Δα_had` (open in the Standard Model itself). **Not fitted.**
 
+**How the α-residual improves once the electroweak scale is pinned** (issue
+[#136](https://github.com/jimscarver/quantum-logical-framework/issues/136)). The absolute scale that
+sets the threshold octaves `R_f` is `v ↔ R_stable`, now closed *structurally* to a single self-organized-
+critical observable `ρ* = √(c/k)` (frontier #1: `QLF_ClosureAttraction` → `QLF_SteadyStateDensity` →
+`QLF_ElectroweakScale`, `R_stable = 1/ρ*`). So the `0.036` residual splits cleanly into **three
+independent pieces**: (i) the **threshold part** — set by the mass spectrum, whose *ratios* are derived
+(`m_p/m_e = 6π⁵`, Koide, …) and whose overall scale is `ρ*`; **once `ρ*` is known the thresholds are
+predicted, not calibrated**; (ii) the **higher-order census tail** (length-4+ closures) — internal and
+independent of `ρ*`; (iii) the **non-perturbative hadronic** `Δα_had` — an external SM-like problem the
+SOC work does not touch. So the residual is no longer a single opaque number but `{ρ*}` + two isolated
+pieces — cleaner and partially predictive, **without adjusting any rule to force a match**.
+
 ---
 
 ## 5. No cosmological-time drift of α(0)
