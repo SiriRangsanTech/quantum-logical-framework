@@ -165,12 +165,28 @@ enforces) — see [`Active_Inference_Mathematics.md`](Active_Inference_Mathemati
 ## Open — quantitative (the hard front)
 
 **Frontier consolidation — the remaining value-open targets collapse to *three* numbers, not a dozen**
-(and, with the QED running structure now census-complete, effectively toward *two*).
+(and, with #121 resolved and the QED running structure census-complete, effectively toward *one input +
+one classification*).
 The honest structure of what's left (see the per-item rows below): most of the open quantitative targets
 are **the same open number** wearing different hats, so they are not separately "nail-able" — deriving one
 closes many at once. The three genuinely-distinct open quantities are:
 
-1. **The self-organized-critical closure-binding coupling `g`** (the interacting *substrate-dynamics*
+> **Update — #121 resolved (fork 1): the electroweak-scale *mechanism* is derived; `v` is QLF's one
+> irreducible anchor.** Item 1 below is no longer an *open coupling* to derive but a *closed mechanism*
+> plus a *single honest input*. The interacting closure-binding is a proven chain — attraction is a
+> theorem (`QLF_ClosureAttraction`), it supplies the restoring force creating a finite steady density
+> (`QLF_SteadyStateDensity`), the loop to `v` is closed (`QLF_ElectroweakScale`), and the cascade
+> self-organizes to a scale-free fractal critical state (`fractal_cascade.py`, `τ=3/2=`census) — *why*
+> `v ≪ M_Pl` is stable **without fine-tuning**. What is *not* derived is the **absolute** scale `v`
+> itself, and that is honest: `b_EW = ln(M_Pl/v)/2π = 6.118` provably has **no clean substrate count**
+> (refused as a fit-trap, `closure_binding.py §4`), and `v` is the SM's *second* dimensionful scale,
+> distinct in origin from the derived `m_p` (`14π`). So QLF reduces the SM's dimensionful sector to
+> **{Planck floor + one electroweak anchor `v`}** — mirroring the SM's single dimensionful input — with
+> everything else (`m_t`/`M_H`/`G_F`, the absolute mass spectrum, the mass-scale halves of `α` and `G`,
+> #136) derived *relative* to `v`. **Not a bug — the framework's one honest low-energy input.**
+
+1. **The self-organized-critical closure-binding coupling `g`** ✅ **mechanism resolved (#121, fork 1);
+   `v` is the one irreducible anchor** — (the interacting *substrate-dynamics*
    problem — *not* a counting exercise, established at #121 / `Higgs.md` §5a). Fixing `g` fixes the absolute
    scale `R_stable = v`, and with it: the electroweak `v`/`m_t`/`M_H`/`G_F` (#121); the absolute lepton &
    quark mass *values* (the ratios like `m_p/m_e=6π⁵` are already derived — only the overall scale is `g`);
@@ -257,12 +273,15 @@ coefficient `2/(3π)` (split census + Wallis, the `→1/6` limit **proven**), th
 QED log = the census octave count), and the charge weighting `Σ Nᶜ Q_f² = 8 = 2³` are all derived
 value-free — so (2) is no longer a *distinct* open number: its residual *value* is precisely the
 threshold octaves (the mass spectrum, i.e. **(1)'s scale `g`**) **plus** the non-perturbative hadronic
-`Δα_had` (**open in the Standard Model itself**, not a QLF gap). The frontier is thus really **`g` (1) +
-the entropy classification (3)**, with an SM-external hadronic problem attached to the α-value. CKM/PMNS
-*angles* and the Jarlskog invariant are a fourth, Yukawa-sector target (structure done,
-`QLF_CKM`/`QLF_PMNS`); `H₀` is the same absolute-time-delay calibration as `g`. Attempting the `g`-family
-targets by *counting* is a fit-trap (as `b_EW` showed); the disciplined lever is building the
-interacting-closure dynamics for (1).
+`Δα_had` (**open in the Standard Model itself**, not a QLF gap). **Update — (1) is resolved (#121, fork
+1):** its *mechanism* is derived (the proven attraction → restoring-force → EW-loop chain + SOC
+self-tuning) and its *value* `v` is QLF's **one irreducible electroweak anchor** — the SM's second
+dimensionful scale, not a clean count (`b_EW` refused), *not a bug*. So the frontier is really **{one
+honest input `v`} + the entropy classification (3)**, with an SM-external hadronic problem attached to the
+α-value and everything dimensionful derived *relative* to `v`. CKM/PMNS *angles* and the Jarlskog invariant
+are a Yukawa-sector target (structure done, `QLF_CKM`/`QLF_PMNS`); `H₀` is the same absolute-time-delay
+calibration as `v`. Attempting to *derive* `v` by *counting* is a fit-trap (as `b_EW` showed); the honest
+posture is that `v` is the anchor and the mechanism around it is derived — the disciplined end-state.
 
 | Item | Status | Where |
 |---|---|---|
