@@ -254,12 +254,18 @@ runs the wrong way (a measured `α⁻¹ < 137` refutes the screening picture) or
 layer and is labelled so. A critic who breaks the mapping does **not** break the theorems, and vice
 versa — which is exactly why the layers are kept separate.
 
-**Independent verification.** The signature `[proven]` results of this document — `MO2`
-non-distributivity, orthomodularity, the Hermitian spectral property — live in
-[`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean) and [`lean/QLF_Spectral.lean`](lean/QLF_Spectral.lean);
-`lake build` verifies them (CI-green, zero `sorry`). Every non-RCA₀ bridge used in the physics mapping
-is listed explicitly in the [axiom inventory](CLAUDE.md). The combinatorial counts behind the constants
-run as zero-setup Python demos in the repo.
+**Independent verification — one Mathlib-only file.** The signature `[proven]` result — that the
+substrate realizes a genuinely quantum (orthomodular, **non-distributive**) logic, the minimal `MO2` —
+is verifiable from a **single self-contained file with no QLF dependencies**,
+[`lean/QLF_MO2.lean`](lean/QLF_MO2.lean): copy it, `lake build` against a Mathlib toolchain, and every
+claim (`le_refl/trans/antisymm`, `compl_involutive/antitone`, `inf_compl_bot`, `sup_compl_top`,
+`orthomodular`, `not_distributive`) is closed by `decide` — a finite mechanical check over the six-element
+lattice, no 180-module tree, an afternoon audit (an audit checklist is in the file header). The in-tree
+version with the physics hooks (the Hermitian spectral property, the non-commuting-Pauli source of
+incompatibility) is [`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean) +
+[`lean/QLF_Spectral.lean`](lean/QLF_Spectral.lean). Every non-RCA₀ bridge used in the physics mapping is
+listed explicitly in the [axiom inventory](CLAUDE.md); the combinatorial counts behind the constants run
+as zero-setup Python demos in the repo.
 
 ---
 
