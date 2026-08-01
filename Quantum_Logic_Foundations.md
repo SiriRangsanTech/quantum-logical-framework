@@ -10,6 +10,50 @@ classical foundations: the unrestricted continuum and the Axiom of Choice are ma
 ultraviolet catastrophe. This document states what is *right* — the foundation that
 replaces them.
 
+**In one paragraph.** Classical foundations start with infinite sets and the continuum, then struggle
+to recover the computable and the measured. QLF starts with **one finite distinction** — a Zero Free
+Action (ZFA) closure on an 8-symbol alphabet — and builds outward. *Measurement is closure*;
+propositions form an **orthomodular, non-distributive** lattice — machine-verified as the minimal
+quantum logic `MO2`; every *physical* proposition is decidable because non-terminating histories are
+pruned before they become events. From the same substrate, Lean-checked derivations recover the
+**leading value** `α = 1/137` (0.026% from measured) and other quantities with stated residuals. The
+machine-verified core is the load-bearing part; whether this substrate is the *unique* one is a
+conjecture with published kill-conditions.
+
+**How to read the claims below — QLF types every claim, and this document keeps the layers separate
+(the single most important credibility point).** Watch for these tags:
+
+| Tag | Meaning |
+|---|---|
+| **`[proven]`** | machine-verified in Lean 4, zero `sorry` — the RCA₀ formal core (a skeptic can check the named theorem) |
+| **`[modeled]`** | follows *given* the substrate→physics mapping (an explicit, additional modeling choice) |
+| **`[matched]`** | reproduces a *measured* value, **with the residual stated** (retrodiction, not a free fit) |
+| **`[conjecture]`** | the *exclusivity* claim — that ZFA is the **only** such substrate — provisional, with named defeaters |
+
+The strong claims are the **`[proven]`** ones; the interpretive, matching, and exclusivity claims are
+**fenced, never blended into them**. Where older prose below says "derives α = 1/137" or "correct
+logic" without a tag, read it in this typed sense: the *leading value* is `[modeled]`+`[matched]`, and
+"correct/unique" is the `[conjecture]`.
+
+### Status at a glance
+
+| Classical statement | QLF reconstruction | Status |
+|---|---|---|
+| Quantum logic *postulated* (Birkhoff–von Neumann 1936) | orthomodular, non-distributive `MO2` **derived** from closure | **`[proven]`** ([`QLF_QuantumLogic`](lean/QLF_QuantumLogic.lean): `orthomodular`, `not_distributive`) |
+| General QL ≅ Hilbert projection lattice | proper-involution + finite measure-uniqueness done; Gleason/Piron–Solèr the *one* named bridge | **`[proven]` core + 1 bridge** ([`QLF_ProperInvolution`](lean/QLF_ProperInvolution.lean), [`QLF_Reconstruction`](lean/QLF_Reconstruction.lean)) |
+| Incompleteness threatens the foundation | undecidable ⟺ the non-terminating tail, pruned before events | **`[proven]`** (`qlf_universality`) + interpretation |
+| `α` is a free input | `α⁻¹ = 128 + d² = 137` *leading* value | **`[modeled]`+`[matched]`** 0.026%; residual `0.036` open |
+| The continuum is fundamental | continuum = statistical completion of a discrete stream | **`[modeled]`**; *unrealizability* of an actual continuum is **`[proven]`** ([`QLF_Realizability`](lean/QLF_Realizability.lean)) |
+| ZFA is one substrate among many | ZFA is *the* physical substrate | **`[conjecture]`** (defeaters below) |
+
+**What would falsify this (falsifiability first).** The **`[conjecture]`** (exclusivity) has published
+kill-conditions: an **axion detection** (defeats strong-CP-without-axion), a measured **`α(0)` drift**
+(QLF proves none, `no_cosmological_drift_of_alpha`), an exhaustive **`0νββ` null** (QLF predicts the
+Majorana neutrino), or a **QRNG deviation** from Born statistics. The **`[proven]`** core fails
+differently and *independently*: a `sorry` or an inconsistency in the Lean would break a proven claim;
+a wrong residual trend (e.g. a measured `α⁻¹ < 137`) would break a **`[matched]`** one. *The formal
+core and the physical mapping can fail separately* — that separation is the whole point.
+
 ---
 
 ## 1. The universe is logical — and that is not a surprise
@@ -160,10 +204,62 @@ by building the universe out of it:
 
 A logic that reconstructs the universe from a single finite distinction — and that relocates
 every classical paradox to the non-physical tail it correctly prunes — is not one
-interpretation among many. It is the **correct** logic, demonstrated by what it builds.
+interpretation among many. It is the **correct** logic, demonstrated by what it builds. *(In the
+typed sense of the legend: the reconstruction is `[proven]`/`[modeled]`/`[matched]` as marked; that
+this substrate is the* unique *such logic — "correct" as in "only" — is the `[conjecture]`, held
+provisionally with the defeaters of §6. The demonstration makes it compelling; the kill-conditions
+keep it honest.)*
 
 > ZFC is flawed logic, suitable only where there are no exploding infinities. ZFA — quantum
 > logic, built from the bottom up — is correct logic.
+
+---
+
+## 6. Skeptical readings, answered
+
+The strong claims invite strong objections. Here are the obvious ones, answered without hedging the
+formal core or overselling the mapping.
+
+**"Isn't this numerology?"** The test that separates a derivation from a coincidence is
+*counterfactual rigidity*, and QLF passes it in Lean. `α⁻¹ = 128 + d²` is not a lone number massaged
+to `137`: it is forced to `137` **only** at `d = 3` (`only_3d_substrate_gives_137`: 2D→132, 4D→144,
+5D→153), `137` is the only prime in the family, and the *same* `3` reappears in the Koide relation,
+colour SU(3), and the three generations. A numerological fit has no counterfactuals; a derivation
+predicts what the other cases must give, and these are machine-checked (`[proven]` counterfactuals;
+the `[matched]` value carries its `0.026%` residual honestly, with the `0.036` remainder *open*, not
+glossed).
+
+**"Is the 8-twist alphabet reverse-engineered to fit?"** The alphabet is fixed by the substrate
+structure (four Hermitian-pair axes × two orientations = the `2³` gauge/spatial split), not chosen per
+result — the *same* eight symbols yield the quantum logic, the spin algebra, the gauge groups, and the
+constants. The genuinely open question — *is this alphabet forced, or merely sufficient?* — is stated
+plainly as the reconstruction target (`[conjecture]`; [`Completeness_Evidence.md`](Completeness_Evidence.md)
+§6), **not** hidden. Sufficiency is proven (`qlf_universality`); uniqueness is conjectured with
+defeaters.
+
+**"How does this relate to existing programs — quantum logic, topos theory, digital physics,
+constructivism?"** It is their convergence, not a rival: Birkhoff–von Neumann *postulated* the quantum
+lattice, QLF **derives** it; Brouwer/Bishop/Weyl argued for constructive foundations, QLF supplies a
+*physical* constructive floor (RCA₀) with a machine-checked realizability obstruction
+(`no_continuum_in_finite_region`); Zuse/Wheeler/Wolfram's digital-physics intuition ("it from bit",
+the ruliad) is here given a *selection principle* (ZFA) and a formal core. The lineage is explicit in
+the [convergence table](README.md), 18 independent programs arriving at the same picture.
+
+**"What would count as a decisive failure — of the formal core vs. the physical mapping?"** They fail
+independently, by design. *The formal core* (`[proven]`) fails if a `sorry` or an inconsistency is
+found in the Lean, or if the orthomodular/non-distributive `MO2` result is refuted — a formal-methods
+person can check these directly. *The physical mapping* (`[modeled]`/`[matched]`) fails if a residual
+runs the wrong way (a measured `α⁻¹ < 137` refutes the screening picture) or a named defeater fires
+(axion, `α` drift, `0νββ` null, QRNG deviation). *The exclusivity* (`[conjecture]`) is the weakest
+layer and is labelled so. A critic who breaks the mapping does **not** break the theorems, and vice
+versa — which is exactly why the layers are kept separate.
+
+**Independent verification.** The signature `[proven]` results of this document — `MO2`
+non-distributivity, orthomodularity, the Hermitian spectral property — live in
+[`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean) and [`lean/QLF_Spectral.lean`](lean/QLF_Spectral.lean);
+`lake build` verifies them (CI-green, zero `sorry`). Every non-RCA₀ bridge used in the physics mapping
+is listed explicitly in the [axiom inventory](CLAUDE.md). The combinatorial counts behind the constants
+run as zero-setup Python demos in the repo.
 
 ---
 
