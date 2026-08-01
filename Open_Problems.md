@@ -183,8 +183,15 @@ closes many at once. The three genuinely-distinct open quantities are:
    Kibble–Sciama `c=3π/2` is **subcritical** (`gravBinding_subcritical`, `< g_crit=1`), so
    closure-binding must supply the rest (`binding_must_supply_rest`); and `g = (log 2)·channel·packing`
    (`bindingCoupling`, monotone in the packing) pins the open number to the single **packing factor** —
-   the interacting many-closure density at the SOC point (not a clean count, **not fitted**, not derived;
-   `v` stays calibrated, not predicted).
+   the interacting many-closure density at the SOC point. **The packing factor was then modelled from the
+   8-twist combinatorics and the verdict Lean-anchored** (`QLF_PackingFactor`): in the standard NJL loop
+   form `closureLoopCoupling mult = mult·N_c/(4π²)` (like `g_grav`), the bare packing is **O(1)** and
+   subcritical for any alphabet multiplicity `mult ≤ 8` (`bare_packing_subcritical`, `= 6/π² ≈ 0.61` at 8),
+   and since `condensationDepth = π/(4g²)` is antitone (`condensationDepth_antitone`), an O(1) coupling
+   gives only O(1) depth — so a bare count **cannot** produce the `v ≪ M_Pl` hierarchy (which needs
+   `g ~ 10⁻⁸`). So `g`/`v` is **not a clean combinatorial count** — now shown *by construction*, not merely
+   asserted — it is the near-critical SOC value (interacting dynamics; **not fitted**, not derived; `v`
+   stays calibrated, not predicted).
 2. **The QED one-loop running coefficient `2/(3π)` per charged fermion** (the α-residual / running,
    [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117)) — a *value-free* census
    vacuum-polarization target (horizon-weighted, `closedAtHorizon`), distinct from `g`. **The leading
