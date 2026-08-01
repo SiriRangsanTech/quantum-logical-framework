@@ -191,7 +191,22 @@ closes many at once. The three genuinely-distinct open quantities are:
    gives only O(1) depth — so a bare count **cannot** produce the `v ≪ M_Pl` hierarchy (which needs
    `g ~ 10⁻⁸`). So `g`/`v` is **not a clean combinatorial count** — now shown *by construction*, not merely
    asserted — it is the near-critical SOC value (interacting dynamics; **not fitted**, not derived; `v`
-   stays calibrated, not predicted).
+   stays calibrated, not predicted). **The interacting dynamics is now modelled the substrate-native way**
+   (Grok's roadmap), reducing the residual to a *single* SOC observable: (i) **gauge folds attract** — a
+   *theorem*, `QLF_ClosureAttraction`: free action `|count_pos−count_neg|` is subadditive
+   (`freeAction_subadditive`), strictly reduced for opposite gauge (`opposite_gauge_attracts`), to zero for
+   complementary (`complementary_binding_closes`) — channel selection is the *sign*, not a posit; (ii) that
+   attraction **supplies the restoring force** that creates a finite steady defect density the bare
+   (monotone) census lacks — `QLF_SteadyStateDensity`: `netRate = c − k·ρ²`, unique attractive fixed point
+   `ρ* = √(c/k)` (`steady_is_fixed_point`, `netRate_strictly_decreasing`), and at `k=0` **no** steady state
+   (`no_steady_without_binding`) — the interaction is the lever; (iii) the **loop to the electroweak scale
+   is closed** — `QLF_ElectroweakScale`: `g = (log 2)·channel·packing(ρ*)` (`g_eq_binding_quantum`) and
+   `R_stable = 1/ρ*` (`RStable_eq`), so `g` and `v` are both functions of the one density `ρ*`. Engine
+   measurement: [`defect_density.py`](defect_density.py) (converges to `√(c/k)`, `k=0` diverges, reported
+   honestly). **So the residual is now the single SOC observable `ρ* = √(c/k)`** — the creation rate `c`
+   (cascade generation) and binding rate `k` (shared-closure combinatorics + `log 2`), derivable in
+   principle from the 8-twist alphabet, the one remaining number (**not fitted**; `v` calibrated, not
+   predicted).
 2. **The QED one-loop running coefficient `2/(3π)` per charged fermion** (the α-residual / running,
    [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117)) — a *value-free* census
    vacuum-polarization target (horizon-weighted, `closedAtHorizon`), distinct from `g`. **The leading
