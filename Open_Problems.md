@@ -178,7 +178,13 @@ closes many at once. The three genuinely-distinct open quantities are:
    absolute value (`b₀=7` done, only the `Λ_QCD`-to-floor scale is `g`); and the mass-scale half of the
    absolute SI `G` (`α_G = exp(−28π)` done, `QLF_GravitationalCoupling`). **Diagnosis (#121):** this is
    condensation criticality, so it is *not* a clean count (`b_EW` has none) — it needs the interacting
-   many-closure density at the critical point.
+   many-closure density at the critical point. **The residual is now precisely localized in Lean**
+   (`QLF_BindingStrength`): the gravitational floor `g_grav = c·N_c/(4π²) = 9/(8π) ≈ 0.36` at
+   Kibble–Sciama `c=3π/2` is **subcritical** (`gravBinding_subcritical`, `< g_crit=1`), so
+   closure-binding must supply the rest (`binding_must_supply_rest`); and `g = (log 2)·channel·packing`
+   (`bindingCoupling`, monotone in the packing) pins the open number to the single **packing factor** —
+   the interacting many-closure density at the SOC point (not a clean count, **not fitted**, not derived;
+   `v` stays calibrated, not predicted).
 2. **The QED one-loop running coefficient `2/(3π)` per charged fermion** (the α-residual / running,
    [#117](https://github.com/jimscarver/quantum-logical-framework/issues/117)) — a *value-free* census
    vacuum-polarization target (horizon-weighted, `closedAtHorizon`), distinct from `g`. **The leading
