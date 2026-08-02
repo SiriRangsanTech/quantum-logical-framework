@@ -374,6 +374,23 @@ machine-checked:** a prime count admits no factorization, so it is *atomic* (`pr
 P1 is the single explicit `axiom` (`realization`); together they give *elementary ⟺ prime*
 (`elementary_iff_prime`, I3). **And R1/R2 is machine-checked — but as a *cross-sector consistency theorem*, not rigidity over a knob.** `d` is **not** a free parameter: it is *substrate-derived* (the 6+2 split yields 3 axis-pairs, §6/#42; minimal-faithful-rendering forces the dimension — *not* read off from "our perspective is 3-D," which would feed a measured datum into `128 + d²` and degrade the parameter-free claim into a one-datum fit). So two *independent* substrate derivations — the **dimension** (`d = 3`, giving `d² = 9`) and the **bare coupling** (`128 = 2⁷`, the selectivity product) — meet, and `alpha_unique` (`128 + d² = 137 ⟺ d = 3`) proves they meet with **zero slack**, at exactly one point. `rival_excluded` re-reads as the *no-slack lemma*: the sectors are **locked** — a 4-D rendering would force `144`, so the framework could not have accommodated a mismatch between its own two derivations, and that it did not have to is the checkable fact. This is **overdetermination**, the strongest evidence QLF has. **A third sector agrees:** `137` is prime (`inverseAlpha_three_prime`), hence *elementary* (I3) — dimension, bare coupling, and elementarity all meet at `α⁻¹ = 137`. The slogan: **`α⁻¹` counts the rendering dimension** (`alpha_counts_dimension`: `α⁻¹ − 128 = d²`). **The `136` payoff, both deaths proven:** composite ⟹ non-elementary (I3) *and* unreachable at any dimension (`dimension_136_unreachable`: `128 + d² = 136` has no integer solution). **Honest scope:** `d = 3` is now evidenced at *both* independent layers — the *counting* layer (the 6+2 split → 3 axis-pairs) **and** the *mechanism* layer: the receipt-quotient growth dimension equals the axis-pair count = 3 for the 8-twist alphabet ([`pointer_swap_fuzz.py`](pointer_swap_fuzz.py), issue #62), so the swap-graph check *lands at 3* too, back-stopping the cross-sector theorem. The residual there is the posited atomic-integration→axis-winding map ([`Pointer_Swap_Fuzz.md`](Pointer_Swap_Fuzz.md)); on the rigidity side, the full free-`Expr`-grammar enumeration + census `N(d)` (issue #116).
 
+**The `N(d)` look-elsewhere census, computed ([`alpha_rigidity_census.py`](alpha_rigidity_census.py), issue #116).**
+The last open acceptance criterion — the reachable-value count over the *full free-`Expr` grammar* — is
+now computed, and it delivers an honest, load-bearing clarification rather than a small number. Over the
+free grammar the look-elsewhere is **large**: `137` needs depth ≥ 2 (no single op reaches it), but at the
+construction's own depth 2 roughly **60 %** of the ±9 integer band `[128, 146]` is already reachable (`137`
+among them, not sparse), and by depth 3 the whole band is filled (19/19); ten levels are far more than
+enough — the reachable set saturates to every integer up to the cap by depth ≈ 3. So **grammar sparsity
+provides no rigidity** — consistent with the already-proven `grammar_reaches_all` (the frozen grammar
+excludes nothing, even `136`). The rigidity therefore lives **entirely in the frozen template** `α⁻¹ =
+128 + d²` with `d` substrate-derived: there `137` is unique at `d = 3` with **zero slack** and `136` is
+unreachable (`d² = 8` has no natural solution) — exactly the `alpha_unique` / `dimension_136_unreachable`
+/ cross-sector-overdetermination joint already machine-checked above. The census quantifies *why* "all
+rigidity lives in the template" is the correct reading, and pins the `136`-dies-twice anti-Eddington
+sentence as a **template** fact (the free grammar *does* reach `136`; the template does not). A Lean
+`reachable_finite` over the free grammar would be true but non-load-bearing (the count is large), so the
+honest close is the census + the proven template lock, not a Lean enumeration.
+
 **Honest scope.** The identification "this closure structure *is* the electromagnetic coupling" is the
 interpretive premise stated in §1 (uncertified). The rigidity claim is about the *integer* value `137`;
 the `0.036` residual is the separate registry item (only the proven bound `137 < α⁻¹ < 137.048` of the
