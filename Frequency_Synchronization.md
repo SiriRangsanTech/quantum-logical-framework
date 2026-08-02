@@ -61,6 +61,57 @@ skeleton: [`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean) (reuse-only, no
 **Honest scope:** a structural / foundational framing that crystallizes established pieces (`f=1/R`,
 mass=frequency, the primes, the firebreak, universality) into one named model — not a new derivation.
 
+### 0a. The closure ↔ Feynman-diagram equivalence, formalized
+
+§0.2 states that a closure **is** a quantum-logical computation — a Feynman-diagram set. That slogan is
+now a **machine-checked inductive correspondence** ([`QLF_FractalDiagram`](lean/QLF_FractalDiagram.lean),
+CI-green; issue [#138](https://github.com/jimscarver/quantum-logical-framework/issues/138)). The map
+carries every ZFA closure to an abstract combinatorial (Feynman) diagram of a definite **order**, built
+entirely inside the substrate (`TopoString` / `achieves_ZFA`) — no continuum, no continuum QFT assumed.
+
+**The predicate.** `IsDiagram h o` — "the closure `h` is a diagram of order `o`" — has three clauses,
+the discrete images of tree-level, a vertex, and a loop insertion:
+
+- **base** (order `0`, tree-level / elementary): every ZFA closure is a diagram of order `0`; its
+  balanced `+/−` content is the elementary receipt, its unpaired spatial twists the external legs.
+- **binding** (a Feynman vertex, `ord = o₁ + o₂ + 1`): two diagrams whose *joint* history is again a
+  closure combine at a new vertex — the free-action-reduction binding of
+  [`QLF_ClosureAttraction`](lean/QLF_ClosureAttraction.lean) / [`QLF_ClosureBinding`](lean/QLF_ClosureBinding.lean),
+  read as a charged or neutral vertex by its gauge channel.
+- **nesting** (fractal insertion, `ord = oc + os`): a sub-diagram inserted into a closing skeleton. The
+  *same* clauses apply to the sub-closure, so the construction is **self-similar** — every sub-diagram is
+  again a diagram by the same rules (a tree insertion adds no loop order, exactly as in QED). This is the
+  precise content of the "fractal" in the correspondence.
+
+**The equivalence is anchored by three theorems** (no new axioms):
+
+- **Soundness** — `diagram_is_closure`: every `IsDiagram h o` has `achieves_ZFA h`. A diagram is a
+  genuine ZFA receipt, not a formal symbol (the [`QLF_Motives`](lean/QLF_Motives.lean) `realized` move,
+  here for the diagram reading). So the diagram side and the closure side are the *same* objects.
+- **Gate C1 — order-0 = the closure census** (`order_zero_iff_closure`): `IsDiagram h 0 ↔ achieves_ZFA h`.
+  The elementary / tree-level diagrams are **exactly** the ZFA closures — the same closure census
+  `C(2n,n)` ([`QLF_Firebreak`](lean/QLF_Firebreak.lean) / [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean))
+  whose counting feeds the `128 = 2⁷` and `d² = 9` of `α⁻¹ = 128 + d²`. The minimal conjugate pair
+  `[+,−]` is the base witness (`minimal_diagram`).
+- **Gate C2 — order-1 weight = the one-loop coefficient** (`orderOneWeight_eq`): a single-binding
+  (order-1) diagram exists (`single_binding_order_one`), and its census weight is the one-loop QED running
+  coefficient `2/(3π)` derived value-free in [`QLF_VacuumPolarization`](lean/QLF_VacuumPolarization.lean).
+  Weighted by the charge census `Σ Nᶜ Q_f² = 8` ([`QLF_ChargeCensus`](lean/QLF_ChargeCensus.lean)) this is
+  the SM electromagnetic slope `16/(3π)` (`orderOne_tower_slope`) — the tie into the α-residual tower
+  ([#117](https://github.com/jimscarver/quantum-logical-framework/issues/117), [`Alpha.md`](Alpha.md) §4a).
+
+So "a closure is a set of Feynman diagrams" is no longer only a slogan: the inductive definition plus
+both consistency gates are machine-checked, with the census generating function `𝒵(x) = Σ_{h ZFA}
+x^{ord(h)}` the discrete engine of the perturbative expansion.
+
+**Honest scope (`fractal_diagram_in_progress`).** The two gates are theorems; the **fractal expansion
+itself** — `𝒵(x)` summed to the depth-≥3 tail that would carry the eight-digit `0.036` α-residual — is
+**not** claimed. It bottoms out in the absolute mass scale (frontier #1, the open coupling `g`/`ρ*`,
+[`QLF_CondensateGap`](lean/QLF_CondensateGap.lean)) and the Standard Model's **own** non-perturbative
+hadronic vacuum polarization — exactly as [`QLF_VacuumPolarizationTower`](lean/QLF_VacuumPolarizationTower.lean)
+and #117 state. The literal QFT diagrammatics (`e^{iS/ℏ}` phase, propagators/vertices) are the continuum
+rendering; the closing histories are the substrate content.
+
 ## 1. What Frequency Synchronization Means in QLF
 
 Frequency \(f\) is the vacuum ecology’s natural “tick rate” — the rate at which unresolved distinctions attempt to close into stable loops. In Planck units the default vacuum frequency is \(f = 1\) (one logical step per unit time), but it can be locally modulated by entanglement density.
