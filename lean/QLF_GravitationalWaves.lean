@@ -159,7 +159,8 @@ theorem boxD_dAlembert (f g : ℤ → ℝ) (t x : ℤ) : boxD (dAlembert f g) t 
 /-- The **metric perturbation** is the fractional closure-density ripple, `h ∝ δρ/ρ*` (`ρ*` the SOC
     equilibrium, `QLF_SteadyStateDensity`). Being a constant multiple of `δρ`, it obeys the *same*
     wave equation. -/
-def metricPerturbation (ρstar : ℝ) (δρ : LatticeField) : LatticeField := fun t x => δρ t x / ρstar
+noncomputable def metricPerturbation (ρstar : ℝ) (δρ : LatticeField) : LatticeField :=
+  fun t x => δρ t x / ρstar
 
 /-- **`□_d h = 0` for the metric perturbation** `h = δρ/ρ*` — the linearized metric ripple satisfies
     the same discrete wave equation as the density ripple (continuum limit: `□h_μν = 0`). -/
