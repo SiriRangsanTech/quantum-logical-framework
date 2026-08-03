@@ -5,7 +5,6 @@
 
 **Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Authors:** Jim Whitescarver, with Grok (xAI) and Claude (Anthropic)  
-**Date:** April 26, 2026 (grand-unification update 15 June 2026)  
 
 > **Universal Relativity is the grand unification.** Einstein made *spacetime* relative; QLF makes
 > *everything* relative. The four forces, gravity, and mass are not separate things — they are
@@ -13,36 +12,115 @@
 > logical densities, in different Markov-blanket frames. There is one substrate; physics is the set of
 > relative views of it. (§4a.)
 
+## 0. Why absolute space, absolute time, and continuum infinities cannot be fundamental
+
+Before the construction, it is worth stating precisely what problem it solves. Two families of
+assumption sit at the base of pre-relativistic and much of modern physics — a fixed background
+(absolute space, absolute time, or a pre-existing continuum manifold) and the actual infinities of the
+continuum — and both are, on the historical record, empirically empty and theoretically costly.
+
+**Absolute space and time are empirically undetectable, and were removed once, deliberately.** Newton's
+absolute space and time (*Principia*, 1687) were contested at once on relational grounds: in the
+Leibniz–Clarke correspondence (1715–16) Leibniz argued that space and time are nothing over and above
+the relations among bodies and events, so a uniform shift of the whole universe through absolute space
+would be a distinction with no observable difference — a violation of the identity of indiscernibles.
+Physics eventually sided with Leibniz. Special relativity (Einstein 1905) removed absolute simultaneity
+— there is no frame-independent "now" — and general relativity (1915) removed the fixed geometric
+background, making the metric itself a dynamical field fixed by its contents. The lesson is structural,
+not merely historical: **any theory that re-introduces a preferred global frame, a universal time
+parameter, or a pre-existing background manifold re-creates exactly the absolute structure relativity
+was built to eliminate**, and pays the same price — a layer of ontology no measurement can reach.
+
+**Continuum infinities are the source of a century of pathologies.** Taking a continuum as primitive
+imports actual infinities that surface wherever the theory is pushed: the ultraviolet divergences and
+non-renormalizable infinities of quantum field theory, the infinite zero-point vacuum energy (whose
+naive value exceeds the observed cosmological constant by ~10¹²²), the curvature singularities of
+classical general relativity, and the measurement problem's reliance on a continuous state space with
+uncountably many distinguishable states. None of these infinities is observed. Each is tamed, in
+practice, by quietly restoring a cutoff — a shortest length, a highest energy, a discretization — that
+is to say by *removing* the continuum exactly where it would otherwise give a wrong (infinite) answer. A
+continuum that must be cut off wherever it is used is a calculational convenience, not a feature of the
+world.
+
+**Measurement returns finite counts, not continua.** This is now codified. The 2019 revision of the SI
+base units defines each unit by fixing the exact value of a defining constant (`ℏ`, `c`, `e`, `k_B`,
+`N_A`, …), so that every measured quantity is reported as an integer count of quanta plus a rational
+uncertainty interval — never as a completed real number. No apparatus has ever returned an actual real;
+it returns a finite record. A state space of uncountable cardinality therefore carries parameters no
+finite-capacity measurement can ever fix — the non-identifiability made precise in the project's
+information-theoretic modules ([`Shannon_Overfit.md`](Shannon_Overfit.md),
+[`lean/QLF_Realizability.lean`](lean/QLF_Realizability.lean): a finite-information region admits no
+injection from an infinite state space). The claim is the careful one — **consistency ≠ realizability**:
+the real continuum is a consistent mathematical object, simply not a realizable physical one, and where
+it is forced onto reality it produces the divergences above.
+
+**Consequence.** A foundation that takes a continuum manifold or an absolute temporal parameter as
+primitive begins, on both empirical and theoretical grounds, from structures that cannot appear in the
+data and that generate internal difficulties — divergences, singularities, non-constructive existence
+claims, and a state space too large for any measurement to pin down. These are not incidental blemishes;
+they are the direct signature of the absolute/continuum assumptions.
+
+**How the single ZFA postulate removes them.** Universal Relativity keeps what relativity got right and
+drops the two assumptions above, replacing them with one selection rule — *only zero-free-action
+histories are realized* (§2):
+
+- **No pre-existing spacetime.** Intervals are synthesized event by event from finite ZFA closures (§3);
+  there is no background manifold to be absolute about. The Minkowski metric and the full Lorentz group
+  are then *derived* — machine-checked as the determinant of a 2×2 Hermitian state and the
+  `SL(2,ℂ)→SO⁺(1,3)` double cover (§3a).
+- **No absolute time.** There is no universal time parameter; each closure carries its own local clock
+  (`f = 1/t`), and cosmic age is a *derived count* of discrete ticks `t₀ = N·τ_Planck` (§5), not an input.
+- **No continuum infinities.** Every realized history is a finite, constructible string that balances to
+  zero free action, so ultraviolet divergences and curvature singularities are impossible *by
+  construction*, not by subtraction — the discreteness other theories impose as a cutoff is here the
+  primitive.
+- **One postulate for many.** "Only zero-free-action histories are realized" does the work that absolute
+  space, absolute time, a background metric, and a continuum state space did in the older frameworks —
+  without the pathologies they carry.
+
+The rest of this document shows, section by section and with machine-checked anchors, that this single
+rule *recovers the successful empirical content of relativity* — local `c`, Lorentz invariance, the
+equivalence principle, the weak-field metric, Mercury's perihelion advance, the cosmological constant —
+while eliminating the absolute structures and continuum infinities that generated the pathologies. The
+continuum is not denied as mathematics; it is recovered as the *rendering* of the finite substrate in
+the large, the way a smooth curve renders a dense set of points.
+
 ## Summary
 
 Universal Relativity extends Einstein's central move — *no absolute frame, no absolute simultaneity* —
 from spacetime to the whole of physics. From the single postulate that only zero-free-action (ZFA)
 histories persist:
 
-- **Spacetime is synthesized**, not given: intervals are built event-by-event from ZFA closures
-  ([`SpaceTime.md`](SpaceTime.md)).
-- **Special relativity is derived**: local `c`, Lorentz invariance, and the equivalence principle
-  emerge from closure in a statistically uniform stateless ether ([`Time.md`](Time.md) §4,
-  [`Cross_Frequency_Lorentz.md`](Cross_Frequency_Lorentz.md)), rather than being postulated.
-- **Singularities are impossible by construction**: event synthesis is discrete and finite, so gravity
-  and cosmic expansion are local quantum event synthesis, not divergences ([`BLACK-HOLES.md`](BLACK-HOLES.md)).
-- **The four forces are one perspective-dependent closure** (§4a,
-  [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md)): electromagnetism is the *abelian* trace,
-  the weak and strong forces are its *non-abelian* spatial projections (at different logical densities),
-  and gravity is the *geometry* of the same closures — joined at **mass = constructing delay**. Einstein
-  made spacetime relative; Universal Relativity makes *everything* relative: which projection, what
-  density, whose frame.
-- **Causality stays strictly local**: light-speed correlations are same-time, same-place closure
-  events; only information from the past acts locally, and the past determines the future purely
-  locally — the realized history is a causal set ([`SpaceTime.md`](SpaceTime.md)).
-- **Cosmic age is a derived count of Planck ticks** `t₀ = N·τ_Planck`, not an empirical input (§5,
-  [`AgeOfUniverse.md`](AgeOfUniverse.md)).
-- **Quantum gravity and the dark sector are accounted for**: gravity is quantized as the discrete
-  causal-set geometry of closures (no graviton to gauge — [`Quantum_Gravity.md`](Quantum_Gravity.md),
-  the master synthesis); **dark energy** is `Ω_Λ = log 2`, the local-clock tick that closes the 10¹²²
-  vacuum catastrophe ([`Cosmological_Constant.md`](Cosmological_Constant.md)); and **dark matter** is
-  denser logic near masses on the *same* Hubble horizon — `a₀ = cH₀/2π`, expand/contract as the two
-  faces of one horizon ([`DarkMatter.md`](DarkMatter.md)).
+spacetime is synthesized (not given), special relativity is derived (not postulated), singularities and
+UV infinities are impossible by construction, the four forces are one perspective-dependent closure
+(§4a), causality stays strictly local (a causal set), and cosmic age is a derived count of Planck ticks.
+
+**Results at a glance** (Grade-disciplined — theorems, structural/SOC observables, and open residuals
+kept distinct):
+
+- **Machine-verified (theorems).** The Minkowski interval *is* the determinant of the 2×2 Hermitian
+  state ([`lean/QLF_Minkowski.lean`](lean/QLF_Minkowski.lean)); the `SL(2,ℂ)→SO⁺(1,3)` double cover
+  ([`lean/QLF_LorentzCover.lean`](lean/QLF_LorentzCover.lean), the bridge axiom reduced in
+  [`lean/QLF_LorentzGeneration.lean`](lean/QLF_LorentzGeneration.lean)); local `c = L_P/τ_P`
+  ([`lean/QLF_SubstrateLightSpeed.lean`](lean/QLF_SubstrateLightSpeed.lean)); Newton `1/r²` + the form
+  `G = L_P²c³/ℏ` ([`lean/QLF_GravityFromDelay.lean`](lean/QLF_GravityFromDelay.lean)); the *strength* of
+  gravity `α_G = exp(−28π)` ([`lean/QLF_GravitationalCoupling.lean`](lean/QLF_GravitationalCoupling.lean));
+  `Ω_Λ = log 2`, closing the 10¹²² vacuum catastrophe
+  ([`lean/QLF_CosmologicalConstant.lean`](lean/QLF_CosmologicalConstant.lean)); Mercury's 42.99″/century
+  perihelion advance ([`lean/QLF_MercuryPerihelion.lean`](lean/QLF_MercuryPerihelion.lean)); the Born
+  measure axioms from integer path-counts
+  ([`lean/QLF_BornProbability.lean`](lean/QLF_BornProbability.lean)); Pauli exclusion
+  ([`lean/PauliExclusion.lean`](lean/PauliExclusion.lean)); a finite, positive cosmic age
+  ([`lean/AgeOfUniverse.lean`](lean/AgeOfUniverse.lean)).
+- **Structural / SOC observables (derived structure; absolute value open).** The four forces as one
+  perspective-dependent closure (§4a, [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md)); dark
+  matter as denser logic on the *same* Hubble horizon, `a₀ = cH₀/2π` (the `1/2π` prefactor confirmed by
+  the blind SPARC fit, [`DarkMatter.md`](DarkMatter.md)); the electroweak / mass scale `v = R_stable`,
+  reduced to the single self-organized-critical density `ρ*` (frontier #1).
+- **Open residuals (named, not hidden).** The absolute SI `G`'s mass-scale half (via `ρ*`); the α
+  `+0.036` running tail; the `4 log 2` horizon-entropy normalization; the full Einstein *curvature* side
+  (the causal-set order→metric programme, [`Einstein_Equations.md`](Einstein_Equations.md) §6a); a
+  possible small dark-energy `w` deviation.
 
 The single most complete companion is [`Quantum_Gravity.md`](Quantum_Gravity.md) — the master synthesis
 treating this completion as one face of a unified algebraic event (gravity, holography, expansion, the
@@ -51,19 +129,19 @@ dark sector, ER=EPR). The personal narrative and the Einstein dialog behind it a
 
 ## Abstract
 
-Universal Relativity is a proposed quantum-logical completion of Einstein’s relativity. It treats spacetime, gravity, cosmic expansion, quantum measurement, and string-like extended structure as emergent consequences of a single postulate:
+Universal Relativity is a proposed quantum-logical completion of Einstein's relativity, built on a
+single postulate:
 
 > **Only zero-free-action histories persist as physical events.**
 
-In this framework the universe is **possibilist**: all admissible logical histories exist as possibilities, but only histories that achieve **Zero Free Action** (`ZFA = 0`) are realized as events. Those events synthesize spacetime intervals. Matter, fields, gravity, and cosmic time are therefore not assumed as primitive. They emerge from stable closures in an 8-twist quantum-logical algebra:
-
-```text
-^ v < > / \ + -
-```
-
-Einstein assumed a constant local speed of light and the equivalence principle. Universal Relativity **derives** local `c` and Lorentz invariance from ZFA closure — the uniform-ether mechanism of [`Time.md`](Time.md) §4 / [`SpaceTime.md`](SpaceTime.md) §4 (see §3) — and grounds the equivalence principle in the same dilation mechanism. The program is computable and singularity-free by construction.
-
-The `AgeOfUniverse.md` update extends this idea to cosmology. The cosmic age of approximately **13.8 billion years** is interpreted not as the age of possibility itself, nor as proof of an absolute beginning, nor as a free empirical input, but as a **derived count of Planck ticks** — the effective proper time accumulated along the realized ZFA event history of our observable universe (`ℏ` fixes the tick, the substrate fixes the count; §5).
+The universe is **possibilist**: all admissible logical histories exist as possibilities, but only those
+achieving **Zero Free Action** (`ZFA = 0`) are realized as events, and those events synthesize spacetime
+intervals. Matter, fields, gravity, and cosmic time are not primitive — they emerge from stable closures
+in an 8-twist quantum-logical algebra (`^ v < > / \ + -`). Where Einstein *assumed* a constant local `c`
+and the equivalence principle, Universal Relativity **derives** local `c`, Lorentz invariance, and the
+equivalence principle from ZFA closure in a statistically uniform stateless ether (§3); the program is
+computable and singularity-free by construction (§0), and cosmic age is a derived count of Planck ticks,
+not an empirical input (§5).
 
 ## 1. Possibilist Ontology
 
@@ -128,6 +206,43 @@ ZFA is not an arbitrary stipulation. That a realized history closes with **δS =
 5. **Logically, free-action-from-nowhere = an unsourced computation.** A process that manufactured net free action would be a non-terminating, unsourced computation — precisely the undecidable / Busy-Beaver tail that `full_zeno_prune` removes *before* it can become an event. ZFA closure **is** causal closure: every event's action is sourced by prior events, and around a closed loop the initial and final states are the same vacuum, so the net is zero.
 
 The local-vs-global subtlety is the usual one: along a *sub-arc* the action need not be numerically zero — there you recover ordinary stationary-action dynamics. The **null** statement (the books summing to exactly zero, `S = ∫ℒ dΩ` with `ℒ = 0`) is for the *closed* history — the loop, the Markov blanket, the totality — where the boundary terms vanish. So δS = 0 is not a law imposed on physics from outside; it is the statement that **the ledger of change is closed**. The universe cannot get free action from nowhere because *nowhere* — an outside reservoir, an uncaused source — is not a place that exists. (Fuller philosophical treatment: [`Philosophy.md`](Philosophy.md) §4.)
+
+### 2a. Action balance as a classical and quantum principle
+
+The five points above are not a QLF invention: **action balance is one of the oldest and most robust
+principles in physics**, and ZFA is its discrete, constructive, ontological transcription. Naming the
+pedigree matters, because it shows that adopting `ZFA = 0` as the selection rule adds no new *physical*
+content — it makes an existing continuum principle finitary.
+
+- **Hamilton's principle, `δS = 0`.** Classical mechanics, electromagnetism, general relativity, and
+  quantum field theory each select their equations of motion by stationary action. QLF reads
+  "stationary" as "realized," and the closed-loop form of stationarity is exact balance.
+- **The Hamiltonian constraint `H = 0`.** In the canonical (ADM) formulation of general relativity, a
+  spatially closed universe has an *identically vanishing* total Hamiltonian, promoted to the
+  Wheeler–DeWitt equation `HΨ = 0`; the "zero-energy universe" (Tryon 1973) is the same fact. ZFA is
+  this constraint applied to every closed sub-history (Markov blanket), each a miniature zero-energy
+  universe with its own local clock.
+- **Noether's theorem (1918).** Time-translation invariance yields energy conservation; a closed system
+  with no external reservoir has a ledger that must balance. "Free action" is precisely *unsourced*
+  action, which a closed system cannot produce.
+- **Einstein's equations as an equation of state (Jacobson 1995).** The thermodynamic derivation obtains
+  the full Einstein equation from the Clausius relation `δQ = T δS` imposed on every local Rindler
+  horizon — a *balance* condition, not a fundamental field equation (sharpened by Padmanabhan and
+  Verlinde: gravity is an equation of state). QLF supplies both inputs to that balance — the horizon area
+  law and the Unruh temperature — from its own substrate ([`Einstein_Equations.md`](Einstein_Equations.md),
+  [`lean/QLF_EinsteinEquations.lean`](lean/QLF_EinsteinEquations.lean)).
+- **Discrete-sum action in causal-set and related programmes.** Causal-set theory replaces the continuum
+  action integral `S = ∫ ℒ dΩ` by a finite sum over a discrete order (the Benincasa–Dowker action),
+  realized only when the appropriate discrete quantity balances — the same move QLF makes.
+
+The single conceptual step is *finitary ontology*: take the continuum balance principle all of physics
+already obeys, transcribe it exactly onto finite constructible histories, and read the balanced ones as
+the realized ones. Concretely, the continuum variational statement `δS = 0` becomes the **exact
+algebraic requirement that the imbalance vector of a finite history vanish** — `Σᵢ imbalanceᵢ = 0` over
+the eight twist directions (§1) — with no integral, no limit, no continuum. The literature does not
+*prove* the postulate; it supplies its justification: zero free action is the natural selection rule once
+the continuum is discarded, because it is the discrete form of the balance condition physics has used all
+along.
 
 ## 3. Emergence of Special Relativity
 
@@ -359,6 +474,42 @@ See:
 - [`PauliExclusion.lean`](lean/PauliExclusion.lean)
 - [`quantum_simulator.py`](quantum_simulator.py)
 
+### 6a. Determinism and the status of randomness
+
+Measurement here is the realization of a ZFA-closed history (§6), not a primitive stochastic event. It
+is worth being explicit that this is a permissible option, not an overreach: **fundamental randomness is
+an interpretive choice, not a fact forced by the data.**
+
+Several fully deterministic completions or readings of quantum mechanics already exist and are
+empirically adequate:
+
+- **de Broglie–Bohm pilot-wave theory** — particles have definite trajectories guided by the
+  wavefunction; the Born statistics arise from ignorance of the initial configuration (quantum
+  equilibrium).
+- **'t Hooft's cellular-automaton / deterministic quantum mechanics** — an underlying deterministic
+  automaton whose coarse-grained description is standard quantum theory.
+- **Superdeterministic models** — the measurement settings and the measured system share a common past,
+  so no independent random choice enters.
+- **Everett / many-worlds readings** in which the universal wavefunction evolves *unitarily and
+  deterministically*; the apparent randomness is self-locating uncertainty about which branch one is in.
+
+These programmes differ sharply and are not all equally attractive; the point is not to endorse any one.
+It is the weaker, safer claim: their empirical viability shows that the randomness of measurement
+outcomes **can be epistemic** — ignorance of initial conditions, of the full configuration, or of the
+branch — **rather than ontic**. Quantum mechanics does not *force* a fundamental random oracle.
+
+Once the kinematics is discrete and every realized event must be a finite ZFA closure, that oracle has
+no place to sit: the next event is the next constructible closure compatible with the past, selected by
+the balance condition, not drawn from a primitive propensity. The Born-rule statistics then arise as the
+**relative counting measure over the admissible closures** — machine-checked to satisfy the probability
+axioms from integer path-counts alone, with no primitive real
+([`lean/QLF_BornProbability.lean`](lean/QLF_BornProbability.lean), [`Born_Rule.md`](Born_Rule.md)).
+Apparent randomness is the coarse-grained, relational statistics of *which* closure completed, exactly as
+in the deterministic programmes above. This determinism is **relational and global**, not a local
+hidden-variable theory of the kind Bell's theorem excludes: the correlations are shared-closure structure
+across histories (§6), not pre-assigned local values. QLF adopts the deterministic option because it is
+the one already compatible with the finite, constructive ontology of §0 — not because the data compel it.
+
 ## 7. Relation to String Theory
 
 Universal Relativity provides a bridge to string theory without treating strings as fundamental objects in a pre-existing spacetime background.
@@ -384,19 +535,38 @@ See:
 
 ## 8. Predictions and Testability
 
-Universal Relativity aims to be testable by requiring the ZFA event model to reproduce known physics while predicting measurable deviations.
+The model must first *reproduce* established physics, then stand or fall by sharp, published falsifiers.
+These three tiers are kept distinct.
 
-Key targets include:
+**Empirical recoveries (the entry bar — must reproduce known physics).**
 
-- recovery of local Lorentz invariance;
-- recovery of GR in the large-scale limit;
-- recovery of the observed cosmic age near 13.8 Gyr;
-- dark-energy-like acceleration from event synthesis;
+- local Lorentz invariance and constant local `c` (§3, §3a);
+- general relativity in the weak-field / large-scale limit — the weak-field metric and Mercury's
+  42.99″/century (§4);
+- the observed cosmic age near 13.8 Gyr as a derived Planck-tick count (§5);
+- dark-energy-like acceleration from event synthesis, `Ω_Λ = log 2` (1.2%);
 - finite black-hole interiors without information loss;
-- emergent constants from ensemble averages;
-- possible small deviations in the dark-energy equation-of-state parameter `w`.
+- the galactic radial-acceleration relation from `a₀ = cH₀/2π` (parameter-free blind SPARC fit).
 
-The theory must reproduce existing observations before any prediction can be considered successful.
+**Falsifiable kill conditions (the theory dies if any fails).** These are sharp, already-published
+tests — a single confirmed violation refutes the framework, not merely a parameter (full list + status
+in [`Experimental_Consistency.md`](Experimental_Consistency.md) §10):
+
+- **low-energy `α` is scale/time-invariant:** `α(d) = 1/(128+d²)` carries no time argument, so a
+  confirmed *cosmological drift* of `α(q²→0)` refutes QLF (`no_cosmological_drift_of_alpha`) — sharper
+  than the Standard Model, which permits drift;
+- **the fine-structure inverse is bounded** `137 < α⁻¹ < 137.048` (machine-checked): a value outside
+  that interval refutes the leading construction — and had `α⁻¹` come out **136**, QLF would be refuted,
+  not revised (the anti-Eddington rigidity, `dimension_136_unreachable`);
+- **gravitational waves propagate at exactly `c`** (masslessness): a confirmed `v_GW ≠ c` refutes the
+  synthesized-metric reading (consistent with GW170817, `|v_GW−c|/c < 10⁻¹⁵`);
+- **no light sterile (right-handed) neutrino as a weak doublet**, and **`θ̄ = 0` with no axion**.
+
+**Open absolute-scale residual (labeled — not a prediction).** The one genuinely open quantitative input
+is the absolute mass / electroweak scale `v = R_stable`, reduced structurally to the single SOC density
+`ρ*` (frontier #1); through it, the absolute SI `G`'s mass-scale half and the α `+0.036` running tail
+remain open. A small dark-energy `w` deviation is a *possible* signature, not a committed prediction.
+These are tracked as residuals, never counted as confirmations.
 
 ## 9. Implementation in QLF
 
