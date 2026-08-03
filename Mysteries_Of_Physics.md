@@ -33,7 +33,7 @@ This doc is the physics-facing companion to [`Open_Problems.md`](Open_Problems.m
 | **Singularities (infinite curvature)** | Avoided by construction — event synthesis is discrete and finite; no actual infinity is instantiated | ✅ | [`TheContinuum.md`](TheContinuum.md), [`BLACK-HOLES.md`](BLACK-HOLES.md) |
 | **The Planck scale / a minimum length** | The Planck *scale* is the closure floor *by construction* (the Compton–Schwarzschild self-dual point `μ²=1/2`); below it a blanket is inside its own horizon and cannot close | ✅ / 🧱 (SI value = unit convention) | `QLF_PlanckScale.lean`, [`Planck_Scale.md`](Planck_Scale.md) |
 | **Horizon thermodynamics (Unruh/Hawking/de Sitter)** | All three are one Unruh master relation `T = ℏa/2πck_B` at the right acceleration; the `2π` is the loop phase | ✅ | `QLF_HorizonTemperature.lean` |
-| **Gravitational waves** | Massless transverse ripple ⟹ speed `= c` (GW170817 to `10⁻¹⁵`); graviton = composite spin-2 (four half-spins), 2 polarizations | ✅ features / 🔵 dynamics | `QLF_GravitationalWaves.lean` |
+| **Gravitational waves** | Massless transverse ripple ⟹ speed `= c` (GW170817 to `10⁻¹⁵`); composite spin-2 (four half-spins), 2 polarizations; **linearized wave equation `□_d δρ = 0`** (density-perturbation route), quadrupole the leading radiative multipole | ✅ features + wave eqn / 🟡 dynamics (SOC-operator + `G/5c⁵` coeff open) | `QLF_GravitationalWaves.lean`, `gw_density_wave.py` |
 
 ## 3. Cosmology
 

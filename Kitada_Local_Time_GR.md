@@ -171,7 +171,8 @@ identifies the integration constant with the local-clock tick. It does **not** c
 tensor derivation — the local Rindler construction, the Raychaudhuri focusing equation, and general
 covariance need differential-geometry machinery QLF's Lean core does not have
 (`einstein_equations_in_progress`), the same dynamical-metric step still open for the Schwarzschild
-metric and gravitational waves; see [`GR_Schwarzschild.md`](GR_Schwarzschild.md). What is new is the
+metric and gravitational waves (whose *linearized* wave equation `□_d δρ = 0` is now anchored via the
+density-perturbation route, `QLF_GravitationalWaves`); see [`GR_Schwarzschild.md`](GR_Schwarzschild.md). What is new is the
 **identification** — Jacobson's *local* horizon thermodynamics is QLF's Markov-blanket / Kitada
 local-clock thermodynamics, so the Einstein equation of state is literally the equation of state of
 the local-clock network.

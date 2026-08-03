@@ -84,7 +84,7 @@ These are the algebraic foundation. The four faces of §1–§6 follow as physic
 - **Einstein's field equations in their full continuum form** — the discrete-to-continuum bridge is sketched but no Lean-verified derivation of $G_{\mu\nu} = 8\pi G T_{\mu\nu}$ from `rho_process_always_zfa` exists.
 - **Black-hole entropy area law $S = A/4$** — consistent with the per-atom $\log 2$ and per-Planck-area atom-count, but the precise factor of 4 (vs $\log 2 / \log e$ or similar) requires a careful continuum calculation.
 - **Cosmological constant magnitude** — qualitative story above is consistent with smallness; quantitative match to $\Lambda \approx 10^{-122}$ in Planck units is open.
-- **Gravitational waves** — should emerge as coherent disturbances in the ZFA-event-rate field; explicit derivation open.
+- **Gravitational waves** — coherent disturbances in the ZFA-event-rate field: the **linearized wave equation `□_d δρ = 0`** is now anchored via the density-perturbation route ([`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean): `boxD_dAlembert`; speed `c`, spin-2, 2 polarizations, quadrupole the leading radiative multipole). Open: deriving the wave operator from the SOC rate equations + the luminosity coefficient `G/(5c⁵)`.
 - **Quantum gravity at the LHC scale** — QLF predicts no beyond-SM physics until the Planck scale; the framework's gauge-fold rule provides one specific QLF signature for Planck-scale measurements, but laboratory tests are open work.
 
 ## 10. Open work

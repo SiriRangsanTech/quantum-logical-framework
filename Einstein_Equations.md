@@ -240,8 +240,10 @@ rung is Lean-anchored** ([`QLF_CausalInterval`](lean/QLF_CausalInterval.lean)). 
 **d'Alembertian → Ricci scalar** (Benincasa–Dowker), and the **continuum limit** to
 `G_μν = 8πG T_μν` — the same dynamical-metric step still open for the Schwarzschild metric
 ([`GR_Schwarzschild.md`](GR_Schwarzschild.md)) and gravitational waves
-([`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean)), a definite causal-set computation
-rather than a missing toolbox. What is established: the **identification** (Jacobson's local horizon =
+([`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean) — whose *linearized* wave equation
+`□_d δρ = 0` is already anchored via the density-perturbation route; the dynamical-metric derivation of
+the operator is this same causal-set step), a definite causal-set computation rather than a missing
+toolbox. What is established: the **identification** (Jacobson's local horizon =
 QLF's Markov-blanket / Kitada local clock = a node of the causal set), so the Einstein equations sit on
 two meeting substrate legs — the equation of state (coefficient) and the causal order (curvature).
 

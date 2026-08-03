@@ -111,15 +111,18 @@ kept distinct):
   measure axioms from integer path-counts
   ([`lean/QLF_BornProbability.lean`](lean/QLF_BornProbability.lean)); Pauli exclusion
   ([`lean/PauliExclusion.lean`](lean/PauliExclusion.lean)); a finite, positive cosmic age
-  ([`lean/AgeOfUniverse.lean`](lean/AgeOfUniverse.lean)).
+  ([`lean/AgeOfUniverse.lean`](lean/AgeOfUniverse.lean)); and the **linearized gravitational-wave
+  equation** `□_d δρ = 0` — the vacuum linearized field equation, from the closure-density ripple
+  ([`lean/QLF_GravitationalWaves.lean`](lean/QLF_GravitationalWaves.lean)).
 - **Structural / SOC observables (derived structure; absolute value open).** The four forces as one
   perspective-dependent closure (§4a, [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md)); dark
   matter as denser logic on the *same* Hubble horizon, `a₀ = cH₀/2π` (the `1/2π` prefactor confirmed by
   the blind SPARC fit, [`DarkMatter.md`](DarkMatter.md)); the electroweak / mass scale `v = R_stable`,
   reduced to the single self-organized-critical density `ρ*` (frontier #1).
 - **Open residuals (named, not hidden).** The absolute SI `G`'s mass-scale half (via `ρ*`); the α
-  `+0.036` running tail; the `4 log 2` horizon-entropy normalization; the full Einstein *curvature* side
-  (the causal-set order→metric programme, [`Einstein_Equations.md`](Einstein_Equations.md) §6a); a
+  `+0.036` running tail; the `4 log 2` horizon-entropy normalization; the full **nonlinear** Einstein *curvature* side
+  (the causal-set order→metric programme — the linearized vacuum sector above is anchored,
+  [`Einstein_Equations.md`](Einstein_Equations.md) §6a); a
   possible small dark-energy `w` deviation.
 
 The single most complete companion is [`Quantum_Gravity.md`](Quantum_Gravity.md) — the master synthesis

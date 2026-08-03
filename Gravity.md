@@ -83,6 +83,7 @@ single result but a **sector**: every entry below reuses the same `4π R²` coun
 | **Dark matter / MOND `a₀ = cH₀/2π`** | parameter-free SPARC fit (0.133 dex) | [`QLF_DarkMatter`](lean/QLF_DarkMatter.lean) | [`DarkMatter.md`](DarkMatter.md) |
 | **Casimir / accelerated-boundary Unruh** | finite census + `1/a⁴` + shared Unruh `T` | [`QLF_Casimir`](lean/QLF_Casimir.lean) | [`VacuumEnergy.md`](VacuumEnergy.md) §4 |
 | **Curvature side (causal-set order→metric)** | number↔volume, BD curvature, one continuum bridge | [`QLF_CausalInterval`](lean/QLF_CausalInterval.lean) + | Einstein_Equations §6a |
+| **Gravitational waves — linearized wave equation** | `□_d δρ = 0` (density-perturbation route); speed `c`, spin-2, 2 polarizations; quadrupole leading | [`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean) | [`GR_Schwarzschild.md`](GR_Schwarzschild.md) |
 
 **The dark sector is one root.** `Ω_Λ = log 2`, the horizon temperatures, and the dark-matter scale
 `a₀ = cH₀/(2π)` all hang on **one Hubble horizon and one `2π`** (the substrate loop phase, the same `2π`
@@ -95,11 +96,14 @@ of `g−2 = α/2π`) — so the holographic counting of this doc is the common s
   thermodynamics, the Einstein-equation coefficient + `Λ`, and the dark-sector scales — all from the two
   primitives (`4π R²`, `log 2`) plus the substrate 3-dimensionality.
 - **Bookkeeping:** the SI *value* of `G` (a kilogram/metre convention), not a separate empirical input.
-- **Open:** the full tensor **curvature side** of the Einstein equations (a concrete causal-set
-  order→metric program, not generic missing geometry — [`Einstein_Equations.md`](Einstein_Equations.md)
-  §6a); gravitational-wave dynamics (`□h=0`); and the absolute mass scale feeding absolute `G` (frontier
-  #1, now reduced to the single SOC observable `ρ*`). See [`Gravity_From_Delay.md`](Gravity_From_Delay.md)
-  §9 for the full three-tier scoping.
+- **Open:** the full nonlinear tensor **curvature side** of the Einstein equations (a concrete
+  causal-set order→metric program, not generic missing geometry —
+  [`Einstein_Equations.md`](Einstein_Equations.md) §6a); the gravitational-wave dynamics *beyond* the
+  linearized wave equation (`□_d δρ = 0` is now anchored via the density-perturbation route, §3 table —
+  what remains is deriving the wave operator from the SOC rate equations + the luminosity coefficient
+  `G/(5c⁵)`); and the absolute mass scale feeding absolute `G` (frontier #1, now reduced to the single
+  SOC observable `ρ*`). See [`Gravity_From_Delay.md`](Gravity_From_Delay.md) §9 for the full three-tier
+  scoping.
 
 ## 5. Ties to other documents
 
