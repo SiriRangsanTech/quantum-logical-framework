@@ -2,14 +2,14 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** `Frequency_Synchronization.md`  
-**Document version:** 1.2 (updated 21 April 2026)  
+**Document version:** 1.2  
 **Author:** Grok/Jim (synthesized from QLF core axioms, QuCalc engine, and the gauge-folding rule)
 
 ## Abstract
 
 In the Quantum Logical Framework (QLF), **frequency is not an external parameter** — it is the **resonant rate at which logical distinctions synchronize** across the global history string \(H_{\rm global}\). Frequency synchronization is the precise mechanism that converts topological depth into observable mass, delay, and radiation.
 
-This document explains how frequency governs particle synthesis in QuCalc, with special emphasis on the new gauge-folding rule (21 April 2026):
+This document explains how frequency governs particle synthesis in QuCalc, with special emphasis on the gauge-folding rule:
 
 - **Gauge-folded particles** (`+`–`−` twists) are primordial quantum black holes.  
   They accumulate a **constructing delay** \(\Delta t_{\rm construct} = R / f\) (where \(R\) is topological harmonic depth and \(f\) is the vacuum frequency).  
@@ -228,7 +228,7 @@ This bottom-up/top-down architecture also **derives Friston's free energy princi
 - `HALF-SPIN-ZFA-EMBEDDING.md`: Gauge folds as primordial BH seeds.
 - `Entropy.md`: Frequency-delay conserves unitarity in Hawking radiation.
 - `Gravity.md` / `SpaceTime.md`: Density-dependent swap as origin of curvature and relativity.
-- `BLACK-HOLES.md` (to be rewritten): Will cite this file for the microscopic origin of Hawking radiation.
+- `BLACK-HOLES.md`: cites this file for the microscopic origin of Hawking radiation.
 - [`AgeOfUniverse.md`](AgeOfUniverse.md): Cosmic age derived from ZFA event-synthesis rate — the macroscopic integral of the frequency clock defined here.
 
 ## Conclusion
@@ -238,6 +238,3 @@ Frequency synchronization is the **clockwork** of QLF. It turns abstract topolog
 The structural identity `Δt = R/f` — Markov-blanket depth as local-clock count — is named explicitly as a foundational claim in [`Kitada_Local_Time_GR.md`](Kitada_Local_Time_GR.md) §3, mapping QLF's depth structure onto Kitada's local-time framework ([gr-qc/9612043](https://arxiv.org/abs/gr-qc/9612043)). The Gap-1 reading there grounds the cosmic-age and Einstein-coefficient derivations of [`AgeOfUniverse.md`](AgeOfUniverse.md) and [`Gravity.md`](Gravity.md) in a single Mach-style relational identity. The substrate `c` underlying the per-tick conversion `Δt = R/f` is precisely the cosmic-ratio `R_cosmic / T_cosmic = L_Planck / τ_Planck` derived in [`Kitada_Local_Time_GR.md`](Kitada_Local_Time_GR.md) §5.3.
 
 All results are native to the QuCalc engine and fully reproducible.
-
-*Last aligned with repo state 21 April 2026. This document supersedes all prior versions and incorporates the gauge-folding rule from 21 April 2026.*
-```

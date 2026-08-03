@@ -2,7 +2,7 @@
 
 **Document Status**: Living verification report for the Quantum Logical Framework repository  
 **Target file**: `Experimental_Consistency.md` (root level)  
-**Version**: 0.3 (23 April 2026) – incorporates RhoQuCalc (Issue #18), constructive \( E = mc^2 \) proof (Issue #19), and updated particle/engine results  
+**Version**: 0.3 – incorporates RhoQuCalc (Issue #18), constructive \( E = mc^2 \) proof (Issue #19), and particle/engine results  
 **Author**: Jim Whitescarver & Grok (xAI), Grock4.5, Gemini 
 **Repo reference**: https://github.com/jimscarver/quantum-logical-framework  
 
@@ -32,7 +32,7 @@ This document catalogs **verified quantitative matches** between QLF predictions
 | **Superposition & measurement** | Real possibilities until joint ZFA closure with observer | Reproduces Copenhagen statistics without collapse postulate | Verified | `qucalc_engine.py` + `path_integral.py` |
 | **Particle classification** | Gauge-folded (\( + \)-\( - \)) closures = massive; pure spatial = massless | Matches Standard Model + predicts primordial quantum black holes | Verified | `particles.py --enable-gauge` |
 
-**Finding (April 2026)**: RhoQuCalc parallelism (`|` and `*`) reproduces multi-particle entanglement and interference with **polynomial scaling** (see [`quantum-computation-optimization.md`](quantum-computation-optimization.md) §4).
+**Finding**: RhoQuCalc parallelism (`|` and `*`) reproduces multi-particle entanglement and interference with **polynomial scaling** (see [`quantum-computation-optimization.md`](quantum-computation-optimization.md) §4).
 
 ---
 
@@ -69,7 +69,7 @@ Expected output (already analytically confirmed in `E_mc2_derivation.md`):
 
 ## 4. Computational Performance (RhoQuCalc Benchmarks)
 
-**Verified (April 2026)**:
+**Verified**:
 
 | System | Traditional Simulator (QuTiP/Qiskit) | RhoQuCalc (ZFA catalog) | Speedup |
 |--------|--------------------------------------|--------------------------|---------|
@@ -112,4 +112,3 @@ The framework is not only consistent with experiment — it *predicts* the next 
 
 **Run the code. Verify the numbers. The universe computes itself.**
 
-*Last updated: 23 April 2026*

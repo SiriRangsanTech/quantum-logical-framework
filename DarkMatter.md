@@ -2,7 +2,7 @@
 
 **Repository:** `quantum-logical-framework`
 **Document:** `DarkMatter.md`
-**Document version:** 3.1 (updated 20 June 2026 — radial-acceleration law derived + blind SPARC benchmark)
+**Document version:** 3.1 — radial-acceleration law derived + blind SPARC benchmark
 **Author:** Jim / Grok / Claude (Synthesized from QLF core axioms, QuCalc engine, the Logical-Density picture, and the curvature / quantum-black-hole / Mercury machinery)
 **Lean:** [`lean/QLF_DarkMatter.lean`](lean/QLF_DarkMatter.lean)
 

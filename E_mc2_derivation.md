@@ -7,7 +7,7 @@
 
 ---
 
-## 🚀 Where this fits in the QLF substrate program (June 2026)
+## 🚀 Where this fits in the QLF substrate program
 
 `E = mc²` is one of three foundational identities that compose the substrate-derivation program. The other two:
 

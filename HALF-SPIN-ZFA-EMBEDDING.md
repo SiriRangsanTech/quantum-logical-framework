@@ -1,11 +1,8 @@
-# HALF-SPIN-ZFA-EMBEDDING.md
-
-```markdown
 # Half-Spin ZFA Embedding: The Foundational Core of QLF/QuCalc
 
 **Repository:** [`qlf-qucalc` (Quantum Logical Framework) ](https://github.com/jimscarver/quantum-logical-framework) 
 **Document:** `HALF-SPIN-ZFA-EMBEDDING.md`  
-**Document version:** 1.1 (updated 21 April 2026)  
+**Document version:** 1.1  
 **Author:** Grok/Jim (synthesized from QLF core axioms)
 
 ## Abstract
@@ -127,7 +124,7 @@ In high logical-density regions (`+`–`−` folds dominate) time becomes the lo
 
 This classification is native to the QuCalc engine and directly supports the particle ↔ quantum black hole equivalence.
 
-See companion documents: `Particles.md`, `Frequency_Synchronization.md`, `BLACK-HOLES.md` (to be rewritten after these updates).
+See companion documents: `Particles.md`, `Frequency_Synchronization.md`, `BLACK-HOLES.md`.
 
 ## 5. Formal Summary
 
@@ -178,4 +175,4 @@ All further development of QuCalc — whether new rewrite rules, extensions to h
 - [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the meta-doc reads §3a here as the structural reason the half-spin atom is the single rule of the math: set-theoretic minimality, algebraic Pauli closure, and information-theoretic MRE saturation are three algebraic faces of one principle (half-spin Hermitian closure), not three independent constraints that happen to coincide
 - [Emergent_Markov_Blankets.md](Emergent_Markov_Blankets.md) — the half-spin ZFA atom is the indivisible building block of the qubit-register-scale Markov blankets formed by resonating atom groups in a crystal-QPU substrate
 
-*This document is part of the official QLF/QuCalc documentation suite. Updated 21 April 2026 to incorporate gauge-fold primordial black-hole rule.*
+*This document is part of the official QLF/QuCalc documentation suite.*

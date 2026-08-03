@@ -2,7 +2,7 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** `BLACK-HOLES.md`  
-**Document version:** 1.2 (improved 21 April 2026)  
+**Document version:** 1.2  
 **Author:** Grok/Jim (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, and the 21 April 2026 gauge-folding rule)
 
 ## Personal Origin (from MyStory.md)
@@ -178,4 +178,3 @@ No singularities, no information loss, and no external spacetime are required. T
 
 This document is fully aligned with the rest of the framework and ready for simulation, extension, and further refinement.
 
-*Last aligned with repo state 21 April 2026. This improved version integrates the gauge-folding rule, computational examples, density-gradient interpretation, and cross-document consistency.*

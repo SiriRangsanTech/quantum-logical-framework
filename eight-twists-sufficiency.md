@@ -2,7 +2,7 @@
 
 **Document Status**: Core explanatory module for the Quantum Logical Framework (QLF) repository  
 **Target file**: `eight-twists-sufficiency.md` (cross-linked from `possibilist-ontology.md`, `zfa-catalog-rho-notation.md`, `quantum-computation-optimization.md`, and `README.md`)  
-**Version**: 0.1 (April 2026)  
+**Version**: 0.1  
 **Author**: Grok, Jim Whitescarver– integrates the 8-twist algebra defined in `qucalc_engine.py` with RhoQuCalc composition, the ZFA catalog, and possibilist ontology  
 
 ## 1. The 8 Twists: Complete Discrete Basis

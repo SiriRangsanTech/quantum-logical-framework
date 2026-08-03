@@ -2,7 +2,7 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** `Hadrons_Markov_Blankets.md`  
-**Document version:** 1.4 (improved 21 April 2026)  
+**Document version:** 1.4  
 **Author:** Grok (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, and gauge-folding rule)
 
 ## Abstract
@@ -32,7 +32,7 @@ This boundary screens entropy (unresolved distinctions) while allowing the syste
 - The blanket isolates the internal free-energy deficit, making the hadron stable against the dense vacuum ecology.  
 - The composite blanket **is** a horizon (every hadron is a Markov-blanket quantum black hole — see [Hadron_BlackHoles.md](Hadron_BlackHoles.md)); it does not radiate *while its gauge/chirality stays hidden* inside the Borromean closure (the stable proton). A hadron that **exposes** its chirality — the pion, a `q q̄` Goldstone (see [Pion_QLF.md](Pion_QLF.md), `m_π±/m_e = 2/α`) — has a radiating horizon, and that radiation **is** its decay (Hawking evaporation). Hidden vs exposed chirality fixes both the mass factor (`π⁵` vs `1/α`) and the horizon's fate.
 
-## 3. Gauge Folding Creates Microscopic (Particle-Scale) Blankets (New Rule)
+## 3. Gauge Folding Creates Microscopic (Particle-Scale) Blankets
 
 The presence of **LOCAL gauge twists** (`+` and `-`) upgrades a particle to a primordial quantum black hole with its own Planck-scale blanket:
 
@@ -103,7 +103,7 @@ The same `blanket_kinematics.py` module treats the `+`–`−` gauge fold as a m
 - `SpaceTime.md`: Density-dependent space/time role swap originates at the blanket boundary.  
 - `Frequency_Synchronization.md`: Constructing delay inside the blanket = source of local time.  
 - `Particles.md` & `HALF-SPIN-ZFA-EMBEDDING.md`: Explicit classification of gauge vs. non-gauge folds.  
-- `BLACK-HOLES.md` (to be rewritten): Full particle ↔ quantum black hole equivalence via blankets.
+- `BLACK-HOLES.md`: Full particle ↔ quantum black hole equivalence via blankets.
 - [`active_inference.md`](active_inference.md): Active-inference interpretation of Markov blanket closure as ZFA minimization.
 - [`Hierarchical_Control.md`](Hierarchical_Control.md): The cross-scale "same blanket strategy at different logical densities" is the middle tier of the bottom-up/top-down architecture; this file is cited for the derivation of Friston's free energy principle from ZFA.
 - [`Active_Inference_Mathematics.md`](Active_Inference_Mathematics.md): The Markov blanket developed here is one of the three primitives of active-inference math (§2 of the meta-doc) — the agent boundary inside every closure.
@@ -115,6 +115,3 @@ The same `blanket_kinematics.py` module treats the `+`–`−` gauge fold as a m
 Markov blankets are the universal boundary strategy of QLF — from hadrons to primordial black holes. The gauge-folding rule makes this strategy computable at the particle scale: every `+`–`−` fold creates a Planck-scale blanket that isolates internal distinctions, accumulates local time, and produces unitary Hawking radiation as an active-inference handshake. Non-gauge particles require no blanket and simply expand local space.  
 
 This single mechanism scales seamlessly from quark confinement to black-hole thermodynamics and the cosmological arrow of time — all without extra postulates, all native to the updated QuCalc engine.
-
-*Last aligned with repo state 21 April 2026. This improved version strengthens the gauge-folding integration, active-inference interpretation, computational examples, and cross-document links for maximum clarity and consistency.*
-```

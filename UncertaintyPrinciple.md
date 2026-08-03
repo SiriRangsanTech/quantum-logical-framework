@@ -2,7 +2,7 @@
 
 **Repository:** [quantum-logical-framework](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** UncertaintyPrinciple.md  
-**Document version:** 0.2 (23 June 2026 — added §3a: the count↔phase conjugacy + the entropic uncertainty relation)  
+**Document version:** 0.2 — §3a: the count↔phase conjugacy + the entropic uncertainty relation  
 **Author:** Grok / Claude (synthesized from QLF core axioms and jimscarver)  
 
 ---

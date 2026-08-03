@@ -171,4 +171,4 @@ Clone the repo, run the commands above, and watch the joint closures emerge from
 
 See also: [`Bound_States_QLF.md`](Bound_States_QLF.md) — the framing of this doc, made explicit and scoped across positronium, muonium, hydrogen, and the τ-decay-vertex closure.
 
-*Last aligned with repo state 22 April 2026. Reframed 03 June 2026 to align with `Bound_States_QLF.md` — free leptons are not QLF observables; atomic systems are.*
+*Aligned with `Bound_States_QLF.md` — free leptons are not QLF observables; atomic systems are.*

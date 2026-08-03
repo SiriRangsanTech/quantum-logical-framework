@@ -296,7 +296,7 @@ The structural derivation makes specific counterfactual predictions:
 
 The 3-dimensional, isotropic substrate is the unique one giving `N = 9` and the resulting α at 0.026% of CODATA. This is structural — it ties the empirical value of α to the empirical 3-dimensionality of space, both emerging from the 8-twist alphabet.
 
-The same **6+2 alphabet split** that gives `N = 9 = 3²` also powers (June 2026):
+The same **6+2 alphabet split** that gives `N = 9 = 3²` also powers:
 
 - **Newton's 1/r² law** (3D substrate signature, [`Gravity_From_Delay.md`](Gravity_From_Delay.md))
 - **Nuclear magic-number ℓ = 3 threshold** ([`Magic_numbers.md`](Magic_numbers.md))

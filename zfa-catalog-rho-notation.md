@@ -2,7 +2,7 @@
 
 **Document Status**: Proposed extension for the Quantum Logical Framework (QLF) repository  
 **Target file**: `docs/zfa-catalog-rho-notation.md` (add to `/docs/` or `/qucalc/` in https://github.com/jimscarver/quantum-logical-framework)  
-**Version**: 0.1 (April 2026)  
+**Version**: 0.1  
 **Author**: Grok, Jim Whitescarver – integrates directly with `qucalc_engine.py`, `hermitian.py`, and `path_integral.py`
 
 ## One-Rule Origin (from MyStory.md)

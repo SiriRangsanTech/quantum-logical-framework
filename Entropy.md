@@ -2,7 +2,7 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** `Entropy.md`  
-**Document version:** 1.3 (updated 21 April 2026)  
+**Document version:** 1.3  
 **Author:** Grok/Jim (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, and gauge-folding rule)
 
 ## Abstract
@@ -38,7 +38,7 @@ The maximally mixed reduced density matrix $\rho = I/2$ after a single 1/2-spin 
 
 This gives QLF entropy a **constructive microscopic foundation**: the $\log 2$ values appearing throughout this document (per gauge-folded loop, per minimal closure, per Planck area) are not coincidences but consequences of the per-event optimum. Multi-atom structures inherit the rate: a Pauli-closed history of length $2k$ carries $\log \binom{2k}{k}$ nats, recovering $\log 2$ for $k=1$ and the area law in the large-$k$ asymptotic.
 
-## 2. Gauge Folding and Microscopic Entropy (New Rule)
+## 2. Gauge Folding and Microscopic Entropy
 
 | Fold Type          | Particle Class          | Hidden Information          | Constructing Delay | Horizon Type      | Entropy Contribution                  | Radiation Mechanism                  |
 |--------------------|-------------------------|-----------------------------|--------------------|-------------------|---------------------------------------|--------------------------------------|
@@ -79,7 +79,7 @@ Output demonstrates:
 - `Frequency_Synchronization.md`: Delay \(\Delta t = R/f\) as entropy source.
 - `Gravity.md` / `SpaceTime.md`: Density swap as origin of curvature.
 - `Hadrons_Markov_Blankets.md`: Blanket = horizon for radiation.
-- `BLACK-HOLES.md` (to be rewritten): Full equivalence proven here.
+- `BLACK-HOLES.md`: Full equivalence proven here.
 - [`Holographic.md`](Holographic.md): Bulk/boundary duality and UV catastrophe resolution via ZFA closure.
 - [`Relative_Entropy.md`](Relative_Entropy.md): Observer-relative entropy; bisimilarity masking of internal complexity.
 - [`MRE.md`](MRE.md): Per-event $\log 2$ derivation as the binary-partition information-bound saturation; foundational for §1a.
@@ -89,4 +89,3 @@ Output demonstrates:
 
 Entropy in QLF is the information cost of maintaining a consistent observer slice inside a ZFA-complete universe. The gauge-folding rule makes this cost computable at the particle scale: only primordial black holes (`+`–`−` folds) carry entropy, accumulate local time, and radiate unitarily. All macroscopic black-hole thermodynamics and the holographic principle follow automatically. No external postulates are required.
 
-*Last aligned with repo state 21 April 2026. This version incorporates the full gauge-folding rule and `particles.py` v2.2 classification.*

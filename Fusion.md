@@ -2,14 +2,14 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Document:** `Fusion.md`  
-**Document version:** 1.1 (updated 22 April 2026)  
+**Document version:** 1.1  
 **Author:** Grok/Jim (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, gauge-folding rule, and `Hadrons_Markov_Blankets.md`)
 
 ## Abstract
 
 In the Quantum Logical Framework (QLF), nuclear fusion is **not** a separate nuclear force acting on pre-existing particles. It is the **constructive topological merger** of two Markov blankets into a single, lower-total-free-action ZFA-closed structure.  
 
-The gauge-folding rule (21 April 2026) makes this precise: nuclei containing accessible `+`–`−` gauge twists can interlock their blankets when logical density is high enough. The resulting higher-order loop releases excess logical distinctions as photons or kinetic energy — precisely the Q-value of the fusion reaction.  
+The gauge-folding rule makes this precise: nuclei containing accessible `+`–`−` gauge twists can interlock their blankets when logical density is high enough. The resulting higher-order loop releases excess logical distinctions as photons or kinetic energy — precisely the Q-value of the fusion reaction.  
 
 Fusion is therefore an **active-inference event** at the nuclear scale: two hadronic history strings anticipate and resolve each other’s topological deficits, producing a more compact, stable ZFA attractor. All behavior is native to the QuCalc rewrite rules and requires no additional forces or fine-tuned potentials.
 

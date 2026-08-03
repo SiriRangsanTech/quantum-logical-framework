@@ -259,3 +259,4 @@ The vacuum is not empty. It is the living substrate of event synthesis — and, 
 
 ```bash
 python spacetime_dynamics.py
+```
