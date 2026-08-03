@@ -609,7 +609,7 @@ of our observable universe — *what time the cosmic clock reads*, whose tick is
 
 The universe does not have to begin as a singular object in pre-existing time. It is an ongoing quantum-logical synthesis of time, space, matter, and relation.
 
-**Further reading**
+## Further reading — internal companion documents
 
 - [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) — the grand unification in detail: the gauge forces as 3-axis projections (§3a) and gravity as the fourth force, the geometry of the same closures (§3b)
 - [`Einstein_Equations.md`](Einstein_Equations.md) — the field equations as the substrate's equation of state + the curvature side from the causal order (§6a)
@@ -628,5 +628,47 @@ The universe does not have to begin as a singular object in pre-existing time. I
 - [`Cross_Frequency_Lorentz.md`](Cross_Frequency_Lorentz.md) — explicit derivation of the Lorentz boost as a change of basis on Markov-blanket internal frequencies; identifies γ = cosh(rapidity) with the frequency-ratio Doppler factor; recovers time dilation, length contraction, and interval invariance.
 - [`Quantum_Gravity.md`](Quantum_Gravity.md) — master synthesis treating this doc's relativity completion as one face of a unified algebraic event (gravity, holography, expansion, ER=EPR).
 - [`Curvature.md`](Curvature.md) — curvature as signed deformation of the primordial Markov blanket: gravity (isotropic), magnetism (differential), de Sitter cosmology (global); the metric of §3–§4 as its continuum limit.
+
+## References
+
+External literature grounding the diagnosis (§0), the action-balance principle (§2, §2a), and the
+determinism reading (§6a). These works motivate the ZFA selection rule; they do not prove it (§2a).
+
+**Absolute space/time and relativity (§0).**
+
+- Newton, I. (1687). *Philosophiæ Naturalis Principia Mathematica.*
+- Leibniz, G. W. & Clarke, S. (1715–1716). *The Leibniz–Clarke Correspondence* (ed. H. G. Alexander, Manchester Univ. Press, 1956) — the relational critique of absolute space and time.
+- Einstein, A. (1905). "Zur Elektrodynamik bewegter Körper." *Annalen der Physik* 17, 891 — special relativity; removal of absolute simultaneity.
+- Einstein, A. (1916). "Die Grundlage der allgemeinen Relativitätstheorie." *Annalen der Physik* 49, 769 — general relativity; the metric as a dynamical field.
+
+**Finite measurement and the continuum (§0).**
+
+- BIPM (2019). *The International System of Units (SI)*, 9th ed. — the 2019 redefinition fixing the exact values of `ℏ, c, e, k_B, N_A`; every measurement a finite count plus a rational interval.
+- Weinberg, S. (1989). "The cosmological constant problem." *Rev. Mod. Phys.* 61, 1 — the ~10¹²² vacuum-energy discrepancy.
+
+**Action balance as a classical and quantum principle (§2, §2a).**
+
+- Hamilton, W. R. (1834). "On a General Method in Dynamics." *Phil. Trans. R. Soc. Lond.* — the principle of stationary action, `δS = 0`.
+- Noether, E. (1918). "Invariante Variationsprobleme." *Nachr. Ges. Wiss. Göttingen* 235 — symmetries and conservation laws.
+- Arnowitt, R., Deser, S. & Misner, C. W. (1962). "The Dynamics of General Relativity." In *Gravitation: An Introduction to Current Research* (ed. L. Witten), Wiley — the ADM Hamiltonian constraint. arXiv:gr-qc/0405109.
+- DeWitt, B. S. (1967). "Quantum Theory of Gravity. I." *Phys. Rev.* 160, 1113 — the Wheeler–DeWitt equation `HΨ = 0`.
+- Tryon, E. P. (1973). "Is the Universe a Vacuum Fluctuation?" *Nature* 246, 396 — the zero-energy universe.
+- Jacobson, T. (1995). "Thermodynamics of Spacetime: The Einstein Equation of State." *Phys. Rev. Lett.* 75, 1260. arXiv:gr-qc/9504004.
+- Padmanabhan, T. (2010). "Thermodynamical Aspects of Gravity: New Insights." *Rep. Prog. Phys.* 73, 046901. arXiv:0911.5004.
+- Verlinde, E. (2011). "On the Origin of Gravity and the Laws of Newton." *JHEP* 04, 029. arXiv:1001.0785.
+- Bombelli, L., Lee, J., Meyer, D. & Sorkin, R. D. (1987). "Space-time as a causal set." *Phys. Rev. Lett.* 59, 521 — causal-set theory (discrete order + counting).
+- Benincasa, D. M. T. & Dowker, F. (2010). "The Scalar Curvature of a Causal Set." *Phys. Rev. Lett.* 104, 181301 — the discrete (Benincasa–Dowker) action.
+
+**Determinism and the status of randomness (§6, §6a).**
+
+- de Broglie, L. (1927); Bohm, D. (1952). "A Suggested Interpretation of the Quantum Theory in Terms of 'Hidden' Variables. I & II." *Phys. Rev.* 85, 166 & 180 — pilot-wave theory.
+- Everett, H. (1957). "'Relative State' Formulation of Quantum Mechanics." *Rev. Mod. Phys.* 29, 454.
+- Bell, J. S. (1964). "On the Einstein Podolsky Rosen Paradox." *Physics* 1, 195 — the local-hidden-variable no-go.
+- 't Hooft, G. (2016). *The Cellular Automaton Interpretation of Quantum Mechanics.* Springer. arXiv:1405.1548.
+
+**Empirical anchors (§8).**
+
+- Abbott, B. P. et al. (LIGO Scientific & Virgo Collaborations) (2017). "Gravitational Waves and Gamma-Rays from a Binary Neutron Star Merger: GW170817." *Astrophys. J. Lett.* 848, L13 — `|v_GW − c|/c < 10⁻¹⁵`.
+- Park, R. S. et al. (2017). "Precession of Mercury's Perihelion from Ranging to the MESSENGER Spacecraft." *Astron. J.* 153, 121 — measured `42.98 ± 0.04″/century`.
 
 Welcome to Universal Relativity.
