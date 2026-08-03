@@ -1,107 +1,132 @@
 # Gravity in the Quantum Logical Framework
 
-**Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
-**Document:** `Gravity.md`  
-**Document version:** 1.4 (updated 7 June 2026 — quantitative substrate program Lean-anchored)
+**Repository:** [`quantum-logical-framework`](README.md)
+**Document:** `Gravity.md` — the conceptual overview of gravity in [QLF](README.md).
 
-## 🚀 Quantitative substrate program (June 2026)
-
-The qualitative gravity-from-screening picture below is backed by a **quantitative Lean-anchored substrate program** that derives Newton's law, Schwarzschild metric, and Mercury's 43"/century perihelion shift from QLF substrate primitives:
-
-| Result | Doc | Lean module | Match to observation |
-|---|---|---|---|
-| **Newton's law `F = GMm/r²`** | [Gravity_From_Delay.md](Gravity_From_Delay.md) | [`QLF_GravityFromDelay.lean`](lean/QLF_GravityFromDelay.lean) | structural (1/r² from 3D substrate = same 3D that gives α via N=9=3²) |
-| **G's structural form `L_Planck² c³/ℏ`** | Gravity_From_Delay §8 | `GravitationalConstant.G_value_eq` | unit-conversion bookkeeping |
-| **Schwarzschild weak-field metric** | [GR_Schwarzschild.md](GR_Schwarzschild.md) | (composed in Mercury module) | `g_tt` from Cross-Frequency Lorentz, `g_rr` from substrate event quantum |
-| **Mercury perihelion 42.99"/century** | [Mercury_Perihelion.md](Mercury_Perihelion.md) | [`QLF_MercuryPerihelion.lean`](lean/QLF_MercuryPerihelion.lean) | **0.03% vs Park et al. 2017** (42.98 ± 0.04") |
-
-This is the **first quantitative QLF substrate prediction of a GR observable** — matching Einstein's 1915 calculation and the first observational success of GR.
-
-Structural ingredients used (all already Lean-anchored):
-- Holographic surface event count `4π R²` (3D substrate)
-- Per-event log 2 entropy (`zfa_closure_minimizes_free_energy`)
-- `c = L_Planck/τ_Planck` substrate event quantum
-- Cross-Frequency Lorentz boost (gravitational redshift)
-- Per-qubit mass-energy `m c² = E_Planck/R`
-
-The qualitative material below remains valid as the conceptual foundation; the quantitative program above is the executable extension built on the substrate primitives recorded there.
-
----
+> **Two gravity docs, one story.** This doc is the **conceptual foundation** — *what* gravity is in
+> QLF and *why* it emerges. The companion [`Gravity_From_Delay.md`](Gravity_From_Delay.md) is the
+> **quantitative engine** — Newton's law, `G`, the strength of gravity `α_G`, horizon temperatures,
+> and the Bekenstein-bound derivation, all Lean-anchored. Read this for the picture; read that for the
+> arithmetic. The two are complementary, not redundant.
 
 ## Abstract
 
-Gravity is **not** a fundamental force or curvature of a pre-existing spacetime. It is the **relational distortion** that emerges when the full Zero Free Action (ZFA) network of distinctions is partially deconstructed by an observer’s Markov blanket. The gauge-folding rule (21 April 2026) supplies the microscopic engine: only `+`–`−` folds create local time, accumulate constructing delay, and produce immediate Hawking radiation, warping the remaining geometry.
+Gravity is **not** a fundamental force or the curvature of a pre-existing spacetime. It is the
+**relational distortion** that emerges when the full Zero Free Action (ZFA) network of distinctions is
+partially deconstructed by an observer's Markov blanket. Unresolved distinctions cannot vanish; they are
+screened **holographically** on the blanket boundary, and the accumulated information gradient is what
+pulls masses together. Every quantitative statement below reduces to two substrate primitives — the
+holographic surface event count `4π R²` and the per-event `log 2` quantum — so gravity, black-hole
+thermodynamics, and cosmic acceleration are one algebraic phenomenon read at different scales.
 
-## 1. Emergence from Deconstruction
+## 1. Emergence from deconstruction
 
-The complete ZFA history string is a flat relational web of balanced distinctions. Entropy (tracing-out beyond the Markov blanket) deconstructs this web into a single consistent observer slicing. The unresolved distinctions cannot vanish; they must be screened holographically. This screening produces:
-- Local contraction around high-density gauge-folded regions (gravity).
-- Future-directed expansion in low-density regions (dark-energy equivalent).
+The complete ZFA history string is a flat relational web of balanced distinctions. Entropy (tracing-out
+beyond the Markov blanket) deconstructs this web into a single consistent observer slicing. The
+unresolved distinctions must be screened on the holographic boundary, and this screening produces:
 
-No extra fields or spacetime background are required — gravity is the geometric back-reaction to logical information hiding.
+- **local contraction** around high-density gauge-folded regions — gravity;
+- **future-directed expansion** in low-density regions — the dark-energy equivalent.
 
-## 2. Gauge Folding as the Microscopic Source of Gravity (New Rule)
+No extra fields and no spacetime background are required: gravity is the geometric back-reaction to
+logical information hiding. This is the substrate-language form of Jacobson's *Einstein equation of
+state* (1995) and Verlinde's *entropic gravity* (2011) — both now derived from QLF primitives
+([`Einstein_Equations.md`](Einstein_Equations.md), [`Gravity_From_Delay.md`](Gravity_From_Delay.md)).
 
-The presence of **LOCAL gauge twists** (`+` and `-`) determines whether a particle acts as a gravity source:
+## 2. Gauge folding — the microscopic source
 
-- **Gauge-folded particles** (`+`–`−`): Primordial quantum black holes.  
-  Constructing delay \(\Delta t_{\rm construct} = R / f\) (topological depth \(R\) at vacuum frequency \(f\)) creates **local time** inside the fold.  
-  High logical density → inward radial bias in the spin network → gravity.
+The presence of **local gauge twists** (`+` and `−`) determines whether a closure acts as a gravity
+source:
 
-- **Non-gauge particles** (no `+` or `-`): Massless.  
-  Create **local space** only (zero temporal depth).  
-  No constructing delay → no local contraction.
+- **Gauge-folded closures** (`+`–`−`) are primordial quantum black holes. Their constructing delay
+  `Δt = R/f` (topological depth `R` at vacuum frequency `f`) creates **local time** inside the fold;
+  the high logical density biases the spin network inward — gravity.
+- **Non-gauge closures** (no `+`/`−`) are massless: they create **local space** only (zero temporal
+  depth), with no constructing delay and no local contraction.
 
-The density-dependent space/time role swap (high density makes time the dominant local axis) is the exact mechanism of geodesic deviation and curvature.
+The density-dependent space/time role swap — high density makes *time* the dominant local axis — is the
+substrate mechanism of geodesic deviation and curvature. A gauge-folded closure is literally a
+sub-Planck black hole whose horizon is its own Markov blanket (the Compton–Schwarzschild self-dual point
+`μ²=1/2`, [`QLF_PlanckScale`](lean/QLF_PlanckScale.lean), [`Planck_Scale.md`](Planck_Scale.md)); the same
+primitive at the hadronic extreme is [`Hadron_BlackHoles.md`](Hadron_BlackHoles.md).
 
-## 3. Computational Proof in `particles.py`
+Every synthesized closure is classified automatically by the QuCalc engine
+([`particles.py`](particles.py)): a `+`–`−` fold reports `primordial_BH`, "creates local: time", "high
+logical density → time is the local axis", and its Hawking radiation channel. That inward bias passes
+directly into the spin-network geometry, reproducing Newtonian gravity, the post-Newtonian corrections,
+and the Schwarzschild metric as emergent coarse-grained limits — with no new fields.
 
-Every synthesized particle is automatically classified. Example run:
-```bash
-python particles.py --seed "^+" --max-depth 6 --enable-gauge --show-density-swap
-```
+| Entity | Fold type | Local axis | Logical density | Geometric effect | Emergent phenomenon |
+|---|---|---|---|---|---|
+| Primordial quantum BH | `+`–`−` | Time | High | Inward radial bias | Gravity (local contraction) |
+| Massless closure | no `+`–`−` | Space | Low | Transverse expansion | Null geodesics / propagation |
+| Cosmological vacuum | Mixed | Density-dependent swap | Average | Net future-expansion bias | Dark energy |
 
-Typical gauge-fold output:
-```text
-Topology          : ^+v-
-Classification    : primordial_BH
-Constructing Delay: 4 cycles
-Creates local     : time
-Logical Density   : HIGH → time is the local axis
-Hawking Radiation : +-
-```
+## 3. The quantitative program — an index
 
-This bias is passed directly to the spin-network geometry in the QuCalc engine, reproducing Newtonian gravity, post-Newtonian corrections, and the Schwarzschild metric as emergent limits — all without adding any new fields.
+The qualitative picture above is backed by a Lean-anchored quantitative program. Gravity is no longer a
+single result but a **sector**: every entry below reuses the same `4π R²` count and per-event `log 2`.
 
-## 4. Summary Table
+| Result | Value / status | Lean module | Doc |
+|---|---|---|---|
+| **Newton's law `F = GMm/r²`** | structural (`1/r²` = the 3D substrate signature) | [`QLF_GravityFromDelay`](lean/QLF_GravityFromDelay.lean) | [`Gravity_From_Delay.md`](Gravity_From_Delay.md) |
+| **`G`'s structural form `L_P²c³/ℏ`** | unit-conversion bookkeeping (Planck units `G=1`) | `QLF_GravityFromDelay` | Gravity_From_Delay §8 |
+| **Strength of gravity `α_G = exp(−28π)`** | 0.068% on the log (from the integer `b₀=7`) | [`QLF_GravitationalCoupling`](lean/QLF_GravitationalCoupling.lean) | Gravity_From_Delay §1.1 |
+| **Einstein equations as equation of state** | coefficient `8πG=2π/η`, `Λ=log 2` (Jacobson skeleton) | [`QLF_EinsteinEquations`](lean/QLF_EinsteinEquations.lean) | [`Einstein_Equations.md`](Einstein_Equations.md) |
+| **Horizon temperatures (Unruh/Hawking/de Sitter)** | one Unruh master relation `T=ℏa/2πck_B`, three `a` | [`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean) | Gravity_From_Delay §5.1 |
+| **Holographic entropy `S=4πR²log2`; BH residual `4 log 2`** | residual = derived product (Einstein quarter × `log 2`) | [`QLF_HolographicDensity`](lean/QLF_HolographicDensity.lean) | Gravity_From_Delay §9 |
+| **Planck length = the closure floor** | by construction (`μ²=1/2`), not a posit | [`QLF_PlanckScale`](lean/QLF_PlanckScale.lean) | [`Planck_Scale.md`](Planck_Scale.md) |
+| **Substrate = a spin network of half-spin closures (LQG)** | entropy-count correspondence, `γ` fixed | [`QLF_LoopQuantumGravity`](lean/QLF_LoopQuantumGravity.lean) | [`LQG_QLF.md`](LQG_QLF.md) |
+| **Schwarzschild weak-field metric** | `g_tt`/`g_rr` from Cross-Frequency Lorentz | (Mercury module) | [`GR_Schwarzschild.md`](GR_Schwarzschild.md) |
+| **Mercury perihelion 42.99″/century** | **0.03%** vs Park et al. 2017 | [`QLF_MercuryPerihelion`](lean/QLF_MercuryPerihelion.lean) | [`Mercury_Perihelion.md`](Mercury_Perihelion.md) |
+| **Cosmological constant `Ω_Λ = log 2`** | 1.2%, closing the 10¹²² catastrophe | [`QLF_CosmologicalConstant`](lean/QLF_CosmologicalConstant.lean) | [`Cosmological_Constant.md`](Cosmological_Constant.md) |
+| **Dark matter / MOND `a₀ = cH₀/2π`** | parameter-free SPARC fit (0.133 dex) | [`QLF_DarkMatter`](lean/QLF_DarkMatter.lean) | [`DarkMatter.md`](DarkMatter.md) |
+| **Casimir / accelerated-boundary Unruh** | finite census + `1/a⁴` + shared Unruh `T` | [`QLF_Casimir`](lean/QLF_Casimir.lean) | [`VacuumEnergy.md`](VacuumEnergy.md) §4 |
+| **Curvature side (causal-set order→metric)** | number↔volume, BD curvature, one continuum bridge | [`QLF_CausalInterval`](lean/QLF_CausalInterval.lean) + | Einstein_Equations §6a |
 
-| Entity                  | Fold Type     | Local Axis Created | Logical Density | Geometric Effect            | Emergent Phenomenon          |
-|-------------------------|---------------|--------------------|-----------------|-----------------------------|------------------------------|
-| Primordial quantum BH   | `+`–`−`       | Time               | High            | Inward radial bias          | Gravity (local contraction)  |
-| Massless particle       | No `+`–`−`    | Space              | Low             | Transverse expansion        | Null geodesics / propagation |
-| Cosmological vacuum     | Mixed         | Density-dependent swap | Average      | Net future expansion bias   | Dark-energy equivalent       |
+**The dark sector is one root.** `Ω_Λ = log 2`, the horizon temperatures, and the dark-matter scale
+`a₀ = cH₀/(2π)` all hang on **one Hubble horizon and one `2π`** (the substrate loop phase, the same `2π`
+of `g−2 = α/2π`) — so the holographic counting of this doc is the common source of the whole dark sector
+(`mond_accel_is_hubble_over_loop`, [`DarkMatter.md`](DarkMatter.md)).
 
-## 5. Ties to Other Documents
+## 4. Honest scope
 
-**Quantitative substrate program (June 2026, Lean-anchored):**
-- [`Gravity_From_Delay.md`](Gravity_From_Delay.md): Newton's law `F = GMm/r²` from holographic event count + per-event log 2 + 3D substrate. `G = L_Planck² c³/ℏ` as unit-conversion bookkeeping; 1/r² as structural 3D signature.
-- [`GR_Schwarzschild.md`](GR_Schwarzschild.md): Schwarzschild weak-field metric from Cross-Frequency Lorentz gravitational redshift + substrate radial event scaling. `g_tt = -(1 - R_s/r)`, `g_rr = (1 - R_s/r)⁻¹`.
-- [`Mercury_Perihelion.md`](Mercury_Perihelion.md): Mercury's anomalous 43"/century perihelion advance from composed Newton + Schwarzschild; 0.03% match to Park et al. 2017.
+- **Derived:** the *form* of Newton's law, the dimensionless *strength* `α_G`, the horizon
+  thermodynamics, the Einstein-equation coefficient + `Λ`, and the dark-sector scales — all from the two
+  primitives (`4π R²`, `log 2`) plus the substrate 3-dimensionality.
+- **Bookkeeping:** the SI *value* of `G` (a kilogram/metre convention), not a separate empirical input.
+- **Open:** the full tensor **curvature side** of the Einstein equations (a concrete causal-set
+  order→metric program, not generic missing geometry — [`Einstein_Equations.md`](Einstein_Equations.md)
+  §6a); gravitational-wave dynamics (`□h=0`); and the absolute mass scale feeding absolute `G` (frontier
+  #1, now reduced to the single SOC observable `ρ*`). See [`Gravity_From_Delay.md`](Gravity_From_Delay.md)
+  §9 for the full three-tier scoping.
 
-**Qualitative foundations:**
-- `Entropy.md`: Gravity screens unresolved distinctions (area law \(S = A/4\ell_P^2\)).
-- `Frequency_Synchronization.md`: Constructing delay \(R/f\) as the source of local time.
-- `SpaceTime.md` & `Time.md`: Density-dependent role swap as origin of relativistic frames; §4 of each unifies gravitational and kinematic time dilation as one mechanism — gravity is the **local departure from the statistically uniform stateless ether** (a mass cluster lowers local \(W_{ZFA}\)), the same uniformity from which Lorentz invariance emerges.
-- `Particles.md` & `HALF-SPIN-ZFA-EMBEDDING.md`: Explicit particle classification.
-- `Hadrons_Markov_Blankets.md`: Markov blanket = horizon for gauge-folded radiation.
-- `BLACK-HOLES.md` (to be rewritten): Full particle ↔ black-hole equivalence proven here.
-- [`Hierarchical_Control.md`](Hierarchical_Control.md): Gravity is the macroscopic top-down constraint in the bottom-up/top-down architecture; cosmic-horizon entropy is the highest-level prior.
-- [`Curvature.md`](Curvature.md): gravity as the **isotropic, single-sign** deformation of the primordial Markov blanket — the limit of the signed expand/contract curvature whose differential forms are magnetism (spin up/down) and de Sitter/AdS cosmology; includes the Moon-orbit inflow worked example.
+## 5. Ties to other documents
+
+- [`Gravity_From_Delay.md`](Gravity_From_Delay.md) — **the quantitative companion**: the full Newton /
+  `G` / `α_G` / horizon-temperature derivation this doc indexes.
+- [`Einstein_Equations.md`](Einstein_Equations.md) & [`Kitada_Local_Time_GR.md`](Kitada_Local_Time_GR.md)
+  §5 — the Einstein equation of state from `δQ = T δS` at each local (Markov-blanket) clock.
+- [`Curvature.md`](Curvature.md) — gravity as the isotropic single-sign deformation of the primordial
+  Markov blanket (the Moon-orbit inflow worked example).
+- [`SpaceTime.md`](SpaceTime.md) & [`Time.md`](Time.md) — the density-dependent role swap as the origin
+  of relativistic frames; gravity as the **local departure from the statistically uniform stateless
+  ether**, the same uniformity from which Lorentz invariance emerges.
+- [`Entropy.md`](Entropy.md) — gravity screens unresolved distinctions (area law `S = A/4ℓ_P²`).
+- [`Frequency_Synchronization.md`](Frequency_Synchronization.md) — constructing delay `R/f` as the
+  source of local time.
+- [`Hadron_BlackHoles.md`](Hadron_BlackHoles.md) & [`BLACK-HOLES.md`](BLACK-HOLES.md) — the particle ↔
+  black-hole equivalence at the hadronic / Planck-blanket extreme.
+- [`Hierarchical_Control.md`](Hierarchical_Control.md) — gravity as the macroscopic top-down constraint;
+  cosmic-horizon entropy as the highest-level prior.
+- [`Quantum_Gravity.md`](Quantum_Gravity.md) — master synthesis tying gravity, holography, cosmic
+  expansion, and ER=EPR as four faces of one algebraic event.
 
 ## Conclusion
 
-Gravity in QLF is the inevitable geometric consequence of entropy deconstruction inside a ZFA-complete logical web. The gauge-folding rule makes this fully computable at the particle scale: only primordial black holes (`+`–`−` folds) curve space locally, while the same mechanism produces cosmic acceleration globally. General relativity emerges as the effective description of QuCalc folds after coarse-graining — no additional postulates required.
-
-See also: [Quantum_Gravity.md](Quantum_Gravity.md) — master synthesis tying gravity (this doc), holography, cosmic expansion, and ER=EPR as four faces of the same algebraic event; [Kitada_Local_Time_GR.md](Kitada_Local_Time_GR.md) §5 — scoping doc identifying the path to quantitative Einstein-equation coefficients (8π, G) via local-clock synchronization failure across a Markov blanket, building on Kitada's local-time framework (gr-qc/9612043) + the QLF substrate's near-equilibrium thermodynamic reading (VacuumEnergy.md §6.2).
-
-*Last aligned with repo state 21 April 2026. This version fully incorporates the gauge-folding rule and `particles.py` v2.2 classification.*
+Gravity in QLF is the inevitable geometric consequence of entropy deconstruction inside a ZFA-complete
+logical web. The gauge-folding rule makes it computable at the particle scale — only primordial black
+holes (`+`–`−` folds) curve space locally, while the same mechanism produces cosmic acceleration
+globally. General relativity emerges as the effective, coarse-grained description of QuCalc folds; the
+quantitative sector (§3) shows how far that emergence has been carried, and
+[`Gravity_From_Delay.md`](Gravity_From_Delay.md) shows the arithmetic.
