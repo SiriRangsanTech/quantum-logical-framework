@@ -192,5 +192,6 @@ lean_lib QLF where
     `QLF_SteadyStateDensity,
     `QLF_MO2,
     `QLF_ElectroweakScale,
-    `QLF_FractalDiagram
+    `QLF_FractalDiagram,
+    `QLF_MassGapDispersion
   ]
