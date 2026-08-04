@@ -68,8 +68,8 @@ The same census→Brownian rendering supplies **field theory's** continuum bridg
 
 Once the continuum is the metric completion (Rung 7), **differential calculus is available as an
 effective tool** — and it is emergent, not foundational. QLF gives it a *logical origin story*: it is the
-smooth approximation of large numbers of discrete logical events in the appropriate limit. Four bridges,
-already present in the repo, make this precise:
+smooth approximation of large numbers of discrete logical events in the appropriate limit. The following
+bridges, already present in the repo, make this precise — and one of them is now **machine-anchored**:
 
 - **Discrete rates / delays → derivatives.** Finite event-rate differences are the precursors of `∂/∂t`,
   `∇`; the entropy gradient `dS/dx` across the holographic boundary gives the force law
@@ -84,15 +84,27 @@ already present in the repo, make this precise:
 - **Variational calculus.** The null action `S = ∫ℒ dΩ`, `ℒ = 0`, with `δℒ = 0` the discrete-logical
   Euler–Lagrange, and `EventSynthesisField` (`∂ₜφ`, `V_φ`) the continuum field limit
   ([`Lagrangian_Formulation.md`](Lagrangian_Formulation.md)).
+- **Finite differences → differential operators — now machine-anchored.** The substrate's discrete
+  second differences `d2t`, `d2x` and the discrete d'Alembertian `boxD = ∂_t² − ∂_x²` are the finitary
+  precursors of the differential operators `∂²`, `□`: every traveling-wave profile is annihilated
+  *exactly* (`boxD_dAlembert`, [`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean)), and the
+  continuum limit is the wave operator `□`. This is the **first machine-checked instance** of a
+  differential operator arising as the continuum limit of the substrate's finite differences — the
+  calculus analog of the algebra rungs (1–6). The *same* construction underlies the discrete
+  Klein–Gordon operator `□_d + m²` whose zero-momentum dispersion gap is the mass gap
+  `gaugeMassGap = log 2` ([`QLF_MassGapDispersion`](lean/QLF_MassGapDispersion.lean)).
 - **Metric completion** (Rung 7) is where limits, derivatives, integrals, and differential equations
   become available.
 
-**Honest scope:** this is the *continuum-rendering* thesis applied to calculus — QLF does **not** build
+**Honest scope:** this is the *continuum-rendering* thesis applied to calculus, and the **first concrete
+instance is now Lean-anchored** — the discrete d'Alembertian `boxD` and its traveling-wave solutions
+([`QLF_GravitationalWaves`](lean/QLF_GravitationalWaves.lean)): a differential operator built from, and
+exactly solved over, the substrate's finite differences. QLF still does **not** build *general*
 differential geometry / calculus in Lean, and deliberately does not assume it at the foundation
 ([`Einstein_Equations.md`](Einstein_Equations.md): the honest route doesn't require differential
 geometry). The full differential-geometric tensor derivation (the Einstein/Riemann tensor) stays the
-named open step; the claim here is the *origin story* (calculus emerges as the smooth limit of the
-discrete substrate), not a Lean construction of calculus.
+named open step. So the claim strengthens from a pure origin story to an **origin story with a first
+machine-checked example** (the wave operator) — not yet a Lean construction of calculus in general.
 
 ### Rung 9 — knot theory, the Temperley–Lieb algebra, and the Jones polynomial
 

@@ -76,6 +76,24 @@ windings, [`lean/QLF_BaryonWinding.lean`](lean/QLF_BaryonWinding.lean); exactly-
 signed charge, [`lean/QLF_BMinusL.lean`](lean/QLF_BMinusL.lean)) — so the gap is a gap of
 *physical* (singlet) states, as the problem requires.
 
+### 3a. The gap as a *propagation* gap — the dispersion reading
+
+The gap `Δ = log 2` also has a propagation meaning, tying it to the gravitational-wave sector
+([`lean/QLF_MassGapDispersion.lean`](lean/QLF_MassGapDispersion.lean), a bridge to
+[`lean/QLF_GravitationalWaves.lean`](lean/QLF_GravitationalWaves.lean)). A **massless**,
+gauge-fold-free ripple obeys the free wave equation `□_d δρ = 0` and is **gapless** — every
+traveling wave is a solution, so the minimum frequency is zero (`massless_gapless`). A
+**massive** gauge-fold field obeys the discrete Klein–Gordon equation `(□_d + m²)h = 0`
+(`boxKG`); a massless wave is no longer a solution — the mass term `m²δρ` is exactly the
+obstruction (`massive_residual`). The continuum dispersion is then `ω² = k² + m²`, whose
+minimum at zero momentum (`k = 0`) is `ω = |m|`: for a gauge fold `m = gaugeMassGap = log 2`,
+so the **rest-frame dispersion gap is `log 2 > 0`** (`mass_gap_is_dispersion_gap`), versus
+`ω² = 0` for the massless field. So the mass gap is the minimum *excitation frequency* of the
+propagation operator, and the massless/massive dichotomy is QLF's gauge-fold-absent/present
+dichotomy. This is a **bridge/reframing** of the same `gaugeMassGap = log 2`, not a new route
+past the boundary below — the "discrete `boxKG` symbol = continuum dispersion" step is the
+standard finite-difference correspondence, and the Clay statement stays at §4.
+
 ## 4. Where the boundary sits
 
 QLF supplies the gap as a property of the **discrete substrate**. The Clay problem asks for
