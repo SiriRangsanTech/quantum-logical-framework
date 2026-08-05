@@ -443,7 +443,7 @@ function localW(x,y,z){
 // (localW), so they interact automatically. Acceleration is −∇w, mass-independent
 // (equivalence principle); a heavy body's deeper well means a light one falls onto
 // it while it barely moves — the well depth already carries the mass.
-const DRIFT_EPS=0.35, DRIFT_K=1.0;
+const DRIFT_EPS=0.35, DRIFT_K=3.2;   // gradient-drift strength (higher = faster infall / binding)
 function driftDown(o,dt){
   const gx=localW(o.x+DRIFT_EPS,o.y,o.z)-localW(o.x-DRIFT_EPS,o.y,o.z);
   const gy=localW(o.x,o.y+DRIFT_EPS,o.z)-localW(o.x,o.y-DRIFT_EPS,o.z);
@@ -511,7 +511,7 @@ function stepParticles(dt){
     for(let j=0;j<particles.length;j++){ const e=particles[j];
       if(e===p||e._dead||e.virtual||KIND[e.kind].fam!=='e') continue;
       if(!!KIND[p.kind].anti!==!!KIND[e.kind].anti) continue;      // matter with matter
-      if((p.x-e.x)**2+(p.y-e.y)**2+(p.z-e.z)**2 < 3.0){
+      if((p.x-e.x)**2+(p.y-e.y)**2+(p.z-e.z)**2 < 4.5){            // capture into H (favoured over annihilation)
         const mx=(p.x+e.x)/2,my=(p.y+e.y)/2,mz=(p.z+e.z)/2;
         makeAtom('H',mx,my,mz,!!KIND[p.kind].anti,(p.vx+e.vx)/2,(p.vy+e.vy)/2,(p.vz+e.vz)/2);
         emitPhotons(mx,my,mz,1,false); flash(mx,my,mz,[200,225,255],0.7);
