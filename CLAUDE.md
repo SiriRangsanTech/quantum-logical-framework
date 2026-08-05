@@ -498,6 +498,8 @@ Avoid framings that contradict the above:
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |
 | `braket_rho.py` | Numerical demo of bra-ket ↔ RhoQuCalc correspondence |
+| `MultiParticle.py` / `MultiParticle.md` | Two-history interactor: causal diamonds intersect → joint-ZFA closure = entanglement (ER=EPR); reuses `twist_core.is_zfa` (reconfirms the `count_balanced_pauli_closed` keystone at runtime), the discrete-curl vorticity, cascade `log 2` quantum, and `SpaceTime.SpacetimeGrid` latency field |
+| `spacetime_constructor.html` | Interactive 3-D tool ([live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html)): space = node position, time = clock rate, both = frequency shown as colour; drop masses (redshift = time dilation), spawn e/μ/p/n from the vacuum as balanced pairs that decay/annihilate. Dependency-free canvas. Documented in `SpaceTime.md` §7 |
 | `proton_neutron_demo.py` / `SEX.md` | Model of the proton♂/neutron♀ pairing (issues #53/#57): `pn` binds where `pp`/`nn` are Pauli-blocked, the bond stabilizes the decaying neutron; complementarity → collective intelligence. Room best practices live in quantum-os `Room_Best_Practices.md` |
 | `BraKetRhoQuCalc.md` | Reference doc for bra-ket ↔ RhoQuCalc correspondence |
 | `Lagrangian_Formulation.md` | Variational formulation: ℒ=0 as origin, Σ₈ algebra, Zeno stationarity, decoherence impossibility; Lean theorem anchors for all claims |
