@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spectral Spacetime — QLF Frequency Constructor</title>
+<style>
+  :root{
+    --bg:#06070e; --bg2:#0a0c16;
+    --panel:rgba(12,15,26,.72); --panel-solid:#0b0e18;
+    --border:#1c2436; --border-soft:#141a28;
+    --text:#e9edf7; --muted:#7b859c; --dim:#4a5468;
+    --accent:#5ec8d8; --accent-dim:#2b6a74;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--sans);
+    overflow:hidden; -webkit-font-smoothing:antialiased;
+  }
+  canvas#scene{position:fixed; inset:0; display:block; touch-action:none; cursor:crosshair}
+
+  .panel{
+    position:fixed; z-index:10; background:var(--panel);
+    border:1px solid var(--border); border-radius:12px;
+    backdrop-filter:blur(12px) saturate(1.2); -webkit-backdrop-filter:blur(12px) saturate(1.2);
+    box-shadow:0 10px 40px -12px #000c;
+  }
+
+  /* Console (top-left) */
+  #console{top:16px; left:16px; width:284px; padding:16px 16px 14px}
+  #console .title{font-size:15px; font-weight:600; letter-spacing:.2px; text-wrap:balance}
+  #console .thesis{
+    margin-top:6px; font-size:11.5px; line-height:1.5; color:var(--muted);
+    font-family:var(--mono);
+  }
+  #console .thesis b{color:var(--text); font-weight:600}
+
+  .group{margin-top:15px; border-top:1px solid var(--border-soft); padding-top:12px}
+  .row{display:flex; flex-direction:column; gap:6px; margin-top:11px}
+  .row:first-child{margin-top:0}
+  .row .lbl{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .row .lbl .val{color:var(--accent); letter-spacing:.04em; font-variant-numeric:tabular-nums}
+  input[type=range]{
+    -webkit-appearance:none; appearance:none; width:100%; height:3px; border-radius:2px;
+    background:var(--border); accent-color:var(--accent); cursor:pointer; outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:13px; height:13px; border-radius:50%;
+    background:var(--accent); border:2px solid var(--bg2); cursor:pointer;
+    box-shadow:0 0 8px -1px var(--accent);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:13px; height:13px; border-radius:50%; background:var(--accent);
+    border:2px solid var(--bg2); cursor:pointer;
+  }
+  input[type=range]:focus-visible{box-shadow:0 0 0 2px var(--accent-dim)}
+
+  .toggles{display:flex; flex-wrap:wrap; gap:7px; margin-top:13px}
+  button{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); background:var(--bg2); border:1px solid var(--border);
+    padding:6px 10px; border-radius:7px; cursor:pointer; transition:.15s ease;
+  }
+  button:hover{color:var(--text); border-color:var(--dim)}
+  button:focus-visible{outline:2px solid var(--accent-dim); outline-offset:1px}
+  button.on{color:var(--bg); background:var(--accent); border-color:var(--accent);
+    box-shadow:0 0 12px -3px var(--accent)}
+  button.ghost:hover{color:#ff8ba0; border-color:#5a2836}
+
+  .hint{
+    margin-top:13px; font-family:var(--mono); font-size:10px; line-height:1.6;
+    color:var(--dim); letter-spacing:.02em;
+  }
+  .hint kbd{color:var(--muted); font-family:inherit}
+
+  /* Telemetry (top-right) */
+  #telemetry{top:16px; right:16px; padding:14px 16px; width:186px}
+  #telemetry .hd{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--dim); margin-bottom:11px;
+  }
+  .stat{display:flex; justify-content:space-between; align-items:baseline; margin-top:9px}
+  .stat:first-of-type{margin-top:0}
+  .stat .k{font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--muted)}
+  .stat .v{
+    font-family:var(--mono); font-size:16px; font-variant-numeric:tabular-nums;
+    color:var(--text); letter-spacing:.01em;
+  }
+  .stat .v small{font-size:10px; color:var(--muted)}
+
+  /* Spectrum legend (bottom-center) */
+  #legend{
+    bottom:16px; left:50%; transform:translateX(-50%);
+    padding:11px 16px 12px; width:min(520px,calc(100vw - 32px));
+  }
+  #legend .bar{height:9px; border-radius:5px; margin-bottom:7px;
+    background:linear-gradient(90deg,#ff2d10,#ff9a00,#e8e000,#37e05a,#22b6ff,#7a3bff);
+    box-shadow:inset 0 0 0 1px #ffffff14;
+  }
+  #legend .ends{display:flex; justify-content:space-between; font-family:var(--mono);
+    font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+  #legend .ends .r{color:#ff6a4d} #legend .ends .b{color:#8a6bff}
+  #legend .mid{text-align:center; color:var(--dim)}
+
+  /* Scope note (bottom-left) */
+  #scope{bottom:16px; left:16px; max-width:230px; padding:9px 12px}
+  #scope p{font-family:var(--mono); font-size:9.5px; line-height:1.6; color:var(--dim)}
+  #scope a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--border)}
+  #scope a:hover{color:var(--accent)}
+
+  @media (max-width:720px){
+    #telemetry{display:none}
+    #console{width:min(284px,calc(100vw - 32px))}
+    #scope{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){ .flash{display:none} }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="Interactive 3D spacetime field colored by local clock frequency"></canvas>
+
+<section id="console" class="panel" aria-label="Controls">
+  <div class="title">Spectral Spacetime</div>
+  <p class="thesis">Space is <b>where nodes are</b>. Time is <b>how fast they tick</b>. Both are frequency — and frequency is <b>color</b>.</p>
+
+  <div class="group">
+    <div class="row">
+      <div class="lbl">Nodes <span class="val" id="v_nodes">1800</span></div>
+      <input type="range" id="c_nodes" min="400" max="4000" step="100" value="1800">
+    </div>
+    <div class="row">
+      <div class="lbl">Harmonic octaves <span class="val" id="v_oct">3</span></div>
+      <input type="range" id="c_oct" min="1" max="6" step="1" value="3">
+    </div>
+    <div class="row">
+      <div class="lbl">Mass strength <span class="val" id="v_mass">55</span></div>
+      <input type="range" id="c_mass" min="10" max="140" step="5" value="55">
+    </div>
+    <div class="row">
+      <div class="lbl">Flow rate <span class="val" id="v_flow">1.0×</span></div>
+      <input type="range" id="c_flow" min="0" max="3" step="0.1" value="1">
+    </div>
+  </div>
+
+  <div class="toggles">
+    <button id="t_pulse" class="on">Clocks</button>
+    <button id="t_trails">Trails</button>
+    <button id="t_links">Causal links</button>
+  </div>
+  <div class="toggles">
+    <button id="b_clear" class="ghost">Clear mass</button>
+    <button id="b_reset" class="ghost">Reset field</button>
+  </div>
+
+  <p class="hint"><kbd>Drag</kbd> orbit · <kbd>Scroll</kbd> zoom · <kbd>Click</kbd> empty space to drop a mass</p>
+</section>
+
+<aside id="telemetry" class="panel" aria-label="Telemetry">
+  <div class="hd">Field readout</div>
+  <div class="stat"><span class="k">Logical tick</span><span class="v" id="s_tick">0</span></div>
+  <div class="stat"><span class="k">Masses</span><span class="v" id="s_mass">0</span></div>
+  <div class="stat"><span class="k">Deepest well</span><span class="v" id="s_dil">1.00<small>×</small></span></div>
+  <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
+</aside>
+
+<footer id="legend" class="panel">
+  <div class="bar"></div>
+  <div class="ends">
+    <span class="r">low f · redshift · near mass</span>
+    <span class="mid">local clock rate  f = 1/latency</span>
+    <span class="b">high f · blueshift · flat space</span>
+  </div>
+</footer>
+
+<aside id="scope" class="panel">
+  <p>A qualitative <a href="https://github.com/jimscarver/quantum-logical-framework" target="_blank" rel="noopener">QLF</a> visualization: a latency field (f ∝ w<sub>ZFA</sub>), not the ZFA engine itself.</p>
+</aside>
+
+<script>
+"use strict";
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d', { alpha:false });
+const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
+let DPR = Math.min(devicePixelRatio || 1, 2);
+let W = 0, H = 0;
+
+function resize(){
+  W = innerWidth; H = innerHeight;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+addEventListener('resize', resize);
+
+/* ---------- visible spectrum: wavelength(nm) -> RGB ---------- */
+function wavelengthRGB(wl){
+  let r=0,g=0,b=0;
+  if(wl<440){ r=-(wl-440)/60; b=1; }
+  else if(wl<490){ g=(wl-440)/50; b=1; }
+  else if(wl<510){ g=1; b=-(wl-510)/20; }
+  else if(wl<580){ r=(wl-510)/70; g=1; }
+  else if(wl<645){ r=1; g=-(wl-645)/65; }
+  else { r=1; }
+  let a=1;
+  if(wl>700) a=Math.max(0,(780-wl)/80);
+  else if(wl<420) a=Math.max(0,(wl-380)/40);
+  const gamma=0.85;
+  return [Math.pow(r*a,gamma), Math.pow(g*a,gamma), Math.pow(b*a,gamma)];
+}
+
+/* ---------- pre-baked spectral glow sprites (fast additive draw) ---------- */
+const BINS = 56, SPR = 48;
+const sprites = [];
+for(let i=0;i<BINS;i++){
+  const t = i/(BINS-1);
+  const wl = 700 - t*(700-390);        // red -> violet
+  const [r,g,b] = wavelengthRGB(wl);
+  const c = document.createElement('canvas'); c.width=c.height=SPR;
+  const g2 = c.getContext('2d');
+  const cx=SPR/2;
+  const grd = g2.createRadialGradient(cx,cx,0,cx,cx,cx);
+  const R=(r*255)|0, G=(g*255)|0, B=(b*255)|0;
+  grd.addColorStop(0,   `rgba(${R},${G},${B},1)`);
+  grd.addColorStop(0.28,`rgba(${R},${G},${B},0.55)`);
+  grd.addColorStop(1,   `rgba(${R},${G},${B},0)`);
+  g2.fillStyle=grd; g2.fillRect(0,0,SPR,SPR);
+  sprites.push(c);
+}
+const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
+
+/* ---------- state ---------- */
+const cfg = { N:1800, octaves:3, mass:55, flow:1,
+              pulse:true, trails:false, links:false };
+const FLAT_W = 100;                 // empty-space degeneracy baseline
+let nodes = [];                     // {x,y,z, baseW, oct, ph}
+const masses = [];                  // {x,y,z, m, born}
+let tick = 0, birth = 0;
+
+function build(){
+  nodes = [];
+  const spread = 13;
+  for(let i=0;i<cfg.N;i++){
+    // uniform-ish in a ball
+    let x,y,z;
+    do{ x=(Math.random()*2-1); y=(Math.random()*2-1); z=(Math.random()*2-1); }
+    while(x*x+y*y+z*z>1);
+    const oct = Math.floor(Math.random()*cfg.octaves);
+    nodes.push({
+      x:x*spread, y:y*spread, z:z*spread,
+      baseW: FLAT_W*(0.82+Math.random()*0.18),
+      oct,
+      ph: Math.random()*Math.PI*2
+    });
+  }
+  birth = reduceMotion ? 1 : 0;
+}
+
+/* ---------- camera (orbit) ---------- */
+const cam = { az:0.9, el:0.5, dist:34, tgt:{x:0,y:0,z:0} };
+let basis = null;
+function updateBasis(){
+  const ce=Math.cos(cam.el), se=Math.sin(cam.el);
+  const ca=Math.cos(cam.az), sa=Math.sin(cam.az);
+  const eye={ x:cam.tgt.x+cam.dist*ce*ca, y:cam.tgt.y+cam.dist*se, z:cam.tgt.z+cam.dist*ce*sa };
+  let fx=cam.tgt.x-eye.x, fy=cam.tgt.y-eye.y, fz=cam.tgt.z-eye.z;
+  const fl=Math.hypot(fx,fy,fz); fx/=fl; fy/=fl; fz/=fl;         // forward
+  // right = normalize(cross(forward, worldUp)), worldUp=(0,1,0)
+  let Rx=-fz, Ry=0, Rz=fx; const rl=Math.hypot(Rx,Ry,Rz)||1; Rx/=rl; Rz/=rl;
+  // up = cross(right, forward)
+  const Ux=Ry*fz-Rz*fy, Uy=Rz*fx-Rx*fz, Uz=Rx*fy-Ry*fx;
+  basis={ eye, f:[fx,fy,fz], r:[Rx,Ry,Rz], u:[Ux,Uy,Uz] };
+}
+const focal = () => (H/2)/Math.tan((60*Math.PI/180)/2);
+
+function project(x,y,z){
+  const {eye,f,r,u}=basis;
+  const dx=x-eye.x, dy=y-eye.y, dz=z-eye.z;
+  const cz = dx*f[0]+dy*f[1]+dz*f[2];
+  if(cz<=0.05) return null;
+  const cx = dx*r[0]+dy*r[1]+dz*r[2];
+  const cy = dx*u[0]+dy*u[1]+dz*u[2];
+  const fo=focal();
+  return { sx: W/2 + (cx/cz)*fo, sy: H/2 - (cy/cz)*fo, z:cz };
+}
+
+/* ---------- frequency field ---------- */
+let minWglobal = FLAT_W;
+function localW(x,y,z){
+  let w = FLAT_W;
+  for(const m of masses){
+    const dx=x-m.x, dy=y-m.y, dz=z-m.z;
+    w -= m.m/(dx*dx+dy*dy+dz*dz+1.5);
+  }
+  return Math.max(2, w);
+}
+
+/* ---------- interaction ---------- */
+let drag=null;
+canvas.addEventListener('pointerdown', e=>{
+  canvas.setPointerCapture(e.pointerId);
+  drag={ x:e.clientX, y:e.clientY, ax:cam.az, el:cam.el, moved:0 };
+});
+canvas.addEventListener('pointermove', e=>{
+  if(!drag) return;
+  const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  drag.moved += Math.abs(dx)+Math.abs(dy);
+  cam.az = drag.ax - dx*0.006;
+  cam.el = Math.max(-1.4, Math.min(1.4, drag.el + dy*0.006));
+});
+canvas.addEventListener('pointerup', e=>{
+  const wasClick = drag && drag.moved < 6;
+  if(wasClick) dropMass(e.clientX, e.clientY);
+  drag=null;
+});
+canvas.addEventListener('wheel', e=>{
+  e.preventDefault();
+  cam.dist = Math.max(12, Math.min(70, cam.dist * (1 + Math.sign(e.deltaY)*0.08)));
+}, {passive:false});
+
+function dropMass(px,py){
+  // unproject click ray onto plane through target, normal = forward
+  updateBasis();
+  const {eye,f,r,u}=basis;
+  const nx=(px/W)*2-1, ny=-((py/H)*2-1);
+  const tan=Math.tan((60*Math.PI/180)/2), aspect=W/H;
+  const dcx=nx*tan*aspect, dcy=ny*tan, dcz=1;
+  let dx=dcx*r[0]+dcy*u[0]+dcz*f[0];
+  let dy=dcx*r[1]+dcy*u[1]+dcz*f[1];
+  let dz=dcx*r[2]+dcy*u[2]+dcz*f[2];
+  const dl=Math.hypot(dx,dy,dz); dx/=dl; dy/=dl; dz/=dl;
+  const denom = dx*f[0]+dy*f[1]+dz*f[2];
+  const t = (cam.dist) / (denom||1e-6);
+  masses.push({ x:eye.x+dx*t, y:eye.y+dy*t, z:eye.z+dz*t, m:cfg.mass, born:reduceMotion?1:0 });
+}
+
+/* ---------- controls ---------- */
+const bind=(id,fn)=>document.getElementById(id).addEventListener('input',fn);
+bind('c_nodes',e=>{cfg.N=+e.target.value; v_nodes.textContent=cfg.N; build();});
+bind('c_oct', e=>{cfg.octaves=+e.target.value; v_oct.textContent=cfg.octaves; build();});
+bind('c_mass',e=>{cfg.mass=+e.target.value; v_mass.textContent=cfg.mass;});
+bind('c_flow',e=>{cfg.flow=+e.target.value; v_flow.textContent=cfg.flow.toFixed(1)+'×';});
+const toggle=(id,key)=>{const el=document.getElementById(id);
+  el.addEventListener('click',()=>{cfg[key]=!cfg[key]; el.classList.toggle('on',cfg[key]);});};
+toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
+document.getElementById('b_clear').onclick=()=>{masses.length=0;};
+document.getElementById('b_reset').onclick=()=>{masses.length=0; build();};
+
+/* ---------- render ---------- */
+function frame(){
+  requestAnimationFrame(frame);
+  const speed = cfg.flow;
+  if(!reduceMotion) tick += speed;
+  if(birth<1) birth=Math.min(1, birth + 0.02*(0.5+speed));
+
+  // idle auto-orbit when not dragging
+  if(!drag && !reduceMotion) cam.az += 0.0009*speed;
+  updateBasis();
+
+  // background / trails
+  if(cfg.trails && !reduceMotion){
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='rgba(6,7,14,0.18)';
+    ctx.fillRect(0,0,W,H);
+  } else {
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#06070e';
+    ctx.fillRect(0,0,W,H);
+  }
+
+  // faint mass halos (drawn under, source-over)
+  for(const m of masses){
+    if(m.born<1) m.born=Math.min(1,m.born+0.06);
+    const p=project(m.x,m.y,m.z); if(!p) continue;
+    const rad=Math.max(6, focal()/p.z * 0.7 * m.born);
+    const grd=ctx.createRadialGradient(p.sx,p.sy,0,p.sx,p.sy,rad*4);
+    grd.addColorStop(0,'rgba(255,90,120,0.22)');
+    grd.addColorStop(1,'rgba(255,90,120,0)');
+    ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(p.sx,p.sy,rad*4,0,7); ctx.fill();
+  }
+
+  // optional causal links (sparse nearest neighbour), under points
+  if(cfg.links){
+    ctx.globalCompositeOperation='lighter';
+    ctx.strokeStyle='rgba(70,110,170,0.10)'; ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let i=0;i<nodes.length;i+=37){
+      const a=nodes[i]; let bi=-1,bd=1e9;
+      for(let j=0;j<nodes.length;j+=11){
+        if(j===i) continue; const b=nodes[j];
+        const d=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
+        if(d<bd){bd=d; bi=j;}
+      }
+      if(bi<0) continue;
+      const pa=project(a.x,a.y,a.z), pb=project(nodes[bi].x,nodes[bi].y,nodes[bi].z);
+      if(pa&&pb){ ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); }
+    }
+    ctx.stroke();
+  }
+
+  // points (additive spectral glow)
+  ctx.globalCompositeOperation='lighter';
+  let minW=FLAT_W;
+  const octSpan = Math.max(1,cfg.octaves);
+  for(let i=0;i<nodes.length;i++){
+    const n=nodes[i];
+    const w=localW(n.x,n.y,n.z);
+    if(w<minW) minW=w;
+    // frequency: degeneracy (0..1) lifted into an octave band -> harmonic hierarchy
+    const wn=(w-2)/(FLAT_W-2);                       // 0 near mass .. 1 flat
+    const octBoost = octSpan>1 ? (n.oct+0.35)/octSpan : 1;
+    let f = 0.12 + 0.88*wn*(0.55+0.75*octBoost);
+    f = Math.max(0, Math.min(1, f));
+
+    const p=project(n.x*birth, n.y*birth, n.z*birth); if(!p) continue;
+
+    // clocks: brightness ticks at a rate set by local frequency
+    let bright=1;
+    if(cfg.pulse && !reduceMotion){
+      const rate=0.4+f*3.2;                          // bluer = faster clock
+      bright=0.55+0.45*Math.sin(tick*0.05*rate + n.ph);
+    }
+    bright *= birth;
+
+    const size=Math.max(1.2, (focal()/p.z) * (0.10+0.06*f)) ;
+    ctx.globalAlpha = Math.max(0, 0.16+0.6*bright);
+    const s=size*2.6;
+    ctx.drawImage(binFor(f), p.sx-s, p.sy-s, s*2, s*2);
+  }
+  ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
+  minWglobal=minW;
+
+  // telemetry
+  s_tick.textContent = Math.floor(tick);
+  s_mass.textContent = masses.length;
+  const dil = Math.sqrt(minWglobal/FLAT_W);          // clock-rate ratio (illustrative)
+  s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
+  const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
+  s_z.textContent = z.toFixed(2);
+}
+
+/* ---------- go ---------- */
+resize(); build(); frame();
+</script>
+</body>
+</html>
