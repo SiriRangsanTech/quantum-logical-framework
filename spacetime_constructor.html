@@ -290,6 +290,7 @@ const KIND = {
 };
 const particles = [];               // {kind,x,y,z,vx,vy,vz,ttl,born,virtual}
 const flashes = [];                 // {x,y,z,r,g,b,t,life,strength}
+const photons = [];                 // massless streaks from annihilation / decay
 const massFreq = m => Math.min(1, Math.log(1+m)/Math.log(2000)); // rest freq -> spectral t
 
 function fluctPoint(){
@@ -298,6 +299,21 @@ function fluctPoint(){
 }
 function flash(x,y,z,rgb,strength){
   flashes.push({x,y,z,r:rgb[0],g:rgb[1],b:rgb[2],t:0,life:1,strength:strength||1});
+}
+// Emit `n` photon streaks from (x,y,z). A photon is massless → travels straight and
+// fast (≈c, far quicker than the massive particles), leaving a fading light streak.
+// pairBack=true emits them back-to-back (annihilation e⁻e⁺ → two photons, momentum 0).
+function emitPhotons(x,y,z,n,pairBack){
+  const SPD=13, LIFE=1.2, STREAK=0.11;   // units/s, seconds, trail length (s)
+  let dx=Math.random()*2-1, dy=Math.random()*2-1, dz=Math.random()*2-1;
+  const dl=Math.hypot(dx,dy,dz)||1; dx/=dl; dy/=dl; dz/=dl;
+  for(let i=0;i<n;i++){
+    let ux=dx,uy=dy,uz=dz;
+    if(pairBack && i===1){ ux=-dx; uy=-dy; uz=-dz; }         // second of a pair: opposite
+    else if(i>0){ ux=Math.random()*2-1; uy=Math.random()*2-1; uz=Math.random()*2-1;
+      const l=Math.hypot(ux,uy,uz)||1; ux/=l; uy/=l; uz/=l; }
+    photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK });
+  }
 }
 function spawn(kind,x,y,z,vx,vy,vz,virtual){
   particles.push({kind,x,y,z,vx,vy,vz, ttl:virtual?0.9:KIND[kind].ttl,
@@ -399,6 +415,7 @@ function stepParticles(dt){
       if(p.virtual){ flash(p.x,p.y,p.z,[150,170,255],0.5); continue; }
       if(k.decay){
         flash(p.x,p.y,p.z,[255,214,140],1);
+        emitPhotons(p.x,p.y,p.z,2,false);          // decay gammas fly off as streaks
         for(const c of k.decay){
           const a=Math.random()*6.283, b=Math.random()*6.283, sp=1.2;
           spawn(c,p.x,p.y,p.z, Math.cos(a)*sp, Math.sin(a)*Math.cos(b)*sp, Math.sin(b)*sp);
@@ -414,13 +431,19 @@ function stepParticles(dt){
       const ka=KIND[a.kind], kb=KIND[b.kind];
       if(ka.fam===kb.fam && ka.fam!=='nu' && (!!ka.anti)!==(!!kb.anti)){
         const dd=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
-        if(dd<1.4){ flash((a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2,[255,255,255],1.4);
+        if(dd<1.4){ const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,mz=(a.z+b.z)/2;
+          flash(mx,my,mz,[255,255,255],1.4);
+          emitPhotons(mx,my,mz,2,true);            // e⁻e⁺ → two back-to-back photons
           a._dead=b._dead=true; }
       }
     }
   }
   for(let i=particles.length-1;i>=0;i--) if(particles[i]._dead) particles.splice(i,1);
   for(let i=flashes.length-1;i>=0;i--){ flashes[i].t+=dt*1.6; if(flashes[i].t>=flashes[i].life) flashes.splice(i,1); }
+  // photons stream straight at ~c, then fade / leave the field
+  for(const ph of photons){ ph.age+=dt; ph.x+=ph.vx*dt; ph.y+=ph.vy*dt; ph.z+=ph.vz*dt; }
+  for(let i=photons.length-1;i>=0;i--){ const p=photons[i];
+    if(p.age>=p.life || (p.x*p.x+p.y*p.y+p.z*p.z)>26*26) photons.splice(i,1); }
 }
 
 function renderParticles(){
@@ -434,6 +457,23 @@ function renderParticles(){
     grd.addColorStop(0,`rgba(${fl.r},${fl.g},${fl.b},${0.85*a})`);
     grd.addColorStop(1,`rgba(${fl.r},${fl.g},${fl.b},0)`);
     ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(pp.sx,pp.sy,Math.max(1,rad),0,7); ctx.fill();
+  }
+  // photon streaks — a bright head with a fading tail along the flight direction
+  for(const p of photons){
+    const head=project(p.x,p.y,p.z); if(!head) continue;
+    const tail=project(p.x-p.vx*p.streak, p.y-p.vy*p.streak, p.z-p.vz*p.streak);
+    const a=Math.max(0,1-p.age/p.life);
+    if(tail){
+      const grd=ctx.createLinearGradient(tail.sx,tail.sy,head.sx,head.sy);
+      grd.addColorStop(0,'rgba(200,230,255,0)');
+      grd.addColorStop(1,`rgba(210,235,255,${0.9*a})`);
+      ctx.strokeStyle=grd; ctx.lineWidth=Math.max(1,(focal()/head.z)*0.02); ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(tail.sx,tail.sy); ctx.lineTo(head.sx,head.sy); ctx.stroke();
+    }
+    const hr=Math.max(1.2,(focal()/head.z)*0.05);
+    const hg=ctx.createRadialGradient(head.sx,head.sy,0,head.sx,head.sy,hr*2.2);
+    hg.addColorStop(0,`rgba(240,250,255,${a})`); hg.addColorStop(1,'rgba(210,235,255,0)');
+    ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(head.sx,head.sy,hr*2.2,0,7); ctx.fill();
   }
   // particle cores, coloured by rest-mass frequency
   for(const p of particles){
@@ -511,7 +551,7 @@ const toggle=(id,key)=>{const el=document.getElementById(id);
 toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
 toggle('t_foam','foam');
 document.getElementById('b_clear').onclick=()=>{masses.length=0;};
-document.getElementById('b_reset').onclick=()=>{masses.length=0; particles.length=0; flashes.length=0; build();};
+document.getElementById('b_reset').onclick=()=>{masses.length=0; particles.length=0; flashes.length=0; photons.length=0; build();};
 
 document.querySelectorAll('[data-spawn]').forEach(b=>b.addEventListener('click',()=>{
   const s=b.dataset.spawn;
