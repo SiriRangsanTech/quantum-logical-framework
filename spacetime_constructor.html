@@ -304,7 +304,7 @@ function flash(x,y,z,rgb,strength){
 // fast (≈c, far quicker than the massive particles), leaving a fading light streak.
 // pairBack=true emits them back-to-back (annihilation e⁻e⁺ → two photons, momentum 0).
 function emitPhotons(x,y,z,n,pairBack){
-  const SPD=15, LIFE=1.7, STREAK=0.28;   // units/s, seconds, trail length (s)
+  const SPD=8, LIFE=2.8, STREAK=0.6;   // units/s, seconds, trail length (s) — slowed for visibility
   let dx=Math.random()*2-1, dy=Math.random()*2-1, dz=Math.random()*2-1;
   const dl=Math.hypot(dx,dy,dz)||1; dx/=dl; dy/=dl; dz/=dl;
   for(let i=0;i<n;i++){
@@ -474,8 +474,8 @@ function stepParticles(dt){
       particles.splice(i,1);
       if(p.virtual){ flash(p.x,p.y,p.z,[150,170,255],0.5); continue; }
       if(k.decay){
-        flash(p.x,p.y,p.z,[255,214,140],1);
-        emitPhotons(p.x,p.y,p.z,2,false);          // decay gammas fly off as streaks
+        flash(p.x,p.y,p.z,[255,214,140],0.6);
+        emitPhotons(p.x,p.y,p.z,3,false);          // decay gammas fly off as streaks
         for(const c of k.decay){
           const a=Math.random()*6.283, b=Math.random()*6.283, sp=1.2;
           spawn(c,p.x,p.y,p.z, Math.cos(a)*sp, Math.sin(a)*Math.cos(b)*sp, Math.sin(b)*sp);
@@ -492,7 +492,7 @@ function stepParticles(dt){
       if(ka.fam===kb.fam && ka.fam!=='nu' && (!!ka.anti)!==(!!kb.anti)){
         const dd=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
         if(dd<1.4){ const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,mz=(a.z+b.z)/2;
-          flash(mx,my,mz,[255,255,255],1.4);
+          flash(mx,my,mz,[255,255,255],0.9);
           emitPhotons(mx,my,mz,2,true);            // e⁻e⁺ → two back-to-back photons
           a._dead=b._dead=true; }
       }
@@ -534,7 +534,7 @@ function stepAtoms(dt){
     const dd=(A.x-B.x)**2+(A.y-B.y)**2+(A.z-B.z)**2;
     const mx=(A.x+B.x)/2,my=(A.y+B.y)/2,mz=(A.z+B.z)/2;
     if(A.anti!==B.anti){                       // matter atom meets antimatter atom → annihilate
-      if(dd<7){ flash(mx,my,mz,[255,255,255],2.2); emitPhotons(mx,my,mz,4,false); A._dead=B._dead=true; }
+      if(dd<7){ flash(mx,my,mz,[255,255,255],1.2); emitPhotons(mx,my,mz,6,false); A._dead=B._dead=true; }
     } else if(A.type==='H'&&B.type==='H'){      // two H bond into an H₂ molecule (+ photon)
       if(dd<5){ makeAtom('H2',mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2);
         flash(mx,my,mz,[190,225,255],1); emitPhotons(mx,my,mz,1,false); A._dead=B._dead=true; }
@@ -563,12 +563,12 @@ function renderParticles(){
     if(tail){
       const grd=ctx.createLinearGradient(tail.sx,tail.sy,head.sx,head.sy);
       grd.addColorStop(0,'rgba(190,225,255,0)');
-      grd.addColorStop(0.6,`rgba(205,232,255,${0.5*a})`);
-      grd.addColorStop(1,`rgba(230,245,255,${a})`);
-      ctx.strokeStyle=grd; ctx.lineWidth=Math.max(1.4,(focal()/head.z)*0.035); ctx.lineCap='round';
+      grd.addColorStop(0.5,`rgba(210,235,255,${0.55*a})`);
+      grd.addColorStop(1,`rgba(240,250,255,${a})`);
+      ctx.strokeStyle=grd; ctx.lineWidth=Math.max(2.2,(focal()/head.z)*0.06); ctx.lineCap='round';
       ctx.beginPath(); ctx.moveTo(tail.sx,tail.sy); ctx.lineTo(head.sx,head.sy); ctx.stroke();
     }
-    const hr=Math.max(1.6,(focal()/head.z)*0.075);
+    const hr=Math.max(2.2,(focal()/head.z)*0.11);
     const hg=ctx.createRadialGradient(head.sx,head.sy,0,head.sx,head.sy,hr*2.6);
     hg.addColorStop(0,`rgba(255,255,255,${a})`); hg.addColorStop(0.4,`rgba(225,242,255,${0.7*a})`);
     hg.addColorStop(1,'rgba(205,232,255,0)');
