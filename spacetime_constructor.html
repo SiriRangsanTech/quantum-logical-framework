@@ -30,8 +30,17 @@
   }
 
   /* Console (top-left) */
-  #console{top:16px; left:16px; width:284px; padding:16px 16px 14px}
+  #console{top:16px; left:16px; width:284px; padding:16px 16px 14px;
+    max-height:calc(100dvh - 32px); overflow-y:auto; -webkit-overflow-scrolling:touch}
+  #console .hdr{display:flex; align-items:center; justify-content:space-between; gap:10px}
   #console .title{font-size:15px; font-weight:600; letter-spacing:.2px; text-wrap:balance}
+  .mini{font-family:var(--mono); font-size:15px; line-height:1; color:var(--muted); background:var(--bg2);
+    border:1px solid var(--border); width:28px; height:28px; border-radius:7px; cursor:pointer; flex:0 0 auto; padding:0}
+  .mini:hover{color:var(--text); border-color:var(--dim)}
+  .mini:focus-visible{outline:2px solid var(--accent-dim); outline-offset:1px}
+  #console.collapsed{width:auto; overflow:visible}
+  #console.collapsed .thesis, #console.collapsed .group,
+  #console.collapsed .toggles, #console.collapsed .hint{display:none}
   #console .thesis{
     margin-top:6px; font-size:11.5px; line-height:1.5; color:var(--muted);
     font-family:var(--mono);
@@ -119,8 +128,9 @@
 
   @media (max-width:720px){
     #telemetry{display:none}
-    #console{width:min(284px,calc(100vw - 32px))}
+    #console{top:10px; left:10px; width:min(260px,calc(100vw - 20px))}
     #scope{display:none}
+    #legend{bottom:10px; padding:8px 12px; gap:9px; font-size:9px; width:calc(100vw - 20px)}
   }
   @media (prefers-reduced-motion:reduce){ .flash{display:none} }
 </style>
@@ -129,7 +139,10 @@
 <canvas id="scene" aria-label="Interactive 3D spacetime field colored by local clock frequency"></canvas>
 
 <section id="console" class="panel" aria-label="Controls">
-  <div class="title">Spectral Spacetime</div>
+  <div class="hdr">
+    <div class="title">Spectral Spacetime</div>
+    <button id="collapse" class="mini" aria-label="Minimize controls" aria-expanded="true">–</button>
+  </div>
   <p class="thesis">Space is <b>where nodes are</b>. Time is <b>how fast they tick</b>. Both are frequency — and frequency is <b>color</b>.</p>
 
   <div class="group">
@@ -609,6 +622,18 @@ function frame(){
   s_np.textContent = np;
   s_q.textContent = (q>0?'+':'')+q;
 }
+
+/* ---------- collapse / minimize the console (esp. narrow screens) ---------- */
+const consoleEl = document.getElementById('console');
+const collapseBtn = document.getElementById('collapse');
+function setCollapsed(c){
+  consoleEl.classList.toggle('collapsed', c);
+  collapseBtn.textContent = c ? '+' : '–';
+  collapseBtn.setAttribute('aria-expanded', String(!c));
+  collapseBtn.setAttribute('aria-label', c ? 'Show controls' : 'Minimize controls');
+}
+collapseBtn.addEventListener('click', () => setCollapsed(!consoleEl.classList.contains('collapsed')));
+setCollapsed(innerWidth <= 640);   // start minimized on phones so the field is visible
 
 /* ---------- go ---------- */
 resize(); build(); frame();
