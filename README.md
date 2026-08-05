@@ -17,6 +17,8 @@ In one line: **the universe is logical, its logic is constructive and sufficient
 
 > **New to QLF? Read [Introducing_QLF.md →](Introducing_QLF.md)** — a short, link-rich introduction for the general reader (the one idea, the headline results, the frontiers, honest scope). Then **start the deep dive: the [flow chart →](FlowChart.md)** — the whole framework as a linked index (one substrate → four families → ten domains → the individual results). For the rendered, clickable diagrams + a printable PDF, open the live page on GitHub Pages: [`FlowChart.html`](https://jimscarver.github.io/quantum-logical-framework/FlowChart.html).
 
+> **Prefer to see it move?** Open the [**Spectral Spacetime Constructor**](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html) ([source](spacetime_constructor.html), [notes](SpaceTime.md#7-interactive-the-spectral-spacetime-constructor)) — an interactive 3-D field where space is node position, time is clock rate, and both are frequency shown as colour. Drop masses to see redshift = time dilation, and spawn electrons, muons, protons, and neutrons from the vacuum as balanced pairs that decay and annihilate.
+
 ---
 
 ## 🚀 Major substrate-derivation discoveries
