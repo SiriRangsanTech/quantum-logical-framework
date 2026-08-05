@@ -293,13 +293,25 @@ const flashes = [];                 // {x,y,z,r,g,b,t,life,strength}
 const photons = [];                 // massless streaks from annihilation / decay
 const massFreq = m => Math.min(1, Math.log(1+m)/Math.log(2000)); // rest freq -> spectral t
 
-// Deterministic logic, not probability. QLF has no dice — variation comes from a
-// low-discrepancy golden-ratio sequence (the same φ behind optimal packing /
-// phyllotaxis). Every "choice" is the next term of a computable sequence, so the
-// same inputs unfold the same evolution. Replaces Math.random throughout.
-let _seq = 0.5;
-const PHI_INV = 0.6180339887498949;
-function lseq(){ _seq = (_seq + PHI_INV) % 1; return _seq; }
+// No probability — the variation IS the closure census. A ZFA-balanced ±1 history
+// is a closed walk (QLF_CensusBrownian); the census counts them, C(2n,n). Here we
+// take every ZFA closure of length 14 — the C(14,7) = 3432 count-balanced histories
+// the QuCalc engine generates — and read each as a base-2 fraction in low-discrepancy
+// (radical-inverse) order into [0,1). `lseq` cycles through these actual closures.
+// Every position/direction below is drawn from a real balanced closure of the
+// substrate; not a random number, not a golden-ratio stand-in.
+const _census = (() => {
+  const L = 14, vals = [];
+  for(let m=0; m<(1<<L); m++){
+    let bits=0; for(let b=0;b<L;b++) bits+=(m>>b)&1;
+    if(bits !== L/2) continue;                          // count balance ⇒ a closure
+    let v=0, d=0.5; for(let b=0;b<L;b++){ v+=((m>>b)&1)*d; d/=2; }   // radical inverse
+    vals.push(v);
+  }
+  return vals;                                          // length C(14,7) = 3432
+})();
+let _ci = 0;
+function lseq(){ const v=_census[_ci % _census.length]; _ci++; return v; }
 
 function fluctPoint(){
   let x,y,z; do{x=lseq()*2-1;y=lseq()*2-1;z=lseq()*2-1;}
