@@ -834,7 +834,7 @@ function setCollapsed(c){
   collapseBtn.setAttribute('aria-label', c ? 'Show controls' : 'Minimize controls');
 }
 collapseBtn.addEventListener('click', () => setCollapsed(!consoleEl.classList.contains('collapsed')));
-setCollapsed(innerWidth <= 640);   // start minimized on phones so the field is visible
+setCollapsed(false);   // start open on every screen; the – button minimizes to reveal the field
 
 /* ---------- go ---------- */
 resize(); build(); frame();
