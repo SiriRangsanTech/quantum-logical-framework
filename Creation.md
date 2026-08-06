@@ -189,6 +189,8 @@ reuse-only, no new axioms):
 
 *Phases (inner → outer): **0** the logical bang (first distinction) · **1** conjugate pairs · **2** the octave cascade (turbulence) · **3** light nuclei · **4** nucleons — the Borromean baryons `p`, `n` on the outer ring.*
 
+> **See it live.** These phases run in the [Spectral Spacetime Constructor](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html) ([`SpaceTime.md` §7](SpaceTime.md#7-interactive-the-spectral-spacetime-constructor)): set the temperature to the **Planck** top and the vacuum fills with **tiny Planck-mass black holes** that Hawking-cascade into **hadrons** (`p`, `n`); cool it and they recombine into atoms. The cascade is not scripted — it falls out of ZFA and the closure census, so the tool reproduces primordial black holes and the hadron epoch from the substrate alone.
+
 Two features are essential and drawn explicitly (the orange radial + the self-similar inset):
 
 - **Fast logic resolves before slow — inside every phase.** Resolution is always highest-frequency-first
