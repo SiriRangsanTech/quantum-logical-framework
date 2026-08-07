@@ -306,6 +306,45 @@ def particle_map():
 
 
 # ----------------------------------------------------------------------
+# 7. BLACK-HOLE GENESIS  ->  the Compton = Schwarzschild crossing
+#    A closure of mass mu (in Planck masses) has reduced Compton radius 1/mu
+#    and Schwarzschild radius 2*mu.  They coincide iff mu^2 = 1/2 -- the Planck
+#    floor.  Sub-Planck (mu^2<1/2): Compton > Schwarzschild -> the closure is a
+#    QUANTUM black hole (a Markov-blanket horizon = a hadron).  Super-Planck: a
+#    true (Schwarzschild) black hole.  So the Planck-mass closure IS the
+#    black-hole genesis.  The absolute scale comes from THIS framework:
+#    ln(M_Planck/m_p) = 14*pi (QLF_AlphaS, b0=7) and m_p/m_e = 6*pi^5.
+#    [LEAN] QLF_QuantumBlackHole.compton_eq_schwarzschild_iff ; QLF_PlanckScale
+# ----------------------------------------------------------------------
+
+def compton_radius(mu):        # reduced Compton radius, Planck units
+    return 1.0 / mu
+
+def schwarzschild_radius(mu):  # Schwarzschild radius, Planck units
+    return 2.0 * mu
+
+def bh_crossing_mu():
+    """Exact: 1/mu = 2*mu  <=>  mu^2 = 1/2  ->  mu = 1/sqrt(2)."""
+    return 0.5 ** 0.5
+
+def planck_mass_over_me():
+    """M_Planck / m_e, from this framework's own scale (no external input)."""
+    Mpl_over_mp = math.exp(14 * math.pi)     # QLF_AlphaS: ln(M_Pl/m_p)=14*pi (b0=7)
+    mp_over_me = 6 * math.pi ** 5            # QLF_LenzMassRatio
+    return Mpl_over_mp * mp_over_me
+
+def particle_mu_table():
+    Mpl_over_me = planck_mass_over_me()
+    rows = [("electron", 1.0), ("muon", 206.77), ("pion+-", 2 * (128 + 9)),
+            ("proton", 6 * math.pi ** 5), ("tau", 3477.4)]
+    out = []
+    for name, m_over_me in rows:
+        mu = m_over_me / Mpl_over_me         # mass in Planck masses
+        out.append((name, mu, compton_radius(mu), schwarzschild_radius(mu)))
+    return out
+
+
+# ----------------------------------------------------------------------
 # report
 # ----------------------------------------------------------------------
 
@@ -412,10 +451,28 @@ def main():
     print("           swap-graph symbol-count <-> quark/colour content (falsifiable, untested).")
     print("[DEFEATER] every row shows the measured value; any mismatch falsifies that assignment.")
 
+    rule("7. BLACK-HOLE GENESIS  (Compton = Schwarzschild crossing at the Planck mass)")
+    muc = bh_crossing_mu()
+    print("[EXACT] reduced Compton radius 1/mu = Schwarzschild radius 2*mu  <=>  mu^2 = 1/2")
+    print(f"        crossing at mu = 1/sqrt(2) = {muc:.6f} Planck masses -- the Planck floor.")
+    print("[LEAN] QLF_QuantumBlackHole.compton_eq_schwarzschild_iff (mu^2=1/2) +")
+    print("       sub_planck_compton_gt_schwarzschild ; QLF_PlanckScale.planck_length_floor.")
+    print(f"\n{'particle':>9} {'mu=m/M_Pl':>12} {'Compton 1/mu':>14} {'Schwarz 2mu':>13}  side")
+    for name, mu, rc, rs in particle_mu_table():
+        side = "quantum BH (Compton side)" if rc > rs else "true BH (Schwarzschild side)"
+        print(f"{name:>9} {mu:>12.2e} {rc:>14.2e} {rs:>13.2e}  {side}")
+    print("\n[STRUCTURAL] every particle is DEEPLY sub-Planck (mu ~ 1e-20) -> Compton side ->")
+    print("        a hadron IS a quantum black hole (QLF_QuantumBlackHole).  A closure crosses")
+    print("        to the Schwarzschild side only at mu = 1/sqrt(2): the Planck-mass BLACK-HOLE")
+    print("        GENESIS.  Heating the vacuum to the Planck scale (spacetime_constructor.html)")
+    print("        drives closures across it -> tiny black holes that Hawking-cascade back to")
+    print("        the Compton side as hadrons -- the logical bang (Creation.md 8a).")
+
     rule("WHAT THIS COMPUTES vs CLAIMS  (misses at full weight)")
     for line in [
         "COMPUTES [EXACT]  : the closure census, the -p/2 spectral exponent,",
-        "                    census->pi convergence, the 128+d^2 joint at d=3.",
+        "                    census->pi convergence, the 128+d^2 joint at d=3, and",
+        "                    the Compton=Schwarzschild crossing mu^2=1/2 (black-hole genesis).",
         "READS             : frequency=mass (m=1/R), so the octave hierarchy IS the",
         "                    mass spectrum; D>3 = internal gauge/color (external 3D =",
         "                    receipt quotient); particle map to m_e (sec 6).",

@@ -46,6 +46,18 @@ system rendering its own continuum, up to the next phase change** — the contin
   ([`Frequency_Synchronization.md`](Frequency_Synchronization.md) §0, [`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean)).
 - **The `128 + d²` census joint (§5).** `d=3 → 137`, the only prime in the small family — the α
   cross-sector reading, tagged `[STRUCTURAL]` for the identification, `[OPEN]` for the residual.
+- **Black-hole genesis (§7) — the Compton = Schwarzschild crossing.** A closure of mass `μ` (Planck
+  units) has reduced Compton radius `1/μ` and Schwarzschild radius `2μ`; they coincide **iff `μ² = 1/2`**
+  — the Planck floor, exact and `[LEAN]` ([`QLF_QuantumBlackHole`](lean/QLF_QuantumBlackHole.lean)
+  `compton_eq_schwarzschild_iff` + `sub_planck_compton_gt_schwarzschild`, [`QLF_PlanckScale`](lean/QLF_PlanckScale.lean)).
+  Using this framework's *own* absolute scale (`ln(M_Pl/m_p) = 14π` from [`QLF_AlphaS`](lean/QLF_AlphaS.lean),
+  `m_p/m_e = 6π⁵`), every particle is **deeply sub-Planck** (`μ ~ 10⁻²⁰`) — on the **Compton side, a
+  *quantum* black hole**: a hadron *is* one (`QLF_QuantumBlackHole`). A closure crosses to the
+  Schwarzschild side only at `μ = 1/√2`: the **black-hole genesis**. So the same census that yields π
+  and the mass ladder also fixes, exactly, where matter becomes a black hole — and heating the vacuum to
+  the Planck scale ([`SpaceTime.md` §7](SpaceTime.md#7-interactive-the-spectral-spacetime-constructor))
+  drives closures across it into tiny black holes that Hawking-cascade back to hadrons: the logical bang
+  ([`Creation.md`](Creation.md) §8a).
 
 ## Full sample run
 
