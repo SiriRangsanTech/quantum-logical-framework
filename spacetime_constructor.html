@@ -859,7 +859,12 @@ function inspectAt(px,py){
     consider(ph.x, ph.y, ph.z, PHOTON);
     consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, PHOTON);
   }
-  if(!best) for(const n of nodes) consider(n.x,n.y,n.z, `field node — a ZFA closure · ${freqBand(nodeFreq(n))} (local clock rate) · spin ${n.spin}`, n.spin);
+  // Nodes always compete (so their spin is reachable even amid the cascade), but need a
+  // precise hit — a tighter radius than particles/photons, so those still win under the cursor.
+  for(const n of nodes){ const pp=project(n.x,n.y,n.z); if(!pp) continue;
+    const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<Math.min(bd,15*15)){ bd=d;
+      best={x:n.x,y:n.y,z:n.z, spin:n.spin,
+        label:`field node — a ZFA closure · ${freqBand(nodeFreq(n))} (local clock rate) · spin ${n.spin}`}; } }
   inspected = best ? {x:best.x,y:best.y,z:best.z,t:0,spin:best.spin} : null;
   inspectEl.textContent = best ? best.label : 'empty vacuum — the unrealised possibility field';
   inspectEl.style.opacity = '1';
