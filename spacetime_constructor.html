@@ -518,8 +518,15 @@ function stepParticles(dt){
   // μ⁺μ⁻ near the top, p p̄ beyond reach. Vacuum products are virtual (return to possibility).
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
-    photAccum += s*6 * dt;                               // thermal photons: none at 0 K, more when hot
-    while(photAccum>=1){ photAccum-=1; const [x,y,z]=fluctPoint(); emitPhotons(x,y,z,1,false,spectralRGB(s)); }
+    // Zero-point floor — the vacuum is NEVER dead. Even at absolute zero the substrate
+    // keeps closing balanced e⁺e⁻ pairs that flicker straight back to possibility: the
+    // log-2 dark-energy quantum (Ω_Λ = log 2 ≠ 0, QLF_CosmologicalConstant). Temperature
+    // only piles THERMAL production of persistent matter on top of this quantum foam.
+    const ZP_PAIR = 2.5, ZP_PHOT = 0.6;                 // T-independent zero-point rates
+    pairAccum += ZP_PAIR*dt;
+    while(pairAccum>=1 && particles.length<120){ pairAccum-=1; spawnPair('electron','positron',true); }
+    photAccum += (s*6 + ZP_PHOT) * dt;                  // thermal glow (redder cold, bluer hot) + zero-point shimmer
+    while(photAccum>=1){ photAccum-=1; const [x,y,z]=fluctPoint(); emitPhotons(x,y,z,1,false,spectralRGB(Math.max(s,0.05))); }
     const re=Math.exp(-K_e/T), rmu=Math.exp(-207.7*K_e/T), rp=Math.exp(-1836*K_e/T), tot=re+rmu+rp;
     if(tot>1e-4){
       pairAccum += tot*12*dt;
