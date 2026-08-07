@@ -276,7 +276,8 @@ const cfg = { N:1800, octaves:3, flow:1, vac:0,
               pulse:true, trails:true, links:false, paused:false };
 const FLAT_W = 100;                 // empty-space degeneracy baseline
 let nodes = [];                     // {x,y,z, baseW, oct, ph}
-let tick = 0, birth = 0, photAccum = 0, pairAccum = 0, bhAccum = 0;
+let tick = 0, birth = 0, photAccum = 0, pairAccum = 0, bhAccum = 0, casAccum = 0;
+const CASCADE_RATE = 3.5;   // closures/s emitted by the deterministic frequency cascade (vacuum-independent)
 
 // Vacuum temperature: the slider (cfg.vac ∈ [0,1]) is log-mapped from the CMB (2.725 K)
 // up to a hot neutron-star / merger temperature (~10¹² K). K_e = m_e c²/k_B is the
@@ -512,30 +513,28 @@ function driftDown(o,dt){
 
 function stepParticles(dt){
   for(const p of particles) if(!p.virtual) driftDown(p,dt);   // move along the latency gradient
-  // The vacuum at temperature T: a thermal blackbody photon glow at all T (redder when
-  // cold near the CMB, bluer as it heats), plus pair production that switches ON only as
-  // kT approaches a species' rest energy (Boltzmann exp(−mc²/kT)) — e⁺e⁻ near ~10¹⁰ K,
-  // μ⁺μ⁻ near the top, p p̄ beyond reach. Vacuum products are virtual (return to possibility).
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
-    // Zero-point floor — the vacuum is NEVER dead. Even at absolute zero the substrate
-    // keeps closing balanced e⁺e⁻ pairs that flicker straight back to possibility: the
-    // log-2 dark-energy quantum (Ω_Λ = log 2 ≠ 0, QLF_CosmologicalConstant). Temperature
-    // only piles THERMAL production of persistent matter on top of this quantum foam.
-    const ZP_PAIR = 2.5, ZP_PHOT = 0.6;                 // T-independent zero-point rates
-    pairAccum += ZP_PAIR*dt;
-    while(pairAccum>=1 && particles.length<120){ pairAccum-=1; spawnPair('electron','positron',true); }
-    photAccum += (s*6 + ZP_PHOT) * dt;                  // thermal glow (redder cold, bluer hot) + zero-point shimmer
-    while(photAccum>=1){ photAccum-=1; const [x,y,z]=fluctPoint(); emitPhotons(x,y,z,1,false,spectralRGB(Math.max(s,0.05))); }
-    const re=Math.exp(-K_e/T), rmu=Math.exp(-207.7*K_e/T), rp=Math.exp(-1836*K_e/T), tot=re+rmu+rp;
-    if(tot>1e-4){
-      pairAccum += tot*12*dt;
-      while(pairAccum>=1 && particles.length<120){ pairAccum-=1; const v=lseq()*tot;
-        if(v<re) spawnPair('electron','positron',true);
-        else if(v<re+rmu) spawnPair('muonM','muonP',true);
-        else spawnPair('proton','antiproton',true);
-      }
+    // ── The fundamental generator: a DETERMINISTIC closure cascade ──────────────────
+    // The single first distinction (phase 0) unfolds the census BY FREQUENCY — the logical
+    // bang (Creation.md §8a; QLF_HarmonicClosure / QLF_PrimeResonance). It is always on and
+    // INDEPENDENT of vacuum energy: the closures exist a priori and the cascade reads them
+    // out in census order, the lightest (lowest-frequency) closures dominating. No
+    // probability, no thermal gate — the variation IS the census (QLF_CensusBrownian /
+    // QLF_BornProbability). Vacuum energy does NOT create closures; temperature only sets
+    // how many freeze out as REAL (persistent) matter vs flicker back to possibility.
+    casAccum += CASCADE_RATE*dt;
+    while(casAccum>=1 && particles.length<120){ casAccum-=1;
+      const f = lseq();                                   // deterministic census frequency ∈ [0,1)
+      const real = lseq() < Math.min(0.97, s*1.05);       // thermal freeze-out fraction (0 at T=0)
+      if(f < 0.90)       spawnPair('electron','positron', !real);   // m = 1/R = frequency:
+      else if(f < 0.975) spawnPair('muonM','muonP', !real);         //   low→e, mid→μ,
+      else               spawnPair('proton','antiproton', !real);   //   high→p (rare, deep fold)
     }
+    // Thermal blackbody glow — redder cold, bluer hot; a faint floor remains at T=0 as the
+    // vacuum's own zero-point (Ω_Λ = log 2) light.
+    photAccum += (s*6 + 0.6) * dt;
+    while(photAccum>=1){ photAccum-=1; const [x,y,z]=fluctPoint(); emitPhotons(x,y,z,1,false,spectralRGB(Math.max(s,0.05))); }
     // Near the Planck temperature the vacuum's energy reaches the Planck mass: a closure
     // crosses the Compton = Schwarzschild point and a micro BLACK HOLE forms — the
     // extreme of the hadron→quantum-black-hole continuum (QLF_QuantumBlackHole/PlanckScale).
