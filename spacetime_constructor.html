@@ -338,14 +338,18 @@ const _walks = [], _frac = [];
   }
 })();
 const _W = _walks.length;                               // C(14,7) = 3432
-let _ci = 0, _pi = 0;
+let _ci = 0, _pi = 0, _lastSpin = 0;
 function lseq(){ const v=_frac[_ci % _W]; _ci++; return v; }              // scalar ∈ [0,1)
 function _exc(s){ let bv=0; for(const v of s) if(Math.abs(v)>Math.abs(bv)) bv=v; return bv; }
 function censusPoint(scale){       // node position: a 3-axis closure's walk excursion (integer),
   const i=_pi++;                   // placed WITHIN its lattice cell by the closure's own fraction
   const a=i%_W, b=(i+1201)%_W, c=(i+2411)%_W;     // strided so nodes don't stack on lattice points
-  return [ (_exc(_walks[a])+_frac[a]-0.5)*scale,
-           (_exc(_walks[b])+_frac[b]-0.5)*scale,
+  const ex=_exc(_walks[a]), ey=_exc(_walks[b]);   // X-axis (σx, <>) and Y-axis (σy, ^v) excursions
+  // Spin IS the twist (QLF_Spin): the generating walk's dominant axis + sign gives the
+  // closure's handedness — ^v = up/down (σy), <> = left/right (σx). SPIN=[up,down,left,right].
+  _lastSpin = Math.abs(ey) >= Math.abs(ex) ? (ey>=0?0:1) : (ex>=0?3:2);
+  return [ (ex+_frac[a]-0.5)*scale,
+           (ey+_frac[b]-0.5)*scale,
            (_exc(_walks[c])+_frac[c]-0.5)*scale ];
 }
 
@@ -442,7 +446,8 @@ function build(){
       x, y, z,
       baseW: FLAT_W*(0.82+lseq()*0.18),
       oct,
-      ph: lseq()*Math.PI*2
+      ph: lseq()*Math.PI*2,
+      spin: SPIN[_lastSpin]               // handedness of the closure that placed this node
     });
   }
   birth = reduceMotion ? 1 : 0;
@@ -728,7 +733,10 @@ function renderParticles(){
       const pp=project(inspected.x,inspected.y,inspected.z);
       if(pp){ const rr=(focal()/pp.z)*0.13;
         ctx.strokeStyle=`rgba(94,200,216,${0.5+0.5*a})`; ctx.lineWidth=1.8;
-        ctx.beginPath(); ctx.arc(pp.sx,pp.sy,rr,0,7); ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(pp.sx,pp.sy,rr,0,7); ctx.stroke();
+        if(inspected.spin){ const d={'↑':[0,-1],'↓':[0,1],'←':[-1,0],'→':[1,0]}[inspected.spin[0]];
+          if(d){ ctx.beginPath(); ctx.moveTo(pp.sx+d[0]*rr, pp.sy+d[1]*rr);
+            ctx.lineTo(pp.sx+d[0]*rr*2.2, pp.sy+d[1]*rr*2.2); ctx.stroke(); } } }
     }
   }
 }
@@ -836,8 +844,8 @@ const inspectEl = document.getElementById('inspect');
 function inspectAt(px,py){
   updateBasis();
   let best=null, bd=32*32;         // pick radius (px²)
-  const consider=(x,y,z,label)=>{ const pp=project(x,y,z); if(!pp) return;
-    const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label}; } };
+  const consider=(x,y,z,label,spin)=>{ const pp=project(x,y,z); if(!pp) return;
+    const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
   for(const A of atoms) consider(A.x,A.y,A.z,
     (A.type==='H2' ? (A.anti?'anti-H₂ molecule':'H₂ molecule (two H, covalent bond)')
                    : (A.anti?'antihydrogen H̄ (p̄ + e⁺)':'hydrogen H (p + e⁻, a bound closure)')));
@@ -845,14 +853,14 @@ function inspectAt(px,py){
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P`);
   for(const p of particles){ if(!p.virtual){ const k=KIND[p.kind];   // all are spin-½ fermions
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
-    consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`); } }
+    consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); } }
   const PHOTON='photon γ — massless energy quantum (E = ℏω, no rest mass)';
   for(const ph of photons){                         // pick along the streak, not just the head
     consider(ph.x, ph.y, ph.z, PHOTON);
     consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, PHOTON);
   }
-  if(!best) for(const n of nodes) consider(n.x,n.y,n.z, `field node — a ZFA closure · ${freqBand(nodeFreq(n))} (local clock rate)`);
-  inspected = best ? {x:best.x,y:best.y,z:best.z,t:0} : null;
+  if(!best) for(const n of nodes) consider(n.x,n.y,n.z, `field node — a ZFA closure · ${freqBand(nodeFreq(n))} (local clock rate) · spin ${n.spin}`, n.spin);
+  inspected = best ? {x:best.x,y:best.y,z:best.z,t:0,spin:best.spin} : null;
   inspectEl.textContent = best ? best.label : 'empty vacuum — the unrealised possibility field';
   inspectEl.style.opacity = '1';
 }
