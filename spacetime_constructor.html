@@ -203,8 +203,13 @@ positron <^>v @ 2,0,0"
     </div>
     <div class="toggles">
       <button data-qcadd="positronium">＋ positronium</button>
-      <button data-qcadd="hydrogen">＋ hydrogen</button>
+      <button data-qcadd="muonium">＋ muonium</button>
+      <button data-qcadd="hydrogen">＋ H</button>
       <button data-qcadd="h2">＋ H₂</button>
+      <button data-qcadd="deuteron">＋ deuteron</button>
+      <button data-qcadd="alpha">＋ ⁴He</button>
+      <button data-qcadd="proton_uud">＋ p(uud)</button>
+      <button data-qcadd="pionplus">＋ π⁺(ud̄)</button>
     </div>
     <div class="lbl" id="qc_status" style="opacity:.8">Each line is a ZFA closure. <b>Capture</b> reads the live display as QuCalc; <b>Replace</b> clears first, <b>Inject</b> adds.</div>
   </div>
@@ -336,6 +341,13 @@ const KIND = {
   antineutron:{sym:'n̄',fam:'n', q:0, m:1839, ttl:8.5, decay:['antiproton','positron','neutrino'], anti:true},
   neutrino:{sym:'ν', fam:'nu', q:0, m:0.05, ttl:Infinity, ghost:true},
   antineutrino:{sym:'ν̄',fam:'nu',q:0, m:0.05, ttl:Infinity, ghost:true, anti:true},
+  // Quarks are CONFINED (QLF_Confinement): a free quark can't close ZFA (colour-singlet
+  // obstruction), so they appear only INSIDE hadron macros, never as a free line. Masses
+  // are not closure observables (QLF_QuarkMass); constituent values here are illustrative.
+  up:      {sym:'u',  fam:'u', q:+2/3, m:600, ttl:Infinity, quark:true},
+  down:    {sym:'d',  fam:'d', q:-1/3, m:606, ttl:Infinity, quark:true},
+  antiup:  {sym:'ū',  fam:'u', q:-2/3, m:600, ttl:Infinity, quark:true, anti:true},
+  antidown:{sym:'d̄', fam:'d', q:+1/3, m:606, ttl:Infinity, quark:true, anti:true},
 };
 const particles = [];               // {kind,x,y,z,vx,vy,vz,ttl,born,virtual}
 const flashes = [];                 // {x,y,z,r,g,b,t,life,strength}
@@ -889,6 +901,8 @@ const PNAME = {
   proton:'proton p (baryon, charge +1)', antiproton:'antiproton p̄ (charge −1)',
   neutron:'neutron n⁰ (baryon, β-decays)', antineutron:'antineutron n̄ (β-decays)',
   neutrino:'neutrino ν (~massless)', antineutrino:'antineutrino ν̄ (~massless)',
+  up:'up quark u (confined, +⅔)', down:'down quark d (confined, −⅓)',
+  antiup:'anti-up ū (confined, −⅔)', antidown:'anti-down d̄ (confined, +⅓)',
 };
 const COLOUR = t => t<0.2?'red':t<0.4?'orange':t<0.55?'yellow-green':t<0.72?'green':t<0.86?'blue':'violet';
 function freqBand(t){ return `f≈${t.toFixed(2)} · ${COLOUR(t)}`; }
@@ -957,19 +971,34 @@ const QC_TWIST = {
   electron:'^<v>', positron:'<^>v', muonM:'(^<v>)³', muonP:'(^<v>)³~',
   proton:'|uud|', antiproton:'|uud|~', neutron:'|udd|', antineutron:'|udd|~',
   neutrino:'^-v+', antineutrino:'^-v+~',
+  up:'|u|', down:'|d|', antiup:'|u|~', antidown:'|d|~',
 };
+// cluster helpers: a triangle (Borromean triple) and a tetrahedron of constituents
+const _tri = (kinds,x,y,z,vx,vy,vz)=>kinds.map((k,i)=>{ const a=i*2*Math.PI/3;
+  return {kind:k, x:x+0.6*Math.cos(a), y:y+0.6*Math.sin(a), z, vx,vy,vz}; });
+const _tetra = (kinds,x,y,z,vx,vy,vz)=>{ const V=[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]];
+  return kinds.map((k,i)=>({kind:k, x:x+0.5*V[i][0], y:y+0.5*V[i][1], z:z+0.5*V[i][2], vx,vy,vz})); };
 /* QuCalc MACROS — the extension point. A macro is a named closure that expands to
    several placed entities; typing "<name> @ x,y,z [v vx,vy,vz]" (or a preset button)
    instantiates the whole thing. Add your useful macros here, one entry each: a fn of
    the placement point returning specs — {kind,x,y,z,vx,vy,vz} for a particle (via spawn)
    or {atom:'H'|'H2',anti,x,y,z,...} for a bound state (via makeAtom). */
 const QC_MACRO = {
-  // e⁻e⁺ bound pair, counter-orbiting (metastable — annihilates, as real positronium does)
-  positronium: (x,y,z,vx,vy,vz) => [
-    {kind:'electron', x:x-0.7, y, z, vx, vy:vy+0.6, vz},
-    {kind:'positron', x:x+0.7, y, z, vx, vy:vy-0.6, vz},
-  ],
-  // add: deuterium, helium, molecules, crystal motifs, custom composites …
+  // --- leptonic bound pairs (counter-orbiting; metastable — annihilate/decay) ---
+  positronium:(x,y,z,vx,vy,vz)=>[{kind:'electron',x:x-0.7,y,z,vx,vy:vy+0.6,vz},{kind:'positron',x:x+0.7,y,z,vx,vy:vy-0.6,vz}],
+  muonium:    (x,y,z,vx,vy,vz)=>[{kind:'muonP',   x:x-0.7,y,z,vx,vy:vy+0.6,vz},{kind:'electron',x:x+0.7,y,z,vx,vy:vy-0.6,vz}],
+  dimuonium:  (x,y,z,vx,vy,vz)=>[{kind:'muonP',   x:x-0.7,y,z,vx,vy:vy+0.6,vz},{kind:'muonM',   x:x+0.7,y,z,vx,vy:vy-0.6,vz}],
+  // --- light nuclei (nucleon clusters; they attract down the latency wells) ---
+  deuteron:(x,y,z,vx,vy,vz)=>[{kind:'proton',x:x-0.6,y,z,vx,vy,vz},{kind:'neutron',x:x+0.6,y,z,vx,vy,vz}],
+  helium3: (x,y,z,vx,vy,vz)=>_tri(['proton','proton','neutron'],x,y,z,vx,vy,vz),
+  triton:  (x,y,z,vx,vy,vz)=>_tri(['proton','neutron','neutron'],x,y,z,vx,vy,vz),
+  alpha:   (x,y,z,vx,vy,vz)=>_tetra(['proton','proton','neutron','neutron'],x,y,z,vx,vy,vz),
+  // --- hadrons shown as their CONFINED quark content (Borromean triple / q q̄) ---
+  proton_uud: (x,y,z,vx,vy,vz)=>_tri(['up','up','down'],x,y,z,vx,vy,vz),
+  neutron_udd:(x,y,z,vx,vy,vz)=>_tri(['up','down','down'],x,y,z,vx,vy,vz),
+  pionplus:   (x,y,z,vx,vy,vz)=>[{kind:'up',x:x-0.45,y,z,vx,vy,vz},{kind:'antidown',x:x+0.45,y,z,vx,vy,vz}],
+  pionminus:  (x,y,z,vx,vy,vz)=>[{kind:'antiup',x:x-0.45,y,z,vx,vy,vz},{kind:'down',x:x+0.45,y,z,vx,vy,vz}],
+  // add: molecules, crystal motifs, custom composites …
 };
 const qcEl = document.getElementById('qc_text');
 const qcStatus = document.getElementById('qc_status');
@@ -995,12 +1024,13 @@ function qcParse(line){
   return { kind, pos:[+at[1],+at[2],+at[3]], v: vel?[+vel[1],+vel[2],+vel[3]]:[0,0,0], m: mm?+mm[1]:1 };
 }
 function qcInstantiate(text){
-  let ok=0, bad=0;
+  let ok=0, bad=0, confined=0;
   for(const line of (text||'').split('\n')){
     const e = qcParse(line); if(!e) continue;
     if(e.bad){ bad++; continue; }
     const {kind,pos,v,m}=e, [x,y,z]=pos, [vx,vy,vz]=v;
-    if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
+    if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
+    else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
     else if(kind==='H'||kind==='H2') { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }
     else if(kind==='antiH')  { makeAtom('H', x,y,z,true,vx,vy,vz); ok++; }
     else if(kind==='antiH2') { makeAtom('H2',x,y,z,true,vx,vy,vz); ok++; }
@@ -1012,7 +1042,7 @@ function qcInstantiate(text){
       } ok++; }
     else bad++;
   }
-  return {ok,bad};
+  return {ok,bad,confined};
 }
 if(qcEl){
   document.getElementById('qc_capture').onclick=()=>{ qcEl.value=qcCapture();
@@ -1021,14 +1051,19 @@ if(qcEl){
   document.getElementById('qc_replace').onclick=()=>{
     particles.length=0; atoms.length=0; bhs.length=0; photons.length=0; flashes.length=0; inspected=null;
     if(inspectEl) inspectEl.style.opacity='0';
-    const r=qcInstantiate(qcEl.value); qcSay(`Replaced — created <b>${r.ok}</b>${r.bad?`, <span style="color:#f88">${r.bad} unparsed</span>`:''}.`); };
+    const r=qcInstantiate(qcEl.value); qcSay(`Replaced — created <b>${r.ok}</b>${r.confined?`, <span style="color:#fc8">${r.confined} free quark(s) confined — use a hadron macro</span>`:''}${r.bad?`, <span style="color:#f88">${r.bad} unparsed</span>`:''}.`); };
   document.getElementById('qc_inject').onclick=()=>{
-    const r=qcInstantiate(qcEl.value); qcSay(`Injected <b>${r.ok}</b>${r.bad?`, <span style="color:#f88">${r.bad} unparsed</span>`:''}.`); };
+    const r=qcInstantiate(qcEl.value); qcSay(`Injected <b>${r.ok}</b>${r.confined?`, <span style="color:#fc8">${r.confined} free quark(s) confined — use a hadron macro</span>`:''}${r.bad?`, <span style="color:#f88">${r.bad} unparsed</span>`:''}.`); };
   document.getElementById('qc_copy').onclick=async()=>{
     try{ await navigator.clipboard.writeText(qcEl.value||qcCapture()); qcSay('Copied to clipboard.'); }
     catch(_){ qcEl.select(); qcSay('Selected — press ⌘/Ctrl-C to copy.'); } };
   const QC_ADD={ positronium:'positronium ^<v>|<^>v @ 0,0,0',
-                 hydrogen:'H p+e @ 4,0,0', h2:'H2 (p+e)₂ @ -4,0,0' };
+                 hydrogen:'H p+e @ 4,0,0', h2:'H2 (p+e)₂ @ -4,0,0',
+                 muonium:'muonium μ⁺e⁻ @ -4,3,0', dimuonium:'dimuonium μ⁺μ⁻ @ 0,3,0',
+                 deuteron:'deuteron p+n @ 4,3,0', triton:'triton p+2n @ -4,-3,0',
+                 helium3:'helium3 2p+n @ 0,-3,0', alpha:'alpha 2p+2n @ 4,-3,0',
+                 proton_uud:'proton_uud (u u d) @ -4,0,0', neutron_udd:'neutron_udd (u d d) @ -8,0,0',
+                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0' };
   document.querySelectorAll('[data-qcadd]').forEach(b=>b.addEventListener('click',()=>{
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;
     qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line;
@@ -1124,7 +1159,8 @@ function frame(){
   for(const A of atoms){ const f=A.type==='H2'?4:2;    // each H = 2 fermions (p + e)
     A.anti ? amat+=f : mat+=f; }
   s_np.textContent = np;
-  s_q.textContent = (q>0?'+':'')+q;
+  const qr = Math.abs(q-Math.round(q))<1e-6 ? Math.round(q) : Math.round(q*100)/100;  // quarks are fractional
+  s_q.textContent = (qr>0?'+':'')+qr;
   s_mat.textContent = mat; s_amat.textContent = amat;
   const bal = mat-amat;
   s_bal.textContent = (bal>0?'+':'')+bal;
