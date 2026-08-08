@@ -112,6 +112,37 @@ the measured value fixes `w = (r − 0.015874)/(0.048130 − 0.015874) = 0.6239`
 
 That is the whole problem, reduced to one number: **why `w ≈ 0.624`?**
 
+### 2a. The substrate answer is measured: `w = 1/2` (137.032), not 0.624
+
+The framing "why `w ≈ 0.624`?" quietly assumes the substrate *should* emit 0.624. It does not — and that is now
+*measured*, not assumed (`genesis.py` §5b/§5c, `pure_zfa_alpha` / `logperiodic_probe`):
+
+- The octave hierarchy is **scale-invariant**: the self-similarity ratio → 2 with no anomaly, and the
+  log-periodic (discrete-scale-invariance) DFT power is `~1.5e-3` — a *null* across every census sector
+  `p = 1…4` (peak/rms `~0.3–0.4`; the ratio approaches 2 monotonically = the Stirling correction, not a
+  line). No preferred octave ⟹ neither tail is favoured ⟹ the resummation is **equal weight**, `w = 1/2`
+  (the same "equal weight per order" the Dyson `G = 1/(1−I)` gives, §4/§9.2). This is the pure-ZFA
+  **prediction** `α⁻¹ = 137 + (irred+total)/2 = 137.032002` — a falsifiable number computed before any
+  CODATA comparison.
+
+- So `w = 0.624` is the **CODATA-implied** value, not a substrate output. The gap `w: 1/2 → 0.624`
+  (`δw ≈ 0.124`, a *quarter* of the interval) is exactly the resummation **depth** — how many 1PI
+  insertions contribute as `q² → 0` — which is the vacuum-polarization *running*, a **continuum** quantity
+  (§9.2–9.4), not a census truncation. The partial resummations climb monotonically `I → G` (one insertion
+  `137.016` ↑ full `137.048`); *which* partial sum is the running integral, not a combinatorial rule. This
+  **closes the "find the pure census truncation" door**: no such rule exists, because the truncation depth
+  *is* the continuum running.
+
+- **Crank-trap guard (binding):** the interval is only `0.032` wide, so many a-priori fractions near `0.62`
+  (`5/8`, `9/14`, `φ−1`) land within `0.001` of CODATA. Proximity after the fact is **not** derivation;
+  matching cannot select the rule. The only licensed way to move `w` off `1/2` is a genuine
+  discrete-scale-invariance line (peak/rms ≫ 1, *oscillating* self-similarity) appearing in a census sector
+  *before* any CODATA comparison — the §5c probe is that pre-registered test, and it is null.
+
+**Net:** the pure-ZFA prediction is `137.032`; the remaining `+0.004` (and the full `+0.036` over the
+leading `137`) is the continuum running, the boundary QLF brackets by design — same status as the
+Yang–Mills gap and Navier–Stokes (§9.4). The residual is closed *to that boundary*, not to `0.624`.
+
 ---
 
 ## 3. The gauge-projection test — and why it does *not* derive the residual
