@@ -958,6 +958,19 @@ const QC_TWIST = {
   proton:'|uud|', antiproton:'|uud|~', neutron:'|udd|', antineutron:'|udd|~',
   neutrino:'^-v+', antineutrino:'^-v+~',
 };
+/* QuCalc MACROS — the extension point. A macro is a named closure that expands to
+   several placed entities; typing "<name> @ x,y,z [v vx,vy,vz]" (or a preset button)
+   instantiates the whole thing. Add your useful macros here, one entry each: a fn of
+   the placement point returning specs — {kind,x,y,z,vx,vy,vz} for a particle (via spawn)
+   or {atom:'H'|'H2',anti,x,y,z,...} for a bound state (via makeAtom). */
+const QC_MACRO = {
+  // e⁻e⁺ bound pair, counter-orbiting (metastable — annihilates, as real positronium does)
+  positronium: (x,y,z,vx,vy,vz) => [
+    {kind:'electron', x:x-0.7, y, z, vx, vy:vy+0.6, vz},
+    {kind:'positron', x:x+0.7, y, z, vx, vy:vy-0.6, vz},
+  ],
+  // add: deuterium, helium, molecules, crystal motifs, custom composites …
+};
 const qcEl = document.getElementById('qc_text');
 const qcStatus = document.getElementById('qc_status');
 function qcSay(msg){ if(qcStatus) qcStatus.innerHTML = msg; }
@@ -991,8 +1004,12 @@ function qcInstantiate(text){
     else if(kind==='H'||kind==='H2') { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }
     else if(kind==='antiH')  { makeAtom('H', x,y,z,true,vx,vy,vz); ok++; }
     else if(kind==='antiH2') { makeAtom('H2',x,y,z,true,vx,vy,vz); ok++; }
-    else if(kind==='positronium') { spawnPair('electron','positron',false,[x,y,z]); ok++; }
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0}); ok++; }
+    else if(QC_MACRO[kind]) {                       // named composite closure -> expand
+      for(const it of QC_MACRO[kind](x,y,z,vx,vy,vz)){
+        if(it.atom) makeAtom(it.atom, it.x,it.y,it.z, !!it.anti, it.vx||0,it.vy||0,it.vz||0);
+        else spawn(it.kind, it.x,it.y,it.z, it.vx||0,it.vy||0,it.vz||0);
+      } ok++; }
     else bad++;
   }
   return {ok,bad};
