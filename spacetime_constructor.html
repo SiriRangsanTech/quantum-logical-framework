@@ -275,6 +275,7 @@ const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 const cfg = { N:1800, octaves:3, flow:1, vac:0,
               pulse:true, trails:true, links:false, paused:false };
 const FLAT_W = 100;                 // empty-space degeneracy baseline
+const PH_SPD = 8, PH_BEND = 2.2, PH_PATH = 26, PH_MAXAGE = 12;  // photon: speed c, field-bend, path length, safety life
 let nodes = [];                     // {x,y,z, baseW, oct, ph}
 let tick = 0, birth = 0, photAccum = 0, pairAccum = 0, bhAccum = 0, casAccum = 0;
 const CASCADE_RATE = 3.5;   // closures/s emitted by the deterministic frequency cascade (vacuum-independent)
@@ -362,7 +363,7 @@ function flash(x,y,z,rgb,strength){
 // pairBack=true emits them back-to-back (annihilation e⁻e⁺ → two photons, momentum 0).
 const PALE=[230,245,255];              // default photon colour (annihilation / decay)
 function emitPhotons(x,y,z,n,pairBack,col){
-  const SPD=8, LIFE=2.8, STREAK=0.6, c=col||PALE;   // units/s, seconds, trail length (s)
+  const SPD=PH_SPD, LIFE=2.8, STREAK=0.6, c=col||PALE;   // units/s, seconds, trail length (s)
   let dx=lseq()*2-1, dy=lseq()*2-1, dz=lseq()*2-1;
   const dl=Math.hypot(dx,dy,dz)||1; dx/=dl; dy/=dl; dz/=dl;
   for(let i=0;i<n;i++){
@@ -370,7 +371,7 @@ function emitPhotons(x,y,z,n,pairBack,col){
     if(pairBack && i===1){ ux=-dx; uy=-dy; uz=-dz; }         // second of a pair: opposite
     else if(i>0){ ux=lseq()*2-1; uy=lseq()*2-1; uz=lseq()*2-1;
       const l=Math.hypot(ux,uy,uz)||1; ux/=l; uy/=l; uz/=l; }
-    photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK, col:c });
+    photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK, col:c, path:[[x,y,z]] });
   }
 }
 // spin = the twist itself (QLF_Spin): ^v = up/down (σy), <> = left/right (σx). A
@@ -594,10 +595,28 @@ function stepParticles(dt){
   }
   for(let i=particles.length-1;i>=0;i--) if(particles[i]._dead) particles.splice(i,1);
   for(let i=flashes.length-1;i>=0;i--){ flashes[i].t+=dt*1.6; if(flashes[i].t>=flashes[i].life) flashes.splice(i,1); }
-  // photons stream straight at ~c, then fade / leave the field
-  for(const ph of photons){ ph.age+=dt; ph.x+=ph.vx*dt; ph.y+=ph.vy*dt; ph.z+=ph.vz*dt; }
+  // A photon follows the latency field: in structured space it BENDS toward mass (the
+  // w_ZFA gradient acts as a refractive index -- gravitational lensing IS the interaction),
+  // and runs dead straight only through flat vacuum.  Speed stays c: the gradient turns the
+  // direction, never the magnitude (the uniform stateless ether).  The bent flight is its path.
+  for(const ph of photons){ ph.age+=dt;
+    const e=0.4, K=PH_BEND*dt;
+    const gx=localW(ph.x+e,ph.y,ph.z)-localW(ph.x-e,ph.y,ph.z);
+    const gy=localW(ph.x,ph.y+e,ph.z)-localW(ph.x,ph.y-e,ph.z);
+    const gz=localW(ph.x,ph.y,ph.z+e)-localW(ph.x,ph.y,ph.z-e);
+    ph.vx-=gx*K; ph.vy-=gy*K; ph.vz-=gz*K;              // bend toward lower w (toward mass)
+    const sp=Math.hypot(ph.vx,ph.vy,ph.vz)||1, k=PH_SPD/sp;
+    ph.vx*=k; ph.vy*=k; ph.vz*=k;                       // renormalize |v| = c
+    ph.x+=ph.vx*dt; ph.y+=ph.vy*dt; ph.z+=ph.vz*dt;
+    ph.path.push([ph.x,ph.y,ph.z]); if(ph.path.length>PH_PATH) ph.path.shift();
+  }
+  // "leaving only when encountering the vacuum": a photon is removed when it reaches FLAT
+  // vacuum (localW ~ FLAT_W: nothing left to interact with) out past the inner structure --
+  // it free-streams away into empty possibility.  The radius/age caps are only a safety net.
   for(let i=photons.length-1;i>=0;i--){ const p=photons[i];
-    if(p.age>=p.life || (p.x*p.x+p.y*p.y+p.z*p.z)>26*26) photons.splice(i,1); }
+    const r2=p.x*p.x+p.y*p.y+p.z*p.z;
+    const inVacuum = r2 > 15*15 && localW(p.x,p.y,p.z) > FLAT_W-1.2;
+    if(inVacuum || r2 > 34*34 || p.age >= PH_MAXAGE) photons.splice(i,1); }
   // recombination: a free (anti)proton captures a like-matter (anti)electron into
   // a hydrogen atom, emitting a photon (bound closure forms)
   for(let i=0;i<particles.length;i++){ const p=particles[i];
@@ -677,19 +696,19 @@ function renderParticles(){
     grd.addColorStop(1,`rgba(${fl.r},${fl.g},${fl.b},0)`);
     ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(pp.sx,pp.sy,Math.max(1,rad),0,7); ctx.fill();
   }
-  // photon streaks — a bright head with a fading tail along the flight direction
+  // photon paths — the ACTUAL (field-bent) flight path, a fading tail into a bright head
   for(const p of photons){
     const head=project(p.x,p.y,p.z); if(!head) continue;
-    const tail=project(p.x-p.vx*p.streak, p.y-p.vy*p.streak, p.z-p.vz*p.streak);
-    const a=Math.max(0,1-p.age/p.life);
+    const a=Math.max(0.15,1-p.age/PH_MAXAGE);
     const [cr,cg,cb]=p.col;
-    if(tail){
-      const grd=ctx.createLinearGradient(tail.sx,tail.sy,head.sx,head.sy);
-      grd.addColorStop(0,`rgba(${cr},${cg},${cb},0)`);
-      grd.addColorStop(0.5,`rgba(${cr},${cg},${cb},${0.55*a})`);
-      grd.addColorStop(1,`rgba(${cr},${cg},${cb},${a})`);
-      ctx.strokeStyle=grd; ctx.lineWidth=Math.max(2.2,(focal()/head.z)*0.06); ctx.lineCap='round';
-      ctx.beginPath(); ctx.moveTo(tail.sx,tail.sy); ctx.lineTo(head.sx,head.sy); ctx.stroke();
+    const pts=[]; for(const q of p.path){ const pp=project(q[0],q[1],q[2]); if(pp) pts.push(pp); }
+    if(pts.length>1){
+      ctx.lineWidth=Math.max(2.0,(focal()/head.z)*0.06); ctx.lineCap='round'; ctx.lineJoin='round';
+      for(let k=1;k<pts.length;k++){                    // fade from tail (0) to head (1)
+        const f=k/(pts.length-1);
+        ctx.strokeStyle=`rgba(${cr},${cg},${cb},${a*f*0.85})`;
+        ctx.beginPath(); ctx.moveTo(pts[k-1].sx,pts[k-1].sy); ctx.lineTo(pts[k].sx,pts[k].sy); ctx.stroke();
+      }
     }
     const hr=Math.max(2.2,(focal()/head.z)*0.11);
     const hg=ctx.createRadialGradient(head.sx,head.sy,0,head.sx,head.sy,hr*2.6);
