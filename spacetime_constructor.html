@@ -210,6 +210,9 @@ positron <^>v @ 2,0,0"
       <button data-qcadd="alpha">＋ ⁴He</button>
       <button data-qcadd="proton_uud">＋ p(uud)</button>
       <button data-qcadd="pionplus">＋ π⁺(ud̄)</button>
+      <button data-qcadd="sc">＋ SC crystal</button>
+      <button data-qcadd="bcc">＋ BCC (Fe-like)</button>
+      <button data-qcadd="fcc">＋ FCC</button>
     </div>
     <div class="lbl" id="qc_status" style="opacity:.8">Each line is a ZFA closure. <b>Capture</b> reads the live display as QuCalc; <b>Replace</b> clears first, <b>Inject</b> adds.</div>
   </div>
@@ -550,9 +553,29 @@ function driftDown(o,dt){
   const s=DRIFT_K*dt/(2*DRIFT_EPS);
   o.vx-=gx*s; o.vy-=gy*s; o.vz-=gz*s;
 }
+// Pauli exclusion (QLF_PauliExclusion): identical fermions cannot overlap, so they repel
+// at short range. This is the OUTWARD pressure that balances the latency-well infall —
+// what SUSTAINS a crystal (degeneracy pressure), with no pinning and no external force.
+const PAULI_R=2.7, PAULI_K=220, PAULI_MAX=50;
+function pauliRepel(items, dt, identical){
+  const R2=PAULI_R*PAULI_R;
+  for(const it of items) it.nbr=0;                       // coordination count (for the bond gate)
+  for(let i=0;i<items.length;i++){ const a=items[i]; if(a.virtual) continue;
+    for(let j=i+1;j<items.length;j++){ const b=items[j]; if(b.virtual) continue;
+      if(identical && !identical(a,b)) continue;          // Pauli acts between IDENTICAL fermions
+      let dx=a.x-b.x, dy=a.y-b.y, dz=a.z-b.z;
+      let d2=dx*dx+dy*dy+dz*dz; if(d2>R2) continue; a.nbr++; b.nbr++;
+      if(d2<0.5) d2=0.5;                                   // hard-core floor: no singularity
+      let mag=PAULI_K*(1/d2-1/R2); if(mag>PAULI_MAX) mag=PAULI_MAX;   // stiff inverse-square, capped
+      const f=mag*dt/Math.sqrt(d2);
+      a.vx+=dx*f; a.vy+=dy*f; a.vz+=dz*f; b.vx-=dx*f; b.vy-=dy*f; b.vz-=dz*f;
+    }
+  }
+}
 
 function stepParticles(dt){
   for(const p of particles) if(!p.virtual) driftDown(p,dt);   // move along the latency gradient
+  pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && !KIND[b.kind].ghost && KIND[a.kind].fam===KIND[b.kind].fam);
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
     // ── The fundamental generator: a DETERMINISTIC closure cascade ──────────────────
@@ -715,9 +738,10 @@ function stepBH(dt){
 
 function stepAtoms(dt){
   const R=15;
+  pauliRepel(atoms, dt, null);             // electron-cloud exclusion holds atoms apart (a crystal)
   for(const A of atoms){ if(A.born<1)A.born=Math.min(1,A.born+0.05);
     driftDown(A,dt);                       // atoms follow the same latency gradient
-    A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.997; A.vy*=0.997; A.vz*=0.997;
+    A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.985; A.vy*=0.985; A.vz*=0.985;
     const d=Math.hypot(A.x,A.y,A.z); if(d>R){ const s=R/d; A.x*=s;A.y*=s;A.z*=s; A.vx*=-0.4;A.vy*=-0.4;A.vz*=-0.4; } }
   for(let i=0;i<atoms.length;i++){ for(let j=i+1;j<atoms.length;j++){
     const A=atoms[i],B=atoms[j]; if(A._dead||B._dead) continue;
@@ -725,8 +749,10 @@ function stepAtoms(dt){
     const mx=(A.x+B.x)/2,my=(A.y+B.y)/2,mz=(A.z+B.z)/2;
     if(A.anti!==B.anti){                       // matter atom meets antimatter atom → annihilate
       if(dd<7){ flash(mx,my,mz,[255,255,255],1.2); emitPhotons(mx,my,mz,6,false); A._dead=B._dead=true; }
-    } else if(A.type==='H'&&B.type==='H'){      // two H bond into an H₂ molecule (+ photon)
-      if(dd<5){ makeAtom('H2',mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2);
+    } else if(A.type==='H'&&B.type==='H' && (A.nbr||0)<=1 && (B.nbr||0)<=1){
+      // two ISOLATED H bond into an H₂ molecule (+ photon); a crowded H (in a crystal,
+      // coordination>1) is held apart by Pauli exclusion instead — it does not bond.
+      if(dd<9){ makeAtom('H2',mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2);
         flash(mx,my,mz,[190,225,255],1); emitPhotons(mx,my,mz,1,false); A._dead=B._dead=true; }
     }
   } }
@@ -1023,12 +1049,41 @@ function qcParse(line){
   const mm  = s.match(/(?:^|\s)m\s*(-?[\d.]+)/);
   return { kind, pos:[+at[1],+at[2],+at[3]], v: vel?[+vel[1],+vel[2],+vel[3]]:[0,0,0], m: mm?+mm[1]:1 };
 }
+/* Crystals — a macroscopic lattice SUSTAINED BY PAULI EXCLUSION (QLF_PauliExclusion):
+   atoms are seeded at lattice sites and held apart by degeneracy pressure against the
+   latency-well infall — a genuine self-bound equilibrium, no pinning, no external force.
+   Line:  lattice <sc|bcc|fcc> <n> <spacing> <motif> @ x,y,z   (motif = H, H2, or a kind). */
+const LATTICE_CAP = 250;
+function qcLattice(line){
+  const m = line.trim().match(/^lattice\s+(\w+)\s+(\d+)\s+([\d.]+)\s+(\S+)\s*@\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)/i);
+  return m ? {type:m[1].toLowerCase(), n:Math.min(6,+m[2]), a:+m[3], motif:m[4], c:[+m[5],+m[6],+m[7]]} : null;
+}
+function qcPlaceLattice(L){
+  const off=(L.n-1)/2, seen=new Set(), sites=[];
+  const add=(i,j,k)=>{ const key=`${i}|${j}|${k}`; if(seen.has(key)) return; seen.add(key);
+    sites.push([L.c[0]+(i-off)*L.a, L.c[1]+(j-off)*L.a, L.c[2]+(k-off)*L.a]); };
+  for(let i=0;i<L.n;i++)for(let j=0;j<L.n;j++)for(let k=0;k<L.n;k++) add(i,j,k);        // SC corners
+  if(L.type==='bcc') for(let i=0;i<L.n-1;i++)for(let j=0;j<L.n-1;j++)for(let k=0;k<L.n-1;k++) add(i+.5,j+.5,k+.5);
+  if(L.type==='fcc'){ for(let i=0;i<L.n-1;i++)for(let j=0;j<L.n-1;j++)for(let k=0;k<L.n;k++) add(i+.5,j+.5,k);
+    for(let i=0;i<L.n-1;i++)for(let j=0;j<L.n;j++)for(let k=0;k<L.n-1;k++) add(i+.5,j,k+.5);
+    for(let i=0;i<L.n;i++)for(let j=0;j<L.n-1;j++)for(let k=0;k<L.n-1;k++) add(i,j+.5,k+.5); }
+  let placed=0, bad=false;
+  for(const [x,y,z] of sites){ if(placed>=LATTICE_CAP) break;
+    if(L.motif==='H'||L.motif==='H2'){ makeAtom(L.motif,x,y,z,false,0,0,0); const A=atoms[atoms.length-1]; A.born=1; A.vx=A.vy=A.vz=0; }
+    else if(KIND[L.motif] && !KIND[L.motif].quark){ spawn(L.motif,x,y,z,0,0,0); const p=particles[particles.length-1]; p.born=1; p.vx=p.vy=p.vz=0; p.ttl=Infinity; }
+    else { bad=true; break; }
+    placed++;
+  }
+  return {placed, bad};
+}
 function qcInstantiate(text){
   let ok=0, bad=0, confined=0;
   for(const line of (text||'').split('\n')){
     const e = qcParse(line); if(!e) continue;
     if(e.bad){ bad++; continue; }
     const {kind,pos,v,m}=e, [x,y,z]=pos, [vx,vy,vz]=v;
+    if(kind==='lattice'){ const L=qcLattice(line);
+      if(L){ const r=qcPlaceLattice(L); ok+=r.placed; if(r.bad) bad++; } else bad++; continue; }
     if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
     else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
     else if(kind==='H'||kind==='H2') { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }
@@ -1063,7 +1118,8 @@ if(qcEl){
                  deuteron:'deuteron p+n @ 4,3,0', triton:'triton p+2n @ -4,-3,0',
                  helium3:'helium3 2p+n @ 0,-3,0', alpha:'alpha 2p+2n @ 4,-3,0',
                  proton_uud:'proton_uud (u u d) @ -4,0,0', neutron_udd:'neutron_udd (u d d) @ -8,0,0',
-                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0' };
+                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0',
+                 sc:'lattice sc 3 2.8 H @ 0,0,0', bcc:'lattice bcc 3 2.9 H @ 0,0,0', fcc:'lattice fcc 3 3.4 H @ 0,0,0' };
   document.querySelectorAll('[data-qcadd]').forEach(b=>b.addEventListener('click',()=>{
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;
     qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line;
@@ -1077,7 +1133,9 @@ function frame(){
   if(!cfg.paused){                       // Pause freezes all motion so you can click to identify
     if(!reduceMotion) tick += speed;
     if(birth<1) birth=Math.min(1, birth + 0.02*(0.5+speed));
-    stepParticles(0.016*Math.max(speed,0.001));
+    const fdt=0.016*Math.max(speed,0.001);            // substep so stiff Pauli exclusion stays stable at high flow
+    const N=Math.min(6,Math.max(1,Math.ceil(fdt/0.03)));
+    for(let s=0;s<N;s++) stepParticles(fdt/N);
     if(!drag && !reduceMotion) cam.az += 0.0009*speed;   // idle auto-orbit (running only)
   }
   updateBasis();
