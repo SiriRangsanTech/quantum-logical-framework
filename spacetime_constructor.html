@@ -1316,19 +1316,22 @@ function frame(){
   s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
   const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
   s_z.textContent = z.toFixed(2);
-  let np=0, q=0, mat=0, amat=0, erest=0, eFoam=0; const kc={};
-  for(const p of particles){ if(p.virtual){ eFoam += KIND[p.kind].m; continue; }   // foam = transient ZFA-synthesis closures
+  let np=0, q=0, mat=0, amat=0, erest=0, eFoam=0, eSigned=0; const kc={};
+  for(const p of particles){ const m=KIND[p.kind].m, sgn=KIND[p.kind].anti?-1:1;   // antimatter carries −E
+    eSigned += sgn*m;
+    if(p.virtual){ eFoam += m; continue; }               // foam = transient ZFA-synthesis closures
     np++; q+=KIND[p.kind].q;
-    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=KIND[p.kind].m; }
+    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const ac={};
-  for(const A of atoms){ const f=A.type==='H2'?4:2;    // each H = 2 fermions (p + e)
-    A.anti ? amat+=f : mat+=f;
+  for(const A of atoms){ const f=A.type==='H2'?4:2, am=A.type==='H2'?2*M_H:M_H;   // each H = 2 fermions (p + e)
+    A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am;
     const key=(A.anti?'anti-':'')+(A.type==='H2'?'H₂':'H'); ac[key]=(ac[key]||0)+1;
-    erest += A.type==='H2' ? 2*M_H : M_H; }
+    erest += am; }
   let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
   let ePhot=0; for(const ph of photons) ePhot += phE(ph);
   const eVac = eFoam + vacLedger;                          // vacuum/logical energy: live ZFA synthesis + absorbed radiation
-  const etot = erest + ebh + ePhot + eVac;                 // never zero while the vacuum is full of logic
+  const etot = erest + ebh + ePhot + eVac;                 // GROSS: total content/activity — never zero while the vacuum is full of logic
+  const eNet = eSigned + ebh + ePhot;                      // NET FREE energy: matter(+) − antimatter(−); a ZFA-balanced vacuum → 0
   s_np.textContent = np;
   s_bh.textContent = bhs.length;
   s_e.innerHTML = fmtE(etot)+'<small> mₑ</small>';
@@ -1344,10 +1347,12 @@ function frame(){
   TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
   TIP.s_mat = `matter fermions: ${mat}`;
   TIP.s_amat = `antimatter fermions: ${amat}`;
-  TIP.s_e = `matter (rest): ${fmtE(erest)} mₑ`
-    + (ebh>0 ? `\nblack holes:   ${fmtE(ebh)} mₑ` : '')
-    + `\nradiation:     ${fmtE(ePhot)} mₑ`
-    + `\nvacuum/logic:  ${fmtE(eVac)} mₑ  (foam ${fmtE(eFoam)} + absorbed ${fmtE(vacLedger)})`
+  const sNet = eNet>=0?'+':'−';
+  TIP.s_e = `GROSS (content/activity): ${fmtE(etot)} mₑ`
+    + `\n  matter ${fmtE(erest)} · vacuum ${fmtE(eVac)} (foam ${fmtE(eFoam)} + absorbed ${fmtE(vacLedger)})`
+    + (ebh>0 ? ` · BH ${fmtE(ebh)}` : '') + ` · γ ${fmtE(ePhot)}`
+    + `\n\nNET FREE energy: ${sNet}${fmtE(Math.abs(eNet))} mₑ`
+    + `\n  matter(+) minus antimatter(−); a balanced vacuum → 0 = Zero Free Action`
     + `\n\nvacuum energy IS ongoing ZFA synthesis · E = m = 1/R`;
 }
 
