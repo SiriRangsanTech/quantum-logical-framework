@@ -659,7 +659,7 @@ function stepParticles(dt){
   for(const p of particles){
     if(p.born<1) p.born=Math.min(1,p.born+0.08);
     p.x+=p.vx*dt; p.y+=p.vy*dt; p.z+=p.vz*dt;
-    p.vx*=0.995; p.vy*=0.995; p.vz*=0.995;
+    p.vx*=0.999; p.vy*=0.999; p.vz*=0.999;   // near-frictionless: only a whisper of radiative loss (no drag in the ether)
     // no wall: a particle free-streams into the vacuum (the ultimate absorber) if it drifts far out
     if(p.x*p.x+p.y*p.y+p.z*p.z > 48*48) p._dead=true;
     if(KIND[p.kind].ttl!==Infinity) p.ttl-=dt;
@@ -759,7 +759,7 @@ function stepParticles(dt){
 // so dM/dt ∝ −1/M², radiating photons that blue as it shrinks, then a final burst.
 function stepBH(dt){
   for(const b of bhs){ if(b.born<1) b.born=Math.min(1,b.born+0.05);
-    driftDown(b,dt); b.x+=b.vx*dt; b.y+=b.vy*dt; b.z+=b.vz*dt; b.vx*=0.99; b.vy*=0.99; b.vz*=0.99;
+    driftDown(b,dt); b.x+=b.vx*dt; b.y+=b.vy*dt; b.z+=b.vz*dt; b.vx*=0.999; b.vy*=0.999; b.vz*=0.999;
     b.m -= dt*0.12/(b.m*b.m);                              // Hawking mass loss
     b.rad += dt*(1.5/b.m);                                 // radiation rate ∝ Hawking T ∝ 1/M
     // Hawking radiation is the full thermal spectrum. A Planck-mass quantum's energy far
@@ -784,7 +784,7 @@ function stepAtoms(dt){
   pauliRepel(atoms, dt, null);             // electron-cloud exclusion holds atoms apart (a crystal)
   for(const A of atoms){ if(A.born<1)A.born=Math.min(1,A.born+0.05);
     driftDown(A,dt);                       // atoms follow the same latency gradient
-    A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.985; A.vy*=0.985; A.vz*=0.985;
+    A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.998; A.vy*=0.998; A.vz*=0.998;   // gentle radiative settling (a warm crystal still breathes)
     if(A.x*A.x+A.y*A.y+A.z*A.z > 48*48) A._dead=true; }   // no wall: drifts off into the vacuum
   for(let i=0;i<atoms.length;i++){ for(let j=i+1;j<atoms.length;j++){
     const A=atoms[i],B=atoms[j]; if(A._dead||B._dead) continue;
