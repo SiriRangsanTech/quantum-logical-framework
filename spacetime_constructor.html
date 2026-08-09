@@ -239,6 +239,7 @@ positron <^>v @ 2,0,0"
   <div class="hd"><span>Field readout</span><button id="tcollapse" class="mini" aria-label="Collapse readout" aria-expanded="true">–</button></div>
   <div class="stat"><span class="k">Logical tick</span><span class="v" id="s_tick">0</span></div>
   <div class="stat" data-break="s_atoms"><span class="k">Atoms</span><span class="v" id="s_atoms">0</span></div>
+  <div class="stat" data-break="s_mol"><span class="k">Molecules</span><span class="v" id="s_mol">0</span></div>
   <div class="stat"><span class="k">Deepest well</span><span class="v" id="s_dil">1.00<small>×</small></span></div>
   <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
   <div class="stat" data-break="s_np"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
@@ -1311,7 +1312,6 @@ function frame(){
 
   // telemetry
   s_tick.textContent = Math.floor(tick);
-  s_atoms.textContent = atoms.length;
   const dil = Math.sqrt(minWglobal/FLAT_W);          // clock-rate ratio (illustrative)
   s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
   const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
@@ -1322,16 +1322,18 @@ function frame(){
     if(p.virtual){ eFoam += m; continue; }               // foam = transient ZFA-synthesis closures
     np++; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
-  const ac={};
-  for(const A of atoms){ const f=A.type==='H2'?4:2, am=A.type==='H2'?2*M_H:M_H;   // each H = 2 fermions (p + e)
-    A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am;
-    const key=(A.anti?'anti-':'')+(A.type==='H2'?'H₂':'H'); ac[key]=(ac[key]||0)+1;
-    erest += am; }
+  const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
+  for(const A of atoms){ const isMol=A.type==='H2', f=isMol?4:2, am=isMol?2*M_H:M_H;   // each H = 2 fermions (p + e)
+    A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am; erest += am;
+    if(isMol){ nMol++;  const k=(A.anti?'anti-':'')+'H₂'; acM[k]=(acM[k]||0)+1; }
+    else     { nAtoms++; const k=(A.anti?'anti-':'')+'H';  acA[k]=(acA[k]||0)+1; } }
   let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
   let ePhot=0; for(const ph of photons) ePhot += phE(ph);
   const eVac = eFoam + vacLedger;                          // vacuum/logical energy: live ZFA synthesis + absorbed radiation
   const etot = erest + ebh + ePhot + eVac;                 // GROSS: total content/activity — never zero while the vacuum is full of logic
   const eNet = eSigned + ebh + ePhot;                      // NET FREE energy: matter(+) − antimatter(−); a ZFA-balanced vacuum → 0
+  s_atoms.textContent = nAtoms;
+  s_mol.textContent = nMol;
   s_np.textContent = np;
   s_bh.textContent = bhs.length;
   s_e.innerHTML = fmtE(etot)+'<small> mₑ</small>';
@@ -1343,7 +1345,8 @@ function frame(){
   s_bal.style.color = bal===0 ? 'var(--muted)' : '#ff8ba0';   // any imbalance stands out
   // hover breakdowns (shown by the tooltip over rows with data-break)
   TIP.s_np = np ? Object.entries(kc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n') : 'no particles';
-  TIP.s_atoms = atoms.length ? Object.entries(ac).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
+  TIP.s_atoms = nAtoms ? Object.entries(acA).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
+  TIP.s_mol = nMol ? Object.entries(acM).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no molecules';
   TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
   TIP.s_mat = `matter fermions: ${mat}`;
   TIP.s_amat = `antimatter fermions: ${amat}`;
