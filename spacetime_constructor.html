@@ -241,6 +241,7 @@ positron <^>v @ 2,0,0"
   <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
   <div class="stat" data-break="s_np"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
   <div class="stat" data-break="s_bh"><span class="k">Black holes</span><span class="v" id="s_bh">0</span></div>
+  <div class="stat" data-break="s_e"><span class="k">Total energy</span><span class="v" id="s_e">0<small> mₑ</small></span></div>
   <div class="stat"><span class="k">Net charge</span><span class="v" id="s_q">0</span></div>
   <div class="stat" data-break="s_mat"><span class="k">Matter</span><span class="v" id="s_mat">0</span></div>
   <div class="stat" data-break="s_amat"><span class="k">Antimatter</span><span class="v" id="s_amat">0</span></div>
@@ -335,6 +336,11 @@ const _SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','
 const _sup = n => String(n).split('').map(c=>_SUP[c]||c).join('');
 function fmtT(T){ if(T<=0) return '0 K'; if(T<1e4) return T.toFixed(1)+' K';
   const e=Math.floor(Math.log10(T)); return (T/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e)+' K'; }
+// energy in electron rest-masses (E = m = 1/R = frequency): scientific notation when large
+function fmtE(E){ if(E<1) return '0'; if(E<1e4) return Math.round(E).toLocaleString();
+  const e=Math.floor(Math.log10(E)); return (E/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e); }
+const MPL_OVER_ME = Math.exp(14*Math.PI)*6*Math.pow(Math.PI,5);   // Planck mass in mₑ (QLF_AlphaS ln=14π; 6π⁵)
+const M_H = 1836+1;                                               // hydrogen mass-energy in mₑ (p + e)
 cfg.vac = sForT(T_CMB);           // default the slider to the CMB temperature
 function spectralRGB(t){ const c=wavelengthRGB(700 - Math.max(0,Math.min(1,t))*(700-390));
   return [(c[0]*255)|0,(c[1]*255)|0,(c[2]*255)|0]; }
@@ -1243,15 +1249,19 @@ function frame(){
   s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
   const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
   s_z.textContent = z.toFixed(2);
-  let np=0, q=0, mat=0, amat=0; const kc={};
+  let np=0, q=0, mat=0, amat=0, erest=0; const kc={};
   for(const p of particles){ if(p.virtual) continue; np++; q+=KIND[p.kind].q;
-    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; }
+    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=KIND[p.kind].m; }
   const ac={};
   for(const A of atoms){ const f=A.type==='H2'?4:2;    // each H = 2 fermions (p + e)
     A.anti ? amat+=f : mat+=f;
-    const key=(A.anti?'anti-':'')+(A.type==='H2'?'H₂':'H'); ac[key]=(ac[key]||0)+1; }
+    const key=(A.anti?'anti-':'')+(A.type==='H2'?'H₂':'H'); ac[key]=(ac[key]||0)+1;
+    erest += A.type==='H2' ? 2*M_H : M_H; }
+  let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
+  const etot = erest + ebh;
   s_np.textContent = np;
   s_bh.textContent = bhs.length;
+  s_e.innerHTML = fmtE(etot)+'<small> mₑ</small>';
   const qr = Math.abs(q-Math.round(q))<1e-6 ? Math.round(q) : Math.round(q*100)/100;  // quarks are fractional
   s_q.textContent = (qr>0?'+':'')+qr;
   s_mat.textContent = mat; s_amat.textContent = amat;
@@ -1264,6 +1274,7 @@ function frame(){
   TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
   TIP.s_mat = `matter fermions: ${mat}`;
   TIP.s_amat = `antimatter fermions: ${amat}`;
+  TIP.s_e = `matter (rest): ${fmtE(erest)} mₑ` + (ebh>0 ? `\nblack holes:   ${fmtE(ebh)} mₑ` : '') + `\n\nE = m = 1/R = frequency`;
 }
 
 /* ---------- collapse / minimize the console (esp. narrow screens) ---------- */
