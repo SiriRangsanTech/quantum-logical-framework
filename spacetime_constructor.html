@@ -419,6 +419,19 @@ function emitPhotons(x,y,z,n,pairBack,col,dir){
     photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK, col:c, path:[[x,y,z]] });
   }
 }
+// A hierarchical vacuum-energy release — the ZFA frequency cascade: twice as many photons at
+// HALF the energy (1 at the top frequency, 2 at half, 4 at a quarter), so the sky is dominated
+// by low-frequency (red) modes with a few high (blue) — the vacuum spectrum. Each is a census
+// point on the horizon shell, inbound; a hard count cap keeps the load bounded.
+function releasePacket(s){
+  const t0=Math.min(1, 0.15+0.82*s);                    // top frequency of the cascade (bluer when hotter)
+  const levels=[[1,t0],[2,t0*0.5],[4,t0*0.25]];         // 1 : 2 : 4  (twice as many at half the energy)
+  let count=0;
+  for(const lv of levels) for(let k=0;k<lv[0] && count<12;k++){ count++;
+    if(photons.length>220) return;                       // hard load cap
+    const H=horizonPoint(); emitPhotons(H.x,H.y,H.z,1,false,spectralRGB(Math.max(0.04,lv[1])),H.dir);
+  }
+}
 // spin = the twist itself (QLF_Spin): ^v = up/down (σy), <> = left/right (σx). A
 // spin-½ closure carries one, drawn from the census.
 const SPIN=['↑ up','↓ down','← left','→ right'];
@@ -604,8 +617,9 @@ function stepParticles(dt){
     }
     // Thermal blackbody glow — redder cold, bluer hot; a faint floor remains at T=0 as the
     // vacuum's own zero-point (Ω_Λ = log 2) light.
-    photAccum += (s*6 + 0.6) * dt;                       // CMB / horizon bath: from the sky INWARD
-    while(photAccum>=1){ photAccum-=1; const H=horizonPoint(); emitPhotons(H.x,H.y,H.z,1,false,spectralRGB(Math.max(s,0.05)),H.dir); }
+    photAccum += s*3 * dt;                               // strictly ∝ temperature — ZERO at absolute zero (no floor)
+    let packets=0;                                        // each release = one hierarchical cascade packet
+    while(photAccum>=1 && packets<2){ photAccum-=1; packets++; releasePacket(s); }
     // Near the Planck temperature the vacuum's energy reaches the Planck mass: a closure
     // crosses the Compton = Schwarzschild point and a micro BLACK HOLE forms — the
     // extreme of the hadron→quantum-black-hole continuum (QLF_QuantumBlackHole/PlanckScale).
