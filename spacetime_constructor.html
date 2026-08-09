@@ -426,7 +426,7 @@ function flash(x,y,z,rgb,strength){
 // fast (≈c, far quicker than the massive particles), leaving a fading light streak.
 // pairBack=true emits them back-to-back (annihilation e⁻e⁺ → two photons, momentum 0).
 const PALE=[230,245,255];              // default photon colour (annihilation / decay)
-function emitPhotons(x,y,z,n,pairBack,col,dir){
+function emitPhotons(x,y,z,n,pairBack,col,dir,en){   // en = frequency ∈[0,1] (E=ℏω); omitted ⇒ high-energy γ-ray
   const SPD=PH_SPD, LIFE=2.8, STREAK=0.6, c=col||PALE;   // units/s, seconds, trail length (s)
   let dx,dy,dz; if(dir){ dx=dir[0]; dy=dir[1]; dz=dir[2]; } else { dx=lseq()*2-1; dy=lseq()*2-1; dz=lseq()*2-1; }
   const dl=Math.hypot(dx,dy,dz)||1; dx/=dl; dy/=dl; dz/=dl;
@@ -435,7 +435,7 @@ function emitPhotons(x,y,z,n,pairBack,col,dir){
     if(pairBack && i===1){ ux=-dx; uy=-dy; uz=-dz; }         // second of a pair: opposite
     else if(i>0){ ux=lseq()*2-1; uy=lseq()*2-1; uz=lseq()*2-1;
       const l=Math.hypot(ux,uy,uz)||1; ux/=l; uy/=l; uz/=l; }
-    photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK, col:c, path:[[x,y,z]] });
+    photons.push({ x,y,z, vx:ux*SPD, vy:uy*SPD, vz:uz*SPD, age:0, life:LIFE, streak:STREAK, col:c, path:[[x,y,z]], en:(en===undefined?null:en) });
   }
 }
 // A hierarchical vacuum-energy release — the ZFA frequency cascade: twice as many photons at
@@ -448,7 +448,7 @@ function releasePacket(s){
   let count=0;
   for(const lv of levels) for(let k=0;k<lv[0] && count<12;k++){ count++;
     if(photons.length>220) return;                       // hard load cap
-    const H=horizonPoint(); emitPhotons(H.x,H.y,H.z,1,false,spectralRGB(Math.max(0.04,lv[1])),H.dir);
+    const H=horizonPoint(); emitPhotons(H.x,H.y,H.z,1,false,spectralRGB(Math.max(0.04,lv[1])),H.dir,lv[1]);
   }
 }
 // spin = the twist itself (QLF_Spin): ^v = up/down (σy), <> = left/right (σx). A
@@ -988,10 +988,12 @@ function inspectAt(px,py){
   for(const p of particles){ if(!p.virtual){ const k=KIND[p.kind];   // all are spin-½ fermions
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
     consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); } }
-  const PHOTON='photon γ — massless energy quantum (E = ℏω, no rest mass)';
+  const plabel = ph => ph.en==null
+    ? 'photon γ-ray — massless, E = ℏω (high-energy, from annihilation/decay)'
+    : `photon γ — massless, E = ℏω · ${freqBand(ph.en)} (bluer = higher energy)`;
   for(const ph of photons){                         // pick along the streak, not just the head
-    consider(ph.x, ph.y, ph.z, PHOTON);
-    consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, PHOTON);
+    consider(ph.x, ph.y, ph.z, plabel(ph));
+    consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, plabel(ph));
   }
   // Nodes always compete (so their spin is reachable even amid the cascade), but need a
   // precise hit — a tighter radius than particles/photons, so those still win under the cursor.
