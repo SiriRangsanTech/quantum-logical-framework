@@ -96,6 +96,17 @@
   #telemetry .hd{
     font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
     color:var(--dim); margin-bottom:11px;
+    display:flex; justify-content:space-between; align-items:center; gap:8px;
+  }
+  #telemetry.collapsed{width:auto}
+  #telemetry.collapsed .hd{margin-bottom:0}
+  #telemetry.collapsed .stat{display:none}
+  #telemetry .stat[data-break]{cursor:help}
+  #tip{
+    position:fixed; z-index:60; pointer-events:none; max-width:240px; padding:7px 10px;
+    background:rgba(10,12,20,.96); border:1px solid rgba(255,255,255,.16); border-radius:8px;
+    font-family:var(--mono); font-size:11px; line-height:1.5; color:var(--text);
+    white-space:pre-line; opacity:0; transition:opacity .12s;
   }
   .stat{display:flex; justify-content:space-between; align-items:baseline; margin-top:9px}
   .stat:first-of-type{margin-top:0}
@@ -223,17 +234,19 @@ positron <^>v @ 2,0,0"
 <aside id="inspect" class="panel" aria-live="polite"></aside>
 
 <aside id="telemetry" class="panel" aria-label="Telemetry">
-  <div class="hd">Field readout</div>
+  <div class="hd"><span>Field readout</span><button id="tcollapse" class="mini" aria-label="Collapse readout" aria-expanded="true">–</button></div>
   <div class="stat"><span class="k">Logical tick</span><span class="v" id="s_tick">0</span></div>
-  <div class="stat"><span class="k">Atoms</span><span class="v" id="s_atoms">0</span></div>
+  <div class="stat" data-break="s_atoms"><span class="k">Atoms</span><span class="v" id="s_atoms">0</span></div>
   <div class="stat"><span class="k">Deepest well</span><span class="v" id="s_dil">1.00<small>×</small></span></div>
   <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
-  <div class="stat"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
+  <div class="stat" data-break="s_np"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
+  <div class="stat" data-break="s_bh"><span class="k">Black holes</span><span class="v" id="s_bh">0</span></div>
   <div class="stat"><span class="k">Net charge</span><span class="v" id="s_q">0</span></div>
-  <div class="stat"><span class="k">Matter</span><span class="v" id="s_mat">0</span></div>
-  <div class="stat"><span class="k">Antimatter</span><span class="v" id="s_amat">0</span></div>
+  <div class="stat" data-break="s_mat"><span class="k">Matter</span><span class="v" id="s_mat">0</span></div>
+  <div class="stat" data-break="s_amat"><span class="k">Antimatter</span><span class="v" id="s_amat">0</span></div>
   <div class="stat"><span class="k">Balance M−M̄</span><span class="v" id="s_bal">0</span></div>
 </aside>
+<div id="tip"></div>
 
 <footer id="legend" class="panel">
   <div class="bar"></div>
@@ -1230,18 +1243,27 @@ function frame(){
   s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
   const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
   s_z.textContent = z.toFixed(2);
-  let np=0, q=0, mat=0, amat=0;
+  let np=0, q=0, mat=0, amat=0; const kc={};
   for(const p of particles){ if(p.virtual) continue; np++; q+=KIND[p.kind].q;
-    KIND[p.kind].anti ? amat++ : mat++; }
+    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; }
+  const ac={};
   for(const A of atoms){ const f=A.type==='H2'?4:2;    // each H = 2 fermions (p + e)
-    A.anti ? amat+=f : mat+=f; }
+    A.anti ? amat+=f : mat+=f;
+    const key=(A.anti?'anti-':'')+(A.type==='H2'?'H₂':'H'); ac[key]=(ac[key]||0)+1; }
   s_np.textContent = np;
+  s_bh.textContent = bhs.length;
   const qr = Math.abs(q-Math.round(q))<1e-6 ? Math.round(q) : Math.round(q*100)/100;  // quarks are fractional
   s_q.textContent = (qr>0?'+':'')+qr;
   s_mat.textContent = mat; s_amat.textContent = amat;
   const bal = mat-amat;
   s_bal.textContent = (bal>0?'+':'')+bal;
   s_bal.style.color = bal===0 ? 'var(--muted)' : '#ff8ba0';   // any imbalance stands out
+  // hover breakdowns (shown by the tooltip over rows with data-break)
+  TIP.s_np = np ? Object.entries(kc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n') : 'no particles';
+  TIP.s_atoms = atoms.length ? Object.entries(ac).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
+  TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
+  TIP.s_mat = `matter fermions: ${mat}`;
+  TIP.s_amat = `antimatter fermions: ${amat}`;
 }
 
 /* ---------- collapse / minimize the console (esp. narrow screens) ---------- */
@@ -1255,6 +1277,23 @@ function setCollapsed(c){
 }
 collapseBtn.addEventListener('click', () => setCollapsed(!consoleEl.classList.contains('collapsed')));
 setCollapsed(false);   // start open on every screen; the – button minimizes to reveal the field
+
+/* ---------- field readout: collapse + hover breakdowns ---------- */
+const TIP = {};                                     // per-row breakdown text (filled each frame)
+{
+  const tel=document.getElementById('telemetry'), tbtn=document.getElementById('tcollapse'), tip=document.getElementById('tip');
+  tbtn.addEventListener('click', ()=>{ const c=!tel.classList.contains('collapsed');
+    tel.classList.toggle('collapsed', c); tbtn.textContent=c?'+':'–';
+    tbtn.setAttribute('aria-expanded', String(!c));
+    tbtn.setAttribute('aria-label', c?'Show readout':'Collapse readout'); });
+  tel.querySelectorAll('.stat[data-break]').forEach(row=>{
+    row.addEventListener('mousemove', e=>{ const t=TIP[row.dataset.break]; if(!t){ tip.style.opacity='0'; return; }
+      tip.textContent=t; tip.style.opacity='1';
+      tip.style.left=Math.min(e.clientX+14, window.innerWidth-252)+'px';
+      tip.style.top =Math.min(e.clientY+14, window.innerHeight-140)+'px'; });
+    row.addEventListener('mouseleave', ()=>{ tip.style.opacity='0'; });
+  });
+}
 
 /* ---------- go ---------- */
 c_vac.value = cfg.vac; v_vac.textContent = fmtT(vacT());   // temperature slider → CMB default
