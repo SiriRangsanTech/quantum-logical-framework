@@ -339,6 +339,11 @@ function fmtT(T){ if(T<=0) return '0 K'; if(T<1e4) return T.toFixed(1)+' K';
 // energy in electron rest-masses (E = m = 1/R = frequency): scientific notation when large
 function fmtE(E){ if(E<1) return '0'; if(E<1e4) return Math.round(E).toLocaleString();
   const e=Math.floor(Math.log10(E)); return (E/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e); }
+// photon frequency ν = c/λ. en∈[0,1] is the visible-band position (λ = 700→390 nm); a γ-ray
+// (en=null, from annihilation/decay ≈ mₑc²) is ~1.2×10²⁰ Hz.
+function photonHz(en){ if(en==null) return 1.235e20; return 2.998e17/(700-en*310); }   // c(nm/s)/λ(nm)
+function fmtHz(f){ if(f<1e15) return Math.round(f/1e12)+' THz';
+  const e=Math.floor(Math.log10(f)); return (f/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e)+' Hz'; }
 const MPL_OVER_ME = Math.exp(14*Math.PI)*6*Math.pow(Math.PI,5);   // Planck mass in mₑ (QLF_AlphaS ln=14π; 6π⁵)
 const M_H = 1836+1;                                               // hydrogen mass-energy in mₑ (p + e)
 cfg.vac = sForT(T_CMB);           // default the slider to the CMB temperature
@@ -989,8 +994,8 @@ function inspectAt(px,py){
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
     consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); } }
   const plabel = ph => ph.en==null
-    ? 'photon γ-ray — massless, E = ℏω (high-energy, from annihilation/decay)'
-    : `photon γ — massless, E = ℏω · ${freqBand(ph.en)} (bluer = higher energy)`;
+    ? `photon γ-ray — massless, f ≈ ${fmtHz(photonHz(null))} (E = ℏω, from annihilation/decay)`
+    : `photon γ — massless, f = ${fmtHz(photonHz(ph.en))} · ${COLOUR(ph.en)} (E = ℏω; bluer = higher)`;
   for(const ph of photons){                         // pick along the streak, not just the head
     consider(ph.x, ph.y, ph.z, plabel(ph));
     consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, plabel(ph));
