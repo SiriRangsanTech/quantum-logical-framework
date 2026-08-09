@@ -640,7 +640,7 @@ function pauliRepel(items, dt, identical){
 
 function stepParticles(dt){
   for(const p of particles) if(!p.virtual) driftDown(p,dt);   // move along the latency gradient
-  pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && !KIND[b.kind].ghost && KIND[a.kind].fam===KIND[b.kind].fam);
+  pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && a.kind===b.kind);   // IDENTICAL fermions only (p repels p, NOT p̄ — that pair annihilates)
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
     // ── The fundamental generator: a DETERMINISTIC closure cascade ──────────────────
@@ -763,7 +763,7 @@ function stepParticles(dt){
     for(let j=0;j<particles.length;j++){ const e=particles[j];
       if(e===p||e._dead||e.virtual||KIND[e.kind].fam!=='e') continue;
       if(!!KIND[p.kind].anti!==!!KIND[e.kind].anti) continue;      // matter with matter
-      if((p.x-e.x)**2+(p.y-e.y)**2+(p.z-e.z)**2 < 4.5){            // capture into H (favoured over annihilation)
+      if((p.x-e.x)**2+(p.y-e.y)**2+(p.z-e.z)**2 < 7){              // capture into H (favoured over annihilation)
         const mx=(p.x+e.x)/2,my=(p.y+e.y)/2,mz=(p.z+e.z)/2;
         makeAtom('H',mx,my,mz,!!KIND[p.kind].anti,(p.vx+e.vx)/2,(p.vy+e.vy)/2,(p.vz+e.vz)/2);
         emitPhotons(mx,my,mz,1,false); flash(mx,my,mz,[200,225,255],0.7);
