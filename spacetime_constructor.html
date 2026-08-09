@@ -658,7 +658,8 @@ function stepParticles(dt){
     if(rbh>2e-3){
       bhAccum += rbh*2*dt;
       while(bhAccum>=1 && bhs.length<16){ bhAccum-=1; const [x,y,z]=fluctPoint();
-        bhs.push({x,y,z, vx:0,vy:0,vz:0, m:1+lseq()*3, born:0, rad:0});   // m in Planck masses
+        bhs.push({x,y,z, vx:0,vy:0,vz:0, m:1+lseq()*3, born:0, rad:0,
+          q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]});   // no-hair Q,J from the collapsed closures
         flash(x,y,z,[255,255,255],1.6);
       }
     }
@@ -1027,7 +1028,7 @@ function inspectAt(px,py){
     (A.type==='H2' ? (A.anti?'anti-H₂ molecule':'H₂ molecule (two H, covalent bond)')
                    : (A.anti?'antihydrogen H̄ (p̄ + e⁺)':'hydrogen H (p + e⁻, a bound closure)')));
   for(const b of bhs) consider(b.x,b.y,b.z,
-    `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P`);
+    `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
     if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${k.sym} (borrowed from the vacuum; flickers back to possibility)`); continue; }
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
@@ -1194,7 +1195,8 @@ function qcInstantiate(text){
     else if(kind==='H'||kind==='H2') { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }
     else if(kind==='antiH')  { makeAtom('H', x,y,z,true,vx,vy,vz); ok++; }
     else if(kind==='antiH2') { makeAtom('H2',x,y,z,true,vx,vy,vz); ok++; }
-    else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0}); ok++; }
+    else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
+      q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]}); ok++; }
     else if(QC_MACRO[kind]) {                       // named composite closure -> expand at the free base
       for(const it of QC_MACRO[kind](x,y,z,vx,vy,vz)){
         if(it.atom) makeAtom(it.atom, it.x,it.y,it.z, !!it.anti, it.vx||0,it.vy||0,it.vz||0);
@@ -1347,7 +1349,7 @@ function frame(){
   TIP.s_np = np ? Object.entries(kc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n') : 'no particles';
   TIP.s_atoms = nAtoms ? Object.entries(acA).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
   TIP.s_mol = nMol ? Object.entries(acM).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no molecules';
-  TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
+  TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
   TIP.s_mat = `matter fermions: ${mat}`;
   TIP.s_amat = `antimatter fermions: ${amat}`;
   const sNet = eNet>=0?'+':'−';
