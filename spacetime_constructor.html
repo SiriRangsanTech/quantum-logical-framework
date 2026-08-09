@@ -181,6 +181,8 @@
     <button id="t_pulse" class="on">Clocks</button>
     <button id="t_trails" class="on">Trails</button>
     <button id="t_links">Causal links</button>
+    <button id="t_observer" class="on">Observer</button>
+    <button id="t_spin">Auto-spin</button>
     <button id="b_reset" class="ghost">Reset field</button>
   </div>
 
@@ -316,7 +318,8 @@ const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 
 /* ---------- state ---------- */
 const cfg = { N:1800, octaves:3, flow:1, vac:0,
-              pulse:true, trails:true, links:false, paused:false };
+              pulse:true, trails:true, links:false, paused:false,
+              observer:true, spin:false };   // observer marker at the centre; idle auto-spin off (one fixed frame)
 const FLAT_W = 100;                 // empty-space degeneracy baseline
 const PH_SPD = 8, PH_BEND = 2.2, PH_PATH = 26, PH_MAXAGE = 12;  // photon: speed c, field-bend, path length, safety life
 const PH_GRACE = 0.22;              // s before a photon can be observer-absorbed (clears its own emitter)
@@ -940,6 +943,28 @@ function renderBH(){
   }
 }
 
+// The observer at the centre — the ONE relative perspective this whole model is drawn from
+// (a Markov blanket at the origin of its own horizon, QLF_HorizonClosure). The CMB shell is
+// all around it; matter, wells and photons are seen relative to here.
+function renderObserver(){
+  if(!cfg.observer) return;
+  const p=project(0,0,0); if(!p) return;
+  const u=(focal()/p.z)*0.06;                 // world→screen scale; figure ≈ 3 world-units tall
+  const H=Math.max(14, u*3), cx=p.sx, cy=p.sy-H*0.1, hr=H*0.16;
+  ctx.globalCompositeOperation='source-over';
+  ctx.save();
+  ctx.strokeStyle='rgba(150,214,232,0.85)'; ctx.lineWidth=Math.max(1.4,H*0.05); ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.shadowColor='rgba(20,30,40,0.9)'; ctx.shadowBlur=Math.max(2,H*0.12);   // dark halo so it reads over bright centre
+  ctx.beginPath(); ctx.arc(cx, cy-H*0.5, hr, 0, 7); ctx.stroke();            // head
+  ctx.beginPath(); ctx.moveTo(cx, cy-H*0.5+hr); ctx.lineTo(cx, cy+H*0.12);   // spine
+    ctx.moveTo(cx-H*0.24, cy-H*0.12); ctx.lineTo(cx+H*0.24, cy-H*0.12);      // arms
+    ctx.moveTo(cx, cy+H*0.12); ctx.lineTo(cx-H*0.18, cy+H*0.5);              // legs
+    ctx.moveTo(cx, cy+H*0.12); ctx.lineTo(cx+H*0.18, cy+H*0.5); ctx.stroke();
+  ctx.restore();
+  ctx.font=`${Math.max(8,H*0.22).toFixed(0)}px ${MONO}`; ctx.fillStyle='rgba(150,214,232,0.7)'; ctx.textAlign='center';
+  ctx.fillText('observer', cx, cy+H*0.72); ctx.textAlign='left';
+}
+
 /* ---------- interaction ---------- */
 let drag=null;
 canvas.addEventListener('pointerdown', e=>{
@@ -1022,6 +1047,7 @@ bind('c_flow',e=>{cfg.flow=+e.target.value; v_flow.textContent=cfg.flow.toFixed(
 const toggle=(id,key)=>{const el=document.getElementById(id);
   el.addEventListener('click',()=>{cfg[key]=!cfg[key]; el.classList.toggle('on',cfg[key]);});};
 toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
+toggle('t_observer','observer'); toggle('t_spin','spin');
 bind('c_vac',e=>{cfg.vac=+e.target.value; v_vac.textContent=fmtT(vacT());});
 const pauseBtn=document.getElementById('b_pause');
 pauseBtn.addEventListener('click',()=>{ cfg.paused=!cfg.paused;
@@ -1202,7 +1228,7 @@ function frame(){
     const fdt=0.016*Math.max(speed,0.001);            // substep so stiff Pauli exclusion stays stable at high flow
     const N=Math.min(6,Math.max(1,Math.ceil(fdt/0.03)));
     for(let s=0;s<N;s++) stepParticles(fdt/N);
-    if(!drag && !reduceMotion) cam.az += 0.0009*speed;   // idle auto-orbit (running only)
+    if(cfg.spin && !drag && !reduceMotion) cam.az += 0.0009*speed;   // idle auto-orbit — opt-in (default off: one fixed observer frame)
   }
   updateBasis();
 
@@ -1269,6 +1295,7 @@ function frame(){
   minWglobal=minW;
 
   renderParticles();
+  renderObserver();   // the one relative perspective, marked at the centre
 
   // telemetry
   s_tick.textContent = Math.floor(tick);
