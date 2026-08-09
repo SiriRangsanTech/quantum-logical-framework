@@ -668,12 +668,12 @@ function stepParticles(dt){
     p.vx*=0.999; p.vy*=0.999; p.vz*=0.999;   // near-frictionless: only a whisper of radiative loss (no drag in the ether)
     // no wall: a particle free-streams into the vacuum (the ultimate absorber) if it drifts far out
     if(p.x*p.x+p.y*p.y+p.z*p.z > 48*48) p._dead=true;
-    if(KIND[p.kind].ttl!==Infinity) p.ttl-=dt;
+    if(p.virtual || KIND[p.kind].ttl!==Infinity) p.ttl-=dt;   // virtual foam is transient even for stable species
   }
   // decay (unstable closures shed to lighter products; charge + baryon number conserved)
   for(let i=particles.length-1;i>=0;i--){
     const p=particles[i], k=KIND[p.kind];
-    if(k.ttl!==Infinity && p.ttl<=0){
+    if((p.virtual || k.ttl!==Infinity) && p.ttl<=0){
       particles.splice(i,1);
       if(p.virtual){ flash(p.x,p.y,p.z,[150,170,255],0.5); continue; }
       if(k.decay){
@@ -690,7 +690,7 @@ function stepParticles(dt){
   for(let i=0;i<particles.length;i++){
     for(let j=i+1;j<particles.length;j++){
       const a=particles[i], b=particles[j];
-      if(a._dead||b._dead) continue;
+      if(a._dead||b._dead||a.virtual||b.virtual) continue;   // virtual foam flickers back to possibility — it does NOT radiate
       const ka=KIND[a.kind], kb=KIND[b.kind];
       if(ka.fam===kb.fam && ka.fam!=='nu' && (!!ka.anti)!==(!!kb.anti)){
         const dd=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
@@ -1027,9 +1027,10 @@ function inspectAt(px,py){
                    : (A.anti?'antihydrogen H̄ (p̄ + e⁺)':'hydrogen H (p + e⁻, a bound closure)')));
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P`);
-  for(const p of particles){ if(!p.virtual){ const k=KIND[p.kind];   // all are spin-½ fermions
+  for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
+    if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${k.sym} (borrowed from the vacuum; flickers back to possibility)`); continue; }
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
-    consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); } }
+    consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); }
   const plabel = ph => ph.en==null
     ? `photon γ-ray — massless, f ≈ ${fmtHz(photonHz(null))} (E = ℏω, from annihilation/decay)`
     : `photon γ — massless, f = ${fmtHz(photonHz(ph.en))} · ${COLOUR(ph.en)} (E = ℏω; bluer = higher)`;
