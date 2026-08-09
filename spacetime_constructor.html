@@ -357,8 +357,9 @@ const M_H = 1836+1;                                               // hydrogen ma
 // minimum, QLF 3log2/8π·c⁴/GR_H² ≈ 3.35 GeV/m³) plus THERMAL radiation. The slider walks it from
 // dark energy at absolute zero up to the Planck density (~5×10¹¹³ J/m³) at the Planck temperature —
 // the 10¹²² "vacuum catastrophe" is just the two ends of this one axis.
-const RHO_LAMBDA_J = 5.315e-10;   // J/m³  dark-energy floor
-const RAD_A = 7.5657e-16;         // J/m³/K⁴  radiation constant
+const RHO_LAMBDA_J = 5.315e-10;   // J/m³  dark energy (Λ, constant)
+const RHO_DM_J = 2.04e-10;        // J/m³  dark matter today (∝ a⁻³ ∝ (T/T_CMB)³)
+const RAD_A = 7.5657e-16;         // J/m³/K⁴  radiation constant (thermal/vacuum energy, ∝ T⁴)
 const J_TO_GEV = 6.242e9;
 function fmtSci(x, unit){ if(!isFinite(x)||x===0) return '0 '+unit;
   const e=Math.floor(Math.log10(Math.abs(x)));
@@ -1351,10 +1352,14 @@ function frame(){
   s_np.textContent = np;
   s_bh.textContent = bhs.length;
   s_e.innerHTML = fmtE(etot)+'<small> mₑ</small>';
-  const T_K = vacT();                                       // physical vacuum temperature from the slider
-  const rhoVac = RHO_LAMBDA_J + RAD_A*Math.pow(T_K,4);      // J/m³: dark-energy floor + thermal a·T⁴
-  const rhoGeV = rhoVac*J_TO_GEV;
-  s_rho.innerHTML = fmtSci(rhoGeV,'').trim()+'<small> GeV/m³</small>';
+  // Vacuum energy density by regime: dark energy (Λ, constant) + dark matter (∝(T/T_CMB)³)
+  // + thermal/vacuum energy (radiation, ∝T⁴). Label = whichever dominates at the current T.
+  const T_K = vacT(), Tr = T_K/T_CMB;
+  const rDE = RHO_LAMBDA_J, rDM = RHO_DM_J*Tr*Tr*Tr, rRad = RAD_A*Math.pow(T_K,4);
+  const rDom = Math.max(rDE, rDM, rRad);
+  const rhoLabel = (rDom===rRad) ? 'vacuum energy' : (rDom===rDM) ? 'dark matter' : 'dark energy';
+  const rTot = rDE + rDM + rRad;                            // total current density
+  s_rho.innerHTML = fmtSci(rTot*J_TO_GEV,'').trim()+'<small> GeV/m³</small>';
   const qr = Math.abs(q-Math.round(q))<1e-6 ? Math.round(q) : Math.round(q*100)/100;  // quarks are fractional
   s_q.textContent = (qr>0?'+':'')+qr;
   s_mat.textContent = mat; s_amat.textContent = amat;
@@ -1375,15 +1380,14 @@ function frame(){
     + `\n\nNET FREE energy: ${sNet}${fmtE(Math.abs(eNet))} mₑ`
     + `\n  matter(+) minus antimatter(−); a balanced vacuum → 0 = Zero Free Action`
     + `\n\nvacuum energy IS ongoing ZFA synthesis · E = m = 1/R`;
-  const rhoTh = RAD_A*Math.pow(T_K,4)*J_TO_GEV;
-  TIP.s_rho = `VACUUM ENERGY DENSITY  ρ(T) = ρ_Λ + a·T⁴`
-    + `\n  temperature T = ${fmtT(T_K)}`
-    + `\n  ρ = ${fmtSci(rhoGeV,'GeV/m³')}`
-    + `\n\n  dark-energy floor ρ_Λ: ${fmtSci(RHO_LAMBDA_J*J_TO_GEV,'GeV/m³')}  (T→0 minimum,`
-    + `\n     QLF 3log2/8π·c⁴/GR_H², matches measured 3.35)`
-    + `\n  thermal a·T⁴:          ${fmtSci(rhoTh,'GeV/m³')}`
-    + `\n\n  dark energy = the floor; Planck density = the ceiling;`
-    + `\n  their 10¹²² ratio is just the two ends of this axis.`;
+  TIP.s_rho = `VACUUM ENERGY DENSITY at T = ${fmtT(T_K)}`
+    + `\n  dark energy (Λ, const):  ${fmtSci(rDE*J_TO_GEV,'GeV/m³')}`
+    + `\n  dark matter (∝ T³):      ${fmtSci(rDM*J_TO_GEV,'GeV/m³')}`
+    + `\n  vacuum energy (∝ T⁴):    ${fmtSci(rRad*J_TO_GEV,'GeV/m³')}`
+    + `\n  ─────`
+    + `\n  dominant now: ${rhoLabel}  (${fmtSci(rDom*J_TO_GEV,'GeV/m³')})`
+    + `\n\n  cold floor = dark energy (matches measured 3.35); dark matter takes`
+    + `\n  over just above the CMB; thermal vacuum energy → Planck at the top.`;
 }
 
 /* ---------- collapse / minimize the console (esp. narrow screens) ---------- */
