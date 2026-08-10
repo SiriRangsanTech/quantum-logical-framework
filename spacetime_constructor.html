@@ -196,6 +196,7 @@
     <button id="t_links">Causal links</button>
     <button id="t_observer" class="on">Observer</button>
     <button id="t_spin">Auto-spin</button>
+    <button id="t_jitter" class="on">Vacuum jitter</button>
     <button id="b_reset" class="ghost">Reset field</button>
   </div>
 
@@ -335,6 +336,7 @@ const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 const cfg = { N:1800, octaves:3, flow:1, vac:0,
               pulse:true, trails:true, links:false, paused:false,
               observer:true, spin:false,     // observer marker at the centre; idle auto-spin off (one fixed frame)
+              jitter:true,                    // vacuum-foam Brownian walk on particle motion (census, ZFA-balanced)
               fLo:0.01, fHi:2e6 };            // selected frequency band [m/mₑ] (log); default = full range ("all")
 const FLAT_W = 100;                 // empty-space degeneracy baseline
 const PH_SPD = 8, PH_BEND = 2.2, PH_PATH = 26, PH_MAXAGE = 12;  // photon: speed c, field-bend, path length, safety life
@@ -441,9 +443,25 @@ const _walks = [], _frac = [];
   }
 })();
 const _W = _walks.length;                               // C(14,7) = 3432
-let _ci = 0, _pi = 0, _lastSpin = 0;
+let _ci = 0, _pi = 0, _lastSpin = 0, _ji = 0;
 function lseq(){ const v=_frac[_ci % _W]; _ci++; return v; }              // scalar ∈ [0,1)
 function _exc(s){ let bv=0; for(const v of s) if(Math.abs(v)>Math.abs(bv)) bv=v; return bv; }
+// Vacuum-fluctuation Brownian walk (QLF_CensusBrownian / QLF_Turbulence): the vacuum foam
+// buffets an immersed closure. The kick is NOT random — it is the step of a CLOSED census walk
+// (a ZFA-balanced ±1 history), drawn from the same census that draws the space. Because the walk
+// is CLOSED, its increments sum to zero over one period, so the net impulse is zero: the
+// fluctuation adds NO net energy — a ZFA-obedient jitter, not a force.
+const VAC_JITTER = 0.14;
+function vacuumWalk(p, dt){
+  if(p.wi===undefined){ p.wi=(_ji++)%_W; p.ws=0; }         // assign a census walk on first buffet
+  const a=p.wi, b=(p.wi+1201)%_W, c=(p.wi+2411)%_W, s=p.ws; // three strided walks → 3 axes
+  const wa=_walks[a], wb=_walks[b], wc=_walks[c];
+  const amp = VAC_JITTER*(60*dt);                           // per-step kick (framerate-independent)
+  p.vx += (wa[s+1]-wa[s])*amp;                              // increment ∈ {−1,+1} = a foam kick
+  p.vy += (wb[s+1]-wb[s])*amp;
+  p.vz += (wc[s+1]-wc[s])*amp;
+  p.ws++; if(p.ws>=14){ p.ws=0; p.wi=(p.wi+7)%_W; }         // closed walk complete → next closure (net impulse 0)
+}
 function censusPoint(scale){       // node position: a 3-axis closure's walk excursion (integer),
   const i=_pi++;                   // placed WITHIN its lattice cell by the closure's own fraction
   const a=i%_W, b=(i+1201)%_W, c=(i+2411)%_W;     // strided so nodes don't stack on lattice points
@@ -669,7 +687,8 @@ function pauliRepel(items, dt, identical){
 }
 
 function stepParticles(dt){
-  for(const p of particles) if(!p.virtual) driftDown(p,dt);   // move along the latency gradient
+  for(const p of particles) if(!p.virtual){ driftDown(p,dt);   // move along the latency gradient
+    if(cfg.jitter) vacuumWalk(p,dt); }                        // + the vacuum-foam Brownian walk (census, ZFA-balanced)
   pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && a.kind===b.kind);   // IDENTICAL fermions only (p repels p, NOT p̄ — that pair annihilates)
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
@@ -1112,7 +1131,7 @@ bind('c_fhi',e=>{ cfg.fHi=sliderToF(+e.target.value); if(cfg.fHi<cfg.fLo){cfg.fL
 const toggle=(id,key)=>{const el=document.getElementById(id);
   el.addEventListener('click',()=>{cfg[key]=!cfg[key]; el.classList.toggle('on',cfg[key]);});};
 toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
-toggle('t_observer','observer'); toggle('t_spin','spin');
+toggle('t_observer','observer'); toggle('t_spin','spin'); toggle('t_jitter','jitter');
 bind('c_vac',e=>{cfg.vac=+e.target.value; v_vac.textContent=fmtT(vacT());});
 const pauseBtn=document.getElementById('b_pause');
 pauseBtn.addEventListener('click',()=>{ cfg.paused=!cfg.paused;
