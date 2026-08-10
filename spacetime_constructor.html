@@ -1020,7 +1020,7 @@ function renderObserver(){
   const p=project(obs.x,obs.y,obs.z); if(!p){ _obsSS=null; return; }   // observer stands at his world anchor (the frame origin)
   const u=(focal()/p.z)*0.06;                 // world→screen scale
   const H=Math.max(22, u*4.5), cx=p.sx, cy=p.sy-H*0.1, hr=H*0.17;
-  _obsSS={ sx:p.sx, sy:p.sy, r:Math.max(30,H*0.9) };   // grab radius
+  _obsSS={ sx:p.sx, sy:p.sy, r:Math.max(18,Math.min(46,H*0.6)) };   // tight grab radius (just the figure)
   // 1) additive aura so the observer glows out of the bright centre
   ctx.globalCompositeOperation='lighter';
   const g=ctx.createRadialGradient(cx,cy,0,cx,cy,H);
@@ -1048,11 +1048,13 @@ function renderObserver(){
 let drag=null;
 canvas.addEventListener('pointerdown', e=>{
   canvas.setPointerCapture(e.pointerId);
-  // grab the observer? (drag him ⇒ pan the whole scene — everything moves with him)
+  // Truck the whole scene ONLY when grabbing the observer figure, or with Shift held (pan
+  // anywhere). A plain drag off the observer orbits (spins), as before.
   const onObs = _obsSS && ((e.clientX-_obsSS.sx)**2+(e.clientY-_obsSS.sy)**2) < _obsSS.r*_obsSS.r;
+  const truck = onObs || e.shiftKey;
   drag={ x:e.clientX, y:e.clientY, ax:cam.az, el:cam.el, moved:0,
-         mode: onObs ? 'observer' : 'orbit' };
-  if(onObs) canvas.style.cursor='grabbing';
+         mode: truck ? 'observer' : 'orbit' };
+  if(truck) canvas.style.cursor='grabbing';
 });
 canvas.addEventListener('pointermove', e=>{
   if(!drag){ if(_obsSS){ const on=((e.clientX-_obsSS.sx)**2+(e.clientY-_obsSS.sy)**2)<_obsSS.r*_obsSS.r;
