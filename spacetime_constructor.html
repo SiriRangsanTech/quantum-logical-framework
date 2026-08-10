@@ -1013,11 +1013,13 @@ function renderBH(){
 // The observer at the centre — the ONE relative perspective this whole model is drawn from
 // (a Markov blanket at the origin of its own horizon, QLF_HorizonClosure). The CMB shell is
 // all around it; matter, wells and photons are seen relative to here.
+let _obsSS=null;                              // observer screen position (for grab/drag)
 function renderObserver(){
-  if(!cfg.observer) return;
-  const p=project(0,0,0); if(!p) return;
+  if(!cfg.observer){ _obsSS=null; return; }
+  const p=project(cam.tgt.x,cam.tgt.y,cam.tgt.z); if(!p){ _obsSS=null; return; }   // observer stands AT the look-at point (the frame origin)
   const u=(focal()/p.z)*0.06;                 // world→screen scale
   const H=Math.max(22, u*4.5), cx=p.sx, cy=p.sy-H*0.1, hr=H*0.17;
+  _obsSS={ sx:p.sx, sy:p.sy, r:Math.max(30,H*0.9) };   // grab radius
   // 1) additive aura so the observer glows out of the bright centre
   ctx.globalCompositeOperation='lighter';
   const g=ctx.createRadialGradient(cx,cy,0,cx,cy,H);
@@ -1045,18 +1047,35 @@ function renderObserver(){
 let drag=null;
 canvas.addEventListener('pointerdown', e=>{
   canvas.setPointerCapture(e.pointerId);
-  drag={ x:e.clientX, y:e.clientY, ax:cam.az, el:cam.el, moved:0 };
+  // grab the observer? (drag him ⇒ pan the whole scene — everything moves with him)
+  const onObs = _obsSS && ((e.clientX-_obsSS.sx)**2+(e.clientY-_obsSS.sy)**2) < _obsSS.r*_obsSS.r;
+  drag={ x:e.clientX, y:e.clientY, ax:cam.az, el:cam.el, moved:0,
+         mode: onObs ? 'observer' : 'orbit' };
+  if(onObs) canvas.style.cursor='grabbing';
 });
 canvas.addEventListener('pointermove', e=>{
-  if(!drag) return;
+  if(!drag){ if(_obsSS){ const on=((e.clientX-_obsSS.sx)**2+(e.clientY-_obsSS.sy)**2)<_obsSS.r*_obsSS.r;
+    canvas.style.cursor = on ? 'grab' : 'default'; } return; }
   const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
   drag.moved += Math.abs(dx)+Math.abs(dy);
-  cam.az = drag.ax - dx*0.006;
-  cam.el = Math.max(-1.4, Math.min(1.4, drag.el + dy*0.006));
+  if(drag.mode==='observer'){
+    // move the observer (= the look-at point) through the world; the camera follows, so the whole
+    // scene translates with him. Zoom/orbit stay centred on him because he IS cam.tgt.
+    const wpp=cam.dist/focal(), b=basis;                 // world units per screen pixel at his depth
+    const mx=dx*wpp, my=dy*wpp;
+    cam.tgt.x += b.r[0]*mx - b.u[0]*my;
+    cam.tgt.y += b.r[1]*mx - b.u[1]*my;
+    cam.tgt.z += b.r[2]*mx - b.u[2]*my;
+    drag.x=e.clientX; drag.y=e.clientY;                  // incremental
+  } else {
+    cam.az = drag.ax - dx*0.006;
+    cam.el = Math.max(-1.4, Math.min(1.4, drag.el + dy*0.006));
+  }
 });
 canvas.addEventListener('pointerup', e=>{
-  const wasClick = drag && drag.moved < 6;
+  const wasClick = drag && drag.moved < 6 && drag.mode!=='observer';
   if(wasClick) inspectAt(e.clientX, e.clientY);
+  canvas.style.cursor='default';
   drag=null;
 });
 canvas.addEventListener('wheel', e=>{
