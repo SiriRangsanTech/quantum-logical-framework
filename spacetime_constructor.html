@@ -597,6 +597,7 @@ function build(){
 
 /* ---------- camera (orbit) ---------- */
 const cam = { az:0.9, el:0.5, dist:34, tgt:{x:0,y:0,z:0} };
+const obs = { x:0, y:0, z:0 };      // the observer's world position (the frame origin); dragging trucks the view so he + everything move together
 let basis = null;
 function updateBasis(){
   const ce=Math.cos(cam.el), se=Math.sin(cam.el);
@@ -1016,7 +1017,7 @@ function renderBH(){
 let _obsSS=null;                              // observer screen position (for grab/drag)
 function renderObserver(){
   if(!cfg.observer){ _obsSS=null; return; }
-  const p=project(cam.tgt.x,cam.tgt.y,cam.tgt.z); if(!p){ _obsSS=null; return; }   // observer stands AT the look-at point (the frame origin)
+  const p=project(obs.x,obs.y,obs.z); if(!p){ _obsSS=null; return; }   // observer stands at his world anchor (the frame origin)
   const u=(focal()/p.z)*0.06;                 // world→screen scale
   const H=Math.max(22, u*4.5), cx=p.sx, cy=p.sy-H*0.1, hr=H*0.17;
   _obsSS={ sx:p.sx, sy:p.sy, r:Math.max(30,H*0.9) };   // grab radius
@@ -1059,13 +1060,12 @@ canvas.addEventListener('pointermove', e=>{
   const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
   drag.moved += Math.abs(dx)+Math.abs(dy);
   if(drag.mode==='observer'){
-    // move the observer (= the look-at point) through the world; the camera follows, so the whole
-    // scene translates with him. Zoom/orbit stay centred on him because he IS cam.tgt.
+    // TRUCK the camera so the observer AND the whole scene translate together on screen — the
+    // perspective moves with him (everything moves with him), he doesn't slide against a fixed world.
     const wpp=cam.dist/focal(), b=basis;                 // world units per screen pixel at his depth
-    const mx=dx*wpp, my=dy*wpp;
-    cam.tgt.x += b.r[0]*mx - b.u[0]*my;
-    cam.tgt.y += b.r[1]*mx - b.u[1]*my;
-    cam.tgt.z += b.r[2]*mx - b.u[2]*my;
+    cam.tgt.x += (-b.r[0]*dx + b.u[0]*dy)*wpp;
+    cam.tgt.y += (-b.r[1]*dx + b.u[1]*dy)*wpp;
+    cam.tgt.z += (-b.r[2]*dx + b.u[2]*dy)*wpp;
     drag.x=e.clientX; drag.y=e.clientY;                  // incremental
   } else {
     cam.az = drag.ax - dx*0.006;
@@ -1080,7 +1080,14 @@ canvas.addEventListener('pointerup', e=>{
 });
 canvas.addEventListener('wheel', e=>{
   e.preventDefault();
+  updateBasis();
+  const P0 = (cfg.observer && project(obs.x,obs.y,obs.z)) || null;   // observer screen pos before zoom
   cam.dist = Math.max(1.5, Math.min(70, cam.dist * (1 + Math.sign(e.deltaY)*0.08)));   // min 1.5: zoom right in to a single closure
+  if(P0){ updateBasis(); const P1=project(obs.x,obs.y,obs.z);        // zoom FROM the observer: keep him fixed on screen
+    if(P1){ const ddx=P0.sx-P1.sx, ddy=P0.sy-P1.sy, wpp=cam.dist/focal(), b=basis;
+      cam.tgt.x += (-b.r[0]*ddx + b.u[0]*ddy)*wpp;
+      cam.tgt.y += (-b.r[1]*ddx + b.u[1]*ddy)*wpp;
+      cam.tgt.z += (-b.r[2]*ddx + b.u[2]*ddy)*wpp; } }
 }, {passive:false});
 
 // Click identifies what's under the cursor (no mass-dropping — masses arise naturally
