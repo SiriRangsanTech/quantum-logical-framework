@@ -589,7 +589,7 @@ function onScreen(x,y,z){
   const pp=project(x,y,z); if(!pp) return false;         // behind the observer
   const m=48;                                            // screen margin (px)
   if(pp.sx<-m || pp.sx>W+m || pp.sy<-m || pp.sy>H+m) return false;
-  return pp.z <= cam.dist*1.6;                           // depth reach ∝ magnification
+  return pp.z <= cam.dist*2.2;                           // depth reach ∝ magnification
 }
 
 /* ---------- frequency field ---------- */
@@ -1231,9 +1231,14 @@ function qcInstantiate(text){
   return {ok,bad,confined};
 }
 if(qcEl){
-  document.getElementById('qc_capture').onclick=()=>{ qcEl.value=qcCapture();
-    const n=qcEl.value.split('\n').filter(l=>l.trim() && l.trim()[0]!=='#').length;
-    qcSay(`Captured <b>${n}</b> entities in view (zoom in/out to change the reach).`); };
+  document.getElementById('qc_capture').onclick=()=>{
+    updateBasis();
+    const realTotal = particles.filter(p=>!p.virtual).length + atoms.length + bhs.length;
+    qcEl.value = qcCapture();
+    const n = qcEl.value.split('\n').filter(l=>l.trim() && l.trim()[0]!=='#').length;
+    if(n>0) qcSay(`Captured <b>${n}</b> in view${realTotal>n?` of ${realTotal} total (zoom out for the rest)`:''}.`);
+    else if(realTotal>0) qcSay(`<span style="color:#fc8">${realTotal} object(s) exist but none in view — zoom out or re-centre.</span>`);
+    else qcSay(`<span style="color:#fc8">No persistent matter to capture — heat the vacuum so matter freezes out (only foam/nodes now).</span>`); };
   document.getElementById('qc_replace').onclick=()=>{
     particles.length=0; atoms.length=0; bhs.length=0; photons.length=0; flashes.length=0; inspected=null;
     if(inspectEl) inspectEl.style.opacity='0';
