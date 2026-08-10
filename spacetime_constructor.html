@@ -582,6 +582,15 @@ function project(x,y,z){
   const fo=focal();
   return { sx: W/2 + (cx/cz)*fo, sy: H/2 - (cy/cz)*fo, z:cz };
 }
+// Is a world point within the observer's visible field? On screen (inside the frustum, small
+// margin) AND within a logical REACH that shrinks with magnification — zoom in (small cam.dist)
+// ⇒ the observer resolves only nearby closures; zoom out ⇒ the horizon comes into reach.
+function onScreen(x,y,z){
+  const pp=project(x,y,z); if(!pp) return false;         // behind the observer
+  const m=48;                                            // screen margin (px)
+  if(pp.sx<-m || pp.sx>W+m || pp.sy<-m || pp.sy>H+m) return false;
+  return pp.z <= cam.dist*1.6;                           // depth reach ∝ magnification
+}
 
 /* ---------- frequency field ---------- */
 let minWglobal = FLAT_W;
@@ -1131,14 +1140,16 @@ const qcEl = document.getElementById('qc_text');
 const qcStatus = document.getElementById('qc_status');
 function qcSay(msg){ if(qcStatus) qcStatus.innerHTML = msg; }
 function qcCapture(){
+  updateBasis();                                          // capture from the current view
   const f = n => (+n).toFixed(2);
-  const L = ['# QuCalc initial conditions — a ZFA-closed configuration',
+  const L = ['# QuCalc — closures within the observer\'s visible field (zoom sets the reach)',
              '# kind  twist  @ x,y,z  [v vx,vy,vz]'];
-  for(const p of particles){ if(p.virtual) continue;
+  for(const p of particles){ if(p.virtual || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
-  for(const A of atoms){
+  for(const A of atoms){ if(!onScreen(A.x,A.y,A.z)) continue;
     L.push(`${A.anti?'anti':''}${A.type} ${A.type==='H2'?'(p+e)₂':'p+e'} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
-  for(const b of bhs){ L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
+  for(const b of bhs){ if(!onScreen(b.x,b.y,b.z)) continue;
+    L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
   return L.join('\n');
 }
 function qcParse(line){
@@ -1221,8 +1232,8 @@ function qcInstantiate(text){
 }
 if(qcEl){
   document.getElementById('qc_capture').onclick=()=>{ qcEl.value=qcCapture();
-    const n=particles.filter(p=>!p.virtual).length+atoms.length+bhs.length;
-    qcSay(`Captured <b>${n}</b> entities from the display.`); };
+    const n=qcEl.value.split('\n').filter(l=>l.trim() && l.trim()[0]!=='#').length;
+    qcSay(`Captured <b>${n}</b> entities in view (zoom in/out to change the reach).`); };
   document.getElementById('qc_replace').onclick=()=>{
     particles.length=0; atoms.length=0; bhs.length=0; photons.length=0; flashes.length=0; inspected=null;
     if(inspectEl) inspectEl.style.opacity='0';
