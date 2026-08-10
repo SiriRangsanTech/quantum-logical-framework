@@ -582,14 +582,13 @@ function project(x,y,z){
   const fo=focal();
   return { sx: W/2 + (cx/cz)*fo, sy: H/2 - (cy/cz)*fo, z:cz };
 }
-// Is a world point within the observer's visible field? On screen (inside the frustum, small
-// margin) AND within a logical REACH that shrinks with magnification — zoom in (small cam.dist)
-// ⇒ the observer resolves only nearby closures; zoom out ⇒ the horizon comes into reach.
+// Is a world point on the observer's screen? In front of the camera and projecting within the
+// viewport (a generous margin). The magnification limits the reach on its own: zoomed in, the
+// 60° cone at the target subtends only nearby closures; zoomed out, the whole field is in view.
 function onScreen(x,y,z){
   const pp=project(x,y,z); if(!pp) return false;         // behind the observer
-  const m=48;                                            // screen margin (px)
-  if(pp.sx<-m || pp.sx>W+m || pp.sy<-m || pp.sy>H+m) return false;
-  return pp.z <= cam.dist*2.2;                           // depth reach ∝ magnification
+  const m=0.25;                                          // margin as a fraction of the viewport
+  return pp.sx >= -m*W && pp.sx <= (1+m)*W && pp.sy >= -m*H && pp.sy <= (1+m)*H;
 }
 
 /* ---------- frequency field ---------- */
