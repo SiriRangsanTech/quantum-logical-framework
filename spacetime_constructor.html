@@ -1142,8 +1142,7 @@ function qcSay(msg){ if(qcStatus) qcStatus.innerHTML = msg; }
 function qcCapture(){
   updateBasis();                                          // capture from the current view
   const f = n => (+n).toFixed(2);
-  const L = ['# QuCalc — closures within the observer\'s visible field (zoom sets the reach)',
-             '# kind  twist  @ x,y,z  [v vx,vy,vz]'];
+  const L = [];                                           // just the closures — no comment header (that read as "instructions")
   for(const p of particles){ if(p.virtual || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
   for(const A of atoms){ if(!onScreen(A.x,A.y,A.z)) continue;
@@ -1234,9 +1233,10 @@ if(qcEl){
   document.getElementById('qc_capture').onclick=()=>{
     updateBasis();
     const realTotal = particles.filter(p=>!p.virtual).length + atoms.length + bhs.length;
-    qcEl.value = qcCapture();
-    const n = qcEl.value.split('\n').filter(l=>l.trim() && l.trim()[0]!=='#').length;
-    if(n>0) qcSay(`Captured <b>${n}</b> in view${realTotal>n?` of ${realTotal} total (zoom out for the rest)`:''}.`);
+    const cap = qcCapture();
+    const n = cap.split('\n').filter(l=>l.trim()).length;
+    if(n>0){ qcEl.value = cap;                                   // only overwrite when there IS something (don't wipe to the placeholder)
+      qcSay(`Captured <b>${n}</b> in view${realTotal>n?` of ${realTotal} total (zoom out for the rest)`:''}.`); }
     else if(realTotal>0) qcSay(`<span style="color:#fc8">${realTotal} object(s) exist but none in view — zoom out or re-centre.</span>`);
     else qcSay(`<span style="color:#fc8">No persistent matter to capture — heat the vacuum so matter freezes out (only foam/nodes now).</span>`); };
   document.getElementById('qc_replace').onclick=()=>{
