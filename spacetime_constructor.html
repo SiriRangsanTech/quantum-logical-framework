@@ -176,6 +176,19 @@
     </div>
   </div>
 
+  <div class="group">
+    <div class="grouplbl">Frequency band <span class="val" id="v_band" style="float:right">all</span></div>
+    <div class="row">
+      <div class="lbl">low f</div>
+      <input type="range" id="c_flo" min="0" max="1" step="0.001" value="0">
+    </div>
+    <div class="row">
+      <div class="lbl">high f</div>
+      <input type="range" id="c_fhi" min="0" max="1" step="0.001" value="1">
+    </div>
+    <p class="hint">Log sliders over rest frequency <b>f = m/m<sub>e</sub></b> (E = m = 1/R). The visible spectrum is stretched across the band (band-low → red, band-high → violet); closures <b>outside</b> the band dim, and <b>Capture</b> takes only the in-band closures on screen.</p>
+  </div>
+
   <div class="toggles">
     <button id="b_pause">Pause</button>
     <button id="t_pulse" class="on">Clocks</button>
@@ -321,7 +334,8 @@ const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 /* ---------- state ---------- */
 const cfg = { N:1800, octaves:3, flow:1, vac:0,
               pulse:true, trails:true, links:false, paused:false,
-              observer:true, spin:false };   // observer marker at the centre; idle auto-spin off (one fixed frame)
+              observer:true, spin:false,     // observer marker at the centre; idle auto-spin off (one fixed frame)
+              fLo:0.01, fHi:2e6 };            // selected frequency band [m/mₑ] (log); default = full range ("all")
 const FLAT_W = 100;                 // empty-space degeneracy baseline
 const PH_SPD = 8, PH_BEND = 2.2, PH_PATH = 26, PH_MAXAGE = 12;  // photon: speed c, field-bend, path length, safety life
 const PH_GRACE = 0.22;              // s before a photon can be observer-absorbed (clears its own emitter)
@@ -400,6 +414,14 @@ const flashes = [];                 // {x,y,z,r,g,b,t,life,strength}
 const photons = [];                 // massless streaks from annihilation / decay
 const bhs = [];                     // Planck-scale black holes (Compton = Schwarzschild closures)
 const massFreq = m => Math.min(1, Math.log(1+m)/Math.log(2000)); // rest freq -> spectral t
+// Frequency band (log): map a rest frequency (mass in mₑ) to a spectral position WITHIN the
+// selected band — band-low → red (t=0), band-high → violet (t=1) — and test membership.
+const FREQ_MIN=0.01, FREQ_MAX=2e6;                              // slider log-range endpoints
+const sliderToF = s => FREQ_MIN*Math.pow(FREQ_MAX/FREQ_MIN, Math.max(0,Math.min(1,s)));
+const fToSlider = f => Math.log(f/FREQ_MIN)/Math.log(FREQ_MAX/FREQ_MIN);
+const bandT = m => { const lo=Math.log(cfg.fLo), hi=Math.log(cfg.fHi);
+  return hi<=lo ? 0.5 : Math.max(0,Math.min(1,(Math.log(Math.max(m,1e-6))-lo)/(hi-lo))); };
+const inBand = m => m>=cfg.fLo && m<=cfg.fHi;
 
 // No probability — the variation IS the closure census, as 3-axis closed WALKS.
 // A ZFA-balanced ±1 history is a closed walk (QLF_CensusBrownian); three of them
@@ -863,12 +885,14 @@ function renderParticles(){
     hg.addColorStop(1,`rgba(${cr},${cg},${cb},0)`);
     ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(head.sx,head.sy,hr*2.6,0,7); ctx.fill();
   }
-  // particle cores, coloured by rest-mass frequency
+  // particle cores, coloured by position within the selected frequency band
   for(const p of particles){
     const pp=project(p.x,p.y,p.z); if(!pp){ p._p=null; continue; } p._p=pp;
-    const k=KIND[p.kind], f=massFreq(k.m), base=focal()/pp.z;
-    const s=base*(k.ghost?0.05:(0.12+0.05*f))*(0.4+0.6*p.born)*2.6;
-    ctx.globalAlpha=(k.ghost?0.28:(p.virtual?0.45:1))*p.born;   // virtual = fainter (a fluctuation)
+    const k=KIND[p.kind], base=focal()/pp.z;
+    const f=bandT(k.m);                                          // colour = band position (red→violet)
+    const s=base*(k.ghost?0.05:(0.12+0.05*massFreq(k.m)))*(0.4+0.6*p.born)*2.6;
+    const dim=inBand(k.m)?1:0.16;                                // out-of-band closures fade back
+    ctx.globalAlpha=(k.ghost?0.28:(p.virtual?0.45:1))*p.born*dim;
     ctx.drawImage(binFor(f), pp.sx-s, pp.sy-s, s*2, s*2);
   }
   ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
@@ -910,6 +934,7 @@ function renderParticles(){
 function renderAtoms(){
   for(const A of atoms){
     const nuc=nucleiOf(A);
+    const abd=inBand(A.type==='H2'?2*M_H:M_H)?1:0.16;   // dim the atom when out of the selected band
     // covalent bond line (H₂)
     if(A.type==='H2'){ const p0=project(nuc[0][0],nuc[0][1],nuc[0][2]), p1=project(nuc[1][0],nuc[1][1],nuc[1][2]);
       if(p0&&p1){ ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
@@ -926,8 +951,8 @@ function renderAtoms(){
       // orbiting electron (+ charge ring)
       const e=electronPos(A,o), ep=project(e[0],e[1],e[2]);
       if(ep){ const base=focal()/ep.z, s2=base*0.055*2.4*A.born;
-        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born;
-        ctx.drawImage(binFor(E_FREQ), ep.sx-s2, ep.sy-s2, s2*2, s2*2);
+        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+        ctx.drawImage(binFor(bandT(1)), ep.sx-s2, ep.sy-s2, s2*2, s2*2);
         ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
         ctx.lineWidth=1.1; ctx.strokeStyle=A.anti?'rgba(255,150,120,0.8)':'rgba(120,200,255,0.8)';
         ctx.beginPath(); ctx.arc(ep.sx,ep.sy,base*0.06,0,7); ctx.stroke(); }
@@ -935,8 +960,8 @@ function renderAtoms(){
     // nuclei (protons / antiprotons)
     for(const nu of nuc){ const np=project(nu[0],nu[1],nu[2]); if(!np) continue; const base=focal()/np.z;
       const s=base*0.11*2.4*A.born;
-      ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born;
-      ctx.drawImage(binFor(P_FREQ), np.sx-s, np.sy-s, s*2, s*2);
+      ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+      ctx.drawImage(binFor(bandT(1836)), np.sx-s, np.sy-s, s*2, s*2);
       ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
       ctx.lineWidth=1.4; ctx.strokeStyle=A.anti?'rgba(120,200,255,0.9)':'rgba(255,150,120,0.9)';
       ctx.beginPath(); ctx.arc(np.sx,np.sy,base*0.15,0,7); ctx.stroke(); }
@@ -1077,6 +1102,13 @@ const bind=(id,fn)=>document.getElementById(id).addEventListener('input',fn);
 bind('c_nodes',e=>{cfg.N=+e.target.value; v_nodes.textContent=cfg.N; build();});
 bind('c_oct', e=>{cfg.octaves=+e.target.value; v_oct.textContent=cfg.octaves; build();});
 bind('c_flow',e=>{cfg.flow=+e.target.value; v_flow.textContent=cfg.flow.toFixed(1)+'×';});
+// frequency band — two log sliders over rest frequency f = m/mₑ
+const fmtFreq=f=> f<1?f.toFixed(f<0.1?3:2) : f<1e4?Math.round(f).toLocaleString() : (()=>{const e=Math.floor(Math.log10(f));return (f/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e);})();
+function bandLabel(){ const lo=cfg.fLo, hi=cfg.fHi;
+  const full = lo<=FREQ_MIN*1.02 && hi>=FREQ_MAX*0.98;
+  v_band.textContent = full ? 'all' : `${fmtFreq(lo)} – ${fmtFreq(hi)} mₑ`; }
+bind('c_flo',e=>{ cfg.fLo=sliderToF(+e.target.value); if(cfg.fLo>cfg.fHi){cfg.fHi=cfg.fLo; c_fhi.value=fToSlider(cfg.fHi);} bandLabel(); });
+bind('c_fhi',e=>{ cfg.fHi=sliderToF(+e.target.value); if(cfg.fHi<cfg.fLo){cfg.fLo=cfg.fHi; c_flo.value=fToSlider(cfg.fLo);} bandLabel(); });
 const toggle=(id,key)=>{const el=document.getElementById(id);
   el.addEventListener('click',()=>{cfg[key]=!cfg[key]; el.classList.toggle('on',cfg[key]);});};
 toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
@@ -1142,11 +1174,11 @@ function qcCapture(){
   updateBasis();                                          // capture from the current view
   const f = n => (+n).toFixed(2);
   const L = [];                                           // just the closures — no comment header (that read as "instructions")
-  for(const p of particles){ if(p.virtual || !onScreen(p.x,p.y,p.z)) continue;
+  for(const p of particles){ if(p.virtual || !inBand(KIND[p.kind].m) || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
-  for(const A of atoms){ if(!onScreen(A.x,A.y,A.z)) continue;
+  for(const A of atoms){ if(!inBand(A.type==='H2'?2*M_H:M_H) || !onScreen(A.x,A.y,A.z)) continue;
     L.push(`${A.anti?'anti':''}${A.type} ${A.type==='H2'?'(p+e)₂':'p+e'} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
-  for(const b of bhs){ if(!onScreen(b.x,b.y,b.z)) continue;
+  for(const b of bhs){ if(!inBand(b.m*MPL_OVER_ME) || !onScreen(b.x,b.y,b.z)) continue;
     L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
   return L.join('\n');
 }
@@ -1436,6 +1468,7 @@ const TIP = {};                                     // per-row breakdown text (f
 
 /* ---------- go ---------- */
 c_vac.value = cfg.vac; v_vac.textContent = fmtT(vacT());   // temperature slider → CMB default
+c_flo.value = fToSlider(cfg.fLo); c_fhi.value = fToSlider(cfg.fHi); bandLabel();   // frequency band → "all"
 resize(); build(); frame();
 </script>
 </body>
