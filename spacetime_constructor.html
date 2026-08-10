@@ -1018,7 +1018,7 @@ canvas.addEventListener('pointerup', e=>{
 });
 canvas.addEventListener('wheel', e=>{
   e.preventDefault();
-  cam.dist = Math.max(12, Math.min(70, cam.dist * (1 + Math.sign(e.deltaY)*0.08)));
+  cam.dist = Math.max(1.5, Math.min(70, cam.dist * (1 + Math.sign(e.deltaY)*0.08)));   // min 1.5: zoom right in to a single closure
 }, {passive:false});
 
 // Click identifies what's under the cursor (no mass-dropping — masses arise naturally
