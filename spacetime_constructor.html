@@ -257,6 +257,7 @@ positron <^>v @ 2,0,0"
   <div class="stat"><span class="k">Deepest well</span><span class="v" id="s_dil">1.00<small>×</small></span></div>
   <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
   <div class="stat" data-break="s_np"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
+  <div class="stat" data-break="s_foam"><span class="k">Foam (virtual)</span><span class="v" id="s_foam">0</span></div>
   <div class="stat" data-break="s_bh"><span class="k">Black holes</span><span class="v" id="s_bh">0</span></div>
   <div class="stat" data-break="s_e"><span class="k">Total energy</span><span class="v" id="s_e">0<small> mₑ</small></span></div>
   <div class="stat" data-break="s_rho"><span class="k">Vacuum ρ</span><span class="v" id="s_rho">0</span></div>
@@ -1425,10 +1426,10 @@ function frame(){
   s_dil.innerHTML = dil.toFixed(2)+'<small>×</small>';
   const z = Math.max(0, FLAT_W/Math.max(minWglobal,1) - 1);
   s_z.textContent = z.toFixed(2);
-  let np=0, q=0, mat=0, amat=0, erest=0, eFoam=0, eSigned=0; const kc={};
+  let np=0, nVirt=0, q=0, mat=0, amat=0, erest=0, eFoam=0, eSigned=0; const kc={}, vc={};
   for(const p of particles){ const m=KIND[p.kind].m, sgn=KIND[p.kind].anti?-1:1;   // antimatter carries −E
     eSigned += sgn*m;
-    if(p.virtual){ eFoam += m; continue; }               // foam = transient ZFA-synthesis closures
+    if(p.virtual){ eFoam += m; nVirt++; vc[p.kind]=(vc[p.kind]||0)+1; continue; }   // foam = transient ZFA-synthesis closures
     np++; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
@@ -1444,6 +1445,7 @@ function frame(){
   s_atoms.textContent = nAtoms;
   s_mol.textContent = nMol;
   s_np.textContent = np;
+  s_foam.textContent = nVirt;
   s_bh.textContent = bhs.length;
   s_e.innerHTML = fmtE(etot)+'<small> mₑ</small>';
   // Vacuum energy density by regime: dark energy (Λ, constant) + dark matter (∝(T/T_CMB)³)
@@ -1462,6 +1464,7 @@ function frame(){
   s_bal.style.color = bal===0 ? 'var(--muted)' : '#ff8ba0';   // any imbalance stands out
   // hover breakdowns (shown by the tooltip over rows with data-break)
   TIP.s_np = np ? Object.entries(kc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n') : 'no particles';
+  TIP.s_foam = nVirt ? Object.entries(vc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n')+'\n\nvirtual pairs — vacuum foam, flicker back to possibility' : 'no foam (raise the flow / temperature)';
   TIP.s_atoms = nAtoms ? Object.entries(acA).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
   TIP.s_mol = nMol ? Object.entries(acM).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no molecules';
   TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
