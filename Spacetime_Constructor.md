@@ -7,30 +7,35 @@ Dependency-free, self-contained, mobile.
 
 ---
 
-## The thesis: logic first, frequency only as a reading
+## The thesis: no forces, no fields — only closures that happen in the most ways
 
-This tool is not "spacetime from frequency." It is **quantum logic**, seen from **one 3-D perspective**,
-**generating a world from nothing** — and *enhanced*, not caused, by the background radiation.
+There are **no forces and no fields** here, and **no magical influence at a distance** — nothing reaches across a
+gap to push, pull, or signal anything. There are only **ZFA closures**: balanced phase-string histories that come
+back to zero ([`QLF_Axioms`](lean/QLF_Axioms.lean), [`QLF_Universality`](lean/QLF_Universality.lean)). And not
+closures that merely *can* close — the ones that **do** close, because in a quantum-logical system a thing does not
+happen in one way: **it happens every way that is possible**, and what we see is what happens in the **most ways**.
 
-- **Quantum logic generates.** The one **first distinction** (`+g/−g`, phase 0) unfolds the closure census —
-  the *logical bang* ([`Creation.md`](Creation.md) §8a, [`QLF_LogicalBang`](lean/QLF_LogicalBang.lean),
-  [`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean)). Something from nothing: no field is posited, no
-  matter is placed, nothing is scripted. Balanced closures (ZFA = 0) appear because they *can* close, and the
-  possibilist substrate realizes what can close ([`Philosophy.md`](Philosophy.md)).
+- **Everything happens every possible way.** The one **first distinction** (`+g/−g`, phase 0) unfolds the whole
+  closure census — the *logical bang* ([`Creation.md`](Creation.md) §8a, [`QLF_LogicalBang`](lean/QLF_LogicalBang.lean)).
+  Something from nothing: no field is posited, no matter is placed, nothing is scripted. Every admissible history is
+  taken (possibilist modal realism, [`Philosophy.md`](Philosophy.md)); the substrate does not pick one path.
+- **Frequency *is* the number of ways.** A closure's **frequency is its multiplicity** — the count of distinct ways
+  it can happen (the census count, `C(2n,n)` and its kin, [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean),
+  [`QLF_CensusShannon`](lean/QLF_CensusShannon.lean)). The closures that happen in the **most ways** are the abundant,
+  low, persistent ones; the few-ways closures are rare and fleeting. So frequency **causes nothing** — it *is* the
+  count of ways, and (Born statistics are integer count ratios, [`QLF_BornProbability`](lean/QLF_BornProbability.lean))
+  it is why the common things are common. `f = 1/R` reads out as space (*where* the closures are), time (*how fast*
+  they tick), and colour (that same rate on the spectrum) — three readings of one count, never a cause.
 - **A 3-D perspective renders it.** A closure is a **3-axis closed walk** — one balanced ±1 history per axis
-  (`#^=#v ∧ #<=#> ∧ #/=#\`, [`QLF_CensusBrownian`](lean/QLF_CensusBrownian.lean)) — and *its own walk draws the
-  space it occupies*. The world is not drawn *in* a 3-D box; the 3-D box is drawn *by* the closures, from the
-  vantage of one observer (below).
+  (`#^=#v ∧ #<=#> ∧ #/=#\`) — and *its own walk draws the space it occupies*. The world is not drawn *in* a 3-D box;
+  the 3-D box is drawn *by* the closures, from the vantage of one observer (below).
 - **The background radiation *enhances* the generation.** The vacuum's background radiation spectrum — the
-  Gibbons–Hawking glow of the horizon ([`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean)) — sets how
-  much of the churning logical foam **freezes out as persistent matter**. Turn it up and more of what the logic
-  is already generating survives as real particles, atoms, nuclei, black holes. It is an *amplifier* on the
-  generation, never its cause.
-- **Frequency causes nothing — it is only how we read the result.** `f = 1/R` is a *label*: space is *where* the
-  closures are, time is *how fast* they tick, colour is that same rate read off the visible spectrum. Reading a
-  closure's frequency (its colour) names it; it does not drive it. The logic generates; frequency is the readout.
+  Gibbons–Hawking glow of the horizon ([`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean)) — sets how much
+  of the churning logical foam **freezes out as persistent matter**. Turn it up and more of what is already happening
+  survives as real particles, atoms, nuclei, black holes. It is an *amplifier* on the generation, never its cause.
 
-Everything below is a consequence of these four sentences.
+Everything below is a consequence: closures that **do** happen — every way, the most-ways ones dominating — with no
+force, no field, and no action at a distance.
 
 ---
 
