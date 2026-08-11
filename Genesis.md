@@ -55,7 +55,7 @@ system rendering its own continuum, up to the next phase change** — the contin
   *quantum* black hole**: a hadron *is* one (`QLF_QuantumBlackHole`). A closure crosses to the
   Schwarzschild side only at `μ = 1/√2`: the **black-hole genesis**. So the same census that yields π
   and the mass ladder also fixes, exactly, where matter becomes a black hole — and heating the vacuum to
-  the Planck scale ([`SpaceTime.md` §7](SpaceTime.md#7-interactive-the-spectral-spacetime-constructor))
+  the Planck scale ([`Spacetime_Constructor.md`](Spacetime_Constructor.md))
   drives closures across it into tiny black holes that Hawking-cascade back to hadrons: the logical bang
   ([`Creation.md`](Creation.md) §8a).
 
