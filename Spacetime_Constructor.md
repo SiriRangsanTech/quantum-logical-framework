@@ -68,11 +68,26 @@ let them emerge, never hardcode them.) The Planck black-hole genesis — the Com
 
 ---
 
-## The 3-D perspective — the movable observer
+## The 3-D perspective — existence is what a limited observer carves out of nothing
 
-The whole world is drawn from **one** observer's frame: a stick figure — a Markov blanket at the origin of its own
-horizon ([`QLF_HorizonClosure`](lean/QLF_HorizonClosure.lean)), with everything seen relative to him. He *is* the
-**frame origin**, so every view operation is his:
+**All possible logical systems already exist — and, taken whole, they add to nothing.** Every admissible closure
+exists *a priori*, the full space of balanced histories ([`QLF_Universality`](lean/QLF_Universality.lean),
+[`Philosophy.md`](Philosophy.md)). But they are **perfectly balanced**: every closure has its conjugate, matter has
+its antimatter, and the total sums to zero — ZFA = 0, exactly the **net free energy** the readout holds at **0**.
+From an unlimited, god's-eye view there is therefore *no thing at all* — only the balanced All, adding to nothing.
+
+**What makes anything exist is the observer's limit.** A something appears only because a perspective is **bounded**:
+an observer sees a finite slice — a Markov blanket at the origin of its own horizon
+([`QLF_HorizonClosure`](lean/QLF_HorizonClosure.lean): *observation is bounded closure*), carrying finite information
+([`QLF_Realizability`](lean/QLF_Realizability.lean)). Inside that horizon the cancellation is incomplete, so the
+balance **reads out as a world** — matter, space, time — while its conjugate sits outside the cut. Existence is not
+in the substrate; it is in the *perspective*. There are not many worlds, only **many observers**, each cutting its
+own something out of the same balanced nothing (Smolin; [`Philosophy.md`](Philosophy.md)). This is why the tool is
+drawn from exactly **one** frame, and why the total still reads **0**: you are watching one observer's limited cut of
+a whole that cancels.
+
+So the world is drawn from that one observer's frame — the stick figure. He *is* the **frame origin**, and every view
+operation is his:
 
 - **Orbit** (drag off him) spins the generated world around him.
 - **Zoom** homes in *from the observer* — his screen position is the fixed point of the zoom, not the display
