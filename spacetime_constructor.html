@@ -192,8 +192,8 @@
       <input type="range" id="c_nodes" min="400" max="4000" step="100" value="1800">
     </div>
     <div class="row">
-      <div class="lbl">Harmonic octaves <span class="val" id="v_oct">3</span></div>
-      <input type="range" id="c_oct" min="1" max="6" step="1" value="3">
+      <div class="lbl">Harmonic octaves <span class="val" id="v_oct">6</span></div>
+      <input type="range" id="c_oct" min="1" max="12" step="1" value="6">
     </div>
     <div class="row">
       <div class="lbl">Flow rate <span class="val" id="v_flow">1.0×</span></div>
@@ -381,7 +381,7 @@ for(let i=0;i<BINS;i++){
 const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 
 /* ---------- state ---------- */
-const cfg = { N:1800, octaves:3, flow:1, vac:0,
+const cfg = { N:1800, octaves:6, flow:1, vac:0,
               pulse:true, trails:true, links:false, paused:false,
               observer:true, spin:false,     // observer marker at the centre; idle auto-spin off (one fixed frame)
               jitter:true,                    // vacuum-foam Brownian walk on particle motion (census, ZFA-balanced)
@@ -1171,7 +1171,7 @@ function inspectAt(px,py){
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
-    if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${k.sym} (borrowed from the vacuum; flickers back to possibility)`); continue; }
+    if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${k.sym} (a possible closure realizing as a balanced pair; flickers back to possibility)`); continue; }
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
     consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); }
   const plabel = ph => ph.en==null
@@ -1457,7 +1457,8 @@ function frame(){
     bright *= birth;
 
     const size=Math.max(1.2, (focal()/p.z) * (0.10+0.06*f)) ;
-    ctx.globalAlpha = Math.max(0, 0.16+0.6*bright);
+    const emptyDim = 0.4 + 0.6*(1-wn);                 // flat/empty vacuum (wn→1) fades; nodes near structure stay bright
+    ctx.globalAlpha = Math.max(0, (0.16+0.6*bright)*emptyDim);
     const s=size*2.6;
     ctx.drawImage(binFor(f), p.sx-s, p.sy-s, s*2, s*2);
   }
