@@ -38,6 +38,21 @@
     border:1px solid var(--border); width:28px; height:28px; border-radius:7px; cursor:pointer; flex:0 0 auto; padding:0}
   .mini:hover{color:var(--text); border-color:var(--dim)}
   .mini:focus-visible{outline:2px solid var(--accent-dim); outline-offset:1px}
+  /* Help overlay */
+  #helpOverlay{position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
+    background:rgba(4,6,12,.72); backdrop-filter:blur(3px); padding:18px}
+  #helpOverlay[hidden]{display:none}
+  #helpCard{width:min(560px,calc(100vw - 28px)); max-height:calc(100dvh - 36px); overflow-y:auto;
+    padding:18px 20px; background:var(--panel-solid); border:1px solid var(--border); border-radius:12px}
+  #helpCard .title{font-size:16px; font-weight:600}
+  #helpCard .hgrf{font-size:12.5px; line-height:1.55; color:var(--muted); margin:12px 0}
+  #helpCard .hgrf b{color:var(--text)} #helpCard a{color:var(--accent); text-decoration:none}
+  #helpCard a:hover{text-decoration:underline}
+  #helpCard .hgrid{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:12.5px; margin:14px 0}
+  #helpCard .hgrid > div:nth-child(odd){color:var(--text); white-space:nowrap}
+  #helpCard .hgrid > div:nth-child(even){color:var(--muted)}
+  @media (max-width:520px){ #helpCard .hgrid{grid-template-columns:1fr; gap:2px 0}
+    #helpCard .hgrid > div:nth-child(odd){margin-top:8px} }
   #console.collapsed{width:auto; overflow:visible}
   #console.collapsed .thesis, #console.collapsed .group,
   #console.collapsed .toggles, #console.collapsed .hint{display:none}
@@ -157,7 +172,10 @@
 <section id="console" class="panel" aria-label="Controls">
   <div class="hdr">
     <div class="title">Spectral Spacetime</div>
-    <button id="collapse" class="mini" aria-label="Minimize controls" aria-expanded="true">–</button>
+    <div style="display:flex; gap:6px">
+      <button id="help" class="mini" aria-label="Help" title="Help / about">?</button>
+      <button id="collapse" class="mini" aria-label="Minimize controls" aria-expanded="true">–</button>
+    </div>
   </div>
   <p class="thesis">Space is <b>where nodes are</b>. Time is <b>how fast they tick</b>. Both are frequency — and frequency is <b>color</b>.</p>
 
@@ -246,6 +264,28 @@ positron <^>v @ 2,0,0"
 
   <p class="hint"><kbd>Drag</kbd> orbit · <kbd>Scroll</kbd> zoom · <kbd>Click</kbd> a particle or atom to identify it</p>
 </section>
+
+<div id="helpOverlay" role="dialog" aria-modal="true" aria-label="Help" hidden>
+  <div id="helpCard" class="panel">
+    <div class="hdr">
+      <div class="title">Spacetime Constructor — a quick guide</div>
+      <button id="helpClose" class="mini" aria-label="Close help">×</button>
+    </div>
+    <p class="hgrf">There are <b>no forces, no fields, no action at a distance</b> — only ZFA closures that <b>do</b> close, because in quantum logic things happen <b>every way possible</b> and what you see is what happens in the <b>most ways</b>. A closure's <b>frequency is that number of ways</b>, read out as space (<i>where</i>), time (<i>how fast</i>), and colour. The whole of possibility is balanced to <b>nothing</b>; a world exists only as <b>one limited observer's</b> cut of it.</p>
+    <div class="hgrid">
+      <div><b>Drag</b> off the observer</div><div>orbit around him</div>
+      <div><b>Scroll</b></div><div>zoom — from the observer</div>
+      <div><b>Drag the observer</b> (or <b>Shift</b>-drag)</div><div>truck: everything moves with him</div>
+      <div><b>Click</b> anything</div><div>identify it by frequency + spin</div>
+      <div><b>Temperature</b></div><div>how much foam freezes out as real matter → Planck black holes</div>
+      <div><b>Frequency band</b></div><div>two log sliders: microscope a slice of the spectrum</div>
+      <div><b>QuCalc</b> Capture / Replace / Inject</div><div>read the scene, or create closures &amp; crystals</div>
+      <div><b>Field readout</b></div><div>counts, energy (mₑ/GeV), Vacuum ρ(T); hover for breakdowns</div>
+    </div>
+    <p class="hgrf">Heat toward the Planck top to watch QLF's <i>logical bang</i> unfold — Planck-mass black holes Hawking-cascading into hadrons, cooling into atoms — with no dice: the closure census draws the space.</p>
+    <p class="hgrf" style="margin-bottom:0">Full write-up: <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Spacetime_Constructor.md" target="_blank" rel="noopener">Spacetime_Constructor.md</a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md" target="_blank" rel="noopener">QLF README</a></p>
+  </div>
+</div>
 
 <aside id="inspect" class="panel" aria-live="polite"></aside>
 
@@ -1498,6 +1538,17 @@ function setCollapsed(c){
 }
 collapseBtn.addEventListener('click', () => setCollapsed(!consoleEl.classList.contains('collapsed')));
 setCollapsed(false);   // start open on every screen; the – button minimizes to reveal the field
+
+/* ---------- help overlay ---------- */
+{
+  const ov=document.getElementById('helpOverlay');
+  const showHelp=v=>{ ov.hidden=!v; };
+  document.getElementById('help').addEventListener('click', ()=>showHelp(true));
+  document.getElementById('helpClose').addEventListener('click', ()=>showHelp(false));
+  ov.addEventListener('click', e=>{ if(e.target===ov) showHelp(false); });   // click backdrop to dismiss
+  window.addEventListener('keydown', e=>{ if(e.key==='Escape') showHelp(false);
+    else if(e.key==='?' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) showHelp(true); });
+}
 
 /* ---------- field readout: collapse + hover breakdowns ---------- */
 const TIP = {};                                     // per-row breakdown text (filled each frame)
