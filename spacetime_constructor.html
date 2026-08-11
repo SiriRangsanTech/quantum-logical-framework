@@ -1171,7 +1171,7 @@ function inspectAt(px,py){
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
-    if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${k.sym} (a possible closure realizing as a balanced pair; flickers back to possibility)`); continue; }
+    if(p.virtual){ consider(p.x,p.y,p.z, `vacuum fluctuation — a virtual ${PNAME[p.kind]||p.kind} · a possible closure realizing as a balanced pair, likely to flicker back to possibilities`); continue; }
     const hadron = (k.fam==='p'||k.fam==='n') ? ' — a hadron = a quantum black hole' : '';
     consider(p.x,p.y,p.z, `${PNAME[p.kind]||p.kind}${hadron} · spin ${p.spin} · rest ${freqBand(massFreq(k.m))} = m/m_e ${k.m}`, p.spin); }
   const plabel = ph => ph.en==null
