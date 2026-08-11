@@ -38,6 +38,13 @@
     border:1px solid var(--border); width:28px; height:28px; border-radius:7px; cursor:pointer; flex:0 0 auto; padding:0}
   .mini:hover{color:var(--text); border-color:var(--dim)}
   .mini:focus-visible{outline:2px solid var(--accent-dim); outline-offset:1px}
+  /* Help button — accented so it stands out */
+  #help{color:var(--bg); background:var(--accent); border-color:var(--accent); font-weight:700;
+    box-shadow:0 0 0 3px var(--accent-dim)}
+  #help:hover{color:var(--bg); background:#7fdcea; border-color:#7fdcea}
+  @keyframes helpPulse{0%,100%{box-shadow:0 0 0 3px rgba(94,200,216,.35)}50%{box-shadow:0 0 0 6px rgba(94,200,216,.12)}}
+  #help{animation:helpPulse 2.4s ease-in-out infinite}
+  @media (prefers-reduced-motion: reduce){ #help{animation:none} }
   /* Help overlay */
   #helpOverlay{position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
     background:rgba(4,6,12,.72); backdrop-filter:blur(3px); padding:18px}
