@@ -183,8 +183,12 @@ gradient acts as a refractive index, so light lenses toward mass (the interactio
 straight only in flat vacuum, always at speed `c` (the gradient turns the direction, never the magnitude — the
 uniform stateless ether ⇒ local Lorentz invariance). The background sky is emitted on the horizon as a
 **hierarchical cascade** — twice as many photons at half the energy (`1 : 2 : 4`), red-dominated with a few blue.
-A photon **ends when a local observer receives it** (a measurement, marked by a flash); otherwise the **vacuum is
-the ultimate absorber**, and the absorbed energy returns to the vacuum account — never vanishing.
+That cascade *is* QLF's zero-point spectrum made visible: number per frequency `n(ω) ∝ 1/ω`, so the energy per
+octave is flat (`1·ω = 2·½ω = 4·¼ω`) — the scale-invariant, infrared-dominated vacuum spectrum of
+[`VacuumEnergy.md`](VacuumEnergy.md), the opposite of QFT's ultraviolet-heavy zero-point sea (and why there is no
+`10¹²⁰` catastrophe — the weight sits in the soft, not the hard, modes). A photon **ends when a local observer
+receives it** (a measurement, marked by a flash); otherwise the **vacuum is the ultimate absorber**, and the
+absorbed energy returns to the vacuum account — never vanishing.
 
 ---
 
