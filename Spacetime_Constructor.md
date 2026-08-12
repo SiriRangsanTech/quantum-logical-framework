@@ -201,9 +201,12 @@ line (`kind twist @ x,y,z`), with the verified folds (electron `^<v>`, positron 
 **Inject** (adds) to instantiate them through the same engine, so the dynamics keep running. **Macros** expand named
 composites: `positronium`, `muonium`, light nuclei (`deuteron`, `helium3`, `alpha`), and hadrons shown as their
 **confined quark content** (`proton_uud`, `pion+`) — a **free quark is rejected**, a colour-singlet obstruction
-forbidding it from closing ([`QLF_Confinement`](lean/QLF_Confinement.lean)). And **crystals**:
-`lattice sc|bcc|fcc n spacing motif @ x,y,z` seeds a lattice that Pauli pressure then holds together. New closures
-never stack — Pauli exclusion places each in the nearest free spot.
+forbidding it from closing ([`QLF_Confinement`](lean/QLF_Confinement.lean)). **Atoms come in elements** — hydrogen,
+helium, carbon, oxygen, iron — each a nucleus of `Z` protons + `N` neutrons with `Z` electrons on its shells (heavier
+⇒ bigger nucleus, deeper latency well, more mass). And **crystals**: pick an element and a lattice
+(`lattice sc|bcc|fcc n spacing motif @ x,y,z`, or the element dropdown + SC/BCC/FCC buttons) — Pauli pressure then
+holds the lattice together (an iron BCC lattice self-binds as a metal, oxygen/carbon as their own solids). New
+closures never stack — Pauli exclusion places each in the nearest free spot.
 
 ---
 
