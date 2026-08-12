@@ -1556,8 +1556,8 @@ function frame(){
   for(const p of particles){ const m=KIND[p.kind].m, sgn=KIND[p.kind].anti?-1:1;   // antimatter carries −E
     eSigned += sgn*m;
     if(p.virtual){ eFoam += m; nVirt++; vc[p.kind]=(vc[p.kind]||0)+1; continue; }   // foam = transient ZFA-synthesis closures
-    np++; q+=KIND[p.kind].q;
-    const nf = KIND[p.kind].fam==='cooper' ? 2 : 1;    // a Cooper pair is 2 electrons (keeps M−M̄ balanced)
+    const nf = KIND[p.kind].fam==='cooper' ? 2 : 1;    // a Cooper pair is 2 electrons (particle + matter tallies)
+    np+=nf; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat+=nf : mat+=nf; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
   for(const A of atoms){ const isMol=A.type==='H2', f=atomFermions(A), am=atomMass(A);
