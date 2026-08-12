@@ -116,7 +116,8 @@ the band dim, and **Capture** takes only the in-band closures. It filters *which
 it changes nothing about what the logic generates.
 
 **Click to identify.** Pause and click anything — it names itself by its frequency reading (`m = 1/R`): a particle
-by its rest-mass frequency and **spin** (↑↓←→, the twist itself, [`QLF_Spin`](lean/QLF_Spin.lean)); an atom by its
+by its rest-mass frequency and **spin** — the twist itself, two-component (σ_y `↑`/`↓` **and** σ_x `→`/`←`, e.g. `↑→`;
+[`QLF_Spin`](lean/QLF_Spin.lean)); an atom by its
 constituents; a field node by its own spin (from the census walk that placed it); a **photon by its frequency**
 (`E = ℏω`: 438 THz red … 769 THz violet, or a γ-ray from annihilation); a **black hole** by its mass, charge `Q`
 and spin `J`; a hadron *as a quantum black hole*; a virtual flicker *as a vacuum fluctuation*.
@@ -203,10 +204,17 @@ composites: `positronium`, `muonium`, light nuclei (`deuteron`, `helium3`, `alph
 **confined quark content** (`proton_uud`, `pion+`) — a **free quark is rejected**, a colour-singlet obstruction
 forbidding it from closing ([`QLF_Confinement`](lean/QLF_Confinement.lean)). **Atoms come in elements** — hydrogen,
 helium, carbon, oxygen, iron — each a nucleus of `Z` protons + `N` neutrons with `Z` electrons on its shells (heavier
-⇒ bigger nucleus, deeper latency well, more mass). And **crystals**: pick an element and a lattice
+⇒ bigger nucleus, deeper latency well, more mass).
+
+**Chemistry — one rule.** A bond is a **shared closure**, and a single **valence** rule drives every reaction: two
+isolated atoms with free valence (H:1, O:2, C:4, Fe:3, He:0) that drift within range share a closure until saturated.
+From that one rule, molecules self-assemble — **H₂, H₂O, CO₂**, carbon networks (**graphite**), and metal oxides
+(**Fe₂O₃ rust**) — while noble gases stay inert and metals lattice rather than form discrete metal molecules. Full
+account in [`Chemistry.md`](Chemistry.md). And **crystals**: pick an element and a lattice
 (`lattice sc|bcc|fcc n spacing motif @ x,y,z`, or the element dropdown + SC/BCC/FCC buttons) — Pauli pressure then
-holds the lattice together (an iron BCC lattice self-binds as a metal, oxygen/carbon as their own solids). New
-closures never stack — Pauli exclusion places each in the nearest free spot.
+holds the lattice together (iron BCC as a metal; cold **helium Bose-condenses into a superfluid**). New closures
+never stack — Pauli exclusion places each in the nearest free spot. *A URL hash `#qc=…` preloads any of these scenes,
+so links can open a live demo.*
 
 ---
 

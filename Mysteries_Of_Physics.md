@@ -134,7 +134,7 @@ QLF's honest frontier is **values, not mechanisms**: for most Standard-Model and
 - **Magnitudes:** `η_B` (baryon asymmetry), the BBN `r` and D/⁷Li, the muon `g−2` hadronic residual — open, as in the SM.
 - **The full Einstein tensor equations** — the curvature side now has the Millennium shape (verified discrete core: flat `R=0`, branching `|L_k|` growth, the Poisson statistical kernel; plus the one continuum bridge axiom `benincasa_dowker_limit`). The remaining substrate computation is assembling the full tensor `G_μν = 8πG T_μν` from the Benincasa–Dowker action and general `d ≥ 3`.
 - **`H₀` / cosmic depth `n` from the substrate** — would close the last cosmological empirical input.
-- **Condensed matter** — the BCS gap equation, the FQHE filling fractions / Laughlin wavefunction, topological bands (the QHE resistance and Cooper-pair-boson are anchored).
+- **Condensed matter** — the BCS gap equation, the FQHE filling fractions / Laughlin wavefunction, topological bands (the QHE resistance and Cooper-pair-boson are anchored). *Live:* [▶ Cooper pairs forming at low T](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=electron%20%40%20-1%2C0%2C0%0Aelectron%20%40%201%2C0%2C0%0Aelectron%20%40%200%2C1%2C0%0Aelectron%20%40%200%2C-1%2C0) · [▶ superfluid helium](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=lattice%20sc%203%203%20He%20%40%200%2C0%2C0) ([`Chemistry.md`](Chemistry.md) §8).
 
 The pattern is consistent and is itself the claim: QLF reduces the open problems to a small set of *numbers*, with the *mechanisms* machine-checked — the inverse of the usual situation, where the numbers are measured and the mechanisms are mysterious.
 

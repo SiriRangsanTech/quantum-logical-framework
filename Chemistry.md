@@ -1,0 +1,96 @@
+# Chemistry in the Quantum Logical Framework
+
+How atoms, molecules, crystals, and condensates arise in the [Quantum Logical Framework](README.md) (QLF) — and
+how to watch each one form live in the [Spacetime Constructor](Spacetime_Constructor.md). Every **(▶ see)** link
+opens the visualizer with that scene already loaded in its QuCalc box.
+
+> **The one idea.** A chemical bond is not a force — it is a **shared closure**. Two atoms complete each other's
+> unclosed twist history by sharing it, exactly as a hydrogen atom is a proton+electron shared closure
+> ([`Bound_States_QLF.md`](Bound_States_QLF.md)). Chemistry is ZFA closure at the molecular scale, and it runs on a
+> single rule.
+
+---
+
+## 1. Valence — the count of closures an atom can share
+
+Every element has a **valence**: how many closures it still needs to complete its shell.
+
+| Element | H | He | C | N | O | Fe |
+|---|---|----|---|---|---|----|
+| valence | 1 | **0** | 4 | 3 | 2 | 3 |
+
+Helium's is **0** — its shell is closed, so it shares nothing and never bonds (a noble gas). Iron is a **metal**:
+it shares with non-metals (oxides) but not with other iron atoms (metals lattice, they don't form discrete `Fe₂`).
+
+## 2. The one rule
+
+> Two **isolated** closures with **free valence** that drift within range **share a closure** (bond) — each
+> spending one unit of valence — and keep bonding until saturated.
+
+There are **no forces** and nothing per-molecule is hardcoded. Atoms find each other by drifting down the
+`w_ZFA` latency gradient (the same pull behind gravity and p+e→H recombination), and the valence rule does the
+rest. Everything below is that one rule playing out.
+
+## 3. Molecules — shared closures
+
+- **Hydrogen, H₂** — H(1)+H(1), valence-saturated. The canonical covalent shared closure.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%20-2%2C0%2C0%0AH%20%40%202%2C0%2C0)
+- **Water, H₂O** — O(2) shares one closure with each of two H (via the OH intermediate).
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=O%20%40%200%2C0%2C0%0AH%20%40%20-2.5%2C0%2C0%0AH%20%40%202.5%2C0%2C0)
+- **Carbon dioxide, CO₂** — C(4) saturates against two O(2).
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=C%20%40%200%2C0%2C0%0AO%20%40%20-2.5%2C0%2C0%0AO%20%40%202.5%2C0%2C0)
+- **Methane-ish, CHₓ** — C grabs H, but H atoms competing nearby may pair off as H₂ first (real kinetics).
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=C%20%40%200%2C0%2C0%0AH%20%40%20-2.2%2C0%2C0%0AH%20%40%202.2%2C0%2C0%0AH%20%40%200%2C2.2%2C0%0AH%20%40%200%2C-2.2%2C0)
+
+## 4. Carbon networks — graphite & diamond
+
+Carbon is a **non-metal that self-bonds**: with valence 4 it forms C–C networks — **graphite** (sheets) and
+**diamond** (tetrahedral). This is the *same* rule as H₂; only metals are the exception. Drop several carbons
+and they knit into a Cₙ network.
+[▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=C%20%40%20-1.2%2C0%2C0%0AC%20%40%201.2%2C0%2C0%0AC%20%40%200%2C1.6%2C0%0AC%20%40%200%2C-1.6%2C0%0AC%20%40%201.2%2C1.6%2C0%0AC%20%40%20-1.2%2C-1.6%2C0)
+
+## 5. Metals, oxides & rust
+
+A **metal** (iron) doesn't form discrete metal molecules — its atoms **lattice**, held apart by Pauli exclusion
+([§7](#7-crystals-pauli-holds-them-up)). But iron **does** share closures with oxygen: Fe(3) + O(2) → **iron
+oxide (rust, ~Fe₂O₃)**. Metal–metal bonds are forbidden (so crystals stay intact); metal–non-metal bonds oxidise.
+[▶ see rust](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=Fe%20%40%20-3%2C0%2C0%0AFe%20%40%203%2C0%2C0%0AO%20%40%200%2C-2%2C0%0AO%20%40%200%2C2%2C0%0AO%20%40%200%2C0%2C2)
+
+## 6. Noble gases — inert
+
+Helium (valence 0) never bonds — its closure is already complete. It is chemically inert.
+
+## 7. Crystals — Pauli holds them up
+
+A crystal is not a molecule: it is a lattice of atoms held apart by **Pauli exclusion**
+([`QLF_PauliExclusion`](lean/QLF_PauliExclusion.lean)) balancing the latency infall — the outward degeneracy
+pressure, no bonds needed. Seed a lattice and it self-binds (`lattice sc|bcc|fcc`,
+[`Geometry_Of_Space.md`](Geometry_Of_Space.md)).
+[▶ see an iron BCC crystal](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=lattice%20bcc%203%203%20Fe%20%40%200%2C0%2C0)
+
+## 8. Superfluids & Cooper pairs — condensation
+
+The proven fact `boson_even_pairs`/`cooper_pair_boson` ([`QLF_CondensedMatter`](lean/QLF_CondensedMatter.lean),
+[`QLF_Spin`](lean/QLF_Spin.lean)): an **even fermion count folds to `+I` ⇒ a boson that condenses**.
+
+- **Superfluid helium** — a helium-4 atom is itself a boson (6 fermions, even), so cold He Bose-condenses into a
+  superfluid: it overlaps its neighbours, exempt from Pauli exclusion. Heavy atoms crystallise instead.
+  [▶ see (cool helium)](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=lattice%20sc%203%203%20He%20%40%200%2C0%2C0)
+- **Cooper pairs** — two opposite-spin electrons pair onto one channel (even count ⇒ boson) at low temperature;
+  the bosonic pairs condense. Cool a handful of free electrons and watch them pair.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=electron%20%40%20-1%2C0%2C0%0Aelectron%20%40%201%2C0%2C0%0Aelectron%20%40%200%2C1%2C0%0Aelectron%20%40%200%2C-1%2C0)
+
+## 9. Honest scope
+
+The **shared-closure bond** is the QLF principle (proven for H₂/atoms; `Bound_States_QLF.md`,
+[`QLF_Confinement`](lean/QLF_Confinement.lean) for what *can't* close). The rest is an **illustrative** model:
+a single-bond, valence-saturation rule that gets **stoichiometry and formulas** right (H₂O, CO₂, Fe₂O₃) but not
+double bonds, bond angles, resonance, or reaction rates; iron is fixed at +3 (→ Fe₂O₃). The specific valences and
+thresholds are chosen for illustration, not derived. It is chemistry *seen through the ZFA lens*, live and
+self-assembling — not a quantum-chemistry solver.
+
+---
+
+**See also:** [`Spacetime_Constructor.md`](Spacetime_Constructor.md) (the visualizer) · [`Bound_States_QLF.md`](Bound_States_QLF.md)
+(why atoms, not free leptons, are the observables) · [`Geometry_Of_Space.md`](Geometry_Of_Space.md) (crystals as
+resonant lattices) · [`SpaceTime.md`](SpaceTime.md) · [`Philosophy.md`](Philosophy.md).

@@ -11,7 +11,7 @@ This is the same structural move that [`Delayed_Choice_Eraser.md`](Delayed_Choic
 Standard particle physics tabulates `m_e ≈ 0.511 MeV`, `m_μ ≈ 105.66 MeV`, `m_τ ≈ 1776.86 MeV` as if these are properties of free particles. Operationally they are extracted from atomic and high-energy experiments; physically, a free lepton in the QLF sense is an **open Hermitian deficit** (per [`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) §1 and [`HALF-SPIN-ZFA-EMBEDDING.md`](HALF-SPIN-ZFA-EMBEDDING.md)). It has not completed a joint-ZFA closure event.
 
 - A free electron's Hermitian conjugate is its antiparticle, the positron. The pair `(e⁻, e⁺)` together can form a joint ZFA closure — **positronium**.
-- A free electron + a proton can close jointly — **hydrogen**.
+- A free electron + a proton can close jointly — **hydrogen** ([▶ see it self-assemble](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20p%2Be%20%40%200%2C0%2C0), and two H share into **H₂** — [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%20-2%2C0%2C0%0AH%20%40%202%2C0%2C0); more molecules in [`Chemistry.md`](Chemistry.md)).
 - A free electron + an antimuon can close jointly — **muonium**.
 
 In every case the QLF-physical state is the bound system, not the free constituent.

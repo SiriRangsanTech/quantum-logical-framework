@@ -1740,6 +1740,19 @@ const TIP = {};                                     // per-row breakdown text (f
 c_vac.value = cfg.vac; v_vac.textContent = fmtT(vacT());   // temperature slider → CMB default
 c_flo.value = fToSlider(cfg.fLo); c_fhi.value = fToSlider(cfg.fHi); bandLabel();   // frequency band → "all"
 resize(); build(); frame();
+
+// Deep links: a URL hash can preset the scene, so docs can link "(see)" to a live demo.
+//   #qc=<url-encoded QuCalc>   loads it into the QuCalc box and instantiates it
+//   &t=<0..1>                  sets the temperature slider (optional)
+(function(){
+  const H=location.hash||'';
+  const t=H.match(/[#&]t=([\d.]+)/); if(t){ cfg.vac=Math.max(0,Math.min(1,+t[1])); c_vac.value=cfg.vac; v_vac.textContent=fmtT(vacT()); }
+  const q=H.match(/[#&]qc=([^&]*)/);
+  if(q && typeof qcEl!=='undefined' && qcEl){ try{
+    const txt=decodeURIComponent(q[1].replace(/\+/g,' ')); qcEl.value=txt;
+    const r=qcInstantiate(txt); if(typeof qcSay==='function') qcSay(`Loaded <b>${r.ok}</b> from the link — press Replace to reset, or edit &amp; Inject.`);
+  }catch(_){} }
+})();
 </script>
 </body>
 </html>
