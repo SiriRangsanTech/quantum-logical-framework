@@ -267,6 +267,8 @@ positron <^>v @ 2,0,0"
       <button data-qcadd="ring" title="A carbon ring / loop — cyclocarbon (2 bonds per C)">＋ C ring</button>
       <button data-qcadd="graphene" title="Graphene — a flat honeycomb sheet of sp² carbon (3 bonds per C)">＋ graphene</button>
       <button data-qcadd="diamond" title="Diamond — sp³ carbon in a tetrahedral network (4 bonds per C)">＋ diamond</button>
+      <button data-qcadd="nanotube" title="Carbon nanotube — rolled graphene, a honeycomb cylinder">＋ nanotube</button>
+      <button data-qcadd="buckyball" title="Buckminsterfullerene C₆₀ — a truncated-icosahedron carbon cage">＋ C₆₀ buckyball</button>
       <select id="c_elem" aria-label="Crystal element" title="Crystal element">
         <option value="H">Hydrogen</option>
         <option value="He">Helium</option>
@@ -719,6 +721,24 @@ function carbonForm(form){
     const fcc=[[0,0,0],[.5,.5,0],[.5,0,.5],[0,.5,.5]], tet=[[.25,.25,.25],[.75,.75,.25],[.75,.25,.75],[.25,.75,.75]];
     for(const p of fcc.concat(tet)) pts.push([p[0]*A,p[1]*A,p[2]*A]);
     pts=_centre(pts); const {sites,bonds}=_bondByDist(pts,CB*1.2); return {sites,bonds,form}; }
+  if(form==='nanotube'){                                                 // rolled graphene — a honeycomb cylinder
+    const circ=8, len=8, R=CB/(2*Math.sin(Math.PI/circ)), dz=CB*0.87, rows=[];
+    for(let k=0;k<len;k++){ const row=[]; for(let i=0;i<circ;i++){ const a=(i+(k%2)*0.5)/circ*6.283;
+      row.push(pts.length); pts.push([R*Math.cos(a),R*Math.sin(a),k*dz]); } rows.push(row); }
+    pts=_centre(pts); const sites=pts.map(p=>({sym:'C',dx:p[0],dy:p[1],dz:p[2]})), bonds=[];
+    for(const row of rows) for(let i=0;i<circ;i++) bonds.push([row[i],row[(i+1)%circ]]);   // circumferential
+    for(let k=0;k<len-1;k++) for(let i=0;i<circ;i++){ let best=-1,bd=1e9;                   // one axial bond to nearest above
+      for(let j=0;j<circ;j++){ const A=pts[rows[k][i]],B=pts[rows[k+1][j]], d=Math.hypot(A[0]-B[0],A[1]-B[1],A[2]-B[2]); if(d<bd){bd=d;best=rows[k+1][j];} }
+      bonds.push([rows[k][i],best]); }
+    return {sites,bonds,form}; }
+  if(form==='buckyball'||form==='fullerene'){                            // C₆₀ truncated icosahedron
+    const phi=(1+Math.sqrt(5))/2, base=[[0,1,3*phi],[2,1+2*phi,phi],[1,2+phi,2*phi]], seen=new Set();
+    for(const t of base) for(const p of [[t[0],t[1],t[2]],[t[1],t[2],t[0]],[t[2],t[0],t[1]]])
+      for(const sx of [1,-1]) for(const sy of [1,-1]) for(const sz of [1,-1]){
+        const q=[p[0]*sx,p[1]*sy,p[2]*sz], k=q.map(v=>Math.round(v*1e3)).join(','); if(!seen.has(k)){ seen.add(k); pts.push(q); } }
+    let mn=1e9; for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){ const d=Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1],pts[i][2]-pts[j][2]); if(d<mn)mn=d; }
+    const sc=CB/mn; pts=pts.map(p=>[p[0]*sc,p[1]*sc,p[2]*sc]);
+    const {sites,bonds}=_bondByDist(pts,CB*1.15); return {sites,bonds,form}; }
   return null;
 }
 function makeCarbon(form,x,y,z,anti,vx,vy,vz){
@@ -1349,7 +1369,7 @@ function inspectAt(px,py){
     const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
   const ENAME={H:'hydrogen',He:'helium',C:'carbon',O:'oxygen',Fe:'iron'};
   const MNAME={'H₂':'hydrogen','O₂':'oxygen','H₂O':'water','CO₂':'carbon dioxide','CO':'carbon monoxide','CH₄':'methane','OH':'hydroxyl','Fe₂O₃':'iron oxide (rust)','FeO':'iron oxide'};
-  const CFORM={graphene:'graphene (sp², a honeycomb sheet)',graphite:'graphite (stacked graphene)',diamond:'diamond (sp³, tetrahedral network)',ring:'carbon ring / loop (cyclocarbon)'};
+  const CFORM={graphene:'graphene (sp², a honeycomb sheet)',graphite:'graphite (stacked graphene)',diamond:'diamond (sp³, tetrahedral network)',ring:'carbon ring / loop (cyclocarbon)',nanotube:'carbon nanotube (rolled graphene)',buckyball:'buckminsterfullerene C₆₀ (a carbon cage)',fullerene:'fullerene (a carbon cage)'};
   for(const A of atoms) consider(A.x,A.y,A.z,
     (A.comp ? (()=>{ if(A.form) return `${A.anti?'anti-':''}${CFORM[A.form]||A.form} — ${A.comp.C} carbon atoms, ${A.bonds.length} C–C bonds · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`;
            const f=compFormula(A.comp), nm=MNAME[f];
@@ -1533,7 +1553,7 @@ function qcInstantiate(text){
     const [x,y,z]=freeSpot(pos[0],pos[1],pos[2]);       // never stack on an occupied spot
     if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
     else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
-    else if(kind==='graphene'||kind==='graphite'||kind==='diamond'||kind==='ring') { const A=makeCarbon(kind,x,y,z,false,vx,vy,vz); if(A){A.born=1;} ok++; }   // carbon allotropes
+    else if(['graphene','graphite','diamond','ring','nanotube','buckyball','fullerene'].includes(kind)) { const A=makeCarbon(kind,x,y,z,false,vx,vy,vz); if(A){A.born=1;} ok++; }   // carbon allotropes
     else if(ELEMENTS[kind] || formulaComp(kind)) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }   // H, He, C, O, Fe, H2, H2O, Fe2O3, …
     else if(kind.startsWith('anti') && (ELEMENTS[kind.slice(4)]||formulaComp(kind.slice(4)))) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiH2O, …
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
@@ -1574,7 +1594,8 @@ if(qcEl){
                  helium3:'helium3 2p+n @ 0,-3,0', alpha:'alpha 2p+2n @ 4,-3,0',
                  proton_uud:'proton_uud (u u d) @ -4,0,0', neutron_udd:'neutron_udd (u d d) @ -8,0,0',
                  pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0',
-                 ring:'ring @ 0,0,0', graphene:'graphene @ 0,0,0', graphite:'graphite @ 0,0,0', diamond:'diamond @ 0,0,0' };
+                 ring:'ring @ 0,0,0', graphene:'graphene @ 0,0,0', graphite:'graphite @ 0,0,0', diamond:'diamond @ 0,0,0',
+                 nanotube:'nanotube @ 0,0,0', buckyball:'buckyball @ 0,0,0' };
   const addLine = line=>{ qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line; };
   document.querySelectorAll('[data-qcadd]').forEach(b=>b.addEventListener('click',()=>{
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;

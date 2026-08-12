@@ -56,6 +56,10 @@ The constructor builds each as a distinct form:
   [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=graphite%20%40%200%2C0%2C0)
 - **Diamond** — sp³, **4 bonds per C** in a tetrahedral 3-D network.
   [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=diamond%20%40%200%2C0%2C0)
+- **Nanotube** — graphene rolled into a honeycomb cylinder.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=nanotube%20%40%200%2C0%2C0)
+- **Buckyball, C₆₀** — buckminsterfullerene, a truncated-icosahedron carbon cage (60 atoms, exactly 3 bonds each).
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=buckyball%20%40%200%2C0%2C0)
 
 Drop loose carbons and they still knit into a generic Cₙ cluster by the one valence rule; the named forms above
 lay the carbons out in the recognisable allotrope geometry (`ring` / `graphene` / `graphite` / `diamond`, or the
