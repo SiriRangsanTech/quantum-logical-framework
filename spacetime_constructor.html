@@ -412,6 +412,7 @@ const CASCADE_RATE = 3.5;   // closures/s emitted by the deterministic frequency
 const T_CMB=2.725, T_P=1.416784e32, T_FLOOR=1e-3, K_e=5.93e9;
 const vacT = () => cfg.vac<=0 ? 0 : T_FLOOR*Math.pow(T_P/T_FLOOR, cfg.vac);
 const sForT = T => Math.log(T/T_FLOOR)/Math.log(T_P/T_FLOOR);   // slider position for a temperature
+const COOPER_TMAX = 30;   // K — below this, free electrons pair into (bosonic) Cooper pairs (illustrative threshold)
 const _SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
 const _sup = n => String(n).split('').map(c=>_SUP[c]||c).join('');
 function fmtT(T){ if(T<=0) return '0 K'; if(T<1e4) return T.toFixed(1)+' K';
@@ -476,6 +477,9 @@ const KIND = {
   antineutron:{sym:'n̄',fam:'n', q:0, m:1839, ttl:8.5, decay:['antiproton','positron','neutrino'], anti:true},
   neutrino:{sym:'ν', fam:'nu', q:0, m:0.05, ttl:Infinity, ghost:true},
   antineutrino:{sym:'ν̄',fam:'nu',q:0, m:0.05, ttl:Infinity, ghost:true, anti:true},
+  // A Cooper pair: two half-spin electron closures on one coherent channel — even pair count ⇒
+  // folds to +I ⇒ an integer-spin BOSON that condenses (cooper_pair_boson, QLF_CondensedMatter).
+  cooper:  {sym:'e₂', fam:'cooper', q:-2, m:2, ttl:Infinity, boson:true},
   // Quarks are CONFINED (QLF_Confinement): a free quark can't close ZFA (colour-singlet
   // obstruction), so they appear only INSIDE hadron macros, never as a free line. Masses
   // are not closure observables (QLF_QuarkMass); constituent values here are illustrative.
@@ -771,7 +775,7 @@ function pauliRepel(items, dt, identical){
 function stepParticles(dt){
   for(const p of particles) if(!p.virtual){ driftDown(p,dt);   // move along the latency gradient
     if(cfg.jitter) vacuumWalk(p,dt); }                        // + the vacuum-foam Brownian walk (census, ZFA-balanced)
-  pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && a.kind===b.kind);   // IDENTICAL fermions only (p repels p, NOT p̄ — that pair annihilates)
+  pauliRepel(particles, dt, (a,b)=>!KIND[a.kind].ghost && !KIND[a.kind].boson && a.kind===b.kind);   // IDENTICAL fermions only (Cooper pairs are bosons — they condense, no exclusion)
   if(!reduceMotion){
     const T=vacT(), s=cfg.vac;
     // ── The fundamental generator: a DETERMINISTIC closure cascade ──────────────────
@@ -900,6 +904,33 @@ function stepParticles(dt){
         emitPhotons(mx,my,mz,1,false); flash(mx,my,mz,[200,225,255],0.7);
         p._dead=e._dead=true; break;
       }
+    }
+  }
+  // Cooper pairing — a low-temperature effect. Two free electrons of OPPOSITE spin that drift
+  // within a coherence length pair onto one coherent channel: a boson that condenses
+  // (cooper_pair_boson, QLF_CondensedMatter). It emits a soft binding photon. (The pairing
+  // TEMPERATURE is illustrative — the BCS gap is not derived; the boson-ness is.)
+  const T_now = vacT();
+  if(T_now < COOPER_TMAX){
+    for(let i=0;i<particles.length;i++){ const a=particles[i];
+      if(a._dead||a.virtual||a.kind!=='electron') continue;
+      for(let j=i+1;j<particles.length;j++){ const b=particles[j];
+        if(b._dead||b.virtual||b.kind!=='electron') continue;
+        if(a.spin===b.spin) continue;                              // opposite-spin singlet
+        if((a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2 < 9){            // within a coherence length
+          const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,mz=(a.z+b.z)/2;
+          spawn('cooper', mx,my,mz, (a.vx+b.vx)/2,(a.vy+b.vy)/2,(a.vz+b.vz)/2);
+          emitPhotons(mx,my,mz,1,false,spectralRGB(0.06)); flash(mx,my,mz,[150,210,255],0.5);
+          a._dead=b._dead=true; break;
+        }
+      }
+    }
+  } else {
+    for(const p of particles){                                    // warm ⇒ pairs break back into two electrons
+      if(p._dead||p.kind!=='cooper') continue;
+      p._dead=true;
+      for(let k=0;k<2;k++){ const a=lseq()*6.283;
+        spawn('electron', p.x,p.y,p.z, p.vx+Math.cos(a)*0.6, p.vy+Math.sin(a)*0.6, p.vz); }
     }
   }
   for(let i=particles.length-1;i>=0;i--) if(particles[i]._dead) particles.splice(i,1);
@@ -1185,6 +1216,7 @@ const PNAME = {
   proton:'proton p (baryon, charge +1)', antiproton:'antiproton p̄ (charge −1)',
   neutron:'neutron n⁰ (baryon, β-decays)', antineutron:'antineutron n̄ (β-decays)',
   neutrino:'neutrino ν (~massless)', antineutrino:'antineutrino ν̄ (~massless)',
+  cooper:'Cooper pair e₂ (two e⁻, spin-0 boson — condenses; QLF_CondensedMatter)',
   up:'up quark u (confined, +⅔)', down:'down quark d (confined, −⅓)',
   antiup:'anti-up ū (confined, −⅔)', antidown:'anti-down d̄ (confined, +⅓)',
 };
@@ -1272,6 +1304,7 @@ const QC_TWIST = {
   proton:'|uud|', antiproton:'|uud|~', neutron:'|udd|', antineutron:'|udd|~',
   neutrino:'^-v+', antineutrino:'^-v+~',
   up:'|u|', down:'|d|', antiup:'|u|~', antidown:'|d|~',
+  cooper:'(^<v>)²',   // two electron folds → +I boson
 };
 // cluster helpers: a triangle (Borromean triple) and a tetrahedron of constituents
 const _tri = (kinds,x,y,z,vx,vy,vz)=>kinds.map((k,i)=>{ const a=i*2*Math.PI/3;
@@ -1524,7 +1557,8 @@ function frame(){
     eSigned += sgn*m;
     if(p.virtual){ eFoam += m; nVirt++; vc[p.kind]=(vc[p.kind]||0)+1; continue; }   // foam = transient ZFA-synthesis closures
     np++; q+=KIND[p.kind].q;
-    KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
+    const nf = KIND[p.kind].fam==='cooper' ? 2 : 1;    // a Cooper pair is 2 electrons (keeps M−M̄ balanced)
+    KIND[p.kind].anti ? amat+=nf : mat+=nf; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
   for(const A of atoms){ const isMol=A.type==='H2', f=atomFermions(A), am=atomMass(A);
     A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am; erest += am;
