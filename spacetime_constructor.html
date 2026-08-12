@@ -1214,6 +1214,7 @@ pauseBtn.addEventListener('click',()=>{ cfg.paused=!cfg.paused;
   pauseBtn.textContent=cfg.paused?'Resume':'Pause'; pauseBtn.classList.toggle('on',cfg.paused); });
 document.getElementById('b_reset').onclick=()=>{particles.length=0; flashes.length=0; photons.length=0; atoms.length=0; bhs.length=0;
   vacLedger=0; photAccum=0; pairAccum=0; casAccum=0; bhAccum=0; tick=0;   // clear the vacuum ledger + accumulators so a reset zeroes the energy
+  obs.x=obs.y=obs.z=0; cam.tgt.x=cam.tgt.y=cam.tgt.z=0;   // restore the observer to the centre (undo any truck/pan)
   inspected=null; if(inspectEl)inspectEl.style.opacity='0'; build();};
 
 document.querySelectorAll('[data-spawn]').forEach(b=>b.addEventListener('click',()=>{
