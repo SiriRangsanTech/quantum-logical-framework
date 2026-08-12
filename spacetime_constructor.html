@@ -220,7 +220,7 @@
     <button id="b_pause">Pause</button>
     <button id="t_pulse" class="on">Clocks</button>
     <button id="t_trails" class="on">Trails</button>
-    <button id="t_links" class="on">Causal links</button>
+    <button id="t_links" class="on" title="Entanglement (ER=EPR): join spin-singlet closures — ↑↔↓ (σy, blue) and →↔← (σx, orange)">Entanglement</button>
     <button id="t_observer" class="on">Observer</button>
     <button id="t_spin">Auto-spin</button>
     <button id="t_jitter" class="on">Vacuum jitter</button>
@@ -1633,23 +1633,19 @@ function frame(){
     ctx.fillRect(0,0,W,H);
   }
 
-  // optional causal links (sparse nearest neighbour), under points
-  if(cfg.links && birth>=1){                 // hold links until the initial vacuum has rendered in
-    ctx.globalCompositeOperation='lighter';
-    ctx.strokeStyle='rgba(70,110,170,0.10)'; ctx.lineWidth=1;
-    ctx.beginPath();
-    for(let i=0;i<nodes.length;i+=37){
-      const a=nodes[i]; let bi=-1,bd=1e9;
-      for(let j=0;j<nodes.length;j+=11){
-        if(j===i) continue; const b=nodes[j];
-        const d=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
-        if(d<bd){bd=d; bi=j;}
-      }
-      if(bi<0) continue;
-      const pa=project(a.x,a.y,a.z), pb=project(nodes[bi].x,nodes[bi].y,nodes[bi].z);
-      if(pa&&pb){ ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); }
-    }
-    ctx.stroke();
+  // Entanglement lines (ER=EPR — a shared closure): a spin SINGLET is anti-correlated, so we join
+  // spin-conjugate closures — ↑↔↓ on the σ_y (^v) axis, →↔← on the σ_x (<>) axis, one hue each.
+  if(cfg.links && birth>=1){
+    ctx.globalCompositeOperation='lighter'; ctx.lineWidth=1;
+    const spinLinks=(a,b,colour)=>{ ctx.strokeStyle=colour; ctx.beginPath();
+      for(let i=0;i<nodes.length;i+=23){ const n=nodes[i]; if(!n.spin||n.spin.indexOf(a)<0) continue;
+        let bi=-1,bd=1e9; for(let j=0;j<nodes.length;j+=7){ const m=nodes[j]; if(m.spin&&m.spin.indexOf(b)>=0){
+          const d=(n.x-m.x)**2+(n.y-m.y)**2+(n.z-m.z)**2; if(d>0&&d<bd){bd=d;bi=j;} } }
+        if(bi<0) continue; const pa=project(n.x,n.y,n.z), pb=project(nodes[bi].x,nodes[bi].y,nodes[bi].z);
+        if(pa&&pb){ ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); } }
+      ctx.stroke(); };
+    spinLinks('↑','↓','rgba(120,180,255,0.14)');   // σ_y (^v) singlets
+    spinLinks('→','←','rgba(255,160,120,0.14)');   // σ_x (<>) singlets
   }
 
   // points (additive spectral glow)
