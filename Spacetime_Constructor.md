@@ -122,6 +122,11 @@ constituents; a field node by its own spin (from the census walk that placed it)
 (`E = ℏω`: 438 THz red … 769 THz violet, or a γ-ray from annihilation); a **black hole** by its mass, charge `Q`
 and spin `J`; a hadron *as a quantum black hole*; a virtual flicker *as a vacuum fluctuation*.
 
+**Spin webs — entanglement and exclusion.** Two overlays draw the spin relationships between closures. **Entanglement**
+(ER=EPR — a shared closure) joins spin **singlets** — anti-correlated pairs — `↑↔↓` on the σ_y axis (blue) and `→↔←`
+on σ_x (orange). **Exclusion** joins **identical**-spin closures (the same state that cannot coincide) — the degeneracy
+web Pauli pressure holds apart ([`PauliExclusion`](lean/PauliExclusion.lean)), in red. Opposites correlate; likes exclude.
+
 **The field readout.** Collapsible; counts **atoms, molecules, particles, foam (virtual particles), and black
 holes** — hover any count for a per-type breakdown (which species, or each black hole's `M/Q/J`). It gives the
 **total energy** as `E = m = 1/R` (in `mₑ`, and in GeV on hover — a proton reads its 0.938 GeV), with both books:
