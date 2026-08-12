@@ -42,12 +42,24 @@ rest. Everything below is that one rule playing out.
 - **Methane-ish, CHₓ** — C grabs H, but H atoms competing nearby may pair off as H₂ first (real kinetics).
   [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=C%20%40%200%2C0%2C0%0AH%20%40%20-2.2%2C0%2C0%0AH%20%40%202.2%2C0%2C0%0AH%20%40%200%2C2.2%2C0%0AH%20%40%200%2C-2.2%2C0)
 
-## 4. Carbon networks — graphite & diamond
+## 4. Carbon — one atom, many allotropes
 
-Carbon is a **non-metal that self-bonds**: with valence 4 it forms C–C networks — **graphite** (sheets) and
-**diamond** (tetrahedral). This is the *same* rule as H₂; only metals are the exception. Drop several carbons
-and they knit into a Cₙ network.
-[▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=C%20%40%20-1.2%2C0%2C0%0AC%20%40%201.2%2C0%2C0%0AC%20%40%200%2C1.6%2C0%0AC%20%40%200%2C-1.6%2C0%0AC%20%40%201.2%2C1.6%2C0%0AC%20%40%20-1.2%2C-1.6%2C0)
+Carbon is a **non-metal that self-bonds**: with valence 4 it forms C–C networks. But the *same* valence-4 carbon
+makes very different structures depending on the **bonding geometry** — this is why carbon has so many allotropes.
+The constructor builds each as a distinct form:
+
+- **Ring / loop** (cyclocarbon) — 2 bonds per C, carbons in a closed ring.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=ring%20%40%200%2C0%2C0)
+- **Graphene** — sp², **3 bonds per C** in a flat honeycomb sheet.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=graphene%20%40%200%2C0%2C0)
+- **Graphite** — stacked graphene sheets.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=graphite%20%40%200%2C0%2C0)
+- **Diamond** — sp³, **4 bonds per C** in a tetrahedral 3-D network.
+  [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=diamond%20%40%200%2C0%2C0)
+
+Drop loose carbons and they still knit into a generic Cₙ cluster by the one valence rule; the named forms above
+lay the carbons out in the recognisable allotrope geometry (`ring` / `graphene` / `graphite` / `diamond`, or the
+buttons in the QuCalc panel). The bond count per atom (2 → 3 → 4) *is* the allotrope.
 
 ## 5. Metals, oxides & rust
 

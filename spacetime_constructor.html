@@ -264,6 +264,9 @@ positron <^>v @ 2,0,0"
       <button data-qcadd="alpha">＋ ⁴He</button>
       <button data-qcadd="proton_uud">＋ p(uud)</button>
       <button data-qcadd="pionplus">＋ π⁺(ud̄)</button>
+      <button data-qcadd="ring" title="A carbon ring / loop — cyclocarbon (2 bonds per C)">＋ C ring</button>
+      <button data-qcadd="graphene" title="Graphene — a flat honeycomb sheet of sp² carbon (3 bonds per C)">＋ graphene</button>
+      <button data-qcadd="diamond" title="Diamond — sp³ carbon in a tetrahedral network (4 bonds per C)">＋ diamond</button>
       <select id="c_elem" aria-label="Crystal element" title="Crystal element">
         <option value="H">Hydrogen</option>
         <option value="He">Helium</option>
@@ -687,6 +690,41 @@ function makeMolecule(comp,x,y,z,anti,vx,vy,vz,free){
   const A={ comp, sites, bonds, free:free??0, anti:!!anti, x,y,z,
             vx:vx??(lseq()*2-1)*0.4, vy:vy??(lseq()*2-1)*0.4, vz:vz??(lseq()*2-1)*0.4,
             born:reduceMotion?1:0, spin:censusSpin(), orbits:[] };
+  atoms.push(A); return A;
+}
+
+// ── Carbon allotropes ── same valence-4 carbon, different bonding GEOMETRY: a ring (2 bonds/C),
+// graphene/graphite (planar sp², 3 bonds/C), diamond (tetrahedral sp³, 4 bonds/C). Each is one
+// molecule whose sites are carbons laid out in that structure; bonds are the nearest neighbours.
+const CB=1.5;   // C–C bond length in scene units
+function _bondByDist(pts, maxd){ const sites=pts.map(p=>({sym:'C',dx:p[0],dy:p[1],dz:p[2]})), bonds=[];
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1],pts[i][2]-pts[j][2]); if(d<maxd) bonds.push([i,j]); }
+  return {sites,bonds}; }
+function _centre(pts){ const c=[0,0,0]; for(const p of pts){c[0]+=p[0];c[1]+=p[1];c[2]+=p[2];} const n=pts.length||1;
+  return pts.map(p=>[p[0]-c[0]/n,p[1]-c[1]/n,p[2]-c[2]/n]); }
+function carbonForm(form){
+  let pts=[];
+  if(form==='ring'){ const n=10, R=CB/(2*Math.sin(Math.PI/n));            // a carbon loop (cyclocarbon)
+    for(let i=0;i<n;i++){ const a=i/n*6.283; pts.push([R*Math.cos(a),R*Math.sin(a),0]); }
+    return {...(( )=>{ const {sites,bonds}=_bondByDist(pts,CB*1.15); return {sites,bonds}; })(), form}; }
+  if(form==='graphene'||form==='graphite'){                              // honeycomb sheet(s)
+    const a1=[CB*1.5,CB*0.866,0], a2=[CB*1.5,-CB*0.866,0], basis=[[0,0,0],[CB,0,0]];
+    const layers = form==='graphite' ? [0, 3.35] : [0];
+    for(const dz of layers) for(let i=0;i<3;i++) for(let j=0;j<3;j++) for(const b of basis)
+      pts.push([i*a1[0]+j*a2[0]+b[0], i*a1[1]+j*a2[1]+b[1], dz]);
+    pts=_centre(pts); const {sites,bonds}=_bondByDist(pts,CB*1.15); return {sites,bonds,form}; }
+  if(form==='diamond'){                                                  // diamond-cubic cell
+    const A=CB*2.309;   // cube edge so the tetrahedral bond = CB
+    const fcc=[[0,0,0],[.5,.5,0],[.5,0,.5],[0,.5,.5]], tet=[[.25,.25,.25],[.75,.75,.25],[.75,.25,.75],[.25,.75,.75]];
+    for(const p of fcc.concat(tet)) pts.push([p[0]*A,p[1]*A,p[2]*A]);
+    pts=_centre(pts); const {sites,bonds}=_bondByDist(pts,CB*1.2); return {sites,bonds,form}; }
+  return null;
+}
+function makeCarbon(form,x,y,z,anti,vx,vy,vz){
+  const g=carbonForm(form); if(!g) return null;
+  const A={ comp:{C:g.sites.length}, sites:g.sites, bonds:g.bonds, form, free:0, anti:!!anti, x,y,z,
+            vx:vx||0, vy:vy||0, vz:vz||0, born:reduceMotion?1:0, spin:censusSpin(), orbits:[] };
   atoms.push(A); return A;
 }
 // nuclei world positions
@@ -1311,8 +1349,10 @@ function inspectAt(px,py){
     const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
   const ENAME={H:'hydrogen',He:'helium',C:'carbon',O:'oxygen',Fe:'iron'};
   const MNAME={'H₂':'hydrogen','O₂':'oxygen','H₂O':'water','CO₂':'carbon dioxide','CO':'carbon monoxide','CH₄':'methane','OH':'hydroxyl','Fe₂O₃':'iron oxide (rust)','FeO':'iron oxide'};
+  const CFORM={graphene:'graphene (sp², a honeycomb sheet)',graphite:'graphite (stacked graphene)',diamond:'diamond (sp³, tetrahedral network)',ring:'carbon ring / loop (cyclocarbon)'};
   for(const A of atoms) consider(A.x,A.y,A.z,
-    (A.comp ? (()=>{ const f=compFormula(A.comp), nm=MNAME[f];
+    (A.comp ? (()=>{ if(A.form) return `${A.anti?'anti-':''}${CFORM[A.form]||A.form} — ${A.comp.C} carbon atoms, ${A.bonds.length} C–C bonds · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`;
+           const f=compFormula(A.comp), nm=MNAME[f];
            return `${A.anti?'anti-':''}${nm?nm+' ':''}${f} — a molecule (shared-closure bond)${A.free>0?', valence '+A.free+' free':''} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()
        : (()=>{ const e=A.el||ELEMENTS.H;
            const sf = A.condensed ? ' · SUPERFLUID (Bose-condensed boson)' : '';
@@ -1423,7 +1463,7 @@ function qcCapture(){
   for(const p of particles){ if(p.virtual || !inBand(KIND[p.kind].m) || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
   for(const A of atoms){ if(!inBand(atomMass(A)) || !onScreen(A.x,A.y,A.z)) continue;
-    const nm = A.comp ? asciiFormula(A.comp) : (A.el?A.el.sym:'H');
+    const nm = A.form || (A.comp ? asciiFormula(A.comp) : (A.el?A.el.sym:'H'));
     L.push(`${A.anti?'anti':''}${nm} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
   for(const b of bhs){ if(!inBand(b.m*MPL_OVER_ME) || !onScreen(b.x,b.y,b.z)) continue;
     L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
@@ -1493,6 +1533,7 @@ function qcInstantiate(text){
     const [x,y,z]=freeSpot(pos[0],pos[1],pos[2]);       // never stack on an occupied spot
     if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
     else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
+    else if(kind==='graphene'||kind==='graphite'||kind==='diamond'||kind==='ring') { const A=makeCarbon(kind,x,y,z,false,vx,vy,vz); if(A){A.born=1;} ok++; }   // carbon allotropes
     else if(ELEMENTS[kind] || formulaComp(kind)) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }   // H, He, C, O, Fe, H2, H2O, Fe2O3, …
     else if(kind.startsWith('anti') && (ELEMENTS[kind.slice(4)]||formulaComp(kind.slice(4)))) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiH2O, …
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
@@ -1532,7 +1573,8 @@ if(qcEl){
                  deuteron:'deuteron p+n @ 4,3,0', triton:'triton p+2n @ -4,-3,0',
                  helium3:'helium3 2p+n @ 0,-3,0', alpha:'alpha 2p+2n @ 4,-3,0',
                  proton_uud:'proton_uud (u u d) @ -4,0,0', neutron_udd:'neutron_udd (u d d) @ -8,0,0',
-                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0' };
+                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0',
+                 ring:'ring @ 0,0,0', graphene:'graphene @ 0,0,0', graphite:'graphite @ 0,0,0', diamond:'diamond @ 0,0,0' };
   const addLine = line=>{ qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line; };
   document.querySelectorAll('[data-qcadd]').forEach(b=>b.addEventListener('click',()=>{
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;
