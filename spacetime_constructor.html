@@ -221,6 +221,7 @@
     <button id="t_pulse" class="on">Clocks</button>
     <button id="t_trails" class="on">Trails</button>
     <button id="t_links" class="on" title="Entanglement (ER=EPR): join spin-singlet closures — ↑↔↓ (σy, blue) and →↔← (σx, orange)">Entanglement</button>
+    <button id="t_excl" title="Pauli exclusion: join IDENTICAL-spin closures (same state) that repel — the degeneracy-pressure web">Exclusions</button>
     <button id="t_observer" class="on">Observer</button>
     <button id="t_spin">Auto-spin</button>
     <button id="t_jitter" class="on">Vacuum jitter</button>
@@ -402,6 +403,7 @@ const cfg = { N:1800, octaves:6, flow:1, vac:0,
               pulse:true, trails:true, links:true, paused:false,
               observer:true, spin:false,     // observer marker at the centre; idle auto-spin off (one fixed frame)
               jitter:true,                    // vacuum-foam Brownian walk on particle motion (census, ZFA-balanced)
+              excl:false,                     // draw Pauli-exclusion lines (identical-spin closures repel)
               fLo:0.01, fHi:2e6 };            // selected frequency band [m/mₑ] (log); default = full range ("all")
 const FLAT_W = 100;                 // empty-space degeneracy baseline
 const PH_SPD = 8, PH_BEND = 2.2, PH_PATH = 26, PH_MAXAGE = 12;  // photon: speed c, field-bend, path length, safety life
@@ -1415,7 +1417,7 @@ bind('c_flo',e=>{ cfg.fLo=sliderToF(+e.target.value); if(cfg.fLo>cfg.fHi){cfg.fH
 bind('c_fhi',e=>{ cfg.fHi=sliderToF(+e.target.value); if(cfg.fHi<cfg.fLo){cfg.fLo=cfg.fHi; c_flo.value=fToSlider(cfg.fLo);} bandLabel(); });
 const toggle=(id,key)=>{const el=document.getElementById(id);
   el.addEventListener('click',()=>{cfg[key]=!cfg[key]; el.classList.toggle('on',cfg[key]);});};
-toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links');
+toggle('t_pulse','pulse'); toggle('t_trails','trails'); toggle('t_links','links'); toggle('t_excl','excl');
 toggle('t_observer','observer'); toggle('t_spin','spin'); toggle('t_jitter','jitter');
 bind('c_vac',e=>{cfg.vac=+e.target.value; v_vac.textContent=fmtT(vacT());});
 const pauseBtn=document.getElementById('b_pause');
@@ -1646,6 +1648,18 @@ function frame(){
       ctx.stroke(); };
     spinLinks('↑','↓','rgba(120,180,255,0.14)');   // σ_y (^v) singlets
     spinLinks('→','←','rgba(255,160,120,0.14)');   // σ_x (<>) singlets
+  }
+  // Pauli-exclusion lines (QLF_PauliExclusion): join IDENTICAL-spin closures (same state) that sit
+  // close — the ones degeneracy pressure pushes apart. Where entanglement joins opposites, exclusion
+  // joins likes. One hue (red).
+  if(cfg.excl && birth>=1){
+    ctx.globalCompositeOperation='lighter'; ctx.lineWidth=1; ctx.strokeStyle='rgba(255,105,120,0.16)'; ctx.beginPath();
+    for(let i=0;i<nodes.length;i+=23){ const n=nodes[i]; if(!n.spin) continue;
+      let bi=-1,bd=1e9; for(let j=0;j<nodes.length;j+=7){ if(j===i) continue; const m=nodes[j]; if(m.spin===n.spin){
+        const d=(n.x-m.x)**2+(n.y-m.y)**2+(n.z-m.z)**2; if(d>0&&d<bd){bd=d;bi=j;} } }
+      if(bi<0) continue; const pa=project(n.x,n.y,n.z), pb=project(nodes[bi].x,nodes[bi].y,nodes[bi].z);
+      if(pa&&pb){ ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); } }
+    ctx.stroke();
   }
 
   // points (additive spectral glow)
