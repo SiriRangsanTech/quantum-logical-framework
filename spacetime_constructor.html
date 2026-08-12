@@ -218,7 +218,7 @@
     <button id="b_pause">Pause</button>
     <button id="t_pulse" class="on">Clocks</button>
     <button id="t_trails" class="on">Trails</button>
-    <button id="t_links">Causal links</button>
+    <button id="t_links" class="on">Causal links</button>
     <button id="t_observer" class="on">Observer</button>
     <button id="t_spin">Auto-spin</button>
     <button id="t_jitter" class="on">Vacuum jitter</button>
@@ -383,7 +383,7 @@ const binFor = f => sprites[Math.max(0,Math.min(BINS-1, (f*(BINS-1))|0))];
 
 /* ---------- state ---------- */
 const cfg = { N:1800, octaves:6, flow:1, vac:0,
-              pulse:true, trails:true, links:false, paused:false,
+              pulse:true, trails:true, links:true, paused:false,
               observer:true, spin:false,     // observer marker at the centre; idle auto-spin off (one fixed frame)
               jitter:true,                    // vacuum-foam Brownian walk on particle motion (census, ZFA-balanced)
               fLo:0.01, fHi:2e6 };            // selected frequency band [m/mₑ] (log); default = full range ("all")
@@ -1417,7 +1417,7 @@ function frame(){
   }
 
   // optional causal links (sparse nearest neighbour), under points
-  if(cfg.links){
+  if(cfg.links && birth>=1){                 // hold links until the initial vacuum has rendered in
     ctx.globalCompositeOperation='lighter';
     ctx.strokeStyle='rgba(70,110,170,0.10)'; ctx.lineWidth=1;
     ctx.beginPath();
