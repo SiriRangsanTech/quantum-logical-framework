@@ -166,7 +166,7 @@ jitter, not a hidden force. (`Vacuum jitter` toggle, default on.)
 [`Bound_States_QLF.md`](Bound_States_QLF.md)) — a proton nucleus with an electron on a tilted orbital shell.
 
 **Pauli exclusion holds matter apart.** Attraction alone would collapse everything into the wells. Matter keeps its
-size because **identical fermions cannot occupy the same state** ([`QLF_PauliExclusion`](lean/QLF_PauliExclusion.lean)):
+size because **identical fermions cannot occupy the same state** ([`PauliExclusion`](lean/PauliExclusion.lean)):
 same-kind fermions repel at short range, and that degeneracy pressure balances the infall — the outward half of
 every stable structure. So a **crystal** holds: seed a lattice and Pauli pressure vs the wells settles it into a
 self-bound solid (a *macroscopic resonant lattice*, [`Geometry_Of_Space.md`](Geometry_Of_Space.md)), breathing at

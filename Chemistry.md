@@ -63,7 +63,7 @@ Helium (valence 0) never bonds — its closure is already complete. It is chemic
 ## 7. Crystals — Pauli holds them up
 
 A crystal is not a molecule: it is a lattice of atoms held apart by **Pauli exclusion**
-([`QLF_PauliExclusion`](lean/QLF_PauliExclusion.lean)) balancing the latency infall — the outward degeneracy
+([`PauliExclusion`](lean/PauliExclusion.lean)) balancing the latency infall — the outward degeneracy
 pressure, no bonds needed. Seed a lattice and it self-binds (`lattice sc|bcc|fcc`,
 [`Geometry_Of_Space.md`](Geometry_Of_Space.md)).
 [▶ see an iron BCC crystal](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=lattice%20bcc%203%203%20Fe%20%40%200%2C0%2C0)
