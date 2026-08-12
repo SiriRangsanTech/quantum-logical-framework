@@ -312,6 +312,7 @@ positron <^>v @ 2,0,0"
   <div class="stat"><span class="k">Logical tick</span><span class="v" id="s_tick">0</span></div>
   <div class="stat" data-break="s_atoms"><span class="k">Atoms</span><span class="v" id="s_atoms">0</span></div>
   <div class="stat" data-break="s_mol"><span class="k">Molecules</span><span class="v" id="s_mol">0</span></div>
+  <div class="stat" data-break="s_cond"><span class="k">Condensate</span><span class="v" id="s_cond">0</span></div>
   <div class="stat"><span class="k">Deepest well</span><span class="v" id="s_dil">1.00<small>×</small></span></div>
   <div class="stat"><span class="k">Max redshift z</span><span class="v" id="s_z">0.00</span></div>
   <div class="stat" data-break="s_np"><span class="k">Particles</span><span class="v" id="s_np">0</span></div>
@@ -443,6 +444,13 @@ const ELEMENTS = {
 function atomMass(A){ if(A.type==='H2') return 2*M_H; const e=A.el||ELEMENTS.H; return e.Z*(M_P+M_E)+e.N*M_N; }
 // fermion count (for matter/antimatter tally): Z protons + Z electrons + N neutrons
 function atomFermions(A){ if(A.type==='H2') return 4; const e=A.el||ELEMENTS.H; return 2*e.Z+e.N; }
+// An even fermion count folds to +I ⇒ the whole atom is a BOSON (boson_even_pairs, QLF_Spin).
+// A boson atom that is also LIGHT enough (small mass number) BOSE-CONDENSES at low T — a superfluid,
+// exempt from atom–atom Pauli exclusion — the way He-4 does. Heavy atoms localize/crystallize first.
+const COND_TMAX = 4;   // K — below this, light boson atoms condense (illustrative threshold, ~He λ-point)
+function atomMassNumber(A){ return A.type==='H2' ? 2 : (A.el?A.el.Z+A.el.N:1); }
+function atomIsBoson(A){ return atomFermions(A)%2===0; }
+function atomCondenses(A){ return A.type!=='H2' && atomIsBoson(A) && atomMassNumber(A)<=4; }  // H, He-4
 // Vacuum energy density ρ(T) = ρ_Λ + a·T⁴ : the holographic DARK-ENERGY floor (ρ_Λ, the T→0
 // minimum, QLF 3log2/8π·c⁴/GR_H² ≈ 3.35 GeV/m³) plus THERMAL radiation. The slider walks it from
 // dark energy at absolute zero up to the Planck density (~5×10¹¹³ J/m³) at the Planck temperature —
@@ -964,7 +972,12 @@ function stepBH(dt){
 }
 
 function stepAtoms(dt){
-  pauliRepel(atoms, dt, null);             // electron-cloud exclusion holds atoms apart (a crystal)
+  // Bose–Einstein condensation: a light boson atom below COND_TMAX condenses into a superfluid,
+  // exempt from the atom–atom Pauli exclusion (it overlaps its neighbours). Heavier atoms stay
+  // as a Pauli-held crystal. (Boson-ness is proven; the condensation temperature is illustrative.)
+  const cold = vacT() < COND_TMAX;
+  for(const A of atoms) A.condensed = cold && atomCondenses(A);
+  pauliRepel(atoms, dt, (a,b)=>!a.condensed && !b.condensed);   // condensed (superfluid) atoms don't exclude
   for(const A of atoms){ if(A.born<1)A.born=Math.min(1,A.born+0.05);
     driftDown(A,dt);                       // atoms follow the same latency gradient
     A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.998; A.vy*=0.998; A.vz*=0.998;   // gentle radiative settling (a warm crystal still breathes)
@@ -1068,6 +1081,14 @@ function renderAtoms(){
     const nuc=nucleiOf(A);
     const abd=inBand(atomMass(A))?1:0.16;               // dim the atom when out of the selected band
     const mn=A.el?A.el.Z+A.el.N:1, nucScale=0.6+0.4*Math.cbrt(mn);   // heavier nucleus draws bigger
+    if(A.condensed){                                    // superfluid glow — a Bose-condensed boson atom
+      const cp0=project(A.x,A.y,A.z);
+      if(cp0){ const base=focal()/cp0.z, rr=base*0.42*A.born;
+        ctx.globalCompositeOperation='lighter';
+        const g=ctx.createRadialGradient(cp0.sx,cp0.sy,0,cp0.sx,cp0.sy,rr);
+        g.addColorStop(0,'rgba(120,220,255,0.22)'); g.addColorStop(1,'rgba(120,220,255,0)');
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cp0.sx,cp0.sy,rr,0,7); ctx.fill();
+        ctx.globalCompositeOperation='source-over'; } }
     // covalent bond line (H₂)
     if(A.type==='H2'){ const p0=project(nuc[0][0],nuc[0][1],nuc[0][2]), p1=project(nuc[1][0],nuc[1][1],nuc[1][2]);
       if(p0&&p1){ ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
@@ -1236,7 +1257,8 @@ function inspectAt(px,py){
   for(const A of atoms) consider(A.x,A.y,A.z,
     (A.type==='H2' ? `${A.anti?'anti-':''}H₂ molecule (two H, covalent bond) · spin ${A.spin||'—'}`
        : (()=>{ const e=A.el||ELEMENTS.H;
-           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons) · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
+           const sf = A.condensed ? ' · SUPERFLUID (Bose-condensed boson)' : '';
+           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons)${sf} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
@@ -1559,11 +1581,12 @@ function frame(){
     const nf = KIND[p.kind].fam==='cooper' ? 2 : 1;    // a Cooper pair is 2 electrons (particle + matter tallies)
     np+=nf; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat+=nf : mat+=nf; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
-  const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
+  const acA={}, acM={}, acC={}; let nAtoms=0, nMol=0, nCond=0;   // atoms / molecules / condensate, counted apart
   for(const A of atoms){ const isMol=A.type==='H2', f=atomFermions(A), am=atomMass(A);
     A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am; erest += am;
     if(isMol){ nMol++;  const k=(A.anti?'anti-':'')+'H₂'; acM[k]=(acM[k]||0)+1; }
-    else     { nAtoms++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acA[k]=(acA[k]||0)+1; } }
+    else     { nAtoms++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acA[k]=(acA[k]||0)+1; }
+    if(A.condensed){ nCond++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acC[k]=(acC[k]||0)+1; } }
   let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
   let ePhot=0; for(const ph of photons) ePhot += phE(ph);
   const eVac = eFoam + vacLedger;                          // vacuum/logical energy: live ZFA synthesis + absorbed radiation
@@ -1571,6 +1594,7 @@ function frame(){
   const eNet = eSigned + ebh + ePhot;                      // NET FREE energy: matter(+) − antimatter(−); a ZFA-balanced vacuum → 0
   s_atoms.textContent = nAtoms;
   s_mol.textContent = nMol;
+  s_cond.textContent = nCond;
   s_np.textContent = np;
   s_foam.textContent = nVirt;
   s_bh.textContent = bhs.length;
@@ -1594,6 +1618,7 @@ function frame(){
   TIP.s_foam = nVirt ? Object.entries(vc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`${(KIND[k].sym||k).padEnd(3)} ${c}`).join('\n')+'\n\nvirtual pairs — vacuum foam, flicker back to possibility' : 'no foam (raise the flow / temperature)';
   TIP.s_atoms = nAtoms ? Object.entries(acA).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no atoms';
   TIP.s_mol = nMol ? Object.entries(acM).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n') : 'no molecules';
+  TIP.s_cond = nCond ? Object.entries(acC).map(([k,c])=>`${k.padEnd(7)} ${c}`).join('\n')+'\n\nboson atoms Bose-condensed into a superfluid (BEC) — cool light bosons (He, H) below '+COND_TMAX+' K' : 'no condensate — cool a light boson atom (He, H) below '+COND_TMAX+' K';
   TIP.s_bh = bhs.length ? bhs.slice(0,10).map((b,i)=>`BH${i+1}  ${b.m.toFixed(2)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`).join('\n')+(bhs.length>10?`\n… +${bhs.length-10} more`:'') : 'no black holes';
   TIP.s_mat = `matter fermions: ${mat}`;
   TIP.s_amat = `antimatter fermions: ${amat}`;
