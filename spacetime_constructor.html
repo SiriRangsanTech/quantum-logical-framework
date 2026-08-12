@@ -630,6 +630,7 @@ function orbitBasis(){
 function makeAtom(type,x,y,z,anti,vx,vy,vz){
   const A={ type, anti:!!anti, x,y,z, born:reduceMotion?1:0,
             vx:vx??(lseq()*2-1)*0.5, vy:vy??(lseq()*2-1)*0.5, vz:vz??(lseq()*2-1)*0.5,
+            spin:SPIN[(lseq()*4)|0],   // net spin of the bound closure, drawn from the census
             orbits:[] };
   if(type==='H2'){
     let bx=lseq()*2-1,by=lseq()*2-1,bz=lseq()*2-1; const bl=Math.hypot(bx,by,bz)||1;
@@ -812,7 +813,7 @@ function stepParticles(dt){
     p.x+=p.vx*dt; p.y+=p.vy*dt; p.z+=p.vz*dt;
     p.vx*=0.999; p.vy*=0.999; p.vz*=0.999;   // near-frictionless: only a whisper of radiative loss (no drag in the ether)
     // no wall: a particle free-streams into the vacuum (the ultimate absorber) if it drifts far out
-    if(p.x*p.x+p.y*p.y+p.z*p.z > 48*48) p._dead=true;
+    if(p.x*p.x+p.y*p.y+p.z*p.z > 96*96) p._dead=true;
     if(p.virtual || KIND[p.kind].ttl!==Infinity) p.ttl-=dt;   // virtual foam is transient even for stable species
   }
   // decay (unstable closures shed to lighter products; charge + baryon number conserved)
@@ -936,7 +937,7 @@ function stepAtoms(dt){
   for(const A of atoms){ if(A.born<1)A.born=Math.min(1,A.born+0.05);
     driftDown(A,dt);                       // atoms follow the same latency gradient
     A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.998; A.vy*=0.998; A.vz*=0.998;   // gentle radiative settling (a warm crystal still breathes)
-    if(A.x*A.x+A.y*A.y+A.z*A.z > 48*48) A._dead=true; }   // no wall: drifts off into the vacuum
+    if(A.x*A.x+A.y*A.y+A.z*A.z > 96*96) A._dead=true; }   // no wall: drifts off into the vacuum
   for(let i=0;i<atoms.length;i++){ for(let j=i+1;j<atoms.length;j++){
     const A=atoms[i],B=atoms[j]; if(A._dead||B._dead) continue;
     const dd=(A.x-B.x)**2+(A.y-B.y)**2+(A.z-B.z)**2;
@@ -1201,9 +1202,9 @@ function inspectAt(px,py){
     const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
   const ENAME={H:'hydrogen',He:'helium',C:'carbon',O:'oxygen',Fe:'iron'};
   for(const A of atoms) consider(A.x,A.y,A.z,
-    (A.type==='H2' ? (A.anti?'anti-H₂ molecule':'H₂ molecule (two H, covalent bond)')
+    (A.type==='H2' ? `${A.anti?'anti-':''}H₂ molecule (two H, covalent bond) · spin ${A.spin||'—'}`
        : (()=>{ const e=A.el||ELEMENTS.H;
-           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons) · m/m_e ${atomMass(A)}`; })()));
+           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons) · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
