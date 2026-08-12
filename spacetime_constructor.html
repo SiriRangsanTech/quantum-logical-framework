@@ -106,6 +106,9 @@
   button.on{color:var(--bg); background:var(--accent); border-color:var(--accent);
     box-shadow:0 0 12px -3px var(--accent)}
   button.ghost:hover{color:#ff8ba0; border-color:#5a2836}
+  #c_elem{font-family:var(--mono); font-size:10.5px; color:var(--text); background:var(--bg2);
+    border:1px solid var(--border); border-radius:7px; padding:6px 8px; cursor:pointer}
+  #c_elem:focus-visible{outline:2px solid var(--accent-dim); outline-offset:1px}
 
   .hint{
     margin-top:13px; font-family:var(--mono); font-size:10px; line-height:1.6;
@@ -263,9 +266,16 @@ positron <^>v @ 2,0,0"
       <button data-qcadd="alpha">＋ ⁴He</button>
       <button data-qcadd="proton_uud">＋ p(uud)</button>
       <button data-qcadd="pionplus">＋ π⁺(ud̄)</button>
-      <button data-qcadd="sc">＋ SC crystal</button>
-      <button data-qcadd="bcc">＋ BCC (Fe-like)</button>
-      <button data-qcadd="fcc">＋ FCC</button>
+      <select id="c_elem" aria-label="Crystal element" title="Crystal element">
+        <option value="H">Hydrogen</option>
+        <option value="He">Helium</option>
+        <option value="C">Carbon</option>
+        <option value="O">Oxygen</option>
+        <option value="Fe" selected>Iron</option>
+      </select>
+      <button data-cryst="sc">＋ SC</button>
+      <button data-cryst="bcc">＋ BCC</button>
+      <button data-cryst="fcc">＋ FCC</button>
     </div>
     <div class="lbl" id="qc_status" style="opacity:.8">Each line is a ZFA closure. <b>Capture</b> reads the live display as QuCalc; <b>Replace</b> clears first, <b>Inject</b> adds.</div>
   </div>
@@ -418,6 +428,20 @@ function phE(ph){ return ph.en==null ? 1.0 : ph.en*0.01; }   // photon energy in
 let vacLedger = 0;   // vacuum/logical energy account — absorbed-photon energy returns here (conservation), never vanishes
 const MPL_OVER_ME = Math.exp(14*Math.PI)*6*Math.pow(Math.PI,5);   // Planck mass in mₑ (QLF_AlphaS ln=14π; 6π⁵)
 const M_H = 1836+1;                                               // hydrogen mass-energy in mₑ (p + e)
+const M_P = 1836, M_N = 1839, M_E = 1;                           // proton / neutron / electron, mₑ
+// Elements offered for atoms & crystals. ne = electrons drawn (capped for clarity); R = shell radius;
+// sp = default crystal lattice spacing.  Z protons + N neutrons in the nucleus, Z electrons on shells.
+const ELEMENTS = {
+  H:  {sym:'H',  Z:1,  N:0,  ne:1, R:2.0, sp:2.8},
+  He: {sym:'He', Z:2,  N:2,  ne:2, R:2.2, sp:3.0},
+  C:  {sym:'C',  Z:6,  N:6,  ne:6, R:2.9, sp:3.4},
+  O:  {sym:'O',  Z:8,  N:8,  ne:8, R:3.0, sp:3.3},
+  Fe: {sym:'Fe', Z:26, N:30, ne:8, R:3.6, sp:3.0},   // ne capped at 8; Fe reads as a dense metal lattice
+};
+// total rest mass-energy of an atom in mₑ
+function atomMass(A){ if(A.type==='H2') return 2*M_H; const e=A.el||ELEMENTS.H; return e.Z*(M_P+M_E)+e.N*M_N; }
+// fermion count (for matter/antimatter tally): Z protons + Z electrons + N neutrons
+function atomFermions(A){ if(A.type==='H2') return 4; const e=A.el||ELEMENTS.H; return 2*e.Z+e.N; }
 // Vacuum energy density ρ(T) = ρ_Λ + a·T⁴ : the holographic DARK-ENERGY floor (ρ_Λ, the T→0
 // minimum, QLF 3log2/8π·c⁴/GR_H² ≈ 3.35 GeV/m³) plus THERMAL radiation. The slider walks it from
 // dark energy at absolute zero up to the Planck density (~5×10¹¹³ J/m³) at the Planck temperature —
@@ -612,7 +636,13 @@ function makeAtom(type,x,y,z,anti,vx,vy,vz){
     A.bondAxis=[bx/bl,by/bl,bz/bl]; A.bondLen=2.2;
     A.orbits=[{R:2.9,rate:1.7,ph:0,b:orbitBasis()},{R:2.9,rate:1.7,ph:Math.PI,b:orbitBasis()}];
   } else {
-    A.orbits=[{R:2.0,rate:2.3,ph:lseq()*6.283,b:orbitBasis()}];
+    const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;    // an element atom: Z electrons (capped) on 1–2 shells
+    const ne = Math.max(1, Math.min(el.ne, el.Z));
+    for(let i=0;i<ne;i++){
+      const inner = ne<=2 || i<Math.ceil(ne*0.35);         // a compact inner shell + an outer shell
+      A.orbits.push({ R: inner?el.R*0.62:el.R, rate: inner?2.7:1.9,
+                      ph: lseq()*6.283 + i*2.399, b: orbitBasis() });
+    }
   }
   atoms.push(A); return A;
 }
@@ -694,9 +724,10 @@ function localW(x,y,z){
     const dx=x-b.x, dy=y-b.y, dz=z-b.z;
     w -= (45*Math.cbrt(b.m))/(dx*dx+dy*dy+dz*dz+2.0);
   }
-  for(const A of atoms){            // atoms/molecules are little masses too
+  for(const A of atoms){            // atoms/molecules are little masses too (heavier ⇒ deeper well)
     const dx=x-A.x, dy=y-A.y, dz=z-A.z;
-    w -= (7*(A.type==='H2'?1.3:1))/(dx*dx+dy*dy+dz*dz+2.0);
+    const wscale = A.type==='H2' ? 1.3 : (A.el ? 0.5+0.5*Math.cbrt(A.el.Z+A.el.N) : 1);
+    w -= (7*wscale)/(dx*dx+dy*dy+dz*dz+2.0);
   }
   return Math.max(2, w);
 }
@@ -1003,7 +1034,8 @@ function renderParticles(){
 function renderAtoms(){
   for(const A of atoms){
     const nuc=nucleiOf(A);
-    const abd=inBand(A.type==='H2'?2*M_H:M_H)?1:0.16;   // dim the atom when out of the selected band
+    const abd=inBand(atomMass(A))?1:0.16;               // dim the atom when out of the selected band
+    const mn=A.el?A.el.Z+A.el.N:1, nucScale=0.6+0.4*Math.cbrt(mn);   // heavier nucleus draws bigger
     // covalent bond line (H₂)
     if(A.type==='H2'){ const p0=project(nuc[0][0],nuc[0][1],nuc[0][2]), p1=project(nuc[1][0],nuc[1][1],nuc[1][2]);
       if(p0&&p1){ ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
@@ -1026,20 +1058,21 @@ function renderAtoms(){
         ctx.lineWidth=1.1; ctx.strokeStyle=A.anti?'rgba(255,150,120,0.8)':'rgba(120,200,255,0.8)';
         ctx.beginPath(); ctx.arc(ep.sx,ep.sy,base*0.06,0,7); ctx.stroke(); }
     }
-    // nuclei (protons / antiprotons)
+    // nuclei (protons + neutrons; a bigger blob for heavier nuclei)
     for(const nu of nuc){ const np=project(nu[0],nu[1],nu[2]); if(!np) continue; const base=focal()/np.z;
-      const s=base*0.11*2.4*A.born;
+      const s=base*0.11*2.4*A.born*nucScale;
       ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
       ctx.drawImage(binFor(bandT(1836)), np.sx-s, np.sy-s, s*2, s*2);
       ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
       ctx.lineWidth=1.4; ctx.strokeStyle=A.anti?'rgba(120,200,255,0.9)':'rgba(255,150,120,0.9)';
-      ctx.beginPath(); ctx.arc(np.sx,np.sy,base*0.15,0,7); ctx.stroke(); }
-    // label
+      ctx.beginPath(); ctx.arc(np.sx,np.sy,base*0.15*nucScale,0,7); ctx.stroke(); }
+    // label — element symbol (or H₂)
     const cp=project(A.x,A.y,A.z);
     if(cp){ const base=focal()/cp.z, fs=Math.max(9,Math.min(16,base*0.11));
+      const sym = A.type==='H2' ? 'H₂' : (A.el?A.el.sym:'H');
       ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`600 ${fs.toFixed(0)}px ${MONO}`;
       ctx.fillStyle='rgba(233,237,247,0.95)';
-      ctx.fillText(`${A.anti?'H̅':'H'}${A.type==='H2'?'₂':''}`, cp.sx, cp.sy-base*0.24); }
+      ctx.fillText(`${A.anti?'anti-':''}${sym}`, cp.sx, cp.sy-base*0.24*nucScale); }
   }
 }
 
@@ -1166,9 +1199,11 @@ function inspectAt(px,py){
   let best=null, bd=32*32;         // pick radius (px²)
   const consider=(x,y,z,label,spin)=>{ const pp=project(x,y,z); if(!pp) return;
     const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
+  const ENAME={H:'hydrogen',He:'helium',C:'carbon',O:'oxygen',Fe:'iron'};
   for(const A of atoms) consider(A.x,A.y,A.z,
     (A.type==='H2' ? (A.anti?'anti-H₂ molecule':'H₂ molecule (two H, covalent bond)')
-                   : (A.anti?'antihydrogen H̄ (p̄ + e⁺)':'hydrogen H (p + e⁻, a bound closure)')));
+       : (()=>{ const e=A.el||ELEMENTS.H;
+           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons) · m/m_e ${atomMass(A)}`; })()));
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
@@ -1273,8 +1308,9 @@ function qcCapture(){
   const L = [];                                           // just the closures — no comment header (that read as "instructions")
   for(const p of particles){ if(p.virtual || !inBand(KIND[p.kind].m) || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
-  for(const A of atoms){ if(!inBand(A.type==='H2'?2*M_H:M_H) || !onScreen(A.x,A.y,A.z)) continue;
-    L.push(`${A.anti?'anti':''}${A.type} ${A.type==='H2'?'(p+e)₂':'p+e'} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
+  for(const A of atoms){ if(!inBand(atomMass(A)) || !onScreen(A.x,A.y,A.z)) continue;
+    const nm = A.type==='H2' ? 'H2' : (A.el?A.el.sym:'H');
+    L.push(`${A.anti?'anti':''}${nm} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
   for(const b of bhs){ if(!inBand(b.m*MPL_OVER_ME) || !onScreen(b.x,b.y,b.z)) continue;
     L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
   return L.join('\n');
@@ -1308,7 +1344,7 @@ function qcPlaceLattice(L){
     for(let i=0;i<L.n;i++)for(let j=0;j<L.n-1;j++)for(let k=0;k<L.n-1;k++) add(i,j+.5,k+.5); }
   let placed=0, bad=false;
   for(const [x,y,z] of sites){ if(placed>=LATTICE_CAP) break;
-    if(L.motif==='H'||L.motif==='H2'){ makeAtom(L.motif,x,y,z,false,0,0,0); const A=atoms[atoms.length-1]; A.born=1; A.vx=A.vy=A.vz=0; }
+    if(L.motif==='H2'||ELEMENTS[L.motif]){ makeAtom(L.motif,x,y,z,false,0,0,0); const A=atoms[atoms.length-1]; A.born=1; A.vx=A.vy=A.vz=0; }
     else if(KIND[L.motif] && !KIND[L.motif].quark){ spawn(L.motif,x,y,z,0,0,0); const p=particles[particles.length-1]; p.born=1; p.vx=p.vy=p.vz=0; p.ttl=Infinity; }
     else { bad=true; break; }
     placed++;
@@ -1343,9 +1379,9 @@ function qcInstantiate(text){
     const [x,y,z]=freeSpot(pos[0],pos[1],pos[2]);       // never stack on an occupied spot
     if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
     else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
-    else if(kind==='H'||kind==='H2') { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }
-    else if(kind==='antiH')  { makeAtom('H', x,y,z,true,vx,vy,vz); ok++; }
+    else if(kind==='H2'||ELEMENTS[kind]) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }         // H, He, C, O, Fe, H2
     else if(kind==='antiH2') { makeAtom('H2',x,y,z,true,vx,vy,vz); ok++; }
+    else if(kind.startsWith('anti') && ELEMENTS[kind.slice(4)]) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiHe, …
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
       q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]}); ok++; }
     else if(QC_MACRO[kind]) {                       // named composite closure -> expand at the free base
@@ -1383,12 +1419,17 @@ if(qcEl){
                  deuteron:'deuteron p+n @ 4,3,0', triton:'triton p+2n @ -4,-3,0',
                  helium3:'helium3 2p+n @ 0,-3,0', alpha:'alpha 2p+2n @ 4,-3,0',
                  proton_uud:'proton_uud (u u d) @ -4,0,0', neutron_udd:'neutron_udd (u d d) @ -8,0,0',
-                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0',
-                 sc:'lattice sc 3 2.8 H @ 0,0,0', bcc:'lattice bcc 3 2.9 H @ 0,0,0', fcc:'lattice fcc 3 3.4 H @ 0,0,0' };
+                 pionplus:'pionplus (u d̄) @ 8,0,0', pionminus:'pionminus (ū d) @ 8,3,0' };
+  const addLine = line=>{ qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line; };
   document.querySelectorAll('[data-qcadd]').forEach(b=>b.addEventListener('click',()=>{
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;
-    qcEl.value=(qcEl.value.trim()?qcEl.value.replace(/\s*$/,'')+'\n':'')+line;
-    qcSay(`Added <b>${b.dataset.qcadd}</b> to the creator — then Replace or Inject.`); }));
+    addLine(line); qcSay(`Added <b>${b.dataset.qcadd}</b> to the creator — then Replace or Inject.`); }));
+  // crystal buttons: build a lattice of the selected element at its default spacing
+  document.querySelectorAll('[data-cryst]').forEach(b=>b.addEventListener('click',()=>{
+    const el=document.getElementById('c_elem').value, sp=(ELEMENTS[el]||ELEMENTS.H).sp;
+    const n = el==='Fe'||el==='O' ? 3 : 3;
+    addLine(`lattice ${b.dataset.cryst} ${n} ${sp} ${el} @ 0,0,0`);
+    qcSay(`Added a <b>${b.dataset.cryst.toUpperCase()} ${el}</b> crystal — then Replace or Inject.`); }));
 }
 
 /* ---------- render ---------- */
@@ -1484,10 +1525,10 @@ function frame(){
     np++; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat++ : mat++; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const acA={}, acM={}; let nAtoms=0, nMol=0;             // atoms (H) vs molecules (H₂), counted apart
-  for(const A of atoms){ const isMol=A.type==='H2', f=isMol?4:2, am=isMol?2*M_H:M_H;   // each H = 2 fermions (p + e)
+  for(const A of atoms){ const isMol=A.type==='H2', f=atomFermions(A), am=atomMass(A);
     A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am; erest += am;
     if(isMol){ nMol++;  const k=(A.anti?'anti-':'')+'H₂'; acM[k]=(acM[k]||0)+1; }
-    else     { nAtoms++; const k=(A.anti?'anti-':'')+'H';  acA[k]=(acA[k]||0)+1; } }
+    else     { nAtoms++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acA[k]=(acA[k]||0)+1; } }
   let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
   let ePhot=0; for(const ph of photons) ePhot += phE(ph);
   const eVac = eFoam + vacLedger;                          // vacuum/logical energy: live ZFA synthesis + absorbed radiation
