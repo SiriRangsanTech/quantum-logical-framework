@@ -252,6 +252,7 @@ positron <^>v @ 2,0,0"
       <button id="qc_replace">Replace</button>
       <button id="qc_inject">Inject</button>
       <button id="qc_copy" class="ghost">Copy</button>
+      <button id="qc_clear" class="ghost">Clear</button>
     </div>
     <div class="toggles">
       <button data-qcadd="positronium">＋ positronium</button>
@@ -1375,6 +1376,7 @@ if(qcEl){
   document.getElementById('qc_copy').onclick=async()=>{
     try{ await navigator.clipboard.writeText(qcEl.value||qcCapture()); qcSay('Copied to clipboard.'); }
     catch(_){ qcEl.select(); qcSay('Selected — press ⌘/Ctrl-C to copy.'); } };
+  document.getElementById('qc_clear').onclick=()=>{ qcEl.value=''; qcEl.focus(); qcSay('Cleared — the display is untouched.'); };
   const QC_ADD={ positronium:'positronium ^<v>|<^>v @ 0,0,0',
                  hydrogen:'H p+e @ 4,0,0', h2:'H2 (p+e)₂ @ -4,0,0',
                  muonium:'muonium μ⁺e⁻ @ -4,3,0', dimuonium:'dimuonium μ⁺μ⁻ @ 0,3,0',
