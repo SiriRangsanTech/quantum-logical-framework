@@ -1051,7 +1051,7 @@ function renderParticles(){
       ctx.strokeStyle=k.q>0?'rgba(255,150,120,0.9)':'rgba(120,200,255,0.9)';
       ctx.beginPath(); ctx.arc(pp.sx,pp.sy,rr,0,7); ctx.stroke();
     }
-    const fs=Math.max(9,Math.min(15,base*0.10));
+    const fs=Math.max(9,Math.min(44,base*0.13));   // label scales with zoom (grows near the observer)
     ctx.font=`600 ${fs.toFixed(0)}px ${MONO}`;
     ctx.fillStyle='rgba(233,237,247,0.92)';
     ctx.fillText(k.sym, pp.sx, pp.sy-rr-9);
@@ -1121,7 +1121,7 @@ function renderAtoms(){
       ctx.beginPath(); ctx.arc(np.sx,np.sy,base*0.15*nucScale,0,7); ctx.stroke(); }
     // label — element symbol (or H₂)
     const cp=project(A.x,A.y,A.z);
-    if(cp){ const base=focal()/cp.z, fs=Math.max(9,Math.min(16,base*0.11));
+    if(cp){ const base=focal()/cp.z, fs=Math.max(9,Math.min(48,base*0.13*nucScale));   // label scales with zoom + nucleus size
       const sym = A.type==='H2' ? 'H₂' : (A.el?A.el.sym:'H');
       ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`600 ${fs.toFixed(0)}px ${MONO}`;
       ctx.fillStyle='rgba(233,237,247,0.95)';
