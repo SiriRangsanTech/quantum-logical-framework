@@ -537,7 +537,7 @@ const _walks = [], _frac = [];
   }
 })();
 const _W = _walks.length;                               // C(14,7) = 3432
-let _ci = 0, _pi = 0, _lastSpin = 0, _ji = 0;
+let _ci = 0, _pi = 0, _lastSpin = '↑→', _ji = 0;
 function lseq(){ const v=_frac[_ci % _W]; _ci++; return v; }              // scalar ∈ [0,1)
 function _exc(s){ let bv=0; for(const v of s) if(Math.abs(v)>Math.abs(bv)) bv=v; return bv; }
 // Vacuum-fluctuation Brownian walk (QLF_CensusBrownian / QLF_Turbulence): the vacuum foam
@@ -560,9 +560,9 @@ function censusPoint(scale){       // node position: a 3-axis closure's walk exc
   const i=_pi++;                   // placed WITHIN its lattice cell by the closure's own fraction
   const a=i%_W, b=(i+1201)%_W, c=(i+2411)%_W;     // strided so nodes don't stack on lattice points
   const ex=_exc(_walks[a]), ey=_exc(_walks[b]);   // X-axis (σx, <>) and Y-axis (σy, ^v) excursions
-  // Spin IS the twist (QLF_Spin): the generating walk's dominant axis + sign gives the
-  // closure's handedness — ^v = up/down (σy), <> = left/right (σx). SPIN=[up,down,left,right].
-  _lastSpin = Math.abs(ey) >= Math.abs(ex) ? (ey>=0?0:1) : (ex>=0?3:2);
+  // Spin IS the twist (QLF_Spin): BOTH axes of the generating walk give the spin — the σ_y sign
+  // (^ up / v down) AND the σ_x sign (> right / < left), e.g. ↑→.
+  _lastSpin = (ey>=0?'↑':'↓') + (ex>=0?'→':'←');
   return [ (ex+_frac[a]-0.5)*scale,
            (ey+_frac[b]-0.5)*scale,
            (_exc(_walks[c])+_frac[c]-0.5)*scale ];
@@ -611,7 +611,10 @@ function releasePacket(s){
 }
 // spin = the twist itself (QLF_Spin): ^v = up/down (σy), <> = left/right (σx). A
 // spin-½ closure carries one, drawn from the census.
-const SPIN=['↑ up','↓ down','← left','→ right'];
+// Spin IS the twist (QLF_Spin): a closure carries a component on BOTH axes — σ_y (^ up / v down)
+// AND σ_x (> right / < left) — so spin is two variables, e.g. ↑→ or ↓←.
+const SPIN_Y=['↑','↓'], SPIN_X=['→','←'];
+const censusSpin=()=> SPIN_Y[(lseq()*2)|0] + SPIN_X[(lseq()*2)|0];   // drawn from the census, both axes
 function spawn(kind,x,y,z,vx,vy,vz,virtual){
   const mean = KIND[kind].ttl;
   // Decay is deterministic ensemble statistics of the prime bath (Decay.md §1a): each
@@ -620,7 +623,7 @@ function spawn(kind,x,y,z,vx,vy,vz,virtual){
   const ttl = virtual ? 0.9
             : (mean===Infinity ? Infinity : -mean*Math.log(1-(0.001+0.998*lseq())));
   particles.push({kind,x,y,z,vx,vy,vz, ttl,
-                  born:reduceMotion?1:0, virtual:!!virtual, spin:SPIN[(lseq()*4)|0]});
+                  born:reduceMotion?1:0, virtual:!!virtual, spin:censusSpin()});
 }
 function spawnPair(a,b,virtual,at){
   const [x,y,z]=at||fluctPoint();
@@ -658,7 +661,7 @@ function makeAtom(type,x,y,z,anti,vx,vy,vz){
     return makeMolecule(c, x,y,z, anti, vx,vy,vz, Math.max(0,free)); }
   const A={ anti:!!anti, x,y,z, born:reduceMotion?1:0,
             vx:vx??(lseq()*2-1)*0.5, vy:vy??(lseq()*2-1)*0.5, vz:vz??(lseq()*2-1)*0.5,
-            spin:SPIN[(lseq()*4)|0], orbits:[] };
+            spin:censusSpin(), orbits:[] };
   const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;      // an element atom: Z electrons (capped) on 1–2 shells
   const ne = Math.max(1, Math.min(el.ne, el.Z));
   for(let i=0;i<ne;i++){
@@ -683,7 +686,7 @@ function makeMolecule(comp,x,y,z,anti,vx,vy,vz,free){
   const {sites,bonds}=buildSites(comp);
   const A={ comp, sites, bonds, free:free??0, anti:!!anti, x,y,z,
             vx:vx??(lseq()*2-1)*0.4, vy:vy??(lseq()*2-1)*0.4, vz:vz??(lseq()*2-1)*0.4,
-            born:reduceMotion?1:0, spin:SPIN[(lseq()*4)|0], orbits:[] };
+            born:reduceMotion?1:0, spin:censusSpin(), orbits:[] };
   atoms.push(A); return A;
 }
 // nuclei world positions
@@ -707,7 +710,7 @@ function build(){
       baseW: FLAT_W*(0.82+lseq()*0.18),
       oct,
       ph: lseq()*Math.PI*2,
-      spin: SPIN[_lastSpin]               // handedness of the closure that placed this node
+      spin: _lastSpin               // handedness of the closure that placed this node
     });
   }
   birth = reduceMotion ? 1 : 0;
@@ -841,7 +844,7 @@ function stepParticles(dt){
       bhAccum += rbh*2*dt;
       while(bhAccum>=1 && bhs.length<16){ bhAccum-=1; const [x,y,z]=fluctPoint();
         bhs.push({x,y,z, vx:0,vy:0,vz:0, m:1+lseq()*3, born:0, rad:0,
-          q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]});   // no-hair Q,J from the collapsed closures
+          q:[-1,0,1][(lseq()*3)|0], spin:censusSpin()});   // no-hair Q,J from the collapsed closures
         flash(x,y,z,[255,255,255],1.6);
       }
     }
@@ -1110,9 +1113,11 @@ function renderParticles(){
       if(pp){ const rr=(focal()/pp.z)*0.13;
         ctx.strokeStyle=`rgba(94,200,216,${0.5+0.5*a})`; ctx.lineWidth=1.8;
         ctx.beginPath(); ctx.arc(pp.sx,pp.sy,rr,0,7); ctx.stroke();
-        if(inspected.spin){ const d={'↑':[0,-1],'↓':[0,1],'←':[-1,0],'→':[1,0]}[inspected.spin[0]];
-          if(d){ ctx.beginPath(); ctx.moveTo(pp.sx+d[0]*rr, pp.sy+d[1]*rr);
-            ctx.lineTo(pp.sx+d[0]*rr*2.2, pp.sy+d[1]*rr*2.2); ctx.stroke(); } } }
+        if(inspected.spin){ const s=inspected.spin;   // resultant of the σ_y (↑/↓) and σ_x (→/←) components
+          let dx=(s.includes('→')?1:0)-(s.includes('←')?1:0), dy=(s.includes('↓')?1:0)-(s.includes('↑')?1:0);
+          const l=Math.hypot(dx,dy); if(l){ dx/=l; dy/=l;
+            ctx.beginPath(); ctx.moveTo(pp.sx+dx*rr, pp.sy+dy*rr);
+            ctx.lineTo(pp.sx+dx*rr*2.4, pp.sy+dy*rr*2.4); ctx.stroke(); } } }
     }
   }
 }
@@ -1491,7 +1496,7 @@ function qcInstantiate(text){
     else if(ELEMENTS[kind] || formulaComp(kind)) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }   // H, He, C, O, Fe, H2, H2O, Fe2O3, …
     else if(kind.startsWith('anti') && (ELEMENTS[kind.slice(4)]||formulaComp(kind.slice(4)))) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiH2O, …
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
-      q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]}); ok++; }
+      q:[-1,0,1][(lseq()*3)|0], spin:censusSpin()}); ok++; }
     else if(QC_MACRO[kind]) {                       // named composite closure -> expand at the free base
       for(const it of QC_MACRO[kind](x,y,z,vx,vy,vz)){
         if(it.atom) makeAtom(it.atom, it.x,it.y,it.z, !!it.anti, it.vx||0,it.vy||0,it.vz||0);
