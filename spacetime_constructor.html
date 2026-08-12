@@ -431,26 +431,35 @@ let vacLedger = 0;   // vacuum/logical energy account — absorbed-photon energy
 const MPL_OVER_ME = Math.exp(14*Math.PI)*6*Math.pow(Math.PI,5);   // Planck mass in mₑ (QLF_AlphaS ln=14π; 6π⁵)
 const M_H = 1836+1;                                               // hydrogen mass-energy in mₑ (p + e)
 const M_P = 1836, M_N = 1839, M_E = 1;                           // proton / neutron / electron, mₑ
-// Elements offered for atoms & crystals. ne = electrons drawn (capped for clarity); R = shell radius;
-// sp = default crystal lattice spacing.  Z protons + N neutrons in the nucleus, Z electrons on shells.
+// Elements offered for atoms & crystals. ne = electrons drawn (capped); R = shell radius;
+// sp = crystal spacing; val = VALENCE (shared closures the atom can bond); metal atoms don't bond
+// each other (they lattice). Z protons + N neutrons in the nucleus, Z electrons on shells.
 const ELEMENTS = {
-  H:  {sym:'H',  Z:1,  N:0,  ne:1, R:2.0, sp:2.8},
-  He: {sym:'He', Z:2,  N:2,  ne:2, R:2.2, sp:3.0},
-  C:  {sym:'C',  Z:6,  N:6,  ne:6, R:2.9, sp:3.4},
-  O:  {sym:'O',  Z:8,  N:8,  ne:8, R:3.0, sp:3.3},
-  Fe: {sym:'Fe', Z:26, N:30, ne:8, R:3.6, sp:3.0},   // ne capped at 8; Fe reads as a dense metal lattice
+  H:  {sym:'H',  Z:1,  N:0,  ne:1, R:2.0, sp:2.8, val:1},
+  He: {sym:'He', Z:2,  N:2,  ne:2, R:2.2, sp:3.0, val:0},            // noble — inert
+  C:  {sym:'C',  Z:6,  N:6,  ne:6, R:2.9, sp:3.4, val:4},
+  O:  {sym:'O',  Z:8,  N:8,  ne:8, R:3.0, sp:3.3, val:2},
+  Fe: {sym:'Fe', Z:26, N:30, ne:8, R:3.6, sp:3.0, val:3, metal:true},  // Fe³⁺ ⇒ Fe₂O₃ (rust)
 };
-// total rest mass-energy of an atom in mₑ
-function atomMass(A){ if(A.type==='H2') return 2*M_H; const e=A.el||ELEMENTS.H; return e.Z*(M_P+M_E)+e.N*M_N; }
-// fermion count (for matter/antimatter tally): Z protons + Z electrons + N neutrons
-function atomFermions(A){ if(A.type==='H2') return 4; const e=A.el||ELEMENTS.H; return 2*e.Z+e.N; }
+const _SUB={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+const elemMass = s => { const e=ELEMENTS[s]; return e.Z*(M_P+M_E)+e.N*M_N; };
+// A molecule is a bonded cluster with a composition map comp={sym:count}. A single atom's comp is
+// just {el:1}. All the accounting below is a SUM over comp — no molecule is special-cased.
+function atomComp(A){ return A.comp || (A.el?{[A.el.sym]:1}:{H:1}); }
+const _fkeys=c=>{ const ord=['C','Fe','H','O','He']; return Object.keys(c).sort((a,b)=>(ord.indexOf(a)+9)-(ord.indexOf(b)+9)); };
+function compFormula(c){ return _fkeys(c).map(k=> c[k]>1 ? k+String(c[k]).split('').map(d=>_SUB[d]).join('') : k).join(''); }
+function asciiFormula(c){ return _fkeys(c).map(k=> c[k]>1 ? k+c[k] : k).join(''); }   // parseable (H2O, Fe2O3)
+// total rest mass-energy of an atom/molecule in mₑ
+function atomMass(A){ const c=atomComp(A); let m=0; for(const s in c) m+=elemMass(s)*c[s]; return m; }
+// fermion count (matter/antimatter tally): Σ (2Z + N) over the composition
+function atomFermions(A){ const c=atomComp(A); let f=0; for(const s in c){ const e=ELEMENTS[s]; f+=(2*e.Z+e.N)*c[s]; } return f; }
+function atomMassNumber(A){ const c=atomComp(A); let n=0; for(const s in c){ const e=ELEMENTS[s]; n+=(e.Z+e.N)*c[s]; } return n; }
+function atomCount(A){ const c=atomComp(A); let n=0; for(const s in c) n+=c[s]; return n; }   // number of atoms in it
 // An even fermion count folds to +I ⇒ the whole atom is a BOSON (boson_even_pairs, QLF_Spin).
-// A boson atom that is also LIGHT enough (small mass number) BOSE-CONDENSES at low T — a superfluid,
-// exempt from atom–atom Pauli exclusion — the way He-4 does. Heavy atoms localize/crystallize first.
+// A LIGHT boson SINGLE atom BOSE-CONDENSES at low T (superfluid, He-4). Molecules/heavy atoms don't.
 const COND_TMAX = 4;   // K — below this, light boson atoms condense (illustrative threshold, ~He λ-point)
-function atomMassNumber(A){ return A.type==='H2' ? 2 : (A.el?A.el.Z+A.el.N:1); }
 function atomIsBoson(A){ return atomFermions(A)%2===0; }
-function atomCondenses(A){ return A.type!=='H2' && atomIsBoson(A) && atomMassNumber(A)<=4; }  // H, He-4
+function atomCondenses(A){ return !A.comp && atomIsBoson(A) && atomMassNumber(A)<=4; }  // single H, He-4
 // Vacuum energy density ρ(T) = ρ_Λ + a·T⁴ : the holographic DARK-ENERGY floor (ρ_Λ, the T→0
 // minimum, QLF 3log2/8π·c⁴/GR_H² ≈ 3.35 GeV/m³) plus THERMAL radiation. The slider walks it from
 // dark energy at absolute zero up to the Planck density (~5×10¹¹³ J/m³) at the Planck temperature —
@@ -639,30 +648,47 @@ function orbitBasis(){
   const vx=ny*uz-nz*uy, vy=nz*ux-nx*uz, vz=nx*uy-ny*ux;
   return { u:[ux,uy,uz], v:[vx,vy,vz] };
 }
+// Formula string (H2O, CO2, Fe2O3) → composition map. Also accepts H2, O2, C, etc.
+function formulaComp(s){ const c={}; const re=/([A-Z][a-z]?)(\d*)/g; let m;
+  while((m=re.exec(s))!==null){ if(!m[1]) break; if(!ELEMENTS[m[1]]) return null; c[m[1]]=(c[m[1]]||0)+(m[2]?+m[2]:1); } return Object.keys(c).length?c:null; }
 function makeAtom(type,x,y,z,anti,vx,vy,vz){
-  const A={ type, anti:!!anti, x,y,z, born:reduceMotion?1:0,
+  const c = ELEMENTS[type] ? null : formulaComp(type);   // 'H','He'… = single atom; 'H2','H2O'… = molecule
+  if(c && (Object.keys(c).length>1 || Object.values(c)[0]>1)){
+    let free=0; for(const s in c) free+=ELEMENTS[s].val*c[s]; free-=2*(compAtomCount(c)-1);   // valence left after a spanning bond
+    return makeMolecule(c, x,y,z, anti, vx,vy,vz, Math.max(0,free)); }
+  const A={ anti:!!anti, x,y,z, born:reduceMotion?1:0,
             vx:vx??(lseq()*2-1)*0.5, vy:vy??(lseq()*2-1)*0.5, vz:vz??(lseq()*2-1)*0.5,
-            spin:SPIN[(lseq()*4)|0],   // net spin of the bound closure, drawn from the census
-            orbits:[] };
-  if(type==='H2'){
-    let bx=lseq()*2-1,by=lseq()*2-1,bz=lseq()*2-1; const bl=Math.hypot(bx,by,bz)||1;
-    A.bondAxis=[bx/bl,by/bl,bz/bl]; A.bondLen=2.2;
-    A.orbits=[{R:2.9,rate:1.7,ph:0,b:orbitBasis()},{R:2.9,rate:1.7,ph:Math.PI,b:orbitBasis()}];
-  } else {
-    const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;    // an element atom: Z electrons (capped) on 1–2 shells
-    const ne = Math.max(1, Math.min(el.ne, el.Z));
-    for(let i=0;i<ne;i++){
-      const inner = ne<=2 || i<Math.ceil(ne*0.35);         // a compact inner shell + an outer shell
-      A.orbits.push({ R: inner?el.R*0.62:el.R, rate: inner?2.7:1.9,
-                      ph: lseq()*6.283 + i*2.399, b: orbitBasis() });
-    }
+            spin:SPIN[(lseq()*4)|0], orbits:[] };
+  const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;      // an element atom: Z electrons (capped) on 1–2 shells
+  const ne = Math.max(1, Math.min(el.ne, el.Z));
+  for(let i=0;i<ne;i++){
+    const inner = ne<=2 || i<Math.ceil(ne*0.35);
+    A.orbits.push({ R: inner?el.R*0.62:el.R, rate: inner?2.7:1.9, ph: lseq()*6.283 + i*2.399, b: orbitBasis() });
   }
   atoms.push(A); return A;
 }
-// nuclei world positions for an atom
+function compAtomCount(c){ let n=0; for(const s in c) n+=c[s]; return n; }
+// Lay a molecule's atoms out as a compact cluster (heaviest at the centre), bonds star to it.
+function buildSites(comp){
+  const list=[]; for(const s in comp) for(let k=0;k<comp[s];k++) list.push(s);
+  list.sort((a,b)=>elemMass(b)-elemMass(a));
+  const sites=[{sym:list[0],dx:0,dy:0,dz:0}], bonds=[];
+  for(let i=1;i<list.length;i++){ const a=i*2.399, el=Math.cos(i*1.1)*1.2, r=1.7;
+    sites.push({sym:list[i], dx:r*Math.cos(a)*Math.cos(el), dy:r*Math.sin(el), dz:r*Math.sin(a)*Math.cos(el)});
+    bonds.push([0,i]); }
+  return {sites,bonds};
+}
+// A molecule: a bonded cluster with composition comp and free valence.
+function makeMolecule(comp,x,y,z,anti,vx,vy,vz,free){
+  const {sites,bonds}=buildSites(comp);
+  const A={ comp, sites, bonds, free:free??0, anti:!!anti, x,y,z,
+            vx:vx??(lseq()*2-1)*0.4, vy:vy??(lseq()*2-1)*0.4, vz:vz??(lseq()*2-1)*0.4,
+            born:reduceMotion?1:0, spin:SPIN[(lseq()*4)|0], orbits:[] };
+  atoms.push(A); return A;
+}
+// nuclei world positions
 function nucleiOf(A){
-  if(A.type==='H2'){ const h=A.bondLen/2, a=A.bondAxis;
-    return [[A.x+a[0]*h,A.y+a[1]*h,A.z+a[2]*h],[A.x-a[0]*h,A.y-a[1]*h,A.z-a[2]*h]]; }
+  if(A.comp) return A.sites.map(s=>[A.x+s.dx,A.y+s.dy,A.z+s.dz]);
   return [[A.x,A.y,A.z]];
 }
 function electronPos(A,o){
@@ -739,7 +765,7 @@ function localW(x,y,z){
   }
   for(const A of atoms){            // atoms/molecules are little masses too (heavier ⇒ deeper well)
     const dx=x-A.x, dy=y-A.y, dz=z-A.z;
-    const wscale = A.type==='H2' ? 1.3 : (A.el ? 0.5+0.5*Math.cbrt(A.el.Z+A.el.N) : 1);
+    const wscale = 0.5+0.5*Math.cbrt(atomMassNumber(A));   // heavier atom/molecule ⇒ deeper well
     w -= (7*wscale)/(dx*dx+dy*dy+dz*dz+2.0);
   }
   return Math.max(2, w);
@@ -982,17 +1008,32 @@ function stepAtoms(dt){
     driftDown(A,dt);                       // atoms follow the same latency gradient
     A.x+=A.vx*dt; A.y+=A.vy*dt; A.z+=A.vz*dt; A.vx*=0.998; A.vy*=0.998; A.vz*=0.998;   // gentle radiative settling (a warm crystal still breathes)
     if(A.x*A.x+A.y*A.y+A.z*A.z > 96*96) A._dead=true; }   // no wall: drifts off into the vacuum
+  // Chemistry — ONE rule for every reaction: two isolated closures with free VALENCE that drift
+  // within range share closures (bond), each spending one valence, until saturated. H+H→H₂,
+  // O+2H→H₂O, C+2O→CO₂, C+C…→graphite/diamond, 2Fe+3O→Fe₂O₃ all fall out of this. Metals don't
+  // self-bond (they lattice); noble gases (valence 0) never bond. (Shared-closure bonding is the
+  // principle, QLF_Confinement/Bound_States_QLF; the valences & rates are illustrative.)
+  const freeVal = X => X.comp ? X.free : ELEMENTS[X.el.sym].val;
+  const isMetalAtom = X => !X.comp && X.el && X.el.metal;
   for(let i=0;i<atoms.length;i++){ for(let j=i+1;j<atoms.length;j++){
     const A=atoms[i],B=atoms[j]; if(A._dead||B._dead) continue;
     const dd=(A.x-B.x)**2+(A.y-B.y)**2+(A.z-B.z)**2;
     const mx=(A.x+B.x)/2,my=(A.y+B.y)/2,mz=(A.z+B.z)/2;
-    if(A.anti!==B.anti){                       // matter atom meets antimatter atom → annihilate
+    if(A.anti!==B.anti){                       // matter meets antimatter → annihilate
       if(dd<7){ flash(mx,my,mz,[255,255,255],1.2); emitPhotons(mx,my,mz,6,false); A._dead=B._dead=true; }
-    } else if(A.type==='H'&&B.type==='H' && (A.nbr||0)<=1 && (B.nbr||0)<=1){
-      // two ISOLATED H bond into an H₂ molecule (+ photon); a crowded H (in a crystal,
-      // coordination>1) is held apart by Pauli exclusion instead — it does not bond.
-      if(dd<9){ makeAtom('H2',mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2);
-        flash(mx,my,mz,[190,225,255],1); emitPhotons(mx,my,mz,1,false); A._dead=B._dead=true; }
+      continue;
+    }
+    const fA=freeVal(A), fB=freeVal(B);
+    if(fA>0 && fB>0 && !(isMetalAtom(A)&&isMetalAtom(B)) &&      // both have valence; not two metals
+       (A.nbr||0)<=1 && (B.nbr||0)<=1 &&                        // isolated (a dense crystal is Pauli-held, no bond)
+       atomCount(A)+atomCount(B)<=12 && dd<9){                  // within range; cap cluster size
+      const comp={}; const cA=atomComp(A),cB=atomComp(B);
+      for(const s in cA) comp[s]=(comp[s]||0)+cA[s];
+      for(const s in cB) comp[s]=(comp[s]||0)+cB[s];
+      const nb=Math.min(fA,fB), free=fA+fB-2*nb;                // form as many bonds as the pair allows
+      makeMolecule(comp,mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2,free);
+      flash(mx,my,mz,[190,225,255],0.9); emitPhotons(mx,my,mz,1,false);
+      A._dead=B._dead=true; break;
     }
   } }
   for(let i=atoms.length-1;i>=0;i--) if(atoms[i]._dead) atoms.splice(i,1);
@@ -1078,9 +1119,7 @@ function renderParticles(){
 
 function renderAtoms(){
   for(const A of atoms){
-    const nuc=nucleiOf(A);
     const abd=inBand(atomMass(A))?1:0.16;               // dim the atom when out of the selected band
-    const mn=A.el?A.el.Z+A.el.N:1, nucScale=0.6+0.4*Math.cbrt(mn);   // heavier nucleus draws bigger
     if(A.condensed){                                    // superfluid glow — a Bose-condensed boson atom
       const cp0=project(A.x,A.y,A.z);
       if(cp0){ const base=focal()/cp0.z, rr=base*0.42*A.born;
@@ -1089,11 +1128,24 @@ function renderAtoms(){
         g.addColorStop(0,'rgba(120,220,255,0.22)'); g.addColorStop(1,'rgba(120,220,255,0)');
         ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cp0.sx,cp0.sy,rr,0,7); ctx.fill();
         ctx.globalCompositeOperation='source-over'; } }
-    // covalent bond line (H₂)
-    if(A.type==='H2'){ const p0=project(nuc[0][0],nuc[0][1],nuc[0][2]), p1=project(nuc[1][0],nuc[1][1],nuc[1][2]);
-      if(p0&&p1){ ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
-        ctx.beginPath(); ctx.moveTo(p0.sx,p0.sy); ctx.lineTo(p1.sx,p1.sy); ctx.stroke();
-        ctx.globalCompositeOperation='source-over'; } }
+    if(A.comp){                                          // ── MOLECULE: bond lines + per-element nuclei + formula ──
+      const sw=A.sites.map(s=>({el:ELEMENTS[s.sym], p:project(A.x+s.dx,A.y+s.dy,A.z+s.dz)}));
+      ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
+      for(const [i,j] of A.bonds){ const pi=sw[i].p, pj=sw[j].p;
+        if(pi&&pj){ ctx.beginPath(); ctx.moveTo(pi.sx,pi.sy); ctx.lineTo(pj.sx,pj.sy); ctx.stroke(); } }
+      ctx.globalCompositeOperation='source-over';
+      for(const s of sw){ if(!s.p) continue; const base=focal()/s.p.z, ns=0.55+0.4*Math.cbrt(s.el.Z+s.el.N), sz=base*0.10*2.4*A.born*ns;
+        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+        ctx.drawImage(binFor(bandT(1836)), s.p.sx-sz, s.p.sy-sz, sz*2, sz*2);
+        ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over'; }
+      const cp=project(A.x,A.y,A.z);
+      if(cp){ const base=focal()/cp.z, fs=Math.max(9,Math.min(48,base*0.14));
+        ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`600 ${fs.toFixed(0)}px ${MONO}`;
+        ctx.fillStyle='rgba(233,237,247,0.95)'; ctx.fillText(`${A.anti?'anti-':''}${compFormula(A.comp)}`, cp.sx, cp.sy-base*0.42); }
+      continue;
+    }
+    const nuc=nucleiOf(A);                               // ── SINGLE ATOM ──
+    const mn=A.el?A.el.Z+A.el.N:1, nucScale=0.6+0.4*Math.cbrt(mn);   // heavier nucleus draws bigger
     for(const o of A.orbits){
       // faint orbital ring
       ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(120,150,205,0.16)'; ctx.lineWidth=1;
@@ -1119,13 +1171,12 @@ function renderAtoms(){
       ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
       ctx.lineWidth=1.4; ctx.strokeStyle=A.anti?'rgba(120,200,255,0.9)':'rgba(255,150,120,0.9)';
       ctx.beginPath(); ctx.arc(np.sx,np.sy,base*0.15*nucScale,0,7); ctx.stroke(); }
-    // label — element symbol (or H₂)
+    // label — element symbol
     const cp=project(A.x,A.y,A.z);
     if(cp){ const base=focal()/cp.z, fs=Math.max(9,Math.min(48,base*0.13*nucScale));   // label scales with zoom + nucleus size
-      const sym = A.type==='H2' ? 'H₂' : (A.el?A.el.sym:'H');
       ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`600 ${fs.toFixed(0)}px ${MONO}`;
       ctx.fillStyle='rgba(233,237,247,0.95)';
-      ctx.fillText(`${A.anti?'anti-':''}${sym}`, cp.sx, cp.sy-base*0.24*nucScale); }
+      ctx.fillText(`${A.anti?'anti-':''}${A.el?A.el.sym:'H'}`, cp.sx, cp.sy-base*0.24*nucScale); }
   }
 }
 
@@ -1254,8 +1305,10 @@ function inspectAt(px,py){
   const consider=(x,y,z,label,spin)=>{ const pp=project(x,y,z); if(!pp) return;
     const d=(pp.sx-px)**2+(pp.sy-py)**2; if(d<bd){ bd=d; best={x,y,z,label,spin}; } };
   const ENAME={H:'hydrogen',He:'helium',C:'carbon',O:'oxygen',Fe:'iron'};
+  const MNAME={'H₂':'hydrogen','O₂':'oxygen','H₂O':'water','CO₂':'carbon dioxide','CO':'carbon monoxide','CH₄':'methane','OH':'hydroxyl','Fe₂O₃':'iron oxide (rust)','FeO':'iron oxide'};
   for(const A of atoms) consider(A.x,A.y,A.z,
-    (A.type==='H2' ? `${A.anti?'anti-':''}H₂ molecule (two H, covalent bond) · spin ${A.spin||'—'}`
+    (A.comp ? (()=>{ const f=compFormula(A.comp), nm=MNAME[f];
+           return `${A.anti?'anti-':''}${nm?nm+' ':''}${f} — a molecule (shared-closure bond)${A.free>0?', valence '+A.free+' free':''} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()
        : (()=>{ const e=A.el||ELEMENTS.H;
            const sf = A.condensed ? ' · SUPERFLUID (Bose-condensed boson)' : '';
            return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons)${sf} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
@@ -1365,7 +1418,7 @@ function qcCapture(){
   for(const p of particles){ if(p.virtual || !inBand(KIND[p.kind].m) || !onScreen(p.x,p.y,p.z)) continue;
     L.push(`${p.kind} ${QC_TWIST[p.kind]||'|?|'} @ ${f(p.x)},${f(p.y)},${f(p.z)} v ${f(p.vx)},${f(p.vy)},${f(p.vz)}`); }
   for(const A of atoms){ if(!inBand(atomMass(A)) || !onScreen(A.x,A.y,A.z)) continue;
-    const nm = A.type==='H2' ? 'H2' : (A.el?A.el.sym:'H');
+    const nm = A.comp ? asciiFormula(A.comp) : (A.el?A.el.sym:'H');
     L.push(`${A.anti?'anti':''}${nm} @ ${f(A.x)},${f(A.y)},${f(A.z)} v ${f(A.vx)},${f(A.vy)},${f(A.vz)}`); }
   for(const b of bhs){ if(!inBand(b.m*MPL_OVER_ME) || !onScreen(b.x,b.y,b.z)) continue;
     L.push(`blackhole ⊙ @ ${f(b.x)},${f(b.y)},${f(b.z)} m ${f(b.m)}`); }
@@ -1400,7 +1453,7 @@ function qcPlaceLattice(L){
     for(let i=0;i<L.n;i++)for(let j=0;j<L.n-1;j++)for(let k=0;k<L.n-1;k++) add(i,j+.5,k+.5); }
   let placed=0, bad=false;
   for(const [x,y,z] of sites){ if(placed>=LATTICE_CAP) break;
-    if(L.motif==='H2'||ELEMENTS[L.motif]){ makeAtom(L.motif,x,y,z,false,0,0,0); const A=atoms[atoms.length-1]; A.born=1; A.vx=A.vy=A.vz=0; }
+    if(ELEMENTS[L.motif]||formulaComp(L.motif)){ makeAtom(L.motif,x,y,z,false,0,0,0); const A=atoms[atoms.length-1]; A.born=1; A.vx=A.vy=A.vz=0; }
     else if(KIND[L.motif] && !KIND[L.motif].quark){ spawn(L.motif,x,y,z,0,0,0); const p=particles[particles.length-1]; p.born=1; p.vx=p.vy=p.vz=0; p.ttl=Infinity; }
     else { bad=true; break; }
     placed++;
@@ -1435,9 +1488,8 @@ function qcInstantiate(text){
     const [x,y,z]=freeSpot(pos[0],pos[1],pos[2]);       // never stack on an occupied spot
     if(KIND[kind] && KIND[kind].quark) { confined++; }   // a free quark can't close ZFA (confined)
     else if(KIND[kind]) { spawn(kind,x,y,z,vx,vy,vz); ok++; }
-    else if(kind==='H2'||ELEMENTS[kind]) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }         // H, He, C, O, Fe, H2
-    else if(kind==='antiH2') { makeAtom('H2',x,y,z,true,vx,vy,vz); ok++; }
-    else if(kind.startsWith('anti') && ELEMENTS[kind.slice(4)]) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiHe, …
+    else if(ELEMENTS[kind] || formulaComp(kind)) { makeAtom(kind,x,y,z,false,vx,vy,vz); ok++; }   // H, He, C, O, Fe, H2, H2O, Fe2O3, …
+    else if(kind.startsWith('anti') && (ELEMENTS[kind.slice(4)]||formulaComp(kind.slice(4)))) { makeAtom(kind.slice(4),x,y,z,true,vx,vy,vz); ok++; }   // antiH, antiH2O, …
     else if(kind==='blackhole') { bhs.push({x,y,z,vx:0,vy:0,vz:0,m:m||1,born:0,rad:0,
       q:[-1,0,1][(lseq()*3)|0], spin:SPIN[(lseq()*4)|0]}); ok++; }
     else if(QC_MACRO[kind]) {                       // named composite closure -> expand at the free base
@@ -1582,9 +1634,9 @@ function frame(){
     np+=nf; q+=KIND[p.kind].q;
     KIND[p.kind].anti ? amat+=nf : mat+=nf; kc[p.kind]=(kc[p.kind]||0)+1; erest+=m; }
   const acA={}, acM={}, acC={}; let nAtoms=0, nMol=0, nCond=0;   // atoms / molecules / condensate, counted apart
-  for(const A of atoms){ const isMol=A.type==='H2', f=atomFermions(A), am=atomMass(A);
+  for(const A of atoms){ const isMol=!!A.comp, f=atomFermions(A), am=atomMass(A);
     A.anti ? amat+=f : mat+=f; eSigned += (A.anti?-1:1)*am; erest += am;
-    if(isMol){ nMol++;  const k=(A.anti?'anti-':'')+'H₂'; acM[k]=(acM[k]||0)+1; }
+    if(isMol){ nMol++;  const k=(A.anti?'anti-':'')+compFormula(A.comp); acM[k]=(acM[k]||0)+1; }
     else     { nAtoms++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acA[k]=(acA[k]||0)+1; }
     if(A.condensed){ nCond++; const k=(A.anti?'anti-':'')+(A.el?A.el.sym:'H'); acC[k]=(acC[k]||0)+1; } }
   let ebh=0; for(const b of bhs) ebh += b.m*MPL_OVER_ME;   // a Planck-mass BH dwarfs all matter
