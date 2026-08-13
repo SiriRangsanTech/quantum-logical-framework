@@ -45,6 +45,14 @@ jump from `0` to one bit happens exactly when the `−I` (the double-cover sign)
 Vectors are derivative — an even number of half-spin atoms, folding back to `+I`
 (`QLF_Spin.boson_even_pairs`) — and carry no bit of their own. See `Mathematics_From_QLF.md`
 § "Rung 5a — spin-½ is the atom of information (Cartan)".
+
+**§3 reproves the double-valuedness itself, from rotation matrices** — not merely cited. A
+full (2π) turn is `+I` on the vector (SO(3)) representation but `−I` on the spin-½ (SU(2))
+representation (`spinor_double_valued_vector_blind`, from `Complex.exp_pi_mul_I` /
+`Real.cos_two_pi`), so the concrete double-cover instance the information claim rests on is
+machine-checked. Cartan (1913) is then retained *only* for the general classification (that
+these non-tensorial spinor irreps are the complete list, for every orthogonal group), which
+QLF does not formalize.
 -/
 
 namespace QLF
@@ -110,5 +118,73 @@ theorem spin_half_is_information_atom :
   refine ⟨single_valued_zero_information, two_valued_one_bit, ?_⟩
   rw [single_valued_zero_information, two_valued_one_bit]
   exact Real.log_pos (by norm_num)
+
+-- ==========================================================================
+-- 3. The double-valuedness itself, reproven from rotation matrices
+-- ==========================================================================
+--
+-- Sections 1–2 read the information off the *substrate's* twist fold. This section
+-- discharges the one thing that was previously only cited: the concrete double-cover
+-- instance the whole claim rests on — that a full (2π) rotation is `−I` on the spin-½
+-- (spinor) representation but `+I` on the vector representation. We prove it directly from
+-- the explicit SU(2) and SO(3) rotation matrices, evaluated at θ = 2π, so the
+-- "two-valued vs single-valued" dichotomy no longer leans on Cartan for *this* instance;
+-- Cartan (1913) remains cited only for the *general* classification (that these spinor
+-- irreps are exactly the non-tensorial ones, for every orthogonal group).
+
+/-- The spin-½ (spinor) rotation about the z-axis by angle `θ`: the SU(2) element
+    `diag(e^{-iθ/2}, e^{iθ/2})`. The half-angle is the whole point — it is what makes the
+    representation double-valued. -/
+noncomputable def spinorRotZ (θ : ℝ) : M :=
+  !![Complex.exp (-(θ : ℂ) / 2 * Complex.I), 0;
+     0, Complex.exp ((θ : ℂ) / 2 * Complex.I)]
+
+/-- The vector (spin-1) rotation about the z-axis by angle `θ`: the SO(3) rotation matrix.
+    No half-angle — it is single-valued. -/
+noncomputable def vectorRotZ (θ : ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
+  !![Real.cos θ, -Real.sin θ, 0;
+     Real.sin θ,  Real.cos θ, 0;
+     0,           0,          1]
+
+/-- **A full turn is `−I` on the spinor.** `spinorRotZ (2π) = diag(e^{-iπ}, e^{iπ}) =
+    diag(−1, −1) = −I`: the spin-½ representation does **not** return to the identity after
+    360°. Proven from `Complex.exp_pi_mul_I`. This is Cartan's double-valued spinor sign,
+    computed. -/
+theorem spinorRotZ_two_pi : spinorRotZ (2 * Real.pi) = -(1 : M) := by
+  have e00 : Complex.exp (-(↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -1 := by
+    rw [show (-(↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -(↑Real.pi * Complex.I) by
+          push_cast; ring,
+        Complex.exp_neg, Complex.exp_pi_mul_I]
+    norm_num
+  have e11 : Complex.exp ((↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -1 := by
+    rw [show ((↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = ↑Real.pi * Complex.I by
+          push_cast; ring,
+        Complex.exp_pi_mul_I]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [spinorRotZ, e00, e11, Matrix.one_apply, Matrix.neg_apply]
+
+/-- **A full turn is `+I` on the vector.** `vectorRotZ (2π) = I₃`: the spin-1 (vector)
+    representation returns to the identity after 360°. Proven from `Real.cos_two_pi` /
+    `Real.sin_two_pi`. The vector is blind to the winding the spinor records. -/
+theorem vectorRotZ_two_pi :
+    vectorRotZ (2 * Real.pi) = (1 : Matrix (Fin 3) (Fin 3) ℝ) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [vectorRotZ, Real.cos_two_pi, Real.sin_two_pi, Matrix.one_apply]
+
+/-- **The spinor is double-valued, the vector is single-valued — the same 2π rotation,
+    two different fates, machine-checked from the rotation matrices.** The vector
+    representation of a full turn is the identity (`+I`); the spinor representation of the
+    *same* full turn is `−I ≠ +I` (`spin_double_cover_nontrivial`). This is the concrete
+    double-cover instance the information dichotomy of §1–2 rests on — now proven, not
+    cited. (Cartan 1913 is retained only for the general classification.) The vector cannot
+    register the `ℤ₂` winding; the spinor is exactly the object that can — which is why the
+    bit lives on the spinor. -/
+theorem spinor_double_valued_vector_blind :
+    vectorRotZ (2 * Real.pi) = (1 : Matrix (Fin 3) (Fin 3) ℝ) ∧
+    spinorRotZ (2 * Real.pi) = -(1 : M) ∧
+    (-(1 : M)) ≠ (1 : M) :=
+  ⟨vectorRotZ_two_pi, spinorRotZ_two_pi, spin_double_cover_nontrivial⟩
 
 end QLF
