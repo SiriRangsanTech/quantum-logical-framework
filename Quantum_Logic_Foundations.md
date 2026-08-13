@@ -162,8 +162,12 @@ two-valued spinor alphabet `{+I, −I}` carries `binary_kl 1 (1/2) = log 2` — 
 and the jump from zero to one bit happens precisely when the `−I` double-cover sign is
 admitted (`spin_half_is_information_atom`, `0 < log 2`). This `−I` is **Cartan's** (1913)
 double-valued spinor element — the topological content of `π₁(SO(3)) = ℤ₂` that a vector,
-factoring through `SO(3)`, is blind to; Cartan's classification is the cited classical
-foundation, and QLF supplies the information content it does not name. So the "one bit" at the
+factoring through `SO(3)`, is blind to. And that double-valuedness is not merely cited: it is
+*reproven from the explicit rotation matrices* — a full `2π` turn is `+I` on the vector
+(`SO(3)`) representation but `−I` on the spin-½ (`SU(2)`) representation
+(`spinor_double_valued_vector_blind`, **`[proven]`**) — so Cartan's classification is invoked
+*only* for the general list of non-tensorial irreps, while QLF supplies both the concrete
+double-cover instance and the information content it does not name. So the "one bit" at the
 base of the bottom-up build is not a posited primitive — it is the substrate's own spin-½
 atom, and its two-valuedness is *why* it is informative. The continuum is not assumed; it is
 the coarse-grained statistical average of a dense-but-discrete event stream

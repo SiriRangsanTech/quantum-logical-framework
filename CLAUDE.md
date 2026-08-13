@@ -203,7 +203,7 @@ In `lean/`, registered in `lakefile.lean` roots array (in build order). For full
 | `QLF_MO2` | The minimal quantum logic `MO2`, self-contained |
 | `QLF_MassGapDispersion` | The Yang–Mills mass gap as the dispersion gap of the propagation operator |
 | `QLF_FractalDiagram` | Closure-as-Feynman-diagram — the inductive correspondence, formalized |
-| `QLF_SpinorInformation` | Spin-½ is the atom of information (after Cartan 1913): the two-valued spinor fold-alphabet `{+I,−I}` carries one bit (`log 2`), a single-valued vector alphabet `{+I}` carries zero — the jump happens exactly when the `−I` double-cover sign is admitted |
+| `QLF_SpinorInformation` | Spin-½ is the atom of information (after Cartan 1913): the two-valued spinor fold-alphabet `{+I,−I}` carries one bit (`log 2`), a single-valued vector alphabet `{+I}` carries zero — the jump happens exactly when the `−I` double-cover sign is admitted. §3 **reproves the double-valuedness from explicit rotation matrices** (`spinor_double_valued_vector_blind`: a `2π` turn is `+I` on the `SO(3)`/vector rep, `−I` on the `SU(2)`/spin-½ rep); Cartan retained only for the general classification |
 
 ---
 

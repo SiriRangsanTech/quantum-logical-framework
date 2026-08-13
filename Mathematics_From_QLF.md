@@ -117,11 +117,21 @@ information**. (This is also why the substrate's per-event free-energy quantum, 
 and its LQG puncture entropy are all the *same* `log 2`: they are all the one bit that a
 single half-spin resolves.)
 
-**Honest scope.** The two theorems (`= 0` and `= log 2`) and the double-cover facts are
-machine-checked with no new axioms; Cartan's general classification is the cited classical
-result, and the identification "half-spin = atomic bit" is the assembled reading of the two
-verified facts, not a single new Lean object. QLF does not formalize the representation
-theory of the orthogonal groups.
+**The double-valuedness itself is reproven, not merely cited.**
+[`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean) §3 discharges the one piece that
+had been left to Cartan for *this instance*: from the explicit rotation matrices, a full
+`2π` turn is `+I` on the vector (`SO(3)`) representation but `−I` on the spin-½ (`SU(2)`)
+representation — `spinor_double_valued_vector_blind` (`vectorRotZ_two_pi = I₃` via
+`Real.cos_two_pi`; `spinorRotZ_two_pi = −I` via `Complex.exp_pi_mul_I`; `−I ≠ +I`). So *the
+same rotation, two fates* — the vector blind to the `ℤ₂` winding, the spinor recording it —
+is machine-checked, and that is exactly why the bit lives on the spinor.
+
+**Honest scope.** The information theorems (`= 0` and `= log 2`), the substrate double-cover
+facts, *and* the explicit-rotation double-valuedness are all machine-checked with no new
+axioms. Cartan (1913) is now retained *only* for the **general classification** — that these
+non-tensorial spinor irreps are the complete list for every orthogonal group — which QLF does
+not formalize. The identification "half-spin = atomic bit" is the assembled reading of the
+verified facts.
 
 ### Rung 6 — the Lie algebras su(2), su(3)
 
