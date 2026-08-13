@@ -589,8 +589,8 @@ function horizonPoint(){
   return { x:dx*R_HOR, y:dy*R_HOR, z:dz*R_HOR,             // a census point on the horizon sphere
     dir:[-dx+(lseq()*2-1)*0.3, -dy+(lseq()*2-1)*0.3, -dz+(lseq()*2-1)*0.3] };   // inward + a little spread (a bath, not a focus)
 }
-function flash(x,y,z,rgb,strength){
-  flashes.push({x,y,z,r:rgb[0],g:rgb[1],b:rgb[2],t:0,life:1,strength:strength||1});
+function flash(x,y,z,rgb,strength,cause){
+  flashes.push({x,y,z,r:rgb[0],g:rgb[1],b:rgb[2],t:0,life:1,strength:strength||1,cause:cause||null});
 }
 // Emit `n` photon streaks from (x,y,z). A photon is massless → travels straight and
 // fast (≈c, far quicker than the massive particles), leaving a fading light streak.
@@ -644,7 +644,7 @@ function spawnPair(a,b,virtual,at){
   const ux=vx/vl, uy=vy/vl, uz=vz/vl, sep=virtual?0.9:1.4;   // start apart so they don't self-annihilate
   spawn(a, x+ux*sep, y+uy*sep, z+uz*sep,  ux*sp,  uy*sp,  uz*sp, virtual);
   spawn(b, x-ux*sep, y-uy*sep, z-uz*sep, -ux*sp, -uy*sp, -uz*sp, virtual);
-  flash(x,y,z,[255,255,255], virtual?0.5:1);
+  flash(x,y,z,[255,255,255], virtual?0.5:1, virtual?'vacuum pair fluctuation — a possible closure realizing as a balanced particle+antiparticle':'pair creation — a balanced particle+antiparticle materialises');
 }
 
 /* ---------- bound states: atoms & molecules (joint ZFA closures) ----------
@@ -910,7 +910,7 @@ function stepParticles(dt){
       while(bhAccum>=1 && bhs.length<16){ bhAccum-=1; const [x,y,z]=fluctPoint();
         bhs.push({x,y,z, vx:0,vy:0,vz:0, m:1+lseq()*3, born:0, rad:0,
           q:[-1,0,1][(lseq()*3)|0], spin:censusSpin()});   // no-hair Q,J from the collapsed closures
-        flash(x,y,z,[255,255,255],1.6);
+        flash(x,y,z,[255,255,255],1.6,'black hole forms — a Planck-scale closure collapses (Compton = Schwarzschild)');
       }
     }
   }
@@ -927,9 +927,9 @@ function stepParticles(dt){
     const p=particles[i], k=KIND[p.kind];
     if((p.virtual || k.ttl!==Infinity) && p.ttl<=0){
       particles.splice(i,1);
-      if(p.virtual){ flash(p.x,p.y,p.z,[150,170,255],0.5); continue; }
+      if(p.virtual){ flash(p.x,p.y,p.z,[150,170,255],0.5,'foam flicker — a virtual '+(PNAME[p.kind]||p.kind)+' returns to possibility (unrealised closure)'); continue; }
       if(k.decay){
-        flash(p.x,p.y,p.z,[255,214,140],0.6);
+        flash(p.x,p.y,p.z,[255,214,140],0.6,'decay — an unstable '+(PNAME[p.kind]||p.kind)+' closure unwinds into lighter products');
         emitPhotons(p.x,p.y,p.z,3,false);          // decay gammas fly off as streaks
         for(const c of k.decay){
           const a=lseq()*6.283, b=lseq()*6.283, sp=1.2;
@@ -947,7 +947,7 @@ function stepParticles(dt){
       if(ka.fam===kb.fam && ka.fam!=='nu' && (!!ka.anti)!==(!!kb.anti)){
         const dd=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
         if(dd<1.4){ const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,mz=(a.z+b.z)/2;
-          flash(mx,my,mz,[255,255,255],0.9);
+          flash(mx,my,mz,[255,255,255],0.9,'annihilation — a '+(PNAME[a.kind]||a.kind)+'+'+(PNAME[b.kind]||b.kind)+' pair closes to nothing (→ photons)');
           emitPhotons(mx,my,mz,2,true);            // e⁻e⁺ → two back-to-back photons
           a._dead=b._dead=true; }
       }
@@ -990,7 +990,7 @@ function stepParticles(dt){
     }
     const leaving = (p.x*p.vx + p.y*p.vy + p.z*p.vz) > 0;   // moving AWAY from centre (an arriving CMB ray is inbound, keep it)
     const inVacuum = r2 > 18*18 && leaving && localW(p.x,p.y,p.z) > FLAT_W-1.2;
-    if(absorbed){ flash(p.x,p.y,p.z,p.col||[230,245,255],0.35); vacLedger+=phE(p); photons.splice(i,1); }        // received → energy conserved
+    if(absorbed){ flash(p.x,p.y,p.z,p.col||[230,245,255],0.35,'photon absorbed — a γ terminates on a local closure (measurement); energy conserved'); vacLedger+=phE(p); photons.splice(i,1); }        // received → energy conserved
     else if(inVacuum || r2 > 34*34 || p.age >= PH_MAXAGE){ vacLedger+=phE(p); photons.splice(i,1); }             // vacuum is the ultimate absorber → energy returns to the vacuum account
   }
   // recombination: a free (anti)proton captures a like-matter (anti)electron into
@@ -1003,7 +1003,7 @@ function stepParticles(dt){
       if((p.x-e.x)**2+(p.y-e.y)**2+(p.z-e.z)**2 < 7){              // capture into H (favoured over annihilation)
         const mx=(p.x+e.x)/2,my=(p.y+e.y)/2,mz=(p.z+e.z)/2;
         makeAtom('H',mx,my,mz,!!KIND[p.kind].anti,(p.vx+e.vx)/2,(p.vy+e.vy)/2,(p.vz+e.vz)/2);
-        emitPhotons(mx,my,mz,1,false); flash(mx,my,mz,[200,225,255],0.7);
+        emitPhotons(mx,my,mz,1,false); flash(mx,my,mz,[200,225,255],0.7,'recombination — a proton+electron share a closure (→ H atom + photon)');
         p._dead=e._dead=true; break;
       }
     }
@@ -1022,7 +1022,7 @@ function stepParticles(dt){
         if((a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2 < 9){            // within a coherence length
           const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,mz=(a.z+b.z)/2;
           spawn('cooper', mx,my,mz, (a.vx+b.vx)/2,(a.vy+b.vy)/2,(a.vz+b.vz)/2);
-          emitPhotons(mx,my,mz,1,false,spectralRGB(0.06)); flash(mx,my,mz,[150,210,255],0.5);
+          emitPhotons(mx,my,mz,1,false,spectralRGB(0.06)); flash(mx,my,mz,[150,210,255],0.5,'Cooper pairing — two opposite-spin electrons join one channel (even count ⇒ boson)');
           a._dead=b._dead=true; break;
         }
       }
@@ -1059,7 +1059,7 @@ function stepBH(dt){
     }
   }
   for(let i=bhs.length-1;i>=0;i--){ if(bhs[i].m<=0.15){ const b=bhs[i], P=[b.x,b.y,b.z]; bhs.splice(i,1);
-    flash(b.x,b.y,b.z,[255,255,255],2.8); emitPhotons(b.x,b.y,b.z,6,false,spectralRGB(1));
+    flash(b.x,b.y,b.z,[255,255,255],2.8,'Hawking evaporation — a black hole radiates its closure back into hadrons'); emitPhotons(b.x,b.y,b.z,6,false,spectralRGB(1));
     spawnPair('electron','positron',false,P); spawnPair('muonM','muonP',false,P);
     spawnPair('proton','antiproton',false,P);              // final burst: a shower of hadrons + leptons
   } }
@@ -1088,7 +1088,7 @@ function stepAtoms(dt){
     const dd=(A.x-B.x)**2+(A.y-B.y)**2+(A.z-B.z)**2;
     const mx=(A.x+B.x)/2,my=(A.y+B.y)/2,mz=(A.z+B.z)/2;
     if(A.anti!==B.anti){                       // matter meets antimatter → annihilate
-      if(dd<7){ flash(mx,my,mz,[255,255,255],1.2); emitPhotons(mx,my,mz,6,false); A._dead=B._dead=true; }
+      if(dd<7){ flash(mx,my,mz,[255,255,255],1.2,'matter–antimatter annihilation — an atom meets its anti-atom and closes to nothing (→ photons)'); emitPhotons(mx,my,mz,6,false); A._dead=B._dead=true; }
       continue;
     }
     const fA=freeVal(A), fB=freeVal(B);
@@ -1100,7 +1100,7 @@ function stepAtoms(dt){
       for(const s in cB) comp[s]=(comp[s]||0)+cB[s];
       const nb=Math.min(fA,fB), free=fA+fB-2*nb;                // form as many bonds as the pair allows
       makeMolecule(comp,mx,my,mz,A.anti,(A.vx+B.vx)/2,(A.vy+B.vy)/2,(A.vz+B.vz)/2,free);
-      flash(mx,my,mz,[190,225,255],0.9); emitPhotons(mx,my,mz,1,false);
+      flash(mx,my,mz,[190,225,255],0.9,'chemical bond — two atoms share a closure (valence saturates); a photon carries off the binding energy'); emitPhotons(mx,my,mz,1,false);
       A._dead=B._dead=true; break;
     }
   } }
@@ -1397,6 +1397,7 @@ function inspectAt(px,py){
     consider(ph.x, ph.y, ph.z, plabel(ph));
     consider(ph.x-ph.vx*ph.streak, ph.y-ph.vy*ph.streak, ph.z-ph.vz*ph.streak, plabel(ph));
   }
+  for(const fl of flashes) if(fl.cause) consider(fl.x,fl.y,fl.z,`event · ${fl.cause}`);
   // Nodes always compete (so their spin is reachable even amid the cascade), but need a
   // precise hit — a tighter radius than particles/photons, so those still win under the cursor.
   for(const n of nodes){ const pp=project(n.x,n.y,n.z); if(!pp) continue;
