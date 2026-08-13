@@ -41,6 +41,7 @@ logic" without a tag, read it in this typed sense: the *leading value* is `[mode
 |---|---|---|
 | Quantum logic *postulated* (Birkhoff–von Neumann 1936) | orthomodular, non-distributive `MO2` **derived** from closure | **`[proven]`** ([`QLF_QuantumLogic`](lean/QLF_QuantumLogic.lean): `orthomodular`, `not_distributive`) |
 | General QL ≅ Hilbert projection lattice | proper-involution + finite measure-uniqueness done; Gleason/Piron–Solèr the *one* named bridge | **`[proven]` core + 1 bridge** ([`QLF_ProperInvolution`](lean/QLF_ProperInvolution.lean), [`QLF_Reconstruction`](lean/QLF_Reconstruction.lean)) |
+| The **bit** is a primitive, assumed at the base | one bit = the two-valued **spin-½ closure**; a single-valued object carries *zero* | **`[proven]`** ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean): `single_valued_zero_information` `=0`, `two_valued_one_bit` `=log 2`) |
 | Incompleteness threatens the foundation | undecidable ⟺ the non-terminating tail, pruned before events | **`[proven]`** (`qlf_universality`) + interpretation |
 | `α` is a free input | `α⁻¹ = 128 + d² = 137` *leading* value | **`[modeled]`+`[matched]`** 0.026%; residual `0.036` open |
 | The continuum is fundamental | continuum = statistical completion of a discrete stream | **`[modeled]`**; *unrealizability* of an actual continuum is **`[proven]`** ([`QLF_Realizability`](lean/QLF_Realizability.lean)) |
@@ -151,8 +152,21 @@ non-constructive is the ground floor; the computable is a fragment. This is the 
 foundation that produces the catastrophe.
 
 QLF builds **bottom-up**: start from the single finite distinction — one bit, one ZFA
-event — and let everything else be a *limit*. The continuum is not assumed; it is the
-coarse-grained statistical average of a dense-but-discrete event stream
+event — and let everything else be a *limit*. And *what that one bit is* is not left
+informal: **the bit is the spin-½ closure**, machine-verified. A single-valued object cannot
+express information; a two-valued one can, and the minimal two-valued object covariant under
+rotation is the spinor — the substrate's half-spin closure. QLF proves the dichotomy directly
+([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean), **`[proven]`**): a single-valued
+fold-alphabet `{+I}` (integer spin, a vector) carries `binary_kl 1 1 = 0` nats, while the
+two-valued spinor alphabet `{+I, −I}` carries `binary_kl 1 (1/2) = log 2` — exactly one bit —
+and the jump from zero to one bit happens precisely when the `−I` double-cover sign is
+admitted (`spin_half_is_information_atom`, `0 < log 2`). This `−I` is **Cartan's** (1913)
+double-valued spinor element — the topological content of `π₁(SO(3)) = ℤ₂` that a vector,
+factoring through `SO(3)`, is blind to; Cartan's classification is the cited classical
+foundation, and QLF supplies the information content it does not name. So the "one bit" at the
+base of the bottom-up build is not a posited primitive — it is the substrate's own spin-½
+atom, and its two-valuedness is *why* it is informative. The continuum is not assumed; it is
+the coarse-grained statistical average of a dense-but-discrete event stream
 ([TheContinuum.md](TheContinuum.md)). The Axiom of Choice is not assumed; it is replaced by
 the decidable filter `full_zeno_prune`. Infinity appears only where finitely-closing events
 accumulate. Nothing in the foundation has no finite construction.
@@ -160,7 +174,8 @@ accumulate. Nothing in the foundation has no finite construction.
 The full **emergence ladder** — how ordinary mathematics is *generated* from this quantum-logical
 substrate rather than assumed — is worked out in [Mathematics_From_QLF.md](Mathematics_From_QLF.md):
 ℕ from counting closures, `+`/`×` as parallel/sequence composition, the unit group `μ₄ = (ℤ[i])ˣ`,
-the Lie algebras su(2)/su(3), and the continuum as the *completion* of the discrete — with the
+**spin-½ as the atom of information** (Rung 5a, after Cartan 1913 — the `−1 ∈ μ₄` is the unit of
+information), the Lie algebras su(2)/su(3), and the continuum as the *completion* of the discrete — with the
 bootstrapping resolution (the substrate *generates*, Mathlib *renders*, and conservativity makes
 verifying QLF in Mathlib non-circular). It is the companion to this document: here we argue quantum
 logic is the correct *foundation* of mathematics; there we exhibit the mathematics emerging from it —
