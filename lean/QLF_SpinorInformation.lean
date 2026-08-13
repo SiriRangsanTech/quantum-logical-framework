@@ -151,18 +151,18 @@ noncomputable def vectorRotZ (θ : ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
     360°. Proven from `Complex.exp_pi_mul_I`. This is Cartan's double-valued spinor sign,
     computed. -/
 theorem spinorRotZ_two_pi : spinorRotZ (2 * Real.pi) = -(1 : M) := by
-  have e00 : Complex.exp (-(↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -1 := by
-    rw [show (-(↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -(↑Real.pi * Complex.I) by
-          push_cast; ring,
-        Complex.exp_neg, Complex.exp_pi_mul_I]
+  have key : (((2 * Real.pi : ℝ)) : ℂ) / 2 = (Real.pi : ℂ) := by push_cast; ring
+  have e11 : Complex.exp ((((2 * Real.pi : ℝ)) : ℂ) / 2 * Complex.I) = -1 := by
+    rw [key, Complex.exp_pi_mul_I]
+  have e00 : Complex.exp (-(((2 * Real.pi : ℝ)) : ℂ) / 2 * Complex.I) = -1 := by
+    rw [show -(((2 * Real.pi : ℝ)) : ℂ) / 2 * Complex.I
+          = -((((2 * Real.pi : ℝ)) : ℂ) / 2 * Complex.I) by ring,
+        key, Complex.exp_neg, Complex.exp_pi_mul_I]
     norm_num
-  have e11 : Complex.exp ((↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = -1 := by
-    rw [show ((↑(2 * Real.pi) : ℂ) / 2 * Complex.I) = ↑Real.pi * Complex.I by
-          push_cast; ring,
-        Complex.exp_pi_mul_I]
+  simp only [spinorRotZ]
+  rw [e00, e11]
   ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [spinorRotZ, e00, e11, Matrix.one_apply, Matrix.neg_apply]
+  fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply, Matrix.neg_apply]
 
 /-- **A full turn is `+I` on the vector.** `vectorRotZ (2π) = I₃`: the spin-1 (vector)
     representation returns to the identity after 360°. Proven from `Real.cos_two_pi` /
