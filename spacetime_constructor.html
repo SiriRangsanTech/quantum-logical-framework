@@ -270,16 +270,18 @@ positron <^>v @ 2,0,0"
       <button data-qcadd="diamond" title="Diamond — sp³ carbon in a tetrahedral network (4 bonds per C)">＋ diamond</button>
       <button data-qcadd="nanotube" title="Carbon nanotube — rolled graphene, a honeycomb cylinder">＋ nanotube</button>
       <button data-qcadd="buckyball" title="Buckminsterfullerene C₆₀ — a truncated-icosahedron carbon cage">＋ C₆₀ buckyball</button>
-      <select id="c_elem" aria-label="Crystal element" title="Crystal element">
+    </div>
+    <div class="toggles">
+      <select id="c_elem" aria-label="Element" title="Element for the atom or crystal">
         <option value="H">Hydrogen</option>
         <option value="He">Helium</option>
         <option value="C">Carbon</option>
         <option value="O">Oxygen</option>
         <option value="Fe" selected>Iron</option>
       </select>
-      <button data-cryst="sc" title="Simple cubic — one atom per cube corner (coordination 6, the loosest cubic packing)">＋ SC</button>
-      <button data-cryst="bcc" title="Body-centred cubic — corners plus one atom at each cube centre (coordination 8); the structure of iron, chromium, tungsten">＋ BCC</button>
-      <button data-cryst="fcc" title="Face-centred cubic — corners plus one atom on each face (coordination 12, close-packed); copper, aluminium, gold, γ-iron">＋ FCC</button>
+      <button data-elem="atom" title="Place a single atom of the selected element">＋ atom</button>
+      <button data-elem="spread" title="A loose crystal of the selected element (simple cubic, wide spacing)">＋ spread crystal</button>
+      <button data-elem="tight" title="A dense crystal of the selected element (face-centred cubic, close-packed)">＋ tight crystal</button>
     </div>
     <div class="lbl" id="qc_status" style="opacity:.8">Each line is a ZFA closure. <b>Capture</b> reads the live display as QuCalc; <b>Replace</b> clears first, <b>Inject</b> adds.</div>
   </div>
@@ -1606,11 +1608,12 @@ if(qcEl){
     const line=QC_ADD[b.dataset.qcadd]; if(!line) return;
     addLine(line); qcSay(`Added <b>${b.dataset.qcadd}</b> to the creator — then Replace or Inject.`); }));
   // crystal buttons: build a lattice of the selected element at its default spacing
-  document.querySelectorAll('[data-cryst]').forEach(b=>b.addEventListener('click',()=>{
-    const el=document.getElementById('c_elem').value, sp=(ELEMENTS[el]||ELEMENTS.H).sp;
-    const n = el==='Fe'||el==='O' ? 3 : 3;
-    addLine(`lattice ${b.dataset.cryst} ${n} ${sp} ${el} @ 0,0,0`);
-    qcSay(`Added a <b>${b.dataset.cryst.toUpperCase()} ${el}</b> crystal — then Replace or Inject.`); }));
+  document.querySelectorAll('[data-elem]').forEach(b=>b.addEventListener('click',()=>{
+    const el=document.getElementById('c_elem').value, sp=(ELEMENTS[el]||ELEMENTS.H).sp, mode=b.dataset.elem;
+    if(mode==='atom'){ addLine(`${el} @ 0,0,0`); qcSay(`Added a single <b>${el}</b> atom — then Replace or Inject.`); }
+    else { const spread=mode==='spread';                                  // spread = loose SC · tight = close-packed FCC
+      addLine(`lattice ${spread?'sc':'fcc'} 3 ${(sp*(spread?1.35:1)).toFixed(2)} ${el} @ 0,0,0`);
+      qcSay(`Added a <b>${spread?'spread':'tight'} ${el}</b> crystal — then Replace or Inject.`); } }));
 }
 
 /* ---------- render ---------- */
