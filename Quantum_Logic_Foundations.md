@@ -41,7 +41,7 @@ logic" without a tag, read it in this typed sense: the *leading value* is `[mode
 |---|---|---|
 | Quantum logic *postulated* (Birkhoff–von Neumann 1936) | orthomodular, non-distributive `MO2` **derived** from closure | **`[proven]`** ([`QLF_QuantumLogic`](lean/QLF_QuantumLogic.lean): `orthomodular`, `not_distributive`) |
 | General QL ≅ Hilbert projection lattice | proper-involution + finite measure-uniqueness done; Gleason/Piron–Solèr the *one* named bridge | **`[proven]` core + 1 bridge** ([`QLF_ProperInvolution`](lean/QLF_ProperInvolution.lean), [`QLF_Reconstruction`](lean/QLF_Reconstruction.lean)) |
-| The **bit** is a primitive, assumed at the base | one bit = the two-valued **spin-½ closure**; a single-valued object carries *zero* | **`[proven]`** ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean): `single_valued_zero_information` `=0`, `two_valued_one_bit` `=log 2`) |
+| The **bit** is a primitive, assumed at the base | the one-bit abstraction's minimal *realization* = the two-valued **spin-½ closure** (`log 2`); a single-valued object carries *zero* | **`[proven]`** ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean): `single_valued_zero_information` `=0`, `two_valued_one_bit` `=log 2`) |
 | Incompleteness threatens the foundation | undecidable ⟺ the non-terminating tail, pruned before events | **`[proven]`** (`qlf_universality`) + interpretation |
 | `α` is a free input | `α⁻¹ = 128 + d² = 137` *leading* value | **`[modeled]`+`[matched]`** 0.026%; residual `0.036` open |
 | The continuum is fundamental | continuum = statistical completion of a discrete stream | **`[modeled]`**; *unrealizability* of an actual continuum is **`[proven]`** ([`QLF_Realizability`](lean/QLF_Realizability.lean)) |
@@ -152,10 +152,13 @@ non-constructive is the ground floor; the computable is a fragment. This is the 
 foundation that produces the catastrophe.
 
 QLF builds **bottom-up**: start from the single finite distinction — one bit, one ZFA
-event — and let everything else be a *limit*. And *what that one bit is* is not left
-informal: **the bit is the spin-½ closure**, machine-verified. A single-valued object cannot
-express information; a two-valued one can, and the minimal two-valued object covariant under
-rotation is the spinor — the substrate's half-spin closure. QLF proves the dichotomy directly
+event — and let everything else be a *limit*. Here the priority runs *abstraction → physical*
+(Wheeler's **it from bit**): information **is** the abstraction — a two-valued distinction —
+and the physical object is its *realization*, not a replacement for it. And *what realizes the
+one bit* is not left informal: **the bit's minimal realization is the spin-½ closure**,
+machine-verified. A single-valued object cannot carry the distinction; a two-valued one can,
+and the minimal two-valued object covariant under rotation is the spinor — the substrate's
+half-spin closure. QLF proves the dichotomy directly
 ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean), **`[proven]`**): a single-valued
 fold-alphabet `{+I}` (integer spin, a vector) carries `binary_kl 1 1 = 0` nats, while the
 two-valued spinor alphabet `{+I, −I}` carries `binary_kl 1 (1/2) = log 2` — exactly one bit —
@@ -168,8 +171,11 @@ factoring through `SO(3)`, is blind to. And that double-valuedness is not merely
 (`spinor_double_valued_vector_blind`, **`[proven]`**) — so Cartan's classification is invoked
 *only* for the general list of non-tensorial irreps, while QLF supplies both the concrete
 double-cover instance and the information content it does not name. So the "one bit" at the
-base of the bottom-up build is not a posited primitive — it is the substrate's own spin-½
-atom, and its two-valuedness is *why* it is informative. The continuum is not assumed; it is
+base of the bottom-up build is not a posited primitive: the abstraction is primary, and it is
+*realized* by the substrate's own spin-½ atom, whose two-valuedness is *why* that atom can
+carry the distinction. ("Information is physical" is then the downstream toll — *realizing*
+the bit costs `ΔF = −log 2` and a finite region holds only finitely many, `QLF_Realizability`
+— not a reduction of the abstraction to matter.) The continuum is not assumed; it is
 the coarse-grained statistical average of a dense-but-discrete event stream
 ([TheContinuum.md](TheContinuum.md)). The Axiom of Choice is not assumed; it is replaced by
 the decidable filter `full_zeno_prune`. Infinity appears only where finitely-closing events

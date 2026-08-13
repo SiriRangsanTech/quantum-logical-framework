@@ -65,9 +65,12 @@ This is the **units of the Gaussian integers**, and the substrate's state ring i
 
 ### Rung 5a — spin-½ is the atom of information (Cartan 1913)
 
-The fold group of Rung 5 contains `−1`, and *that element is where information enters the
-substrate.* This rung makes precise a sharp claim: **a single-valued object cannot express
-information; a two-valued one can, and the minimal two-valued object that is covariant under
+The fold group of Rung 5 contains `−1`, and *that element is where a bit of information gets
+realized in the substrate.* **The priority runs abstraction → physical (it from bit):**
+information *is* the abstraction — a two-valued distinction — and the spin-½ closure below is
+its minimal *realization*, not a re-identification of information *as* matter. With that
+direction fixed, this rung makes precise a sharp claim: **a single-valued object cannot carry
+the distinction; a two-valued one can, and the minimal two-valued object that is covariant under
 rotation is the spin-½ closure — the spinor.**
 
 **The cited classical foundation is Cartan (1913).** In *Les groupes projectifs qui ne
@@ -112,10 +115,11 @@ So spin-½ is the atom at which the substrate's fold becomes *informative*. Vect
 derivative — an even number of half-spin atoms, folding back to `+I`
 ([`boson_even_pairs`](lean/QLF_Spin.lean)) — and carry no bit of their own; they are the
 `ℤ₂`-blind tensors of Cartan's classification. The `μ₄` of Rung 5, read through the
-double cover, is therefore not just the state ring's unit group — its `−1` is **the unit of
-information**. (This is also why the substrate's per-event free-energy quantum, its mass gap,
-and its LQG puncture entropy are all the *same* `log 2`: they are all the one bit that a
-single half-spin resolves.)
+double cover, is therefore not just the state ring's unit group — its `−1` is **where the
+one-bit abstraction gets realized** (the closure that carries it, not the abstraction itself).
+(This is also why the substrate's per-event free-energy quantum, its mass gap, and its LQG
+puncture entropy are all the *same* `log 2`: they are all the one bit that a single half-spin
+resolves.)
 
 **The double-valuedness itself is reproven, not merely cited.**
 [`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean) §3 discharges the one piece that
