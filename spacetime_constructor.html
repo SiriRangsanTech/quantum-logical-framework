@@ -1152,7 +1152,7 @@ function renderParticles(){
     const f=bandT(k.m);                                          // colour = band position (red→violet)
     const s=base*(k.ghost?0.05:(0.12+0.05*massFreq(k.m)))*(0.4+0.6*p.born)*2.6;
     const dim=inBand(k.m)?1:0.16;                                // out-of-band closures fade back
-    ctx.globalAlpha=(k.ghost?0.28:(p.virtual?0.45:1))*p.born*dim;
+    ctx.globalAlpha=(k.ghost?0.28:(p.virtual?0.45:1))*p.born*dim*expAt(pp.sx,pp.sy);
     ctx.drawImage(binFor(f), pp.sx-s, pp.sy-s, s*2, s*2);
   }
   ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
@@ -1199,11 +1199,11 @@ function renderAtoms(){
     if(A.condensed){                                    // superfluid glow — a Bose-condensed boson atom
       const cp0=project(A.x,A.y,A.z);
       if(cp0){ const base=focal()/cp0.z, rr=base*0.42*A.born;
-        ctx.globalCompositeOperation='lighter';
+        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=expAt(cp0.sx,cp0.sy);
         const g=ctx.createRadialGradient(cp0.sx,cp0.sy,0,cp0.sx,cp0.sy,rr);
         g.addColorStop(0,'rgba(120,220,255,0.22)'); g.addColorStop(1,'rgba(120,220,255,0)');
         ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cp0.sx,cp0.sy,rr,0,7); ctx.fill();
-        ctx.globalCompositeOperation='source-over'; } }
+        ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over'; } }
     if(A.comp){                                          // ── MOLECULE: bond lines + per-element nuclei + formula ──
       const sw=A.sites.map(s=>({el:ELEMENTS[s.sym], p:project(A.x+s.dx,A.y+s.dy,A.z+s.dz)}));
       ctx.globalCompositeOperation='lighter'; ctx.strokeStyle='rgba(150,205,255,0.5)'; ctx.lineWidth=2;
@@ -1211,7 +1211,7 @@ function renderAtoms(){
         if(pi&&pj){ ctx.beginPath(); ctx.moveTo(pi.sx,pi.sy); ctx.lineTo(pj.sx,pj.sy); ctx.stroke(); } }
       ctx.globalCompositeOperation='source-over';
       for(const s of sw){ if(!s.p) continue; const base=focal()/s.p.z, ns=0.55+0.4*Math.cbrt(s.el.Z+s.el.N), sz=base*0.10*2.4*A.born*ns;
-        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd*expAt(s.p.sx,s.p.sy);
         ctx.drawImage(binFor(bandT(1836)), s.p.sx-sz, s.p.sy-sz, sz*2, sz*2);
         ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over'; }
       const cp=project(A.x,A.y,A.z);
@@ -1233,7 +1233,7 @@ function renderAtoms(){
       // orbiting electron (+ charge ring)
       const e=electronPos(A,o), ep=project(e[0],e[1],e[2]);
       if(ep){ const base=focal()/ep.z, s2=base*0.055*2.4*A.born;
-        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+        ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd*expAt(ep.sx,ep.sy);
         ctx.drawImage(binFor(bandT(1)), ep.sx-s2, ep.sy-s2, s2*2, s2*2);
         ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
         ctx.lineWidth=1.1; ctx.strokeStyle=A.anti?'rgba(255,150,120,0.8)':'rgba(120,200,255,0.8)';
@@ -1242,7 +1242,7 @@ function renderAtoms(){
     // nuclei (protons + neutrons; a bigger blob for heavier nuclei)
     for(const nu of nuc){ const np=project(nu[0],nu[1],nu[2]); if(!np) continue; const base=focal()/np.z;
       const s=base*0.11*2.4*A.born*nucScale;
-      ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd;
+      ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=A.born*abd*expAt(np.sx,np.sy);
       ctx.drawImage(binFor(bandT(1836)), np.sx-s, np.sy-s, s*2, s*2);
       ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
       ctx.lineWidth=1.4; ctx.strokeStyle=A.anti?'rgba(120,200,255,0.9)':'rgba(255,150,120,0.9)';
@@ -1635,6 +1635,23 @@ if(qcEl){
 }
 
 /* ---------- render ---------- */
+// Auto-exposure: additive ('lighter') glow blows out where many bright sprites pile into
+// the same pixels (a zoomed-out crystal). We bin projected emitters into a coarse SCREEN
+// grid and dim each additive sprite by its cell's load — so dense/high-energy regions stop
+// washing out and their structure stays legible, while isolated closures keep full glow.
+const SCELL=48; let scrGrid=null, sgW=0, sgH=0;
+function buildScreenLoad(){
+  sgW=Math.max(1,Math.ceil(W/SCELL)); sgH=Math.max(1,Math.ceil(H/SCELL));
+  if(!scrGrid||scrGrid.length<sgW*sgH) scrGrid=new Float32Array(sgW*sgH); else scrGrid.fill(0);
+  const add=(x,y,z,w)=>{ const p=project(x,y,z); if(!p) return;
+    const gx=p.sx/SCELL|0, gy=p.sy/SCELL|0; if(gx<0||gy<0||gx>=sgW||gy>=sgH) return; scrGrid[gy*sgW+gx]+=w; };
+  for(const A of atoms) add(A.x,A.y,A.z, A.comp?A.sites.length:1);   // each bright nucleus counts
+  for(const p of particles) add(p.x,p.y,p.z, p.virtual?0.2:0.5);
+  for(const b of bhs) add(b.x,b.y,b.z, 2);
+}
+function expAt(sx,sy){ const gx=sx/SCELL|0, gy=sy/SCELL|0;
+  if(!scrGrid||gx<0||gy<0||gx>=sgW||gy>=sgH) return 1;
+  const L=scrGrid[gy*sgW+gx]; return L<=1 ? 1 : Math.max(0.3, 1/(1+0.16*(L-1))); }
 function frame(){
   requestAnimationFrame(frame);
   const speed = cfg.flow;
@@ -1647,6 +1664,7 @@ function frame(){
     if(cfg.spin && !drag && !reduceMotion) cam.az += 0.0009*speed;   // idle auto-orbit — opt-in (default off: one fixed observer frame)
   }
   updateBasis();
+  buildScreenLoad();     // screen-space glow load → local auto-exposure (below)
 
   // background / trails
   if(cfg.trails && !reduceMotion){
@@ -1712,7 +1730,7 @@ function frame(){
 
     const size=Math.max(1.2, (focal()/p.z) * (0.10+0.06*f)) ;
     const emptyDim = 0.4 + 0.6*(1-wn);                 // flat/empty vacuum (wn→1) fades; nodes near structure stay bright
-    ctx.globalAlpha = Math.max(0, (0.16+0.6*bright)*emptyDim);
+    ctx.globalAlpha = Math.max(0, (0.16+0.6*bright)*emptyDim) * expAt(p.sx,p.sy);
     const s=size*2.6;
     ctx.drawImage(binFor(f), p.sx-s, p.sy-s, s*2, s*2);
   }
