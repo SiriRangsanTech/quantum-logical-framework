@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **184 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **185 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,7 +14,7 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## 184 active modules
+## 185 active modules
 
 In `lean/`, registered in `lakefile.lean` roots array (in build order). For fuller per-module descriptions + the complete key-theorem lists, see [`lean/README.md`](lean/README.md).
 
@@ -203,6 +203,7 @@ In `lean/`, registered in `lakefile.lean` roots array (in build order). For full
 | `QLF_MO2` | The minimal quantum logic `MO2`, self-contained |
 | `QLF_MassGapDispersion` | The Yang–Mills mass gap as the dispersion gap of the propagation operator |
 | `QLF_FractalDiagram` | Closure-as-Feynman-diagram — the inductive correspondence, formalized |
+| `QLF_SpinorInformation` | Spin-½ is the atom of information (after Cartan 1913): the two-valued spinor fold-alphabet `{+I,−I}` carries one bit (`log 2`), a single-valued vector alphabet `{+I}` carries zero — the jump happens exactly when the `−I` double-cover sign is admitted |
 
 ---
 

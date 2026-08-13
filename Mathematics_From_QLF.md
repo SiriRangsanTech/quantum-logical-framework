@@ -2,6 +2,17 @@
 
 Where do the numbers, the rings, the groups come from? The [Quantum Logical Framework (QLF)](README.md) is offered as a *foundation* — a constructive replacement for ZFC for the part of mathematics that is not [mathematical fantasy](Active_Inference_Mathematics.md). The *logic* of that foundation is **quantum logic**, and the case that quantum logic is the *correct* foundation of mathematics — bottom-up rather than top-down, sound rather than exploding, with the minimal quantum logic `MO2` machine-verified on the substrate — is the companion document [Quantum_Logic_Foundations.md](Quantum_Logic_Foundations.md). This doc is its constructive other half: *there* we argue quantum logic is the right foundation; *here* we exhibit ordinary mathematics **emerging** from it. So a fair challenge is: **does QLF generate the mathematics it uses, or does it presuppose it?** The Lean proofs run in Mathlib, which already has rings and fields — is that circular?
 
+**The order is a two-phase loop, and the two phases must not be confused.** *First* we get
+QLF **from** mathematics: the substrate's rules are *written down and verified* in an existing
+mathematical metalanguage (Lean + Mathlib) — you cannot state a formal system in no language
+at all. *Then* we discover mathematics **from** QLF: with the substrate in hand, ordinary
+mathematics reappears as *what the substrate does* — counting closures gives ℕ, the two folds
+give `+`/`×`, the fold-target gives `μ₄`, and so on down the ladder. This is not circular,
+because the two phases run in opposite directions and the return trip is *conservative* (§2):
+the mathematics we borrow to write QLF down proves nothing finitary that the substrate's own
+computable core did not already generate. Phase one borrows a pen; phase two re-derives the
+ink.
+
 This doc answers both halves. First, the **emergence ladder**: numbers, then the ring operations, then the unit group and the Lie algebras, all fall out of *counting closures* and *the two ways closures combine* — and every rung is already machine-checked. Then the **bootstrapping resolution**: the substrate *generates* the core structure; Mathlib's continuum algebra is its *rendering*, conservative over the computable base — using it to verify is not circular. Finally, **how this is distinct from reverse mathematics**, since QLF lives on reverse mathematics' floor but is not reverse mathematics.
 
 ---
@@ -51,6 +62,66 @@ Every count-balanced closure folds to a fourth root of unity — `{+1, −1, +i,
 > `count_balanced_pauli_closed` ([`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean)) — every balanced history folds to a Pauli scalar; `PauliScalar` is a **proven abelian group** (`mul_comm`, `mul_assoc`, `one_mul`, `mul_one`, `mul_inv`, [`lean/QLF_Pauli.lean`](lean/QLF_Pauli.lean)), = `μ₄ = (ℤ[i])ˣ` ([`lean/QLF_StateSpace.lean`](lean/QLF_StateSpace.lean)).
 
 This is the **units of the Gaussian integers**, and the substrate's state ring is `ℤ[i]` ([`The_QLF_State_Space.md`](The_QLF_State_Space.md)). The group is *derived from the fold*, not assumed.
+
+### Rung 5a — spin-½ is the atom of information (Cartan 1913)
+
+The fold group of Rung 5 contains `−1`, and *that element is where information enters the
+substrate.* This rung makes precise a sharp claim: **a single-valued object cannot express
+information; a two-valued one can, and the minimal two-valued object that is covariant under
+rotation is the spin-½ closure — the spinor.**
+
+**The cited classical foundation is Cartan (1913).** In *Les groupes projectifs qui ne
+laissent invariante aucune multiplicité plane* Cartan classified the irreducible linear
+representations of the orthogonal groups and isolated the ones **not** obtainable from
+tensors on the defining (vector) representation: the **spinor** representations. For `so(3)`
+the fundamental 2-dimensional representation descends only to a *double-valued* (projective)
+representation of `SO(3)`; a `360°` rotation multiplies a spinor by `−1`, and only `720°`
+returns `+1`. This double-valuedness is not decoration — it is the topological content of
+`π₁(SO(3)) = ℤ₂`. A **vector** (an integer-spin tensor) factors through `SO(3)` and is
+*blind* to that `ℤ₂`; a spinor sees it. Cartan is QLF's settled-math input here, exactly as
+Wallis/Stirling are for `π` ([`Physical_Pi.md`](Physical_Pi.md)) and Reshetikhin–Turaev is
+for the TQFT (Rung 9) — QLF does not reprove the classification; it realizes the concrete
+`su(2)` instance and supplies the *information content* Cartan's geometry does not name.
+
+Two substrate facts, both already machine-checked, meet here:
+
+> **The double cover is genuine.** A half-spin (odd) twist history folds to `−I`, an
+> integer-spin (even) one to `+I`, and `−I ≠ +I`
+> (`spin_double_cover_nontrivial`, `concat_pairs_odd`/`concat_pairs_even`,
+> [`lean/QLF_Spin.lean`](lean/QLF_Spin.lean)). The `−I` **is** Cartan's double-valued spinor
+> sign, realized on the substrate — the winding the vector cannot register.
+>
+> **The half-spin ZFA closure carries exactly `log 2` nats, maximally.**
+> `binary_kl 1 (1/2) = log 2` (`binary_kl_delta_uniform`) and no spread density does better
+> (`binary_kl_uniform_lt_log_two`, [`lean/QLF_FreeEnergy.lean`](lean/QLF_FreeEnergy.lean)).
+
+[`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean) fuses them under one
+reading — **information = log(number of distinguishable fold outcomes)**:
+
+> `single_valued_zero_information`: `binary_kl 1 1 = 0` — a single-valued alphabet `{+I}`
+> (integer spin, the vector) has one outcome, so resolving it costs *nothing*: `log 1 = 0`.
+> This is the formal content of *"one-valued objects cannot express information."*
+>
+> `two_valued_one_bit`: `binary_kl 1 (1/2) = log 2` — the two-valued spinor alphabet
+> `{+I, −I}` has two outcomes, so resolving *which one closed* is **one bit**.
+>
+> `spin_half_is_information_atom`: `0 < log 2` — the jump from **no** information to **one
+> bit** happens exactly when the `−I` (the double-cover sign) is admitted.
+
+So spin-½ is the atom at which the substrate's fold becomes *informative*. Vectors are
+derivative — an even number of half-spin atoms, folding back to `+I`
+([`boson_even_pairs`](lean/QLF_Spin.lean)) — and carry no bit of their own; they are the
+`ℤ₂`-blind tensors of Cartan's classification. The `μ₄` of Rung 5, read through the
+double cover, is therefore not just the state ring's unit group — its `−1` is **the unit of
+information**. (This is also why the substrate's per-event free-energy quantum, its mass gap,
+and its LQG puncture entropy are all the *same* `log 2`: they are all the one bit that a
+single half-spin resolves.)
+
+**Honest scope.** The two theorems (`= 0` and `= log 2`) and the double-cover facts are
+machine-checked with no new axioms; Cartan's general classification is the cited classical
+result, and the identification "half-spin = atomic bit" is the assembled reading of the two
+verified facts, not a single new Lean object. QLF does not formalize the representation
+theory of the orthogonal groups.
 
 ### Rung 6 — the Lie algebras su(2), su(3)
 

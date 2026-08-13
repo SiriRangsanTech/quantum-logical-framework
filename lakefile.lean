@@ -193,5 +193,6 @@ lean_lib QLF where
     `QLF_MO2,
     `QLF_ElectroweakScale,
     `QLF_FractalDiagram,
-    `QLF_MassGapDispersion
+    `QLF_MassGapDispersion,
+    `QLF_SpinorInformation
   ]
