@@ -454,6 +454,10 @@ const ELEMENTS = {
   Fe: {sym:'Fe', Z:26, N:30, ne:8, R:3.6, sp:3.0, val:3, metal:true},  // Fe³⁺ ⇒ Fe₂O₃ (rust)
 };
 const _SUB={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+const SHELL = ['','K','L','M','N','O','P'];               // principal-shell letters (n=1→K …)
+const shellCounts = A => { const c={}; for(const o of (A.orbits||[])) c[o.n]=(c[o.n]||0)+1; return c; };
+const shellConfig = A => { const c=shellCounts(A); return Object.keys(c).map(Number).sort((a,b)=>a-b)
+                             .map(n=>(SHELL[n]||('n'+n))+_sup(c[n])).join(' '); };
 const elemMass = s => { const e=ELEMENTS[s]; return e.Z*(M_P+M_E)+e.N*M_N; };
 // A molecule is a bonded cluster with a composition map comp={sym:count}. A single atom's comp is
 // just {el:1}. All the accounting below is a SUM over comp — no molecule is special-cased.
@@ -674,11 +678,13 @@ function makeAtom(type,x,y,z,anti,vx,vy,vz){
   const A={ anti:!!anti, x,y,z, born:reduceMotion?1:0,
             vx:vx??(lseq()*2-1)*0.5, vy:vy??(lseq()*2-1)*0.5, vz:vz??(lseq()*2-1)*0.5,
             spin:censusSpin(), orbits:[] };
-  const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;      // an element atom: Z electrons (capped) on 1–2 shells
+  const el = ELEMENTS[type] || ELEMENTS.H; A.el = el;      // an element atom: Z electrons (capped), shells filled K,L,M… (2n²)
   const ne = Math.max(1, Math.min(el.ne, el.Z));
-  for(let i=0;i<ne;i++){
-    const inner = ne<=2 || i<Math.ceil(ne*0.35);
-    A.orbits.push({ R: inner?el.R*0.62:el.R, rate: inner?2.7:1.9, ph: lseq()*6.283 + i*2.399, b: orbitBasis() });
+  for(let placed=0, n=1; placed<ne; n++){
+    const onShell = Math.min(2*n*n, ne-placed);            // Bohr shell capacity 2n²
+    for(let i=0;i<onShell;i++)
+      A.orbits.push({ n, R: el.R*(0.42+0.30*n), rate: 3.2/n, ph: lseq()*6.283 + i*2.399, b: orbitBasis() });
+    placed += onShell;
   }
   atoms.push(A); return A;
 }
@@ -1383,16 +1389,16 @@ function inspectAt(px,py){
            return `${A.anti?'anti-':''}${nm?nm+' ':''}${f} — a molecule (shared-closure bond)${A.free>0?', valence '+A.free+' free':''} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()
        : (()=>{ const e=A.el||ELEMENTS.H;
            const sf = A.condensed ? ' · SUPERFLUID (Bose-condensed boson)' : '';
-           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons)${sf} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
+           return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons)${sf} · shells ${shellConfig(A)} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
   // the visible constituents of a single atom are individually pickable: the orbiting
   // electrons and the nucleons sit away from the atom centre, so clicking one must hit IT.
   for(const A of atoms){
     if(A.comp){ for(const s of A.sites){ const en=ENAME[s.sym]||s.sym;
         consider(A.x+s.dx,A.y+s.dy,A.z+s.dz, `${A.anti?'anti-':''}${en} ${s.sym} — an atom bonded in ${A.anti?'anti-':''}${compFormula(A.comp)} (shared closure)`, A.spin); }
       continue; }
-    const en=ENAME[(A.el||ELEMENTS.H).sym]||'atom';
-    for(const o of (A.orbits||[])){ const e=electronPos(A,o);
-      consider(e[0],e[1],e[2], `${A.anti?'anti-':''}electron${A.anti?' (positron)':''} — bound in ${A.anti?'anti-':''}${en}, an orbital closure · rest m/m_e 1`, A.spin); }
+    const en=ENAME[(A.el||ELEMENTS.H).sym]||'atom', sc=shellCounts(A);
+    for(const o of (A.orbits||[])){ const e=electronPos(A,o); const sh=SHELL[o.n]||('n'+o.n);
+      consider(e[0],e[1],e[2], `${A.anti?'anti-':''}electron${A.anti?' (positron)':''} — bound in ${A.anti?'anti-':''}${en}, shell n=${o.n} (${sh}) — holds ${sc[o.n]}/${2*o.n*o.n} · orbital closure · rest m/m_e 1`, A.spin); }
     const nuc=nucleiOf(A), e=A.el||ELEMENTS.H;
     for(const nu of nuc) consider(nu[0],nu[1],nu[2], `${A.anti?'anti-':''}nucleus — ${e.Z} ${A.anti?'anti':''}proton${e.Z>1?'s':''}${e.N>0?' + '+e.N+' neutron'+(e.N>1?'s':''):''}, bound in ${A.anti?'anti-':''}${en}`, A.spin); }
   for(const b of bhs) consider(b.x,b.y,b.z,
