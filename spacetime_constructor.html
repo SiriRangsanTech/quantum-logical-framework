@@ -1384,6 +1384,17 @@ function inspectAt(px,py){
        : (()=>{ const e=A.el||ELEMENTS.H;
            const sf = A.condensed ? ' · SUPERFLUID (Bose-condensed boson)' : '';
            return `${A.anti?'anti-':''}${ENAME[e.sym]||e.sym} ${e.sym} — a bound closure (Z=${e.Z} protons, ${e.N} neutrons, ${e.Z} electrons)${sf} · spin ${A.spin||'—'} · m/m_e ${atomMass(A)}`; })()));
+  // the visible constituents of a single atom are individually pickable: the orbiting
+  // electrons and the nucleons sit away from the atom centre, so clicking one must hit IT.
+  for(const A of atoms){
+    if(A.comp){ for(const s of A.sites){ const en=ENAME[s.sym]||s.sym;
+        consider(A.x+s.dx,A.y+s.dy,A.z+s.dz, `${A.anti?'anti-':''}${en} ${s.sym} — an atom bonded in ${A.anti?'anti-':''}${compFormula(A.comp)} (shared closure)`, A.spin); }
+      continue; }
+    const en=ENAME[(A.el||ELEMENTS.H).sym]||'atom';
+    for(const o of (A.orbits||[])){ const e=electronPos(A,o);
+      consider(e[0],e[1],e[2], `${A.anti?'anti-':''}electron${A.anti?' (positron)':''} — bound in ${A.anti?'anti-':''}${en}, an orbital closure · rest m/m_e 1`, A.spin); }
+    const nuc=nucleiOf(A), e=A.el||ELEMENTS.H;
+    for(const nu of nuc) consider(nu[0],nu[1],nu[2], `${A.anti?'anti-':''}nucleus — ${e.Z} ${A.anti?'anti':''}proton${e.Z>1?'s':''}${e.N>0?' + '+e.N+' neutron'+(e.N>1?'s':''):''}, bound in ${A.anti?'anti-':''}${en}`, A.spin); }
   for(const b of bhs) consider(b.x,b.y,b.z,
     `black hole — a Planck-mass closure (Compton = Schwarzschild), Hawking-evaporating · M ≈ ${b.m.toFixed(1)} M_P · Q ${(b.q>0?'+':'')+(b.q??0)} · spin ${b.spin||'—'}`);
   for(const p of particles){ const k=KIND[p.kind];   // all are spin-½ fermions
