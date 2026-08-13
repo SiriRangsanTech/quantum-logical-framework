@@ -6,11 +6,55 @@
 **Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
 **Authors:** Jim Whitescarver, with Grok (xAI) and Claude (Anthropic)  
 
-> **Universal Relativity is the grand unification.** Einstein made *spacetime* relative; QLF makes
-> *everything* relative. The four forces, gravity, and mass are not separate things — they are
+> **Universal Relativity is the grand unification.** Einstein made *spacetime* relative; the
+> [Quantum Logical Framework (QLF)](README.md) makes *everything* relative. The four forces, gravity, and mass are not separate things — they are
 > **relative perspectives on one ZFA closure**, seen from different 3-axis projections, at different
 > logical densities, in different Markov-blanket frames. There is one substrate; physics is the set of
 > relative views of it. (§4a.)
+
+## Problem statement and hypothesis
+
+**The problem.** Two of physics' foundations succeed spectacularly and contradict each other.
+General relativity describes gravity as the curvature of a smooth spacetime continuum; quantum
+theory describes matter as discrete, probabilistic events on a fixed background. They cannot
+both be fundamental as written — the continuum manifold and the absolute (or externally
+specified) time each leans on are exactly the structures that produce the field-theoretic
+divergences, the curvature singularities, and the 10¹²² vacuum-energy discrepancy (§0).
+Alongside this sits a quieter failure: the Standard Model's couplings, mixing angles, and mass
+ratios are *inputs* — some two dozen numbers no principle explains. The programs that seek
+unification by *adding* structure (a quantized graviton field, extra dimensions, a landscape of
+vacua) inherit both assumptions — a background and a continuum — and therefore inherit the
+pathologies. So the operative question is the prior one:
+
+> **Problem.** *Is there a single, finite, background-free primitive from which spacetime, the
+> four forces, mass, and the physical constants are all synthesized — one that also says why
+> these laws hold rather than others, using no absolute frame, no absolute time, and no actual
+> continuum?*
+
+**The hypothesis.** Universal Relativity answers yes, and names the primitive. The base is not
+a particle, a field, or a geometry — it is **information**: one two-valued distinction,
+realized as a zero-free-action (ZFA) closure. Machine-checked work makes that base concrete —
+the unit of information is the **½-spin closure** (a single-valued/vector object carries none;
+§3b, [`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)) — so Wheeler's *it
+from bit* becomes constructive.
+
+> **Hypothesis.** *The single primitive is information — one two-valued distinction realized as
+> a ½-spin ZFA closure. Spacetime, the four forces, mass, and the constants are **relative
+> perspectives** on balanced closures of these bits (§4a): which projection, at what logical
+> density, in whose Markov-blanket frame. Only ZFA-balanced histories are realized, and that
+> one selection rule does the work absolute space, absolute time, a background metric, and a
+> continuum state space did in the older frameworks.*
+
+This is a *hypothesis*, not a manifesto, because it is **falsifiable** and **graded**. It dies
+if any published kill-condition fires (§8): a cosmological drift of low-energy `α`, an `α⁻¹`
+outside `137 < α⁻¹ < 137.048`, `v_GW ≠ c`, a light right-handed (sterile) neutrino, or an
+axion. Its formal core fails *independently* — a `sorry` or an inconsistency in the Lean would
+break a machine-checked claim without touching the physical mapping, and vice versa. Throughout,
+the derivations are kept in three tiers — theorems, structural/self-organized-critical
+observables, and named open residuals (the absolute mass scale `v = R_stable`, the `α` `+0.036`
+running tail) — so the strong claims and the open ones are never blended (Summary, §8). The
+question "what is the universe made of?" is thereby replaced by "**what closes?**", and ZFA is
+the proposed answer.
 
 ## 0. Why absolute space, absolute time, and continuum infinities cannot be fundamental
 
@@ -113,7 +157,12 @@ kept distinct):
   ([`lean/PauliExclusion.lean`](lean/PauliExclusion.lean)); a finite, positive cosmic age
   ([`lean/AgeOfUniverse.lean`](lean/AgeOfUniverse.lean)); and the **linearized gravitational-wave
   equation** `□_d δρ = 0` — the vacuum linearized field equation, from the closure-density ripple
-  ([`lean/QLF_GravitationalWaves.lean`](lean/QLF_GravitationalWaves.lean)).
+  ([`lean/QLF_GravitationalWaves.lean`](lean/QLF_GravitationalWaves.lean)). And the **unit of
+  information** itself: the two-valued ½-spin (spinor) closure carries exactly one bit (`log 2`)
+  while a single-valued (vector) object carries none — `spinor_double_valued_vector_blind`
+  reproving the `2π` double cover from rotation matrices, `single_valued_zero_information` /
+  `two_valued_one_bit` the quantitative dichotomy
+  ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)).
 - **Structural / SOC observables (derived structure; absolute value open).** The four forces as one
   perspective-dependent closure (§4a, [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md)); dark
   matter as denser logic on the *same* Hubble horizon, `a₀ = cH₀/2π` (the `1/2π` prefactor confirmed by
@@ -280,6 +329,35 @@ $$\det\!\begin{pmatrix} t+z & x-iy \\ x+iy & t-z \end{pmatrix} = t^2 - x^2 - y^2
 (`det_toMatrix_eq_interval`). Pure qubits are **null** (`pure_qubit_null` — the Bloch sphere is the celestial sphere), and the dynamical congruence `X ↦ A X A†` scales the interval by `|det A|²` (`det_congruence`), `= 1` for every twist product (`interval_preserved_of_unit_det`) — so **every QLF evolution preserves the interval**.
 
 The full **`SL(2,ℂ) → SO⁺(1,3)` double cover** is then machine-checked in [`lean/QLF_LorentzCover.lean`](lean/QLF_LorentzCover.lean): a group homomorphism (`spinor_hom`) with **kernel exactly `{±I}`** (`spinor_kernel`, the genuine 2-to-1), whose generators are realized explicitly — a diagonal `diag(a,b)` (`a·b=1`) acts as a **Lorentz boost**, rescaling the null coordinates `u=t+z↦a²u`, `v=t−z↦b²v` (`boostZ_action`), and a unitary `diag(w,w̄)` acts as a **spatial rotation** `x−iy↦w²(x−iy)` (`rotZ_action`) — and which is **surjective** onto every proper orthochronous Lorentz transformation (`spinor_surjective`). So special relativity's symmetry group, and the spinor double cover with the half-spin twists as 2-spinors, are theorems of the substrate, not assumptions. The one bridge axiom is the standard Lie-theory generation fact — every proper orthochronous Lorentz transformation factors into boosts and rotations, the **KAK/Cartan decomposition of `SO⁺(1,3)`** — and the generators it composes are themselves proven in the image. It is couched in the **Witten 1988 → Reshetikhin–Turaev precedent** ([`Knot_Theory_QLF.md`](Knot_Theory_QLF.md) §6): a physics-native construction whose single bridge is *settled mathematics* discharged by independent rigorous results — here settled Lie theory that Mathlib does not yet package, not a QLF-specific posit. Full in-Lean elimination is the KAK-decomposition project (Class-B dischargeable in principle); couched in the Witten mode, a settled-math bridge under a fully-proven physics core is the honored end-state, not a gap.
+
+### 3b. It from bit — the unit of information is the ½-spin closure
+
+The 2-spinors of the double cover (§3a) carry more than Lorentz structure — they carry
+*information itself*, and the identification is machine-verified. In QLF the priority runs
+**abstraction → physical** (Wheeler's *it from bit*): information *is* a two-valued distinction,
+and the ½-spin closure is its minimal **realization** — not a reduction of information to
+matter. A single-valued object — an integer-spin **vector**, which returns to itself under a
+360° turn — cannot record a distinction; the **spinor**, which needs 720° (the `−I`
+double-cover sign of §3a), can. The dichotomy is proven directly
+([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)):
+
+- a single-valued (vector) fold-alphabet `{+I}` carries `binary_kl 1 1 = 0` nats;
+- the two-valued (spinor) fold-alphabet `{+I, −I}` carries `binary_kl 1 (1/2) = log 2` —
+  exactly one bit;
+- the jump from zero to one bit occurs precisely when the `−I` sign is admitted
+  (`spin_half_is_information_atom`).
+
+The double-valuedness is itself reproven from the explicit rotation matrices: a full `2π` turn
+is `+I` on the vector (`SO(3)`) representation but `−I` on the spin-½ (`SU(2)`) representation
+(`spinor_double_valued_vector_blind`) — the same `−I` that makes the half-spin a 2-spinor is
+the unit bit. This grounds the spinor **Élie Cartan** discovered in 1913 (his classification of
+the non-tensorial orthogonal-group irreps, cited for the general result) as the atom at which
+information is realized. So the substrate currency of Universal Relativity — the ZFA closure
+that synthesizes every interval — is at its base one realized bit: *it from bit*, with the bit
+a theorem. ("Information is physical" is then the downstream toll — realizing the bit costs
+`ΔF = −log 2`, and a finite region holds only finitely many
+([`lean/QLF_Realizability.lean`](lean/QLF_Realizability.lean)) — not a reduction of the
+abstraction to matter.)
 
 ## 4. Completion of General Relativity
 
