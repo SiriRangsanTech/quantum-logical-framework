@@ -692,6 +692,7 @@ The universe does not have to begin as a singular object in pre-existing time. I
 
 ## Further reading — internal companion documents
 
+- [**QLF Flow Chart** (live, clickable diagrams + printable PDF)](https://jimscarver.github.io/quantum-logical-framework/FlowChart.html) — the whole framework as a one-page visual map: *one substrate → four families → ten domains*. Universal Relativity's results are the spacetime/forces/gravity/cosmology domains (1, 3, 5, 6); the *it-from-bit* base of the hypothesis (§3b) sits in the foundational-logic intro and domain 7. Text index: [`FlowChart.md`](FlowChart.md).
 - [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) — the grand unification in detail: the gauge forces as 3-axis projections (§3a) and gravity as the fourth force, the geometry of the same closures (§3b)
 - [`Einstein_Equations.md`](Einstein_Equations.md) — the field equations as the substrate's equation of state + the curvature side from the causal order (§6a)
 - [`WHITE_PAPER.md`](WHITE_PAPER.md)
