@@ -37,9 +37,28 @@ distinction, and matter/spacetime is what realizing distinctions *looks like*. "
 physical" (Landauer) is then the downstream **toll** — realizing a bit is finite and costs
 `ΔF = −log 2` — not a reduction of information to matter.
 
+<p align="center"><img src="diagrams/info_stack.svg" alt="The measure stack: a ½-spin atom at the base (1 bit = log 2, DERIVED), then Shannon count (INHERITED), phase (DERIVED), the quantum ledger (READING), and continuum renderings like Fisher geometry (RENDERING), with algorithmic/physical/semantic notions cross-cutting" width="720"></p>
+
+**Quick map.** Every notion of information is one of four things on the substrate:
+
+| Notion | Status | Core claim |
+|---|---|---|
+| Bit / ½-spin atom | **derived** | one bit = a two-valued ZFA closure |
+| Shannon | **inherited** | the census *is* the count |
+| Phase | **derived** | independent of the count |
+| Algorithmic (AIT) | **boundary** | `Ω` = the pruning horizon |
+| Physical / finite | **derived** | no continuum in a finite region |
+| Quantum | **reading** | `ℤ[i]` skeleton + Born from counts |
+| Fisher | **rendering** | emerges in the continuum limit |
+| Semantic | **contributes** | a contradiction carries zero |
+
+**How to read this.** *Information theorists:* §2–§4 (Shannon, phase, AIT) — what QLF inherits and where it adds. *Physicists:* §5–§6 (Bekenstein/Landauer, quantum) + the frequency bridge in §1 — the energy/spacetime toll. *Mathematicians:* §1, §8 + [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) — the atom as the seed of the emergence ladder. Each section marks its status: **machine-checked**, **reading**, **rendering**, **forward work**, or **ontological stance** (collected in §10).
+
 ---
 
 ## 1. The atom of information — one bit is one half-spin closure
+
+<p align="center"><img src="diagrams/half_spin_bit.svg" alt="A Hermitian pair t·t† folds to −I (360°), two pairs to +I (720°). A single-valued alphabet {+I} carries 0 bits (binary_kl 1 1 = 0); the two-valued spinor alphabet {+I,−I} carries 1 bit = log 2 (binary_kl 1 (1/2) = log 2), the MRE maximum" width="720"></p>
 
 **Claim.** The minimal unit of information is the two-valued **spin-½ closure**. A *single-valued*
 object cannot express a distinction (carries zero information); a *two-valued* one — the spinor,
@@ -72,6 +91,16 @@ and `H(q) > 0` for `q ∈ (0,1)` (`binary_entropy_pos`). Hence `D(q‖½) < log 
 realization — the half-spin ZFA closure. So the spin-½ closure is the *unique* event shape that
 both closes and extracts the maximum information per fold: **Maximum Relative Entropy**
 ([`MRE.md`](MRE.md) §2.1, [`lean/QLF_FreeEnergy.lean`](lean/QLF_FreeEnergy.lean)).
+
+**The atom is also the elementary clock — information *is* the physics.** Space is the set of
+positions of ZFA closures; time is the local clock frequency, `f = 1/latency`
+([`Time.md`](Time.md), [`SpaceTime.md`](SpaceTime.md)). The *same* ½-spin closure that carries one
+bit sets one tick — so **frequency is not an extra physical quantity; it is the rate at which
+distinctions are realized**, and mass/energy are `m = ℏf/R`, `E = ℏω` per bit (§5). That is the
+concrete content of "information *is* the physics," not a slogan: watch it run — every dot a
+closure, colour its frequency — in the interactive constructor
+([live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html),
+[`Spacetime_Constructor.md`](Spacetime_Constructor.md)).
 
 ---
 
@@ -158,12 +187,22 @@ the continuum of "consistent" parameters is unidentifiable
 The claim is the careful one: **consistency ≠ realizability**, never "`ℝ` is inconsistent."
 
 **Landauer, exactly.** QLF's per-event `ΔF = −log 2` (`zfa_closure_minimizes_free_energy`) *is*
-Landauer's `k_B T ln 2` — the cost of fixing one bit. And **`ℏω = 1 bit at frequency ω`** is
-derived from the per-event `log 2` plus the per-event `ℏω`, recovering **Margolus–Levitin** (`ℏ`
-per bit-flip) and Landauer (`k_B T ln 2` per erasure) as consequences
-([`Information_Energy_Equivalence.md`](Information_Energy_Equivalence.md)). This is the toll side of
-"information is physical": realizing the abstraction is finite and costs energy/time — the
-abstraction itself stays primary.
+Landauer's `k_B T ln 2` — the cost of fixing one bit. The identification becomes dimensional once
+the free-energy unit is fixed by the **local temperature of the observer's Markov blanket**: the
+abstract `−log 2` (nats) is then the Landauer cost `k_B T ln 2` in those units — so QLF does not
+have "only a dimensionless log," it has the log *plus* the local clock that scales it. And
+**`ℏω = 1 bit at frequency ω`** is derived from the per-event `log 2` plus the per-event `ℏω`,
+recovering **Margolus–Levitin** (`ℏ` per bit-flip) and Landauer (`k_B T ln 2` per erasure) as
+consequences ([`Information_Energy_Equivalence.md`](Information_Energy_Equivalence.md)). This is the
+toll side of "information is physical": realizing the abstraction is finite and costs energy/time —
+the abstraction itself stays primary.
+
+**Holographic corollary.** Because each closure on a boundary carries exactly one bit, the
+Bekenstein/holographic **area bound is a bound on the number of ½-spin closures** the boundary can
+host: QLF's horizon entropy `S = 4πR² log 2` is precisely one `log 2` per Planck-patch closure —
+the same count as the Loop-Quantum-Gravity `j = ½` punctures ([`LQG_QLF.md`](LQG_QLF.md),
+`QLF_LoopQuantumGravity`). Holography is then not a separate postulate but the statement that a
+region's information *is* its inventory of realized ½-spin distinctions.
 
 ---
 
@@ -233,23 +272,28 @@ information.
 
 ## 9. The synthesis — one ontology, the whole stack on top
 
-| Notion | Reference | QLF status | Anchor |
-|---|---|---|---|
-| The bit (it from bit) | Wheeler; Zeilinger–Brukner | **derived** — one bit = the two-valued ½-spin closure; single-valued = 0 | `QLF_SpinorInformation`, `QLF_FreeEnergy` |
-| Shannon entropy (count) | Shannon 1948 | **inherited** — the census IS Shannon counting; the measure is *forced* | `QLF_CensusShannon`, `QLF_EntropyUniqueness` |
-| Phase (beyond count) | — | **derived** — count ≠ phase; order is independent information | `QLF_PhaseInformation` |
-| Algorithmic (AIT) | Kolmogorov; Chaitin | **boundary** — `Ω` = the pruning boundary; RCA₀ floor | `QLF_ShannonOverfit`, `full_zeno_prune` |
-| Physical/finite | Landauer; Bekenstein; Gisin | **derived** — no continuum in a finite region; `ΔF = −log 2` | `QLF_Realizability`, `QLF_FreeEnergy` |
-| Quantum (von Neumann) | von Neumann; Gottesman | **reading** — `ℤ[i]` skeleton; Born from counts; `ħ/2` | `QLF_BornProbability`, `QLF_Uncertainty` |
-| Fisher / geometry | Fisher; Amari | **rendering** — emerges from census statistics in the limit | `QLF_CensusBrownian` |
-| Semantic | Carnap–Bar-Hillel; Floridi | **contributes** — closure-as-receipt; contradiction carries 0 | `QLF_ContradictionReceipt`, `QLF_InfoSynthesis` |
+| Notion | Reference | QLF status | Proof | Anchor |
+|---|---|---|---|---|
+| The bit (it from bit) | Wheeler; Zeilinger–Brukner | **derived** — one bit = the two-valued ½-spin closure; single-valued = 0 | ✅ machine-checked | `QLF_SpinorInformation`, `QLF_FreeEnergy` |
+| Shannon entropy (count) | Shannon 1948 | **inherited** — the census IS Shannon counting; the measure is *forced* | ✅ machine-checked (finite wing); distributional uniqueness open | `QLF_CensusShannon`, `QLF_EntropyUniqueness` |
+| Phase (beyond count) | — | **derived** — count ≠ phase; order is independent information | ✅ machine-checked | `QLF_PhaseInformation` |
+| Algorithmic (AIT) | Kolmogorov; Chaitin | **boundary** — `Ω` = the pruning boundary; RCA₀ floor | 🧱 principled boundary (Ω uncomputable) | `QLF_ShannonOverfit`, `full_zeno_prune` |
+| Physical/finite | Landauer; Bekenstein; Gisin | **derived** — no continuum in a finite region; `ΔF = −log 2` | ✅ machine-checked | `QLF_Realizability`, `QLF_FreeEnergy` |
+| Quantum (von Neumann) | von Neumann; Gottesman | **reading** — `ℤ[i]` skeleton; Born from counts; `ħ/2` | ✅ machine-checked | `QLF_BornProbability`, `QLF_Uncertainty` |
+| Fisher / geometry | Fisher; Amari | **rendering** — emerges from census statistics in the limit | 🔵 forward work | `QLF_CensusBrownian` |
+| Semantic | Carnap–Bar-Hillel; Floridi | **contributes** — closure-as-receipt; contradiction carries 0 | ✅ machine-checked | `QLF_ContradictionReceipt`, `QLF_InfoSynthesis` |
+| *information = realized distinction* | (the ontology) | the bottom layer itself | ⬛ ontological stance | — |
 
 Every row sits on one sentence: **information = realized distinction = closure receipt**, with the
 **½-spin closure as its atom**. Shannon counting, AIT bounds, Fisher geometry, and stabilizer
 arithmetic are the measure stack over a now-specified ontology. QLF is the **foundation under the
-stack, not a rival to it** — and, because the same ZFA filter selects physical reality *and*
-realizable mathematics, "why is mathematics so effective in physics?" dissolves: effective math =
-realizable math = the substrate ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §4, Wigner).
+stack, not a rival to it**. And the atom is not just the base of *this* stack — it is the **seed of
+the entire emergence ladder**: the same two-valued closure whose fold-group is `μ₄ = (ℤ[i])ˣ`
+generates ℕ (counting closures), the ring `+`/`×` (parallel/sequence), and su(2)/su(3), with the
+continuum as their completion ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) § Rung 5a). So
+because the same ZFA filter selects physical reality *and* realizable mathematics, "why is
+mathematics so effective in physics?" dissolves: effective math = realizable math = the substrate
+([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §4, Wigner).
 
 ---
 
@@ -269,6 +313,12 @@ realizable math = the substrate ([`Mathematics_From_QLF.md`](Mathematics_From_QL
   not done.
 - "Information is physical" is used in the precise sense: the *toll of realizing* a distinction
   (`ΔF = −log 2`, finite realizability), never a reduction of the abstraction to matter.
+
+**What would falsify the picture.** A physical **information capacity below the one-bit scale** — a
+sub-`log 2` distinguishable degree of freedom that is *not* a whole ½-spin closure — would break the
+atomicity thesis; equally, a genuine physical **distinction that is not a closure** (an outcome
+realized with no ZFA-balanced receipt) would break "information = realized distinction." Neither is
+observed; both are sharp, standing targets.
 
 ---
 

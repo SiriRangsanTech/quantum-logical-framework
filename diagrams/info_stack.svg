@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="880" height="480" fill="#ffffff"/>
+  <text x="440" y="30" text-anchor="middle" font-size="21" font-weight="700" fill="#111827">One ontology — the whole measure stack on top</text>
+  <text x="440" y="52" text-anchor="middle" font-size="13" fill="#6b7280">information = realized distinction = closure receipt; the ½-spin atom at the base, every richer measure built on it</text>
+
+  <defs>
+    <marker id="up" markerWidth="9" markerHeight="9" refX="4.5" refY="2" orient="auto"><path d="M0,9 L4.5,0 L9,9 z" fill="#9ca3af"/></marker>
+  </defs>
+
+  <!-- the stack (bottom = atom, top = renderings) -->
+  <!-- base -->
+  <rect x="70" y="392" width="470" height="52" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2.2"/>
+  <text x="305" y="414" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1d4ed8">ZFA closure = realized distinction</text>
+  <text x="305" y="433" text-anchor="middle" font-size="12.5" fill="#2563eb">the ½-spin atom · 1 bit = log 2</text>
+  <rect x="548" y="400" width="96" height="36" rx="6" fill="#dbeafe"/><text x="596" y="423" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">DERIVED</text>
+
+  <line x1="305" y1="392" x2="305" y2="368" stroke="#9ca3af" stroke-width="2" marker-end="url(#up)"/>
+
+  <!-- shannon -->
+  <rect x="70" y="316" width="470" height="52" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.8"/>
+  <text x="305" y="338" text-anchor="middle" font-size="14.5" font-weight="700" fill="#15803d">Shannon — count / multiplicity</text>
+  <text x="305" y="357" text-anchor="middle" font-size="12.5" fill="#16a34a">the census IS the count · the measure is forced</text>
+  <rect x="548" y="324" width="110" height="36" rx="6" fill="#dcfce7"/><text x="603" y="347" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">INHERITED</text>
+
+  <line x1="305" y1="316" x2="305" y2="292" stroke="#9ca3af" stroke-width="2" marker-end="url(#up)"/>
+
+  <!-- phase -->
+  <rect x="70" y="240" width="470" height="52" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="305" y="262" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1d4ed8">Phase — order beyond count</text>
+  <text x="305" y="281" text-anchor="middle" font-size="12.5" fill="#2563eb">independent information (boson vs fermion)</text>
+  <rect x="548" y="248" width="96" height="36" rx="6" fill="#dbeafe"/><text x="596" y="271" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">DERIVED</text>
+
+  <line x1="305" y1="240" x2="305" y2="216" stroke="#9ca3af" stroke-width="2" marker-end="url(#up)"/>
+
+  <!-- quantum -->
+  <rect x="70" y="164" width="470" height="52" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="305" y="186" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6d28d9">Quantum ledger</text>
+  <text x="305" y="205" text-anchor="middle" font-size="12.5" fill="#7c3aed">Born from counts · ħ/2 · ℤ[i] skeleton</text>
+  <rect x="548" y="172" width="96" height="36" rx="6" fill="#ede9fe"/><text x="596" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9">READING</text>
+
+  <line x1="305" y1="164" x2="305" y2="140" stroke="#9ca3af" stroke-width="2" marker-end="url(#up)"/>
+
+  <!-- renderings -->
+  <rect x="70" y="88" width="470" height="52" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text x="305" y="110" text-anchor="middle" font-size="14.5" font-weight="700" fill="#4b5563">Continuum renderings</text>
+  <text x="305" y="129" text-anchor="middle" font-size="12.5" fill="#6b7280">Fisher / information geometry · Hilbert space</text>
+  <rect x="548" y="96" width="110" height="36" rx="6" fill="#f3f4f6"/><text x="603" y="119" text-anchor="middle" font-size="12" font-weight="700" fill="#4b5563">RENDERING</text>
+
+  <!-- side notes -->
+  <text x="690" y="205" font-size="12.5" font-weight="700" fill="#374151">Cross-cutting:</text>
+  <text x="690" y="228" font-size="12" fill="#6b7280">• Algorithmic (AIT): Ω is</text>
+  <text x="700" y="245" font-size="12" fill="#6b7280">the pruning boundary</text>
+  <text x="690" y="272" font-size="12" fill="#6b7280">• Physical/finite: no</text>
+  <text x="700" y="289" font-size="12" fill="#6b7280">continuum in a finite</text>
+  <text x="700" y="306" font-size="12" fill="#6b7280">region — because the</text>
+  <text x="700" y="323" font-size="12" fill="#6b7280">bit is atomic</text>
+  <text x="690" y="350" font-size="12" fill="#6b7280">• Semantic: closure-as-</text>
+  <text x="700" y="367" font-size="12" fill="#6b7280">receipt; a contradiction</text>
+  <text x="700" y="384" font-size="12" fill="#6b7280">carries zero</text>
+
+  <text x="440" y="468" text-anchor="middle" font-size="12.5" fill="#9ca3af">the same ZFA filter selects physical reality and realizable mathematics — so effective math = realizable math = the substrate (Wigner dissolved)</text>
+</svg>
