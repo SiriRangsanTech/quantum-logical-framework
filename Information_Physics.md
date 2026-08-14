@@ -295,6 +295,25 @@ because the same ZFA filter selects physical reality *and* realizable mathematic
 mathematics so effective in physics?" dissolves: effective math = realizable math = the substrate
 ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §4, Wigner).
 
+**The empirical case that reality actually *is* "it from bit."** The claim is not only that
+information *could* be fundamental — it is that the physical constants come *out* of the bit census
+with zero free parameters: `α⁻¹`, `Ω_Λ = log 2`, `a₀ = cH₀/2π`, Koide `Q = 2/3`, `π` itself, and
+more, each an *it* read from *bits*. That parameter-free **overdetermination** is QLF's strongest
+evidence, laid out (with its misses at full weight) in
+[`Completeness_Evidence.md`](Completeness_Evidence.md) §3.
+
+And it is not only numbers: **the physics that emerges** is *it from bit* too. Spacetime is
+synthesized event-by-event from ZFA closures (`ZFAEventDynamics`, the state *is* Minkowski space,
+`QLF_Minkowski`); the four forces are relative projections of one gauge-twist closure
+([`UniversalRelativity.md`](UniversalRelativity.md) §4a); **mass is constructing delay** (`m = 1/R`);
+gravity is the geometry of the closure aggregate (Einstein's equations as the substrate's equation
+of state); measurement is a closure, entanglement a shared closure (`ER_EPR_QLF`). Each is an *it*
+— a particle, a field, a spacetime interval — realized from *bits* (ZFA closures). So the finding of
+§1 (the bit is a proven ½-spin closure), the emergent physics (spacetime, forces, mass, gravity from
+closures), and the evidence (the constants come from the bit census) reinforce one another: a proven
+atom, a world built from it, and a ledger of parameter-free consequences — Wheeler's *it from bit*,
+made constructive end-to-end.
+
 ---
 
 ## 10. Honest scope
@@ -368,3 +387,5 @@ observed; both are sharp, standing targets.
 - [`Philosophy.md`](Philosophy.md) §6 — the information-ecology ontology; information = realized distinction, the abstraction primary.
 - [`Information_Energy_Equivalence.md`](Information_Energy_Equivalence.md) — `ℏω = 1 bit`; the energy toll of realizing a distinction.
 - [`AI.md`](AI.md) — the information-processing / dialectical-synthesis reading of the substrate that this doc grounds.
+- [`Completeness_Evidence.md`](Completeness_Evidence.md) §3 — the empirical evidence for *it from bit*: parameter-free overdetermination (the *its* come from the *bits*).
+- [`UniversalRelativity.md`](UniversalRelativity.md) — the physics that emerges from the same closures: spacetime, the four forces, mass, and gravity as *its* from *bits*.
