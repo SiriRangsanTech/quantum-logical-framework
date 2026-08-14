@@ -100,7 +100,10 @@ distinctions are realized**, and mass/energy are `m = ℏf/R`, `E = ℏω` per b
 concrete content of "information *is* the physics," not a slogan: watch it run — every dot a
 closure, colour its frequency — in the interactive constructor
 ([live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html),
-[`Spacetime_Constructor.md`](Spacetime_Constructor.md)).
+[`Spacetime_Constructor.md`](Spacetime_Constructor.md)). This discrete-frequency reading is where
+QLF completes **Carver Mead's** *Collective Electrodynamics* — his relational, non-projectile
+electromagnetism, minus its one residual *continuous*-frequency assumption
+([`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) §5).
 
 ---
 
