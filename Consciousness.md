@@ -78,6 +78,18 @@ conscious closure.
 [`QLF_Consciousness.lean`](lean/QLF_Consciousness.lean)). At each moment, whichever closure is fastest
 and coherent is what is experienced; the rest is unconscious substrate.
 
+**The unit of that integrated information is machine-verified — *it from bit*.** What binding integrates,
+and what the frequency-hierarchy carries, is *information* — and its atom is now a theorem. The smallest
+closure is the two-valued **spin-½**, carrying exactly one bit (`binary_kl 1 (1/2) = log 2`) while a
+single-valued object carries none (`binary_kl 1 1 = 0`) — [`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean)
+(the `2π` double-valuedness reproven from the explicit rotation matrices, grounding the spinor **Cartan**
+discovered in 1913). So the `Φ` that Integrated Information Theory measures is integration of these ½-spin
+bits, and the free-energy quantum each conscious closure resolves is the same one bit, `ΔF = −log 2`
+([`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean)). This grounds the substrate *unit* of experience-relevant
+information — and no more: information **is** the abstraction (a distinction), the ½-spin closure its
+realization. It says nothing yet about the felt quality itself (§6): the **architecture**, not the hard
+problem.
+
 ---
 
 ## 4. Cosmic consciousness — the receiver regime
