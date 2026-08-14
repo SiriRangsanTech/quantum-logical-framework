@@ -65,7 +65,7 @@ double-valuedness reproven from the explicit rotation matrices, grounding the sp
 in 1913 ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So the first act of creation
 is not *incidentally* a pair; it **must** be one, because a single half cannot mark any difference from the
 Void. The separation of nothing into two conjugates is the minimal thing that *is* a distinction — one
-realized bit, the abstraction actualized: Wheeler's *it from bit* at the moment of creation.
+realized bit, the abstraction actualized: Wheeler's *it from bit* at the moment of creation. [▶ watch a created e⁺e⁻ pair annihilate back to the Void](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=positronium%20%40%200%2C0%2C0) — a conjugate pair that sums to nothing.
 
 **The proton is such a synthesis** — a dense left-handed knot, whose completion demands a right-handed
 electron ([`Annihilation.md`](Annihilation.md), [`Atom.md`](Atom.md)). It is **an abstraction of what adds
@@ -78,7 +78,7 @@ substrate that keeps matter from meeting its mirror all at once).
 
 Hydrogen is the vivid case — one possible thing, holding an enormous number of bits of information that
 never decay, that **separated a right-handed world from a left-handed world so they can never annihilate
-one another.** It is a hall of mirrors: a right-handed electron entering is logically twisted into a
+one another.** [▶ see a hydrogen atom self-assemble](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%200%2C0%2C0) (p + e → H, a photon flies off). It is a hall of mirrors: a right-handed electron entering is logically twisted into a
 positron and back to an electron on the way out — the electron half-loop folding into its positron
 conjugate and closing (`fold_electron`, [`lean/QLF_Spin.lean`](lean/QLF_Spin.lean);
 [`Electron.md`](Electron.md); positronium `^<v>^>v<` in [`Atomic_Structure_QLF.md`](Atomic_Structure_QLF.md)).
@@ -220,7 +220,9 @@ Two features are essential and drawn explicitly (the orange radial + the self-si
 - **Center — the logical bang.** Not an explosion from a singularity: a single self-balanced closed event
   is instantiated — the **first distinction**, the minimal ZFA closure, the conjugate pair `[+, −]`
   (`first_distinction_closes` = `conjugate_pair_closes`; §3 above). The origin is *logical* (the one closed
-  event that makes every later balanced event possible), not metric.
+  event that makes every later balanced event possible), not metric. [▶ watch the whole logical bang unfold
+  from nothing](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#t=0.95) —
+  heat the vacuum to the Planck top and the census draws black holes → hadrons → nuclei → atoms, nothing scripted.
 - **Concentric rings — the phases.** Each ring is a new layer of ZFA events that become possible once the
   inner layer has locked — discrete combinatorial depths / octave shells, not continuous radii. They form a
   **causal partial order** (`causal_order_refl/trans/antisymm`, the `reachable` order of
