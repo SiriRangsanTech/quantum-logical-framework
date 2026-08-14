@@ -62,7 +62,7 @@ Each row above validates one component. **None combines them**, and — the deci
 
 ## Part II — The mathematics of information (infrastructure QLF builds on)
 
-Here the relationship inverts: these are not rivals but the **measure stack** QLF sits on. Each answers *how much* information; none answers *what* information *is*, physically, or *when* a distinction has *happened*. ZFA claims exactly that missing bottom layer.
+Here the relationship inverts: these are not rivals but the **measure stack** QLF sits on. Each answers *how much* information; none answers *what* information *is*, physically, or *when* a distinction has *happened*. ZFA claims exactly that missing bottom layer. *(The fuller, proof-backed synthesis — every notion below with its QLF status and machine-checked anchor — is [`Information_Physics.md`](Information_Physics.md).)*
 
 | Body of theory | QLF's relationship | The one line |
 |---|---|---|
