@@ -29,6 +29,8 @@ Every terminating logical computation can be unrolled into a finite, acyclic NAN
 
 Time is a discrete resource synthesized by gauge folds. One tick of the universal clock corresponds to the resolution of one logical bit (a single ZFA closure) per unit of Planck action. 
 
+That "one logical bit" is now a theorem, not a placeholder — it **is** the two-valued **spin-½ closure**. A single-valued object carries *no* bit (`binary_kl 1 1 = 0`), while the two-valued spinor `{+I, −I}` carries exactly one (`binary_kl 1 (1/2) = log 2`), the `2π` double-valuedness proven from the explicit rotation matrices — grounding the spinor **Cartan** discovered in 1913 ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So each tick — and the local space *and* time it synthesizes — is one resolved ½-spin closure: *it from bit*, the abstraction (a distinction) realized by the closure, at the per-event cost `ΔF = −log 2`.
+
 The time delay ($\Delta t$) required to resolve an event is inversely proportional to its ZFA degeneracy ($W_{ZFA}$), defined as the number of possible ZFA closures available. 
 
 $$\Delta t \propto \frac{1}{W_{ZFA}}$$
