@@ -315,3 +315,6 @@ realizable math = the substrate ([`Mathematics_From_QLF.md`](Mathematics_From_QL
 - [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) — the emergence ladder; § Rung 5a (spin-½ = the atom of information); § 4 (Wigner dissolved).
 - [`MRE.md`](MRE.md) · [`Shannon_And_Phase.md`](Shannon_And_Phase.md) · [`Shannon_Overfit.md`](Shannon_Overfit.md) · [`Information_Energy_Equivalence.md`](Information_Energy_Equivalence.md) · [`Relative_Entropy.md`](Relative_Entropy.md) · [`Entropy.md`](Entropy.md) · [`Born_Rule.md`](Born_Rule.md).
 - [`TheContinuum.md`](TheContinuum.md) — why a finite universe cannot hold continuum information.
+- [`Philosophy.md`](Philosophy.md) §6 — the information-ecology ontology; information = realized distinction, the abstraction primary.
+- [`Information_Energy_Equivalence.md`](Information_Energy_Equivalence.md) — `ℏω = 1 bit`; the energy toll of realizing a distinction.
+- [`AI.md`](AI.md) — the information-processing / dialectical-synthesis reading of the substrate that this doc grounds.

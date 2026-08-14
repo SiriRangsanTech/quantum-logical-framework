@@ -14,6 +14,8 @@ $$\boxed{\;\hbar\omega \;\equiv\; \text{1 bit at frequency } \omega\;}$$
 
 The energy `ℏω` *is* the energy cost of one bit of classical information at observation frequency ω. The Wheeler-Fields principle is therefore not an additional axiom but a **consequence** of QLF's per-event accounting.
 
+*(This `ℏω = 1 bit` equivalence is one row in the broader map of information notions on the QLF substrate — Shannon, algorithmic, Bekenstein/Landauer, quantum, semantic — collected with proof sketches in [`Information_Physics.md`](Information_Physics.md); the bit it prices is the two-valued **½-spin closure**, [`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean).)*
+
 ---
 
 ## §1 The Wheeler-Fields principle, stated precisely
