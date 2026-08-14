@@ -58,6 +58,15 @@ The two ends of one closure are one object read from two perspectives — the si
 conjugate pair `[+, −]` that closes and is spacelike, the ER=EPR seed
 (`er_equals_epr` / `conjugate_pair_closes`, [`ER_EPR_QLF.md`](ER_EPR_QLF.md)).
 
+**Why the split must be into *two* — *it from bit*.** A one-valued object could not be a distinction at
+all: it carries **zero** information (`binary_kl 1 1 = 0`). Only a *two-valued* closure — the spinor, whose
+full `2π` turn reads `−I ≠ +I` — carries a bit (`binary_kl 1 (1/2) = log 2`), machine-verified with the
+double-valuedness reproven from the explicit rotation matrices, grounding the spinor **Cartan** discovered
+in 1913 ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So the first act of creation
+is not *incidentally* a pair; it **must** be one, because a single half cannot mark any difference from the
+Void. The separation of nothing into two conjugates is the minimal thing that *is* a distinction — one
+realized bit, the abstraction actualized: Wheeler's *it from bit* at the moment of creation.
+
 **The proton is such a synthesis** — a dense left-handed knot, whose completion demands a right-handed
 electron ([`Annihilation.md`](Annihilation.md), [`Atom.md`](Atom.md)). It is **an abstraction of what adds
 to nothing which has become actual**: a persistent name for a way the Void folded into halves that cancel,
