@@ -28,6 +28,10 @@ foundation of mathematics (bottom-up, sound vs. exploding) in [`Quantum_Logic_Fo
 with the minimal quantum logic `MO2` machine-verified on the substrate (orthomodular + non-distributive,
 [`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean)); and ordinary mathematics *emerging* from it (ℕ,
 the ring, `μ₄`, su(2)/su(3), the continuum as completion) in the companion [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md).
+**It from bit:** the unit of information is the two-valued **½-spin closure** — one bit (`log 2` for the spinor
+alphabet `{+I,−I}`) vs *zero* for a single-valued vector `{+I}` — the `2π` double-valuedness reproven from the
+explicit rotation matrices and grounding the spinor **Cartan** discovered in 1913 as the carrier of information
+([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean), [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §Rung 5a).
 
 **Harmonic-closure model:** reality and constructable truth are the *closing spectrum* of frequency-component closures — each frequency `f = 1/R` is one ZFA closure, i.e. a quantum-logical **computation** (a set of Feynman diagrams: path integral = generate, ZFA closure = the firebreak selecting the physical ones) ([`Frequency_Synchronization.md`](Frequency_Synchronization.md) §0).
 
@@ -108,9 +112,11 @@ Dark matter is the closure-balance RAR, blind-tested parameter-free on 147 SPARC
 ## 7. Particles and the Standard Model
 
 
-**Connectors:** *axis count* &rarr; 3 fermion generations &middot; *Q = 2/3* &rarr; Koide -> m_tau &middot; *3 angles + CP* &rarr; CKM / PMNS mixing &middot; *self-conjugate* &rarr; neutrino is Majorana &middot; *DeltaL = 2* &rarr; beta-decay / 0nubetabeta &middot; *one scale x ratios* &rarr; mass spectrum &middot; *m = 1/R fold delay* &rarr; mass (Higgs mechanism)
+**Connectors:** *axis count* &rarr; 3 fermion generations &middot; *Q = 2/3* &rarr; Koide -> m_tau &middot; *3 angles + CP* &rarr; CKM / PMNS mixing &middot; *self-conjugate* &rarr; neutrino is Majorana &middot; *DeltaL = 2* &rarr; beta-decay / 0nubetabeta &middot; *one scale x ratios* &rarr; mass spectrum &middot; *m = 1/R fold delay* &rarr; mass (Higgs mechanism) &middot; *log 2 = one bit* &rarr; spin-1/2 = one bit (it from bit)
 
-**Open:** [`Standard_Model.md`](Standard_Model.md) · [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) · [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) · [`Spin_QLF.md`](Spin_QLF.md) · [`Higgs.md`](Higgs.md)
+**Open:** [`Standard_Model.md`](Standard_Model.md) · [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) · [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) · [`Spin_QLF.md`](Spin_QLF.md) · [`Higgs.md`](Higgs.md) · [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)
+
+**It from bit — information is the ½-spin closure.** The unit of information is the two-valued spinor closure: one bit (`log 2`) for `{+I,−I}` vs *zero* for a single-valued vector `{+I}` (a single-valued object cannot express a distinction). The `2π` double-valuedness is reproven from the explicit rotation matrices (`spinor_double_valued_vector_blind`: `+I` on the vector `SO(3)` rep, `−I` on the spin-½ `SU(2)` rep), grounding **Cartan**'s 1913 spinor as its carrier. Priority runs *abstraction → physical*: information **is** the distinction, the ½-spin closure its minimal realization ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean), [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §Rung 5a).
 
 ---
 

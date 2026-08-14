@@ -29,7 +29,7 @@
 <h1>QLF Flow Chart &mdash; a visual map of the framework</h1>
 <div class="intro">
 <p>This is a one-page visual map of the <strong><a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md" target="_blank" rel="noopener">Quantum Logical Framework (QLF)</a></strong> &mdash; a
-formal proof system, machine-verified in Lean&nbsp;4 across 89 modules with zero <code>sorry</code>,
+formal proof system, machine-verified in Lean&nbsp;4 across more than a hundred modules with zero <code>sorry</code>,
 that derives quantum mechanics and spacetime from a single selection principle: <em>Zero Free Action
 (ZFA) balance</em>. Every chart below shows one domain; the <strong>boxes are clickable</strong>
 (this is a PDF/HTML perk &mdash; GitHub disables Mermaid node links), and each <strong>Open</strong>
@@ -87,7 +87,15 @@ Save&nbsp;as&nbsp;PDF (keep &ldquo;Background graphics&rdquo; on).</p>
 <p><strong>Open:</strong> <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md" target="_blank" rel="noopener"><code>README.md</code></a></p>
 <p>Root reading: <strong>everything derives from the 8-twist substrate under Zero Free Action</strong> —</p>
 <p><a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Philosophy.md" target="_blank" rel="noopener"><code>Philosophy.md</code></a> (possibilist ontology), <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/WHITE_PAPER.md" target="_blank" rel="noopener"><code>WHITE_PAPER.md</code></a>.</p>
-<p><strong>Foundational logic &amp; mathematics:</strong> the substrate's <em>logic</em> is <strong>quantum logic</strong> — argued as the correct foundation of mathematics (bottom-up, sound vs. exploding) in <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Quantum_Logic_Foundations.md" target="_blank" rel="noopener"><code>Quantum_Logic_Foundations.md</code></a>, with the minimal quantum logic <code>MO2</code> machine-verified on the substrate (orthomodular + non-distributive, <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_QuantumLogic.lean" target="_blank" rel="noopener"><code>lean/QLF_QuantumLogic.lean</code></a>); and ordinary mathematics <em>emerging</em> from it (ℕ, the ring, <code>μ₄</code>, su(2)/su(3), the continuum as completion) in the companion <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md" target="_blank" rel="noopener"><code>Mathematics_From_QLF.md</code></a>.</p>
+<p><strong>Foundational logic & mathematics:</strong> the substrate&#x27;s <em>logic</em> is <strong>quantum logic</strong> — argued as the correct</p>
+<p>foundation of mathematics (bottom-up, sound vs. exploding) in <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Quantum_Logic_Foundations.md" target="_blank" rel="noopener"><code>Quantum_Logic_Foundations.md</code></a>,</p>
+<p>with the minimal quantum logic <code>MO2</code> machine-verified on the substrate (orthomodular + non-distributive,</p>
+<p><a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_QuantumLogic.lean" target="_blank" rel="noopener"><code>lean/QLF_QuantumLogic.lean</code></a>); and ordinary mathematics <em>emerging</em> from it (ℕ,</p>
+<p>the ring, <code>μ₄</code>, su(2)/su(3), the continuum as completion) in the companion <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md" target="_blank" rel="noopener"><code>Mathematics_From_QLF.md</code></a>.</p>
+<p><strong>It from bit:</strong> the unit of information is the two-valued <strong>½-spin closure</strong> — one bit (<code>log 2</code> for the spinor</p>
+<p>alphabet <code>{+I,−I}</code>) vs <em>zero</em> for a single-valued vector <code>{+I}</code> — the <code>2π</code> double-valuedness reproven from the</p>
+<p>explicit rotation matrices and grounding the spinor <strong>Cartan</strong> discovered in 1913 as the carrier of information</p>
+<p>(<a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_SpinorInformation.lean" target="_blank" rel="noopener"><code>lean/QLF_SpinorInformation.lean</code></a>, <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md" target="_blank" rel="noopener"><code>Mathematics_From_QLF.md</code></a> §Rung 5a).</p>
 <p><strong>Harmonic-closure model:</strong> reality and constructable truth are the <em>closing spectrum</em> of frequency-component closures — each frequency <code>f = 1/R</code> is one ZFA closure, i.e. a quantum-logical <strong>computation</strong> (a set of Feynman diagrams: path integral = generate, ZFA closure = the firebreak selecting the physical ones) (<a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Frequency_Synchronization.md" target="_blank" rel="noopener"><code>Frequency_Synchronization.md</code></a> §0).</p>
 </section>
 <section id="1-space-time-and-the-continuum">
@@ -235,6 +243,7 @@ Save&nbsp;as&nbsp;PDF (keep &ldquo;Background graphics&rdquo; on).</p>
   NU --&gt;|&quot;DeltaL = 2&quot;| BD[&quot;beta-decay / 0nubetabeta&quot;]
   TH --&gt;|&quot;one scale x ratios&quot;| MS[&quot;mass spectrum&quot;]
   SP[&quot;spin = the twists&quot;] --&gt; HG[&quot;mass Higgs mechanism&quot;]
+  SP --&gt;|&quot;log 2 = one bit&quot;| BIT[&quot;spin-1/2 = one bit - it from bit&quot;]
   click TH &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md&quot; _blank
   click GEN &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md&quot; _blank
   click KO &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md&quot; _blank
@@ -244,8 +253,10 @@ Save&nbsp;as&nbsp;PDF (keep &ldquo;Background graphics&rdquo; on).</p>
   click MS &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Per_Qubit_Mass_Quantum.md&quot; _blank
   click SP &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Spin_QLF.md&quot; _blank
   click HG &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Higgs.md&quot; _blank
+  click BIT &quot;https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md&quot; _blank
 </pre>
-  <p><strong>Open:</strong> <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md" target="_blank" rel="noopener"><code>Standard_Model.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Beta_Decay_Neutrino_Nature.md" target="_blank" rel="noopener"><code>Beta_Decay_Neutrino_Nature.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Per_Qubit_Mass_Quantum.md" target="_blank" rel="noopener"><code>Per_Qubit_Mass_Quantum.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Spin_QLF.md" target="_blank" rel="noopener"><code>Spin_QLF.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Higgs.md" target="_blank" rel="noopener"><code>Higgs.md</code></a></p>
+  <p><strong>Open:</strong> <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md" target="_blank" rel="noopener"><code>Standard_Model.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Beta_Decay_Neutrino_Nature.md" target="_blank" rel="noopener"><code>Beta_Decay_Neutrino_Nature.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Per_Qubit_Mass_Quantum.md" target="_blank" rel="noopener"><code>Per_Qubit_Mass_Quantum.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Spin_QLF.md" target="_blank" rel="noopener"><code>Spin_QLF.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Higgs.md" target="_blank" rel="noopener"><code>Higgs.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md" target="_blank" rel="noopener"><code>Mathematics_From_QLF.md</code></a></p>
+<p><strong>It from bit — information is the ½-spin closure.</strong> The unit of information is the two-valued spinor closure: one bit (<code>log 2</code>) for <code>{+I,−I}</code> vs <em>zero</em> for a single-valued vector <code>{+I}</code> (a single-valued object cannot express a distinction). The <code>2π</code> double-valuedness is reproven from the explicit rotation matrices (<code>spinor_double_valued_vector_blind</code>: <code>+I</code> on the vector <code>SO(3)</code> rep, <code>−I</code> on the spin-½ <code>SU(2)</code> rep), grounding <strong>Cartan</strong>&#x27;s 1913 spinor as its carrier. Priority runs <em>abstraction → physical</em>: information <strong>is</strong> the distinction, the ½-spin closure its minimal realization (<a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_SpinorInformation.lean" target="_blank" rel="noopener"><code>lean/QLF_SpinorInformation.lean</code></a>, <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Mathematics_From_QLF.md" target="_blank" rel="noopener"><code>Mathematics_From_QLF.md</code></a> §Rung 5a).</p>
 </section>
 <section id="8-quantum-gravity--toe-pillars">
   <h2>8. Quantum-gravity / TOE pillars <a class="top" href="#top">&uarr; top</a></h2>
@@ -303,7 +314,7 @@ Save&nbsp;as&nbsp;PDF (keep &ldquo;Background graphics&rdquo; on).</p>
 <section id="see-also">
   <h2>See also <a class="top" href="#top">&uarr; top</a></h2>
   
-  <p>- <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md" target="_blank" rel="noopener"><code>README.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/README.md" target="_blank" rel="noopener"><code>lean/README.md</code></a> — project overview + the 89-module Lean</p>
+  <p>- <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md" target="_blank" rel="noopener"><code>README.md</code></a> · <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/README.md" target="_blank" rel="noopener"><code>lean/README.md</code></a> — project overview + the full Lean module</p>
 <p>  table.</p>
 <p>- <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Open_Problems.md" target="_blank" rel="noopener"><code>Open_Problems.md</code></a> — the honest gap registry (closed / principled-boundary / open).</p>
 <p>- <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Beyond_Standard_Model.md" target="_blank" rel="noopener"><code>Beyond_Standard_Model.md</code></a> — the derived / predicted / open scorecard.</p>

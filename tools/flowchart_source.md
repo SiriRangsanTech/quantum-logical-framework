@@ -38,6 +38,16 @@ The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7
 Root reading: **everything derives from the 8-twist substrate under Zero Free Action** —
 [`Philosophy.md`](Philosophy.md) (possibilist ontology), [`WHITE_PAPER.md`](WHITE_PAPER.md).
 
+**Foundational logic & mathematics:** the substrate's *logic* is **quantum logic** — argued as the correct
+foundation of mathematics (bottom-up, sound vs. exploding) in [`Quantum_Logic_Foundations.md`](Quantum_Logic_Foundations.md),
+with the minimal quantum logic `MO2` machine-verified on the substrate (orthomodular + non-distributive,
+[`lean/QLF_QuantumLogic.lean`](lean/QLF_QuantumLogic.lean)); and ordinary mathematics *emerging* from it (ℕ,
+the ring, `μ₄`, su(2)/su(3), the continuum as completion) in the companion [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md).
+**It from bit:** the unit of information is the two-valued **½-spin closure** — one bit (`log 2` for the spinor
+alphabet `{+I,−I}`) vs *zero* for a single-valued vector `{+I}` — the `2π` double-valuedness reproven from the
+explicit rotation matrices and grounding the spinor **Cartan** discovered in 1913 as the carrier of information
+([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean), [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §Rung 5a).
+
 **Harmonic-closure model:** reality and constructable truth are the *closing spectrum* of frequency-component closures — each frequency `f = 1/R` is one ZFA closure, i.e. a quantum-logical **computation** (a set of Feynman diagrams: path integral = generate, ZFA closure = the firebreak selecting the physical ones) ([`Frequency_Synchronization.md`](Frequency_Synchronization.md) §0).
 
 ---
@@ -193,11 +203,14 @@ flowchart TD
   NU --> BD["beta-decay / 0nubetabeta"]
   TH --> MS["mass spectrum"]
   SP["spin = the twists"] --> HG["mass Higgs mechanism"]
+  SP --> BIT["spin-1/2 = one bit - it from bit"]
 ```
 
-**Connectors:** *axis count* &rarr; 3 fermion generations &middot; *Q = 2/3* &rarr; Koide -> m_tau &middot; *3 angles + CP* &rarr; CKM / PMNS mixing &middot; *self-conjugate* &rarr; neutrino is Majorana &middot; *DeltaL = 2* &rarr; beta-decay / 0nubetabeta &middot; *one scale x ratios* &rarr; mass spectrum &middot; *m = 1/R fold delay* &rarr; mass (Higgs mechanism)
+**Connectors:** *axis count* &rarr; 3 fermion generations &middot; *Q = 2/3* &rarr; Koide -> m_tau &middot; *3 angles + CP* &rarr; CKM / PMNS mixing &middot; *self-conjugate* &rarr; neutrino is Majorana &middot; *DeltaL = 2* &rarr; beta-decay / 0nubetabeta &middot; *one scale x ratios* &rarr; mass spectrum &middot; *m = 1/R fold delay* &rarr; mass (Higgs mechanism) &middot; *log 2 = one bit* &rarr; spin-1/2 = one bit (it from bit)
 
-**Open:** [`Standard_Model.md`](Standard_Model.md) · [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) · [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) · [`Spin_QLF.md`](Spin_QLF.md) · [`Higgs.md`](Higgs.md)
+**Open:** [`Standard_Model.md`](Standard_Model.md) · [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) · [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) · [`Spin_QLF.md`](Spin_QLF.md) · [`Higgs.md`](Higgs.md) · [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)
+
+**It from bit — information is the ½-spin closure.** The unit of information is the two-valued spinor closure: one bit (`log 2`) for `{+I,−I}` vs *zero* for a single-valued vector `{+I}` (a single-valued object cannot express a distinction). The `2π` double-valuedness is reproven from the explicit rotation matrices (`spinor_double_valued_vector_blind`: `+I` on the vector `SO(3)` rep, `−I` on the spin-½ `SU(2)` rep), grounding **Cartan**'s 1913 spinor as its carrier. Priority runs *abstraction → physical*: information **is** the distinction, the ½-spin closure its minimal realization ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean), [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §Rung 5a).
 
 ---
 
@@ -265,7 +278,7 @@ flowchart TD
 
 ## See also
 
-- [`README.md`](README.md) · [`lean/README.md`](lean/README.md) — project overview + the 89-module Lean
+- [`README.md`](README.md) · [`lean/README.md`](lean/README.md) — project overview + the full Lean module
   table.
 - [`Open_Problems.md`](Open_Problems.md) — the honest gap registry (closed / principled-boundary / open).
 - [`Beyond_Standard_Model.md`](Beyond_Standard_Model.md) — the derived / predicted / open scorecard.
