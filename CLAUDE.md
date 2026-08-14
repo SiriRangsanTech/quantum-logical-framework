@@ -14,196 +14,27 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## 185 active modules
+## Modules — 185, machine-verified, zero `sorry`
 
-In `lean/`, registered in `lakefile.lean` roots array (in build order). For fuller per-module descriptions + the complete key-theorem lists, see [`lean/README.md`](lean/README.md).
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 185 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
 | `QLF_Axioms` | Types, counting, pruning, ZFA definition |
-| `QLF_Combinatorics` | Phase-string generation helpers |
-| `QLF_QuCalc` | Phase-generation engine |
+| `QLF_QuCalc` | Phase-generation engine; `full_zeno_prune` (the ZFA filter) |
 | `QLF_Universality` | Every terminating computation IS a ZFA string (Church-Turing) |
-| `QLF_Critical_Line` | ZFA → symmetry bridge |
-| `QLF_Spectral` | Hermitian spectral projectors |
-| `QLF_Riemann` | Riemann hypothesis program |
-| `SpacetimeDynamics` | Pauli-basis 2×2 Hermitian matrices |
-| `RhoQuCalc` | ρ-process algebra |
-| `ZFAEventDynamics` | ZFA event dynamics |
-| `AgeOfUniverse` | Cosmological age from ZFA event rate |
-| `ER_EPR_QLF` | ER=EPR from the substrate core — zero axioms |
-| `PauliExclusion` | Fermionic statistics via matrix commutator |
-| `StringTheoryQLF` | String modes |
-| `MTheoryQLF` | M-theory |
-| `BraKetRhoQuCalc` | Bra-ket ↔ RhoQuCalc correspondence |
-| `QLF_FreeEnergy` | Per-event ΔF = -log 2 at half-spin ZFA closure |
-| `QLF_Pauli` | 4-element Pauli scalar group {±I, ±iI} |
-| `QLF_TwistAlphabet` | 8-twist alphabet with σ-matrix mapping |
-| `QLF_VacuumAlignment` | Vacuum-alignment TOE-completing principle (KL saturation ≡ ZFA closure, per-event + trajectory) |
-| `QLF_RhoProcessBridge` | Every constructible RhoProcess's event trajectory saturates the cumulative info bound |
-| `QLF_LocalClock` | A depth-`R` Markov blanket IS a local clock (Kitada local time) |
-| `QLF_EinsteinGeometricFactor` | Einstein `8π = 4π·2` (boundary solid angle × Hermitian-pair degeneracy) |
-| `QLF_SubstrateLightSpeed` | `c = L_Planck/τ_Planck` via ρ-cancellation → local Lorentz invariance |
-| `QLF_FineStructureSubstrate` | α = 1/137 from substrate combinatorics, zero free params |
-| `QLF_LenzMassRatio` | `m_p/m_e = 6π⁵ = \|S₃\|·π⁵`, 0.002% |
-| `QLF_PionMassRatio` | Charged-pion/electron ratio `m_π±/m_e = \|S₂\|/α = 2/α = 274` (`pion_electron_ratio_eq`), vs measured 273.1 (0.3%) |
-| `QLF_QuantumBlackHole` | Every hadron (meson + baryon) is a Markov-blanket quantum black hole |
-| `QLF_DarkMatter` | Dark matter = denser logic near masses |
-| `QLF_HorizonTemperature` | Unruh/Hawking/de Sitter from one substrate relation |
-| `QLF_Casimir` | The Casimir effect — finite census, `1/a⁴` scaling, accelerated-boundary Unruh tie |
-| `QLF_MondScale` | The `2π` in `a₀ = cH₀/(2π)` derived — the ZFA closure-loop period |
-| `QLF_MondNu` | The MOND interpolation function `ν` is the unique closure-balance form |
-| `QLF_RarBalance` | The closure-balance conjunction derived |
-| `QLF_AlgebraEmergence` | A group emerges from the substrate as a genuine Mathlib structure |
-| `QLF_BorromeanAngles` | The 5-angle count `5 = 3 + 2` (Jacobi internal + chirality-mixing) |
-| `QLF_EulerMascheroni` | γ as the harmonic excess `H_N − ln N` of the ZFA ensemble |
-| `QLF_RiemannZeta` | Substrate ↔ ζ bridge: `γ_QLF` = ζ's Laurent constant at `s=1` |
-| `QLF_RiemannMRE` | MRE bridge — — a constructive scaffold for the Riemann boundary |
-| `QLF_DiracCorrection` | Hydrogen fine structure (α² kinematic/spin-orbit/Darwin) |
-| `QLF_LambShift` | Lamb-shift prefactor `4/(3πn³) = 4·(2/3)·(1/2π)·(1/n³)` |
-| `QLF_GMinusTwo` | Electron `g−2`: `a_e = α/2π` (Schwinger), 0.2% |
-| `QLF_GravityFromDelay` | Newton's law + `G = L_P²c³/ℏ` from holographic delay |
-| `QLF_HolographicDensity` | Naming η and quantifying the Bekenstein–Hawking residual exactly |
-| `QLF_GravitationalCoupling` | The strength of gravity `α_G = exp(−28π)` from the `14π` hierarchy |
-| `QLF_PlanckScale` | The Planck length is the closure floor by construction, not a posited input |
-| `QLF_LoopQuantumGravity` | QLF's substrate is a spin network of half-spin (j=½) ZFA closures |
-| `QLF_MercuryPerihelion` | Perihelion advance 42.99″/century (0.03%) |
-| `QLF_CosmologicalConstant` | `Ω_Λ = log 2` (1.2%), closing the 10¹²² vacuum catastrophe |
-| `QLF_PrimordialMarkovBlanket` | Markov blankets as Fuller geodesic spheres |
-| `QLF_Koide` | Koide `Q = 2/3` follows by construction from `N=3 ∧ A²=2` ⇒ `m_τ` to 0.006% |
-| `QLF_Generations` | Three fermion generations = the 3 spatial axes |
-| `QLF_WeinbergAngle` | Weak mixing angle `sin²θ_W = 3/8` at the unification scale |
-| `QLF_RunningCouplings` | One-loop RG structure + substrate UV-finiteness |
-| `QLF_GravitationalWaves` | GWs + the linearized wave equation. — Massless transverse ripple ⇒ speed `c` |
-| `QLF_FlavorMixing` | CKM/PMNS parameter count + Kobayashi–Maskawa |
-| `QLF_CondensedMatter` | Quantum Hall resistance from α + Cooper pairs as bosons |
-| `QLF_CosmicInflation` | Inflation (past) + gravity (present) as one event duality |
-| `QLF_StrongCP` | `θ̄ = 0` without an axion. — The strong-CP θ-term is a CP-odd topological winding |
-| `QLF_Baryogenesis` | The three Sakharov conditions are met ⟹ matter excess is generic |
-| `QLF_Nucleosynthesis` | Primordial helium fraction. — Every surviving neutron → deepest light closure ⁴He, so `Y_p = 2r/ |
-| `QLF_MassSpectrum` | The absolute spectrum is one scale, exponentially generated |
-| `QLF_BetaFunction` | QCD `b₀ = 7` from the substrate. — The one-loop β-coefficient `b₀ = 11N_c/3 − 2n_f/3` with `N_c = color_count = substrate_spatial_dimension = 3` |
-| `QLF_Anyons` | Fractional statistics from a 2D braiding phase |
-| `QLF_MuonG2` | Placing the muon `g−2` honestly. — Leading `a_μ = α/2π = a_e` |
-| `QLF_AlphaS` | The hierarchy from one integer. — Closes `QLF_MassSpectrum`'s last input: posit `α_s |
-| `QLF_EinsteinEquations` | The Einstein equations as the substrate's equation of state (Jacobson 1995) |
-| `QLF_Fusion` | The β⁺ keystone — joining two Markov blankets needs distinguishability |
-| `QLF_NoFreeDuplication` | The substrate forbids free Banach–Tarski duplication |
-| `QLF_InfoSynthesis` | Information synthesis as disjunctive (OR) closure |
-| `QLF_MuonCatalysis` | Lepton-catalyzed fusion is QLF cold fusion (rate, not necessity) |
-| `QLF_LoopClosure` | The closure machine vs the `2π` rendering |
-| `QLF_ReachableEvent` | Closure-reachability as a pre-geometric Lean object |
-| `QLF_SU5` | The `5̄⊕10` generation as the antisymmetric content of QLF's `3⊕2` |
-| `QLF_CausalInterval` | Number↔volume — the curvature side of the Einstein equations begins |
-| `QLF_CausalDimension` | Dimension from combining histories (number↔volume reads the dimension) |
-| `QLF_CausalContinuum` | The statistical continuum limit of the BD curvature operator — Einstein curvature side in the Millennium pattern |
-| `QLF_OrderMetric` | The order → metric reconstruction — *Order + Number = Geometry |
-| `QLF_HorizonClosure` | Closure is horizon-relative; observation is bounded closure |
-| `QLF_MaxwellCurl` | The Maxwell curl laws as flux-conservation closure over the event sequence |
-| `QLF_Consciousness` | The frequency-hierarchy of resonant closures — a QLF model of consciousness |
-| `QLF_PrimeResonance` | Prime frequencies are the irreducible modes; the half-spin prime-3 keystone |
-| `QLF_AtomicStructure` | What the substrate geometry says about atomic structure |
-| `QLF_AngularMomentum` | Angular momentum as circulation; the Navier–Stokes geometry and no-blow-up |
-| `QLF_NavierStokesBKM` | Reducing `navier_stokes_continuum_limit` via the Planck vorticity cap + Beale–Kato–Majda |
-| `QLF_Turbulence` | Turbulence as a quantized-vortex tangle; the cascade as a frequency hierarchy |
-| `QLF_Kolmogorov` | The flux-invariance lemma + the forced `−5/3` exponent |
-| `QLF_QuantumTurbulence` | The superfluid/quantum-turbulence dynamical picture, proven |
-| `QLF_HiggsTurbulence` | The Higgs as the radial mode of a quantum-turbulent gauge-fold vacuum |
-| `QLF_TopYukawaRunning` | The top-Yukawa running sector of the Higgs quartic |
-| `QLF_ClosureBinding` | How closures bind — the structure of the substrate four-fermion interaction |
-| `QLF_CondensateGap` | The interacting closure-binding condenses — an NJL gap equation with the census as the loop |
-| `QLF_PrimeCascadeDecay` | Turbulence forces decay — the prime phase-slip + the cascade dump |
-| `QLF_NeutrinoOscillation` | Flavor oscillation as a norm-preserving closure precession |
-| `QLF_LogicalBang` | The logical bang + nested phases (drawn from the inside) |
-| `QLF_PiRational` | The substrate π-approximant is rational; the interface is `Real`-free |
-| `QLF_ShannonOverfit` | The reals over-parameterize physics — non-identifiability, a Shannon proof |
-| `QLF_FQHE` | The fractional-quantum-Hall stability ordering, made rigorous |
-| `QLF_ContradictionReceipt` | A contradiction receives no receipt |
-| `QLF_EntropyUniqueness` | The closure measure is forced, not chosen |
-| `QLF_Identifiability` | Capacity bounds distinguishability; the unconstrained tail |
-| `QLF_CensusShannon` | Information composes as counts multiply |
-| `QLF_BornProbability` | Count-ratio Born probabilities satisfy the probability axioms |
-| `QLF_AlphaRigidity` | The elementarity spine of α-rigidity |
-| `QLF_Reconstruction` | The reconstruction theorem's entropy-uniqueness wing (finite lattice) |
-| `QLF_EmergenceChain` | The emergence forcing chain, assembled (reuse-only) |
-| `QLF_PostulateReduction` | The five reconstruction postulates collapse into one-and-a-half |
-| `QLF_ProperInvolution` | The substrate dagger is a proper involution — the (a1) rung of the orthomodular reduction |
-| `QLF_QuantumLogic` | The substrate realizes the minimal quantum logic `MO2` — orthomodular, non-distributive, no bridge axiom |
-| `QLF_StabilizerZi` | Stabilizer / Clifford evolution never leaves ℤ[i] |
-| `QLF_CensusWalk` | Lean-anchors genesis.py §2 (the `−p/2` spectral exponent) at low orders |
-| `QLF_HarmonicClosure` | Reality & constructable truth as the closing spectrum of frequency-component closures |
-| `QLF_DynamicalDarkEnergy` | `ρ_Λ ∝ H²` ⟹ QLF's dark energy is dynamical, not a constant Λ |
-| `QLF_CurvatureLie` | Curvature from one-bit orthogonality IS the su(2) Lie bracket |
-| `QLF_KnotInvariant` | Embedded ZFA closures are knots/links — the Kauffman-lineage reading |
-| `QLF_ReidemeisterLinking` | The crossing-sign Levi-Civita algebra + the Reidemeister invariances of the linking number |
-| `QLF_LinkDiagram` | A Gauss-code link diagram + full R1/R2/R3 invariance of the linking number |
-| `QLF_KauffmanBracket` | The Kauffman bracket as a firebreak state-sum — the bridge's discrete side, built |
-| `QLF_TorusBracket` | A concrete planar loop-count — `bracket` computes named knots |
-| `QLF_PlanarBracket` | The general planar loop-tracer — `bracket` computes any knot from its arc code |
-| `QLF_Firebreak` | ZFA closure as the firebreak on path-integral possibility-space |
-| `QLF_GaugeUnification` | One force, three projections — EM is the abelian limit |
-| `QLF_GaugeHolonomy` | The gauge *force* is the holonomy of the closure connection |
-| `QLF_WeakChirality` | The weak force is chiral; only the left-handed neutrino enters the blanket |
-| `QLF_Confinement` | Color confinement = the singlet-closure obstruction |
-| `QLF_HiggsMechanism` | Mass is the gauge-fold delay (the constructive Higgs) |
-| `QLF_CKM` | Flavor mixing is unitary = closure. — Strengthens `QLF_FlavorMixing`'s count with the dynamical constraint: the CKM matrix is **unitary**, and… |
-| `QLF_QuarkMass` | Quark masses are not closure observables; hadron masses are |
-| `QLF_QuarkStructure` | The Borromean three-colour necessity, proven |
-| `QLF_NeutrinoMass` | The neutrino mass is Majorana; only the self-conjugate fermion can be |
-| `QLF_PMNS` | Lepton mixing is unitary, with extra Majorana phases |
-| `QLF_Supersymmetry` | The supercharge is the half-spin shift; `{Q,Q†}=2P` is two half-spins closing an event |
-| `QLF_CensusBrownian` | The closure census is a random walk — the Riemann GMC bridge, discrete side |
-| `QLF_LorentzGeneration` | The round-trip lemmas + the spinor-image submonoid — the genuine reduction of the Lorentz-cover axiom |
-| `QLF_PhysicalPi` | π derived by construction from the closure census |
-| `QLF_StrongAlgebra` | Strong `SU(3)` = traceless 3-axis directional tensor |
-| `QLF_BMinusL` | Electric charge = exactly-conserved signed twist count (`signed_count_conserved`) |
-| `QLF_Majorana` | The neutrino is **Majorana**: antiparticle = Hermitian conjugate (conjugate-and-reverse), and `^v` is a fixed point of it |
-| `QLF_BaryonWinding` | Baryon number = signed 3-axis linking (winding) invariant |
-| `QLF_Spin` | Spin demystified — spin IS the twists. — Worked qucalc folds |
-| `QLF_MassGap` | Yang–Mills mass gap |
-| `QLF_BSD` | Birch–Swinnerton-Dyer |
-| `QLF_Hodge` | Hodge conjecture |
-| `QLF_PvsNP` | P vs NP |
-| `QLF_NavierStokes` | Navier–Stokes smoothness |
-| `QLF_SpanningMap` | The spanning question on the cycle ring — the genuine Hodge content |
-| `QLF_CycleEncoding` | Going for the gap — a cycle-faithful representation where irreducibility bites |
-| `QLF_GradedCohomology` | Starting the cohomology object — the cycle class map + spanning made concrete |
-| `QLF_CohomologyRing` | The cohomology ring + the cycle class map as a graded homomorphism |
-| `QLF_CohomologyLinear` | The ℚ-linear cohomology + the algebraic classes as a concrete `Submodule ℚ` |
-| `QLF_CohomologyAlgebra` | `cl` as a ℚ-algebra homomorphism; the algebraic classes a `Subalgebra ℚ` |
-| `QLF_HodgeStructure` | The transcendental `(p,q)` Hodge structure |
-| `QLF_PhaseInformation` | Shannon (count) is not sufficient — phase is independent information |
-| `QLF_Realizability` | Consistency ≠ realizability — the Bekenstein obstruction |
-| `QLF_Uncertainty` | The `ħ/2` quantum, machine-checked |
-| `QLF_StateSpace` | The space QLF lives in — a Gaussian-integer lattice, not Hilbert space |
-| `QLF_Minkowski` | The QLF state IS Minkowski space; its determinant is the spacetime interval |
-| `QLF_EnergyMomentum` | The relativistic `E² = p² + m²` off the Minkowski interval |
-| `QLF_LorentzCover` | The `SL(2,ℂ) → SO⁺(1,3)` double cover, machine-checked |
-| `QLF_HodgeIrreducible` | The Hodge faithfulness swing series converges — the irreducibility invariant exists; the encoding is the floor |
-| `QLF_HodgeExpSequence` | The substrate exponential-sequence analog — the Hodge `(1,1)` faithfulness swing |
-| `QLF_EtalePi1` | The profinite étale `π₁` — the first non-abelian layer |
-| `QLF_AnabelianGalois` | Closes the anabelian exact sequence on the substrate |
-| `QLF_AperyPeriod` | ζ(3) (Apéry's constant) from the *same* closure census as π |
-| `QLF_Anabelian` | The anabelian `π₁`↔closure functor — — geometry recovered from the combinatorial skeleton |
-| `QLF_MotivicGalois` | The motivic Galois group |
-| `QLF_Motives` | The motive object — the substrate closure as the universal cohomology |
-| `QLF_Reversibility` | The reversibility capstone |
-| `QLF_VacuumPolarization` | The one-loop QED running coefficient `2/(3π)` from the census |
-| `QLF_VacuumPolarizationTower` | The horizon→scale tower — the running *function* from the census |
-| `QLF_ChargeCensus` | The charge census `Σ Nᶜ Q_f² = 8 = 2³` |
-| `QLF_ChargeBalance` | Anomaly cancellation as a ZFA charge-balance `Σ Q = 0` per generation |
-| `QLF_AnomalyCancellation` | Gauge consistency as a ZFA ledger-balance — every anomaly cancels |
-| `QLF_ElectroweakBeta` | The three one-loop β-coefficients from the substrate counts |
-| `QLF_GUTScale` | The unification scale — structure derived, absolute value scale-bound |
-| `QLF_BindingStrength` | The gravitational floor + the `g`-decomposition, localizing frontier #1 |
-| `QLF_PackingFactor` | Modeling the packing factor from the 8-twist combinatorics (the diagnostic, #121) |
-| `QLF_ClosureAttraction` | "Gauge folds attract" as a theorem — binding reduces free action |
-| `QLF_SteadyStateDensity` | The equilibrium defect density `ρ*` — the interaction supplies the restoring force |
-| `QLF_ElectroweakScale` | Closing the loop `ρ* → packing → g → R_stable` |
-| `QLF_MO2` | The minimal quantum logic `MO2`, self-contained |
-| `QLF_MassGapDispersion` | The Yang–Mills mass gap as the dispersion gap of the propagation operator |
-| `QLF_FractalDiagram` | Closure-as-Feynman-diagram — the inductive correspondence, formalized |
-| `QLF_SpinorInformation` | Spin-½ is the atom of information (after Cartan 1913): the two-valued spinor fold-alphabet `{+I,−I}` carries one bit (`log 2`), a single-valued vector alphabet `{+I}` carries zero — the jump happens exactly when the `−I` double-cover sign is admitted. §3 **reproves the double-valuedness from explicit rotation matrices** (`spinor_double_valued_vector_blind`: a `2π` turn is `+I` on the `SO(3)`/vector rep, `−I` on the `SU(2)`/spin-½ rep); Cartan retained only for the general classification |
+| `SpacetimeDynamics` | The `Form` — Pauli-basis 2×2 Hermitian matrices |
+| `RhoQuCalc` | ρ-process algebra (`RhoProcess`, `eval`, dagger) |
+| `BraKetRhoQuCalc` | Bra-ket ↔ RhoQuCalc; the Σ₈ / `τ = iσ` weak-isospin algebra |
+| `QLF_TwistAlphabet` | 8-twist σ-mapping; `count_balanced_pauli_closed` (count balance ⟹ Pauli closure) |
+| `QLF_Pauli` | 4-element Pauli scalar group `{±I, ±iI}` = μ₄ |
+| `QLF_Spin` | Spin IS the twists; genuine SU(2)→SO(3) double cover |
+| `QLF_FreeEnergy` | Per-event `ΔF = −log 2` at half-spin ZFA closure; `binary_kl` |
+| `QLF_SpinorInformation` | Spin-½ is the atom of information (it from bit, after Cartan 1913) |
+| `QLF_Minkowski` | The state IS Minkowski space; `det(Form) = interval` |
+| `QLF_LorentzCover` | `SL(2,ℂ)→SO⁺(1,3)` double cover |
+| `QLF_Realizability` | No continuum in a finite-information region (Bekenstein) |
+| `QLF_Riemann` · `QLF_MassGap` · `QLF_BSD` · `QLF_Hodge` · `QLF_PvsNP` · `QLF_NavierStokes` | The six Millennium reformulations — each a verified discrete core + one named bridge axiom (see **Axiom inventory** below) |
 
 ---
 
@@ -395,19 +226,13 @@ The variational physics expression of ZFA is S = ∫ℒ dΩ with **ℒ = 0** —
 
 ### ZFC ultraviolet catastrophe
 
-Classical ZFC mathematics is founded on open-ended formal infinity. This leads to: Gödelian incompleteness (truths unprovable in sufficiently strong systems), Turing undecidability, and the Busy Beaver function (uncomputable growth without bound). These are shadows of the same problem — logic that can construct objects with no finite closure.
-
-QLF's answer: the QLF core operates strictly within **RCA₀** — below the Busy Beaver horizon, below the Axiom of Choice, below ZFC. Non-terminating computations fail to achieve ZFA closure and are pruned by `full_zeno_prune` before they can become physical events. Gödel's theorem cannot bite where unprovability has been physically excised.
+Classical ZFC is founded on open-ended formal infinity → Gödel incompleteness, Turing undecidability, Busy Beaver: shadows of one problem, logic that constructs objects with no finite closure. QLF's core operates strictly within **RCA₀** (below Busy Beaver / Choice / ZFC); non-terminating computations fail ZFA closure and are pruned by `full_zeno_prune` before they become events — Gödel cannot bite where unprovability is physically excised.
 
 > **ZFC is flawed logic, suitable only where there are not exploding infinities. ZFA is correct logic.**
 
 **State this precisely (the sharpened framing — binding):** the claim is **consistency ≠ realizability**, *not* that ZFC is syntactically inconsistent (`ℝ` is consistent — claiming "the continuum is false" is a category error and a crank trap). "Flawed logic" means *unsound for physics / physically unrealizable*: a finite-information universe cannot instantiate an actual infinity of distinguishable states (Bekenstein), so there is **no injection from an infinite state space into a finite-information region** — machine-checked (`lean/QLF_Realizability.lean`, `no_continuum_in_finite_region`) — and the continuum gives demonstrably **wrong answers** (the UV catastrophe, the 10¹²² vacuum catastrophe, singularities) wherever forced onto reality, right only where a cutoff (= discreteness) is quietly restored. The full case is `TheContinuum.md`; the empirical/realizability spine should be used in preference to bald "the continuum is false." The **"continuum is gratuitous" case** has a settled five-strike form (`TheContinuum.md` §2, *"five converging strikes"*): three classical logic results — **Löwenheim–Skolem** (the transfinite has a countable model), **Gödel–Cohen** (CH independent ⟹ the continuum's cardinality is *undecidable*, not a determinate object), and **reverse-math conservativity** (`WKL₀` proves no new finitary theorem over the `RCA₀` base — Friedman/Harrington; Simpson, *SOSOA*) — plus QLF's two machine-checked strikes (*unrealizable*, `QLF_Realizability`; *unneeded*, the finite census recovering `π`/`ζ(3)`). Cite these named results, not bare assertions; "ZFC's proven defect" legitimately covers the CH-undecidability and the conservativity result.
 
-The Axiom of Choice asserts the existence of sets with no constructive selection procedure; the ZFA filter replaces it with a computable one. Chaitin's Ω (the halting probability) is the information content of the pruning boundary — physically realized as `full_zeno_prune` itself.
-
-The formal mathematics of this argument — math with active inference built in, restricted to the non-fantasy half — is named in [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) §6.1.
-
-This is the organizing thesis of QLF's **Millennium Prize program**: *the continuum and choice are mathematics' ultraviolet catastrophe, and physical/mathematical reality is the bounded, computable substrate — the continuum is its rendering.* That ontological position (**Bullet A**: information is physical and finite — Shannon; uncomputable reals are not physical objects; reality is the computable RCA₀ subset) is the load-bearing, defensible claim, with a real lineage (Brouwer, Bishop, Weyl, Gisin, 't Hooft, Wolfram). Each attacked problem is **reformulated** as a *verified discrete RCA₀ core* plus **one explicit bridge axiom** — Riemann (`spectral_hilbert_polya`), Yang–Mills mass gap (`yang_mills_continuum_gap`, `QLF_MassGap`), Birch–Swinnerton-Dyer (`modularity_mirror_invariant`, `QLF_BSD` — `bsd_rank_equals_order` *derived from it*), Hodge (`substrate_realization_is_algebraic`, `QLF_Hodge` — `hodge_class_is_algebraic` *derived from it*, the axiom carrying Hodge's content), Navier–Stokes (`navier_stokes_continuum_limit`, `QLF_NavierStokes`), P vs NP (`generate_not_reducible_to_verify`, `QLF_PvsNP`).
+The Axiom of Choice (sets with no constructive selection) is replaced by the computable ZFA filter; Chaitin's Ω is the information content of the pruning boundary = `full_zeno_prune`. The formal math (active inference on the non-fantasy half): [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) §6.1. **Organizing thesis of QLF's Millennium program:** the continuum and choice are mathematics' UV catastrophe; reality is the bounded computable RCA₀ substrate (Shannon/Brouwer/Bishop/Weyl/Gisin/'t Hooft/Wolfram lineage), the continuum its rendering. Each problem is reformulated as a *verified RCA₀ core + one explicit bridge axiom* (the six axioms + derived-theorem homes are in the **Axiom inventory** above).
 
 **Binding framing (the contrast-then-focus structure — do NOT pollute docs with "not proven"):**
 
@@ -452,30 +277,7 @@ Security grounds in five converging foundations: Girard's linear logic (1987), M
 
 ### Convergence: 18 independent programs
 
-The most striking feature of QLF is that 18 independent research programs — with no coordination — have each arrived at the same picture: **reality is informational, computable, and bounded by a logical closure condition**.
-
-| Program | Key figure(s) | Convergent claim |
-|---|---|---|
-| Digital physics | Konrad Zuse (1969) | The universe is a computation |
-| Computability | Alan Turing (1936) | Computation has formal limits; non-terminating and undecidable problems lie beyond the computable |
-| It from bit | John Wheeler (1990) | Every physical quantity derives from binary yes/no questions |
-| Information theory | Claude Shannon (1948) | Information is physical; entropy measures unresolved uncertainty |
-| Holographic principle | Bekenstein, Hawking, 't Hooft, Susskind (1972–1995) | Bulk physics is bounded by boundary information |
-| Relativistic ether | Albert Einstein (1920, Leiden) | Spacetime is a medium with real metric properties but no preferred frame or state of motion |
-| Causal Set Theory | Bombelli, Sorkin, Henson (1987–present) | Spacetime is a discrete partial order of causal events |
-| Loop Quantum Gravity | Ashtekar, Rovelli, Smolin (1986–present) | Space is a spin network of SU(2) quanta; area/volume discrete; background-independent — QLF's substrate is a spin network of half-spin ZFA closures ([`LQG_QLF.md`](LQG_QLF.md)) |
-| Girard linear logic | Jean-Yves Girard (1987) | Resource-sensitive reasoning; proof = process; use-once tokens |
-| Reverse Mathematics | Harvey Friedman (1975–present) | Physical laws can be stratified by minimum logical strength; RCA₀ is the computable floor |
-| Session types | Kohei Honda (1993) | Communication protocols have types; safety = type-checking |
-| Holographic QEC | Almheiri, Dong, Harlow; HaPPY code (2015) | Spacetime bulk = quantum error-correcting code on boundary |
-| Object capability model | Mark Miller (2006) | Security from first principles: unforgeable names = capability tokens |
-| ρ-calculus | Meredith & Radestock (2005) | Programs as processes; names as reflective proof terms |
-| Free Energy Principle | Karl Friston (2010) | All adaptive systems minimize variational free energy — perception = inference |
-| Geometric Deep Learning | Bronstein, Bruna, LeCun, Szlam, Vandergheynst (2021) | Correct geometric inductive bias for physical AI = Clifford algebra elements |
-| Ruliad | Stephen Wolfram (2020) | The entangled limit of all possible computations; physical reality = observer slice |
-| No-cloning theorem | Wootters & Zurek (1982) | Quantum information cannot be copied — the physical foundation of capability security |
-
-**Reversibility/energy audit of the table.** The 18 are *irreversibility-native by selection* — none axiomatizes reversibility or global energy conservation, and several are positive evidence for the QLF arrow (CST sequential **growth**, Girard **use-once** tokens, Friston **dissipation**, Shannon→Landauer **erasure** = `ΔF=−log 2`, Wolfram's **derived** second law) — all agreeing reversibility + a fixed energy total are emergent, not fundamental (`Reversibility.md`, `Conservation.md` §2b: energy is created per event, half lent to the future). Two rows carry a caveat in their *standard* form that QLF's synthesized-time reading repairs: **holographic principle / holographic QEC** — its AdS/CFT realization is a *static* anti–de Sitter (negative Λ) background with a *unitary* boundary CFT; QLF's holography is the **de Sitter / ZFA-closure** boundary (positive `Λ = log 2`, created future-energy), keeping Bekenstein's bound + the QECC structure, dropping the static frame; and **canonical Loop Quantum Gravity** — the Wheeler–DeWitt frozen-time problem (`H=0`), QLF supplying the arrow as synthesized time (`f=1/t`), converging on the spin-network *entropy* not the frozen dynamics. The TOEs that genuinely *fail* these flaws — string theory's asymptotic S-matrix, no-collapse Everett, the block universe, 't Hooft's reversible cellular automaton — are **not in the table** (they are the `Reversibility.md` §6 casualties; the convergence set and casualty set are cleanly disjoint).
+18 independent research programs — with no coordination — each arrived at the same picture: **reality is informational, computable, and bounded by a logical closure condition** (Zuse digital physics, Turing computability, Wheeler it-from-bit, Shannon, holography + holographic-QEC, Einstein's relativistic ether, Causal Set Theory, LQG, Girard linear logic, reverse mathematics, session types, object-capability + ρ-calculus, Friston FEP, Geometric Deep Learning, Wolfram's ruliad, Wootters–Zurek no-cloning). The full table (figures + convergent claims) is in [`README.md`](README.md). **Reversibility audit:** the 18 are *irreversibility-native by selection* — none axiomatizes reversibility or a fixed energy total, and several are positive evidence for the QLF arrow (CST growth, Girard use-once, Friston dissipation, Shannon→Landauer erasure `ΔF=−log2`, Wolfram's derived 2nd law). The TOEs that *fail* these (string S-matrix, no-collapse Everett, block universe, 't Hooft reversible CA) are **not** in the table — convergence set and `Reversibility.md` §6 casualty set are cleanly disjoint.
 
 ### What NOT to say
 
@@ -500,7 +302,7 @@ Avoid framings that contradict the above:
 | `CLAUDE.md` | This file — project context for new Claude sessions |
 | `braket_rho.py` | Numerical demo of bra-ket ↔ RhoQuCalc correspondence |
 | `MultiParticle.py` / `MultiParticle.md` | Two-history interactor: causal diamonds intersect → joint-ZFA closure = entanglement (ER=EPR); reuses `twist_core.is_zfa` (reconfirms the `count_balanced_pauli_closed` keystone at runtime), the discrete-curl vorticity, cascade `log 2` quantum, and `SpaceTime.SpacetimeGrid` latency field |
-| `spacetime_constructor.html` | Interactive 3-D tool ([live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html)): space = node position, time = clock rate, both = frequency shown as colour; drop masses (redshift = time dilation). Drawn from **one observer's frame** — a **draggable** stick figure who IS the frame origin (`QLF_HorizonClosure`): orbit spins around him, **zoom homes in from him**, and **grabbing him (or Shift-drag) trucks the whole perspective** so everything moves with him; auto-spin opt-in. Matter arises from a **deterministic frequency cascade** — the first distinction unfolds the census by frequency (`QLF_HarmonicClosure`/`QLF_PrimeResonance`), *independent of vacuum energy* (the foam runs even at T=0, the `Ω_Λ=log2` floor); balanced pairs only (a lone charge can't close). **No forces** — bodies drift down the `w_ZFA` latency gradient (`−∇w`, mass-independent), buffeted by a **vacuum-foam Brownian walk** (a *closed* census walk, `QLF_CensusBrownian`/`QLF_Turbulence` — ZFA-balanced so zero net impulse, not dice, not a force; `Vacuum jitter` toggle); **Pauli exclusion** (`QLF_PauliExclusion`, identical fermions repel — not particle/antiparticle) supplies the outward degeneracy pressure, so **crystals** (SC/BCC/FCC via a `lattice` macro, element-selectable **H/He/C/O/Fe** — a nucleus of Z p + N n with Z electrons) self-bind and matter doesn't collapse — no pinning. No wall (vacuum absorbs escapees). Bound states self-assemble: p+e→H (photon), H+H→H₂, H+H̄ annihilate. A **Temperature** slider (absolute zero → CMB → Planck) sets only how much freezes out as **real** vs **virtual foam**; near the Planck top **black holes form** (Compton = Schwarzschild, carry `Q`,`J`) and Hawking-evaporate into hadrons (a hadron IS a quantum BH). **Photons** bend in the latency field (lensing = the interaction, always speed `c`), arrive from the **horizon inward** (CMB = Gibbons–Hawking, hierarchical `1:2:4` cascade), and **terminate on a local observer** (measurement) else the vacuum absorbs them (energy conserved). **QuCalc panel**: Capture reads the live scene as QuCalc closures; Replace/Inject to create; macros (positronium, muonium, deuteron, alpha, hadron **quark content** — a free quark is confined-rejected), element atoms (H/He/C/O/Fe). **Chemistry = one valence rule** (shared-closure bonding: H:1/O:2/C:4/Fe:3/He:0) → H₂/H₂O/CO₂/graphite/Fe₂O₃ rust self-assemble, metals lattice (no metal-metal), noble gases inert (`Chemistry.md`). **Cooper pairs** (low-T, bosonic) + **Bose condensation** of light boson atoms → superfluid He (`QLF_CondensedMatter`). **Spin is two-component** (σ_y ^/v AND σ_x >/<, e.g. ↑→). Two spin-web overlays: **Entanglement** (ER=EPR singlets, ↑↔↓/→↔←) vs **Exclusions** (identical-spin Pauli). **Deep links**: URL `#qc=<QuCalc>&t=<temp>` preloads a scene (docs use "(▶ see)" links). A **help overlay** (? button) with a **report-an-issue** link (`issues/new`), crystals. A **frequency-band** control — two **log sliders** over `f=m/mₑ` — stretches the spectrum across `[f_lo,f_hi]` (band-low red → band-high violet), dims out-of-band closures, and **limits Capture to the band** (Capture also limited to on-screen). **Field readout** (collapsible): counts (atoms/molecules/particles/**foam=virtual**/black holes, hover for per-type breakdown incl. each BH's `M/Q/J`), **total energy** `E=m=1/R` (mₑ, GeV on hover) with **gross** (content) vs **net free energy** (matter⁺−antimatter⁻ → 0 = ZFA), and **Vacuum ρ** = ρ(T): **dark energy** floor (`3log2/8π·c⁴/GR_H²` ≈ 3.35 GeV/m³, matches measured) + **dark matter** `∝(T/T_CMB)³` + thermal **vacuum energy** `∝T⁴` → Planck ceiling (the 10¹²² catastrophe = the two ends). **Click identifies** by frequency + spin (particles, nodes, photons-by-frequency, BHs, vacuum flickers) — down to an atom's **constituents** (each bound electron/nucleus and each bonded atom of a molecule is individually pickable) and each transient **event flash by its cause** (recombination, chemical bond, decay, annihilation, Cooper pairing, pair creation, Hawking evaporation). Decay deterministic census-exponential (`Decay.md` §1a); **no probability** — the census draws the space (`QLF_CensusBrownian`/`QLF_BornProbability`). Dependency-free canvas, mobile. **Framing (binding):** the tool is *quantum logic + a 3-D observer perspective generating something from nothing*, **enhanced** (not caused) by the background-radiation spectrum. Say **no forces, no fields, no action at a distance** — only ZFA closures that **DO** close (not "can"), because in quantum logic things happen **every way possible** and what we see is what happens in the **most ways**; a closure's **frequency IS its multiplicity** (the census count of ways) — a reading (space/time/colour), never a cause. Full write-up `Spacetime_Constructor.md` |
+| `spacetime_constructor.html` | Interactive 3-D tool ([live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html)) — quantum logic + a movable 3-D observer generating a world *from nothing*: space = node position, time = clock rate, both = colour; matter from the ZFA closure census, **no forces / no fields / no action at a distance** (only closures that DO close, frequency = census multiplicity). Logical bang (Planck-temp black holes → hadrons → atoms), chemistry by one valence rule, crystals (Pauli), Cooper/BEC condensates, entanglement/exclusion overlays. Deep links `#qc=<QuCalc>&t=<temp>`. **Binding framing:** a *reading* (space/time/colour), never a cause. Full write-up [`Spacetime_Constructor.md`](Spacetime_Constructor.md) |
 | `Chemistry.md` | QLF chemistry: a bond is a **shared closure**, driven by one **valence** rule (H:1/O:2/C:4/Fe:3/He:0) → H₂/H₂O/CO₂/graphite/Fe₂O₃ self-assemble; metals lattice (Pauli), noble gases inert; plus superfluid-He/Cooper-pair condensation. Every reaction has a **(▶ see)** deep-link that opens the constructor with the scene preloaded (`#qc=…`). Honest scope: shared-closure bond is the principle; single-bond valence-saturation model (formulas right, not double bonds/angles/rates). Crosslinks `Spacetime_Constructor.md`, `Bound_States_QLF.md`, `Geometry_Of_Space.md` |
 | `Spacetime_Constructor.md` | Full write-up of `spacetime_constructor.html`. Reframed thesis: **no forces, no fields, no action at a distance** — only ZFA closures that **DO** close (not "can"), because in quantum logic things happen **every way possible** and reality is what happens in the **most ways**; a closure's **frequency IS its multiplicity** (the census count of ways), read out as space/time/colour — never a cause. Generated *from nothing* by the first distinction unfolding the census, seen from one 3-D observer perspective, **enhanced** (not caused) by the background-radiation spectrum. Covers every panel: generation-from-nothing, the movable observer frame, band selector, foam Brownian walk, Pauli-bound crystals, black holes, QuCalc create, field readout, Vacuum ρ(T). Companion to `SpaceTime.md` (§7 is now just a live-see pointer) and the numerical `MultiParticle.py` |
 | `proton_neutron_demo.py` / `SEX.md` | Model of the proton♂/neutron♀ pairing (issues #53/#57): `pn` binds where `pp`/`nn` are Pauli-blocked, the bond stabilizes the decaying neutron; complementarity → collective intelligence. Room best practices live in quantum-os `Room_Best_Practices.md` |
