@@ -10,7 +10,7 @@ In this constructive framework, everything — including observers and conscious
 
 In standard quantum mechanics, the measurement problem remains deeply mysterious. The Quantum Logical Framework resolves this cleanly. Measurement is not a special process. It is simply the moment when a logical bit is synthesized and incorporated into an observer’s Markov blanket through Zero Free Action closure.
 
-Each half-spin closure reduces the space of possible futures by half. Observers and consciousness emerge naturally from these Markov blankets as they develop self-models, environmental models, and their interaction.
+Each half-spin closure reduces the space of possible futures by half. That halving *is* one bit — and the bit is now a theorem, not a metaphor: the two-valued half-spin closure carries exactly `log 2` (`binary_kl 1 (1/2) = log 2`) while a single-valued object carries none (`binary_kl 1 1 = 0`), machine-verified with the 360°→720° double-valuedness reproven from the explicit rotation matrices, grounding the spinor Élie Cartan discovered in 1913 ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So the "logical bit synthesized" at measurement is literally the minimal ZFA closure — Wheeler's *it from bit* made concrete, the abstraction (a distinction) realized by the ½-spin closure. Observers and consciousness emerge naturally from these Markov blankets as they develop self-models, environmental models, and their interaction.
 
 ## Entanglement and Spooky Action
 
