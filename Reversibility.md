@@ -162,6 +162,17 @@ irreversible-measurement split of real quantum computing. "Everything can be rev
 claim QLF denies: you can *postpone* the bit, but to **have** a definite world you must close, and closing
 costs `log 2` and one tick of time.
 
+And that "one bit" is now a theorem, not a figure of speech — which sharpens the reversible/irreversible
+split into *one object seen twice*. The bit a closure fixes is the two-valued **spin-½**: it carries
+exactly `log 2` (`binary_kl 1 (1/2) = log 2`) where a *single-valued* object carries none
+(`binary_kl 1 1 = 0`), and its `2π` double-valuedness — the very `−I ≠ +I` of the Hermitian-pair fold of
+§1 (`hermitian_pair_folds_to_negI`) — is reproven from the explicit rotation matrices
+(`spinor_double_valued_vector_blind`), grounding the spinor **Cartan** discovered in 1913
+([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So the **reversible face** is the
+dagger involution on that spinor (`H ↔ H†`, §1–§2), and the **irreversible face** is *fixing its one bit* —
+the same ½-spin closure, two readings, with `ΔF = −log 2` the toll of the second (*it from bit*: the
+abstraction realized by the closure).
+
 ## 8. What we can say, if the universe is quantum logical
 
 The second law, decoherence, measurement-without-collapse, and the arrow of time are **one thing** — the
