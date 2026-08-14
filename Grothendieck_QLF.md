@@ -192,6 +192,17 @@ substrate census does not already contain. By the scale-free argument the conver
 wiring Apéry's limit `ζ(3) = (5/2)·lim aperySum` in-module is the settled-mathematics step
 (`apery_period_in_progress`), not a hole in the construction.
 
+**And the census's *unit of information* is itself now a theorem.** "Periods carry no information beyond
+the census" quantifies information in bits — and *what a bit is* is grounded on the very same engine.
+The `count_balanced_pauli_closed` fold that builds every motive lands in the `±I` double-cover kernel,
+and that two-valued alphabet `{+I, −I}` carries exactly **one bit** (`binary_kl 1 (1/2) = log 2`) while a
+single-valued object carries **none** (`binary_kl 1 1 = 0`): the **½-spin closure** is the atom of
+information (*it from bit*), with the `2π` double-valuedness reproven from the explicit rotation matrices
+(`spinor_double_valued_vector_blind`, grounding the spinor **Cartan** discovered in 1913;
+[`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean), [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)
+§Rung 5a). So "no information beyond the census" is anchored all the way down to what one bit of that
+census *is* — the same `±I`/`μ₄` fold-target that underlies the motive object (§1, §5).
+
 ## 4. One boundary, the same as the Millennium program
 
 Every Grothendieck conjecture above is "hard" at exactly **one** place: where the **algebraic /
