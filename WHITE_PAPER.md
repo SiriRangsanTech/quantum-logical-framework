@@ -85,6 +85,15 @@ is the statement that the ledger of change is closed.
   Its signature is the genuine double cover: 360° = one pair → `−I`, 720° = two pairs → `+I`, with
   `−I ≠ +I` (`rotation_360_eq_negI`, `rotation_720_eq_id`, `spin_double_cover_nontrivial`); integer spin
   is provably composite (`½ + ½ = 1`, `photon_integer_spin`) ([`Spin_QLF.md`](Spin_QLF.md), [`MRE.md`](MRE.md)).
+  The bit is thereby a **theorem** (*it from bit*): a single-valued (integer-spin *vector*) fold-alphabet
+  `{+I}` carries **zero** information (`binary_kl 1 1 = 0`) — a single-valued object cannot express a
+  distinction — while the two-valued *spinor* alphabet `{+I, −I}` carries exactly **one bit**
+  (`binary_kl 1 (1/2) = log 2`, `spin_half_is_information_atom`), the `2π` double-valuedness reproven from
+  the explicit rotation matrices (`spinor_double_valued_vector_blind`, `+I` on the vector `SO(3)` rep, `−I`
+  on the spin-½ `SU(2)` rep) — grounding the spinor **Cartan** discovered in 1913 (cited for the general
+  classification only). Priority runs *abstraction → physical*: information **is** the two-valued
+  distinction, the ½-spin closure its minimal *realization* ([`QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean),
+  [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §Rung 5a).
 - **Why the Hermitian conjugate is central.** The dagger is complex-conjugate-and-order-reverse — exactly
   QM's antiunitary time-reversal, stated at the twist level (`eval_dagger`); the *same* map is the
   antiparticle (an involution, `antiparticle_involutive`), so C and T are one operation. A balanced
