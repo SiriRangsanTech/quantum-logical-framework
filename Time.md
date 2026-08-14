@@ -16,6 +16,8 @@ Everything in the universe has a frequency. In this framework, **there exists an
 * In high-density environments (gravity/clusters), the search for a unique, valid ZFA closure takes more "logical steps."
 * This increases the **latency of resolution**, which we perceive as **Time Dilation** (mechanism in §4).
 
+**What one "logical bit" is, precisely — *it from bit*.** The bit the clock counts is not an abstraction laid on top of the physics; it **is** the two-valued **spin-½ closure**. A single-valued object carries *no* bit (`binary_kl 1 1 = 0`), while the two-valued spinor `{+I, −I}` carries exactly one (`binary_kl 1 (1/2) = log 2`), the `2π` double-valuedness proven from the explicit rotation matrices — grounding the spinor **Cartan** discovered in 1913 ([`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)). So a clock's tick is one resolved ½-spin closure, its frequency `f = 1/t` is the rate of realizing these bits, and each costs the per-event `ΔF = −log 2` ([`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean)). **Time is literally counted in ½-spin bits** — the abstraction (a distinction) realized, one closure per tick.
+
 
 
 ## 3. How Time is Constructed from Gauge Folds
