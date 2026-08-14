@@ -115,6 +115,18 @@ The same QLF structure recurs across the table — which is why one framework re
   [`QLF_TwistAlphabet`](lean/QLF_TwistAlphabet.lean) — but it is a theorem *about closures*;
   reaching each classical conjecture runs through that problem's full-strength bridge axiom (see
   *The template*), so what recurs is the **reformulation**, not a proof.
+- **The recurring `log 2` is one bit — *it from bit*, machine-checked.** The quantum that appears
+  across the program — the Yang–Mills mass gap `gaugeMassGap = log 2` (`mass_gap_quantum_pos`), the
+  per-event MRE / free-energy quantum, the ZFA balance ledger — is *literally one bit of
+  information*, and that bit is the two-valued **½-spin closure**: a single-valued (integer-spin
+  *vector*) object carries **zero** (`binary_kl 1 1 = 0`), the two-valued *spinor* alphabet
+  `{+I, −I}` exactly **one bit** (`binary_kl 1 (1/2) = log 2`), with the `2π` double-valuedness
+  reproven from the explicit rotation matrices (`spinor_double_valued_vector_blind`, grounding the
+  spinor **Cartan** discovered in 1913). So the same `±I` double-cover *kernel* that
+  `count_balanced_pauli_closed` sends every balanced closure into (the engine above) is the
+  alphabet of the unit bit — the program's recurring `log 2` and the framework's information atom
+  are one object ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean)). This is foundational,
+  not a seventh problem: it grounds *what a bit is* under the whole table.
 - **The adjoint involution H ↔ H† is the mirror — now a *verified group element*.** The Riemann
   functional equation `s↔1−s`, the BSD `s↔2−s`, the Hodge conjugation `H^{p,q}↔H^{q,p}`, and
   modularity (the Hermitian-pair mirror) are all the *same* self-duality, whose fixed locus is `Σ_sa`.
