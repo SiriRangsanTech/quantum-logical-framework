@@ -2,7 +2,7 @@
 
 **Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)
 **Document:** `Electron.md`
-**Document version:** 2.0 — aligned with [`Bound_States_QLF.md`](Bound_States_QLF.md)
+**Document version:** 2.1 — run-commands and sample outputs regenerated against the current `particles.py` (`--particle` interface, the old `--seed/--max-depth/--enable-gauge` flags are gone); the ½-spin-information and two-axis-content findings added. Aligned with [`Bound_States_QLF.md`](Bound_States_QLF.md)
 **Author:** Jim/Grok (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, gauge-folding rule, and the bound-state framing)
 
 ## Abstract
@@ -19,7 +19,9 @@ Most everything we experience is due to electrons participating in joint closure
 
 In QLF the electron is not an abstract point particle with mysterious properties. It is a **gauge-folded topological half-loop** — a partial twist sequence containing at least one `+` or `-` fold along the LOCAL gauge axis. By itself the half-loop has not closed; it carries an open Hermitian deficit. When it intersects a Hermitian-conjugate partner's causal frontier, the joint ZFA closure completes, and the gauge-fold depth of the electron's half contributes its share of the bound system's constructing delay and rest energy.
 
-Its **spin is not mysterious either** — it is literally the twists. The electron loop `^<v>` folds to `−I` (a half-spin fermion needing 720° to return, the SU(2)→SO(3) double cover), and the electron is **Dirac** (not its own antiparticle), all machine-verified in [`Spin_QLF.md`](Spin_QLF.md) / [`lean/QLF_Spin.lean`](lean/QLF_Spin.lean) (`fold_electron`, `rotation_360_eq_negI`, `electron_not_majorana`). Charge conjugation = view-from-behind: the positron is the electron's loop read in reverse.
+Its **spin is not mysterious either** — it is literally the twists. The electron loop `^<v>` folds to `−I` (a half-spin fermion needing 720° to return, the SU(2)→SO(3) double cover), and the electron is **Dirac** (not its own antiparticle), all machine-verified in [`Spin_QLF.md`](Spin_QLF.md) / [`lean/QLF_Spin.lean`](lean/QLF_Spin.lean) (`fold_electron`, `rotation_360_eq_negI`, `electron_not_majorana`). Charge conjugation = view-from-behind: the positron is the electron's loop read in reverse. Two further facts sharpen this. First, **the electron loop is one bit of information**: the two-valued ½-spin closure carries exactly `log 2` (`spin_half_is_information_atom`, [`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)) — Wheeler's *it from bit* at the electron ([`Information_Physics.md`](Information_Physics.md)). Second, **the loop engages two of the three spatial axes** — `^<v>` folds as `σ_y·(−σ_x)·(−σ_y)·σ_x = −I`, i.e. the x (`<>`) and y (`^v`) axes, not z (`interleaved_xlvr_folds_to_negI`, [`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean)); this `{x,y}` content is the verified anchor for what distinguishes the muon and tau (colour *content* vs colour *charge*, [`Particle_Ladder.md`](Particle_Ladder.md) § *Colour content vs colour charge*).
+
+**Lepton flavors.** The electron is the first of the **three lepton flavors** — *e, μ, τ* — the same chiral closure at successive generations, which QLF ties to the three spatial axes (`num_generations_eq_three`, [`QLF_Generations`](lean/QLF_Generations.lean)). A bound state carries whichever flavor its leptonic half is: an electron in positronium/hydrogen, a **muon** in muonium (a deeper-blanket gauge half), a **tau** in the heaviest systems. So "the electron" of this document is *flavor-1*; the μ and τ are its deeper / other-axis versions, and the flavor→mass map (`m_e : m_μ : m_τ`) is the open target ([`Standard_Model.md`](Standard_Model.md) §3.3, [`Weak_Force.md`](Weak_Force.md) §5, [`Bound_States_QLF.md`](Bound_States_QLF.md)).
 
 ## 1. The Electron's Half of a Joint Closure
 
@@ -27,11 +29,11 @@ The electron is the **gauge-folded half-loop** that completes a joint ZFA closur
 
 Minimal electron half-topology (spatial + gauge):
 
-$$^<v^+$$
+`^<v^+`
 
 or more fully:
 
-$$^<v>^+$$
+`^<v>^+`
 
 - `^` = forward-time seed
 - `<` `>` = spatial folds (transverse area)
@@ -52,20 +54,19 @@ In each case the "electron" of this document contributes the same gauge-fold-dep
 ### Run the electron half-loop yourself
 
 ```bash
-python particles.py --seed "^<" --max-depth 4 --enable-gauge True
+python particles.py --particle electron
 ```
 
 **Sample output (electron half-loop, awaiting joint closure):**
 ```text
-✅ ZFA Closure Achieved:
-   Topology          : ^<v>^+
-   Classification    : gauge-folded half-loop
-   Topological Depth R : 4
-   Constructing Delay  : 4 cycles (becomes physical in joint closure)
-   Creates local     : time (in joint closure with conjugate partner)
-   Logical Density   : HIGH → time is the local axis in the bound state
-   Joint partner needed : positron, proton, antimuon, ...
-   Hawking Radiation : +- (released on bound-state breakup)
+=== ELECTRON ===
+open prefix         : ^<v>
+constituents        : one fluxoid (^<v>)
+engine closure      : ^<v>
+final history       : ^<v>
+fold depth (pairs)  : 2
+ZFA closed          : True
+hermitian conjugate : <^>v
 ```
 
 This is the electron's half. To become a QLF-physical event the joint partner must close the deficit.
@@ -76,33 +77,32 @@ A photon is a **massless joint closure** that requires no gauge fold. It is a pu
 
 The two halves of the joint photon closure:
 
-- Photon half (forward-time): $^>$
-- Antiphoton half (conjugate, backward-time): $v<$
+- Photon half (forward-time): `^>`
+- Antiphoton half (conjugate, backward-time): `v<`
 
 When they meet they form the joint closure with exactly Zero Free Action:
 
-$$H_{\rm photon} \circ H_{\rm antiphoton} = ^> \circ v< \quad \Rightarrow \quad \text{net action} = 0$$
+`^>` ∘ `v<`  ⟹  net action = 0  (the joint photon closure)
 
 This is the **same structural move** as for the electron — both photons and electrons are halves of joint closures. The difference: the photon's halves have no gauge fold, so the joint closure has zero constructing delay and the photon is massless; the electron's halves have a gauge fold, so the joint closure has finite delay and finite rest energy.
 
 ### Run the photon–antiphoton pair
 
 ```bash
-# Photon forward (massless, no gauge)
-python particles.py --seed "^>" --max-depth 2 --enable-gauge False
-
-# Antiphoton conjugate
-python particles.py --seed "v<" --max-depth 2 --enable-gauge False
+# The photon's gauge loop (the engine's minimal massless closure)
+python particles.py --particle photon
 ```
 
 **Sample photon output:**
 ```text
-Topology          : ^>
-Classification    : massless joint-closure half
-Creates local     : space (in joint closure with conjugate half)
-Delay             : 0 cycles
-Joint partner needed : antiphoton (forms the EM-interaction event)
-No Hawking radiation
+=== PHOTON ===
+open prefix         : +-
+constituents        : one gauge loop (+-)
+engine closure      : +-
+final history       : +-
+fold depth (pairs)  : 1
+ZFA closed          : True
+hermitian conjugate : +-
 ```
 
 The two halves together close with zero free action — this is the QLF reading of every "photon" we ever detect: a joint emitter-absorber event, not a free projectile.
@@ -118,18 +118,18 @@ Electron–proton **scattering** (rather than binding) is a transient joint clos
 ### Run the hydrogen joint closure
 
 ```bash
-python particles.py --seed "^<" --max-depth 6 --enable-gauge True --environment-block
+python particles.py --particle atom
 ```
 
 **Sample interaction output:**
 ```text
-Seed: ^< (electron half-loop) approaching proton internal closure
-Merged topology   : ^<v>^+^-
-Classification    : hydrogen-class joint closure (bound state)
-Constructing delay: 5 cycles (joint, distributed between electron and proton halves)
-Creates local     : time (in the joint hydrogen Markov blanket)
-Emitted radiation : +-   ← excess distinctions released as photon joint closure
-Logical density note: HIGH → time is the local axis in the bound state
+=== ATOM ===   (hydrogen — electron ++ proton)
+open prefix         : ^<v>^>v</\+-
+constituents        : electron ++ proton (+ diagonal + gauge axes)
+engine closure      : ^<v>^>v</\+-
+final history       : ^<v>^>v</\+-
+fold depth (pairs)  : 6
+ZFA closed          : True
 ```
 
 The output describes the **joint** closure, not the electron alone. The "electron's mass" of `m_e ≈ 0.511 MeV` is its share of the constructing delay distributed across the bound system.
@@ -138,10 +138,10 @@ The output describes the **joint** closure, not the electron alone. The "electro
 
 | Demonstration | Command | What you see |
 |---|---|---|
-| Electron half-loop (gauge-folded, awaiting joint closure) | `python particles.py --seed "^<" --max-depth 4 --enable-gauge True` | Gauge fold → contribution to bound-state mass and local time |
-| Photon half (massless) | `python particles.py --seed "^>" --max-depth 2 --enable-gauge False` | Pure forward-time spatial half-closure |
-| Photon + antiphoton joint closure | Run both seeds above | Net action = 0 (joint event) |
-| Hydrogen joint closure (e⁻ + p) | `python particles.py --seed "^<" --max-depth 6 --enable-gauge True` | Gauge handshake + photon emission; joint hydrogen bound state |
+| Electron half-loop (gauge-folded, awaiting joint closure) | `python particles.py --particle electron` | Gauge fold → contribution to bound-state mass and local time |
+| Photon half (massless) | `python particles.py --particle photon` | Pure forward-time spatial half-closure |
+| Photon gauge loop (massless) | `python particles.py --particle photon` | Net action = 0 (joint event) |
+| Hydrogen joint closure (e⁻ + p) | `python particles.py --particle atom` | Gauge handshake + photon emission; joint hydrogen bound state |
 
 ## 5. Links to More Advanced Reading
 
@@ -150,6 +150,9 @@ The output describes the **joint** closure, not the electron alone. The "electro
 - [`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) — joint ZFA closures as the unit of EM interaction; vector potential as unresolved free action.
 - [`HALF-SPIN-ZFA-EMBEDDING.md`](HALF-SPIN-ZFA-EMBEDDING.md) — the half-spin ZFA atom (Hermitian pair) as the minimal joint closure; the QLF unit of physical existence.
 - [`Particles.md`](Particles.md) — full particle zoo and gauge-folding rule.
+- [`Standard_Model.md`](Standard_Model.md) §3.3 — the three **lepton flavors** (e, μ, τ) as the three generations; colour *content* vs *charge*.
+- [`Particle_Ladder.md`](Particle_Ladder.md) — where the electron sits on the vacuum↔atoms↔black-holes ladder; the flavor / colour-content question.
+- [`Information_Physics.md`](Information_Physics.md) — the electron loop as one bit (½-spin = the atom of information, *it from bit*).
 - [`Hadrons_Markov_Blankets.md`](Hadrons_Markov_Blankets.md) — proton as composite Markov blanket; bound-state framing at the hadronic scale.
 - [`Frequency_Synchronization.md`](Frequency_Synchronization.md) — constructing delay $\Delta t = R/f$.
 - [`Hydrogen.md`](Hydrogen.md) — existing Bohr derivation of hydrogen levels in QLF language.
