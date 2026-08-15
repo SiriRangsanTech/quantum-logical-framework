@@ -140,6 +140,12 @@ and show that content reproduces the Koide-constrained mass ratios — the `(R, 
 (§5, `mass_spectrum_in_progress`; the lepton↔quark mass correlation is still "separate and open,"
 [`Quarks.md`](Quarks.md)). The electron's verified `{x, y}` content is the one anchor to build from.
 
+**A first computational step** ([`lepton_flavor_axes.py`](lepton_flavor_axes.py), toward issue #140) enumerates
+the short spatial ZFA closures and classifies them by axis content: the electron is one of the two-axis
+`{x,y}` closures, and **1-axis, other-2-axis (`{y,z}`, `{x,z}`), and full 3-axis `{x,y,z}` singlet closures
+all exist and close** (e.g. `^v<>/\` at length 6). So the candidate μ/τ contents are laid out concretely —
+the next step is picking the ones that keep `B = 0` and reproduce Koide.
+
 ---
 
 ## 3. The downward ladder — black holes → vacuum
