@@ -248,6 +248,20 @@ is Brownian motion whose generator is the Laplacian (`QLF_CensusBrownian`), the 
 Fisher metric in the continuum limit. Named as forward work, not claimed as done
 ([`Related_Frameworks.md`](Related_Frameworks.md) Part II §3).
 
+**A first result ([`fisher_from_census.py`](fisher_from_census.py), toward issue #142): the Fisher
+metric is the *curvature of the census KL* QLF already has — not a postulate.** The Fisher–Rao metric
+is *by definition* the Hessian of a KL divergence, and QLF's census relative entropy `binary_kl` is
+machine-checked (`QLF_FreeEnergy`). Computing the Hessian gives, exactly,
+`g(θ) = ∂²/∂θ'² D_KL(θ'‖θ)|_{θ'=θ} = 1/(θ(1−θ))` — the Fisher–Rao metric of the census's Bernoulli(θ)
+step. At the **balanced / MRE prior `θ = ½`** (the critical-line prior): the *global* bound is
+`D_KL(1‖½) = log 2` (the one bit, §1), and its *local curvature* is `g(½) = 4` — the Fisher metric at
+the balanced point. The census **walk** accumulates it linearly: `N` steps carry Fisher information
+`N·g(θ)` (exact binomial), and the Gaussian continuum limit preserves the leading metric. So the
+information geometry is the census's own — its metric is the curvature of the relative entropy the
+substrate already computes. **Still open (#142):** the full continuum information-geometry *manifold*
+as the census `n→∞` limit, and the distributional `−Σ p log p` entropy-uniqueness beyond the
+finite-counting wing (`QLF_EntropyUniqueness`).
+
 ---
 
 ## 8. Semantic information — where QLF *contributes*
