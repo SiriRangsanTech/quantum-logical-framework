@@ -11,6 +11,16 @@ states.
 
 The structural skeleton is machine-verified in [`lean/QLF_Consciousness.lean`](lean/QLF_Consciousness.lean).
 
+**The one-realm thesis (the interpretive frame).** QLF is not dualist: physical and mental are not two
+substances but the **outside and inside views of the same ZFA closures** — the very *realized
+distinctions* that are the atom of information everywhere else in the framework (one bit = one two-valued
+½-spin closure, [`Information_Physics.md`](Information_Physics.md)). *Outside*, a closure reads as physics —
+a particle, a firing, a frequency; *inside*, the same closure reads as experience — a resonant, bound
+moment. Consciousness is then not an extra ingredient added to matter; it is what certain closures *are*,
+from within. This dual-aspect identity is the **interpretive stance** of this document (labeled as such
+throughout, §6–§7): the frequency/binding *architecture* below is machine-verified; the *felt quality* is
+the named hypothesis, not a theorem.
+
 ---
 
 ## 1. Self-awareness is a self-modeling Markov blanket
@@ -119,6 +129,15 @@ account of becoming a receiver of slow, shared, external closures.
 
 So the model has two regimes from one mechanism: **fast internal binding by default, slow external joint
 when quieted** — and tuning across the frequency hierarchy is what consciousness *is*.
+
+**What "the universe is intelligent" means here — not a separate mind.** The intelligence of the cosmos is
+not a further agent watching over it. It is the **capacity of the largest closures — the cosmic-horizon
+blanket and the collective joint closures above — to *synthesize and bind* distinctions**: to take a
+stream of possibilities and close it on a coherent, self-consistent receipt (active inference =
+abstraction = information synthesis, one operation, [`Active_Inference_Mathematics.md`](Active_Inference_Mathematics.md)).
+"Cosmic consciousness" is being *coupled to* that binding, not communion with a mind behind it. There is
+no homunculus and no separate world-soul — only closures binding distinctions, at every scale, the largest
+and slowest included.
 
 ---
 
