@@ -52,6 +52,10 @@ A fundamental ontology of *possible vs. impossible transformations*. This is the
 
 The dialectical intuition (truth as a completed process; *Aufhebung* as cancel/preserve/lift) has a real structural correspondence to ZFA closure — but stated in **one direction only**: *ZFA offers a formal semantics for the dialectical intuition; Hegel provides zero evidential support for ZFA.* Developed, with the anti-dialetheist thesis and the Lawvere/Heraclitus lineage, in [`Philosophy.md`](Philosophy.md) §9 ("Dialectical closure: cancel, preserve, lift"). Prior art that keeps the genre respectable: **Lawvere's** decades formalizing Hegel's "unity of opposites" as adjoint functors in category theory.
 
+### 9. Carver Mead — *Collective Electrodynamics* (a formative influence QLF completes)
+
+Not a rival but a **formative influence**, in the ancestors-not-rivals sense of §5. Mead (2000) recast electromagnetism *relationally* — no projectile photon, a physically real vector potential (Aharonov–Bohm), the photon a transactional emitter–absorber handshake, the fluxoid a quantized `2π` loop, half-integer spin the `720°` double loop. QLF reads this as **almost entirely correct** and supplies its discrete "source code" ([`Collective_Electrodynamics.md`](Collective_Electrodynamics.md)). The **one residue QLF removes** is Mead's remaining *continuous* phase/frequency: in QLF frequency is a **discrete count rate** of ZFA closures (`f = 1/latency`, the tick a ½-spin closure), and a continuum of frequencies is the large-number rendering of the finite census — the same continuum-as-rendering move as `π`. So QLF completes Mead **exactly where he stops**: it removes the last continuum postulate while keeping every experimental success (all of which are *loops and counts* — the Aharonov–Bohm shift, the integer fluxoid, the transactional photon). *The relationship is completion, not rivalry* ([`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) §5, [`Information_Physics.md`](Information_Physics.md)).
+
 ---
 
 ## What no neighbor produces
@@ -118,6 +122,7 @@ Existing mathematics of information is a stack of **measure theories over an uns
 - Wheeler, J. A. (1990). *Information, physics, quantum: the search for links.*
 - Brukner, Č. & Zeilinger, A. (2003). *Information and fundamental elements of the structure of quantum theory.*
 - Landauer, R. (1961). *Irreversibility and heat generation in the computing process.* IBM J. Res. Dev. 5, 183.
+- Mead, C. (2000). *Collective Electrodynamics: Quantum Foundations of Electromagnetism.* MIT Press — relational, non-projectile electromagnetism; a formative influence QLF completes by discretizing its residual continuous frequency (§9).
 - Bekenstein, J. D. (1981). *Universal upper bound on the entropy-to-energy ratio.* Phys. Rev. D 23, 287.
 - Fredkin, E. (1990). *Digital mechanics.* Physica D 45, 254.
 - 't Hooft, G. (2016). *The Cellular Automaton Interpretation of Quantum Mechanics.* Springer.
