@@ -6,6 +6,13 @@ The myth exists because all possible logical systems exist a priori. They don't 
 
 In QLF, we resolve this: **The map is timeless, but the journey is synthesized.**
 
+A consequence that must be stated plainly, because it is easy to slip on: **the first successful
+distinctions are not events *in* time.** There is no "before" they happened and no clock ticking while
+they occur — because time itself is *what those distinctions produce*. The origin is logical, not
+temporal: the earliest ZFA closures synthesize the very first ticks (§2), so asking "when" they happened,
+or "how long" the beginning took, is a category error — it presupposes the clock they are busy creating.
+Time begins *with* the distinctions, not around them.
+
 ## 2. Time as Logical Synthesis (The Frequency Principle)
 
 Everything in the universe has a frequency. In this framework, **there exists an independent quantum logical system at each distinct frequency.**
