@@ -256,11 +256,18 @@ machine-checked (`QLF_FreeEnergy`). Computing the Hessian gives, exactly,
 step. At the **balanced / MRE prior `θ = ½`** (the critical-line prior): the *global* bound is
 `D_KL(1‖½) = log 2` (the one bit, §1), and its *local curvature* is `g(½) = 4` — the Fisher metric at
 the balanced point. The census **walk** accumulates it linearly: `N` steps carry Fisher information
-`N·g(θ)` (exact binomial), and the Gaussian continuum limit preserves the leading metric. So the
-information geometry is the census's own — its metric is the curvature of the relative entropy the
-substrate already computes. **Still open (#142):** the full continuum information-geometry *manifold*
-as the census `n→∞` limit, and the distributional `−Σ p log p` entropy-uniqueness beyond the
-finite-counting wing (`QLF_EntropyUniqueness`).
+`N·g(θ)` (exact binomial), and the Gaussian continuum limit preserves the leading metric.
+
+**And it is the *full* dually-flat geometry, not just the metric.** The census's Bernoulli/multinomial
+family is a dually-flat exponential family, and the demo verifies the signature structure with the
+census KL as the **canonical divergence**: the KL equals the **Bregman divergence** of the
+negative-entropy potential `φ = −H` (dual coordinates `θ` natural ↔ `η` expectation, `g = ψ''(θ) =
+1/φ''(η)`), and the **generalized Pythagorean theorem** holds — `D(P‖R) = D(P‖Q) + D(Q‖R)` when `Q` is
+the information projection of `R` onto a linear family containing `P` (m-geodesic ⊥ e-geodesic). So the
+whole of Amari's information geometry — metric, two flat connections, the Pythagorean theorem — is the
+census's own, built on the KL the substrate already machine-checks. **Still open (#142):** the
+**continuum** (`n→∞`) rendering of this manifold, and the distributional `−Σ p log p` entropy-uniqueness
+beyond the finite-counting wing (`QLF_EntropyUniqueness`).
 
 ---
 
@@ -297,7 +304,7 @@ information.
 | Algorithmic (AIT) | Kolmogorov; Chaitin | **boundary** — `Ω` = the pruning boundary; RCA₀ floor | 🧱 principled boundary (Ω uncomputable) | `QLF_ShannonOverfit`, `full_zeno_prune` |
 | Physical/finite | Landauer; Bekenstein; Gisin | **derived** — no continuum in a finite region; `ΔF = −log 2` | ✅ machine-checked | `QLF_Realizability`, `QLF_FreeEnergy` |
 | Quantum (von Neumann) | von Neumann; Gottesman | **reading** — `ℤ[i]` skeleton; Born from counts; `ħ/2` | ✅ machine-checked | `QLF_BornProbability`, `QLF_Uncertainty` |
-| Fisher / geometry | Fisher; Amari | **rendering** — emerges from census statistics in the limit | 🔵 forward work | `QLF_CensusBrownian` |
+| Fisher / geometry | Fisher; Amari | **rendering** — the census carries the dually-flat geometry (KL = canonical divergence); metric = census-KL curvature | 🟡 metric + dually-flat structure shown ([`fisher_from_census.py`](fisher_from_census.py)); continuum `n→∞` manifold open (#142) | `QLF_CensusBrownian`, `QLF_FreeEnergy` |
 | Semantic | Carnap–Bar-Hillel; Floridi | **contributes** — closure-as-receipt; contradiction carries 0 | ✅ machine-checked | `QLF_ContradictionReceipt`, `QLF_InfoSynthesis` |
 | *information = realized distinction* | (the ontology) | the bottom layer itself | ⬛ ontological stance | — |
 

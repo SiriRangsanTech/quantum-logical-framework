@@ -15,15 +15,17 @@ as the curvature of the KL divergence QLF uses — not an added structure. This
 tool shows that numerically, three ways, and ties it to the balanced/MRE point
 θ = ½ (the critical-line prior), where g(½) = 4.
 
-It also shows the census WALK accumulating the metric: N Bernoulli steps carry
-Fisher information N·g(θ) (exact binomial), and the Gaussian continuum limit
-preserves the same leading metric — the "emerges in the n→∞ limit" claim, at the
-level of the metric.
+It also shows the census WALK accumulating the metric (N steps → N·g(θ)), and then
+that the census family carries the **full dually-flat information geometry** (Amari):
+two dual coordinates (θ natural, η expectation), the census KL as the **canonical
+(Bregman) divergence** of the negative-entropy potential, and the **generalized
+Pythagorean theorem** — all built on the KL QLF already machine-checks.
 
-HONEST SCOPE: this demonstrates the *metric* is the census-KL curvature; the full
-information-geometry manifold as the census continuum limit (and the distributional
-`−Σ p log p` uniqueness beyond `QLF_EntropyUniqueness`) is the remaining open work
-(#142). No deps.  Run:  python3 fisher_from_census.py
+HONEST SCOPE: this demonstrates the *metric* is the census-KL curvature AND that the
+census family is dually flat with the census KL as its canonical divergence (the
+Pythagorean theorem holds). The remaining open work (#142) is the **continuum**
+(n→∞) rendering of this manifold, and the distributional `−Σ p log p` uniqueness
+beyond `QLF_EntropyUniqueness`. No deps.  Run:  python3 fisher_from_census.py
 """
 import math
 from math import comb
@@ -87,8 +89,63 @@ def main() -> None:
     for N in (1, 4, 16, 64):
         print(f"   {N:>4}  {fisher_binomial_exact(0.5, N):>14.4f}  {4*N:>10}")
     print("   → exact binomial Fisher = N·g(θ); the continuum (Gaussian endpoint) limit")
-    print("     preserves the same leading metric. Fisher geometry is the census's own,")
-    print("     not postulated — the open piece (#142) is the full continuum manifold.")
+    print("     preserves the same leading metric.\n")
+
+    dually_flat_bernoulli()
+    pythagorean_multinomial()
+    print("So the census carries not just a metric but the full DUALLY-FLAT information")
+    print("geometry (Amari): two dual coordinates, two flat connections, and the KL")
+    print("Pythagorean theorem — all with the census KL as the canonical divergence.")
+    print("Remaining open (#142): the continuum manifold as the census n→∞ rendering, and")
+    print("the distributional −Σ p log p uniqueness beyond the finite wing (QLF_EntropyUniqueness).")
+
+
+def dually_flat_bernoulli() -> None:
+    """The census Bernoulli family is a dually-flat exponential family, with the
+    census KL as the canonical (Bregman) divergence of the dual potential φ=−H."""
+    def phi(eta):      # negative entropy — the dual potential
+        return eta * math.log(eta) + (1 - eta) * math.log(1 - eta)
+    print("4. The census family is DUALLY FLAT — KL = the canonical (Bregman) divergence:")
+    print(f"   {'η_p':>5} {'η_q':>5}  {'Bregman_φ(η_p‖η_q)':>19}  {'binary_kl(η_p,η_q)':>19}")
+    for ep, eq in ((0.7, 0.5), (0.3, 0.6), (0.9, 0.5)):
+        th_q = math.log(eq / (1 - eq))                     # φ'(η_q) = natural coord θ_q
+        bregman = phi(ep) - phi(eq) - th_q * (ep - eq)      # Bregman divergence of φ
+        print(f"   {ep:>5.2f} {eq:>5.2f}  {bregman:>19.6f}  {binary_kl(ep, eq):>19.6f}")
+    print("   → equal: KL is the Bregman divergence of the negative-entropy potential.")
+    print("     Dual coordinates θ (natural) ↔ η (expectation); Fisher = ψ''(θ) = 1/φ''(η).\n")
+
+
+def pythagorean_multinomial() -> None:
+    """The generalized Pythagorean theorem for the census KL on a multinomial
+    manifold: D(P‖R) = D(P‖Q) + D(Q‖R) when Q is the information projection of R
+    onto the linear (m-flat) family {E[a]=μ} and P lies in that family."""
+    def kl(p, q):
+        return sum(pi * math.log(pi / qi) for pi, qi in zip(p, q) if pi > 0)
+    R = [1/3, 1/3, 1/3]                                     # reference (uniform census)
+    a = [0.0, 1.0, 2.0]                                     # a census feature
+    mu = 1.3                                                # the m-flat constraint E[a]=μ
+
+    def Q_of(lam):                                          # exponential tilt of R (e-flat)
+        w = [Ri * math.exp(lam * ai) for Ri, ai in zip(R, a)]
+        Z = sum(w)
+        return [wi / Z for wi in w]
+
+    def mean_a(p):
+        return sum(pi * ai for pi, ai in zip(p, a))
+
+    lo, hi = -30.0, 30.0                                    # solve E_Q[a]=μ for the tilt λ
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if mean_a(Q_of(mid)) < mu else (lo, mid)
+    Q = Q_of((lo + hi) / 2)
+    P = [0.1, 0.5, 0.4]                                     # another dist with E_P[a] = 1.3
+
+    print("5. Generalized Pythagorean theorem on the census (multinomial) manifold:")
+    print(f"   R = uniform;  Q = I-projection of R onto {{E[a]={mu}}};  P another dist with E_P[a]={mu}")
+    lhs, rhs = kl(P, R), kl(P, Q) + kl(Q, R)
+    print(f"   D(P‖R) = {lhs:.6f}   =   D(P‖Q) + D(Q‖R) = {kl(P, Q):.6f} + {kl(Q, R):.6f} = {rhs:.6f}")
+    print("   → the KL Pythagorean identity holds (m-geodesic P→Q ⊥ e-geodesic Q→R):")
+    print("     the census KL is the canonical divergence of a genuinely dually-flat manifold.\n")
 
 
 if __name__ == "__main__":
