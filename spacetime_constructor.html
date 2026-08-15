@@ -897,10 +897,17 @@ function stepParticles(dt){
     casAccum += CASCADE_RATE*dt;
     while(casAccum>=1 && particles.length<120){ casAccum-=1;
       const f = lseq();                                   // deterministic census frequency ∈ [0,1)
-      const real = lseq() < Math.min(0.97, s*1.05);       // thermal freeze-out fraction (0 at T=0)
-      if(f < 0.90)       spawnPair('electron','positron', !real);   // m = 1/R = frequency:
-      else if(f < 0.975) spawnPair('muonM','muonP', !real);         //   low→e, mid→μ,
-      else               spawnPair('proton','antiproton', !real);   //   high→p (rare, deep fold)
+      // species by census frequency (lightest = lowest frequency = most numerous)
+      let a, b;
+      if(f < 0.90)       { a='electron'; b='positron'; }   // m = 1/R = frequency:
+      else if(f < 0.975) { a='muonM';    b='muonP';    }   //   low→e, mid→μ,
+      else               { a='proton';   b='antiproton'; } //   high→p (rare, deep fold)
+      // PER-SPECIES thermal freeze-out (#141): species i turns REAL around its onset
+      // T_onset = K_e·(m/m_e), so e⁺e⁻ appear ~1e10 K, μ⁺μ⁻ ~1e12, p p̄ ~1e13 — the census
+      // frequency ordering IS the observed onset sequence. Logistic in log10(T/T_onset).
+      const Ton = K_e * KIND[a].m;
+      const real = lseq() < 0.97/(1 + Math.exp(-Math.log(Math.max(T,1e-30)/Ton)/Math.LN10/0.6));
+      spawnPair(a, b, !real);
     }
     // Thermal blackbody glow — redder cold, bluer hot; a faint floor remains at T=0 as the
     // vacuum's own zero-point (Ω_Λ = log 2) light.
