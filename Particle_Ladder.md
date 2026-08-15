@@ -107,6 +107,33 @@ target — QLF fixes one relation (Koide) and the *structure* (one scale, expone
 `spectrum_one_scale`, `log_transmuted_hierarchy`, [`lean/QLF_MassSpectrum.lean`](lean/QLF_MassSpectrum.lean)),
 not the full ladder of ratios (`mass_spectrum_in_progress`).
 
+### Why μ and τ are colorless — color and generation are two readings of the same three axes
+
+A natural question the ladder raises: since *both* colour and the generation count come from the
+substrate's **three spatial axes**, do the muon and tau carry a hidden colour? **No — and the reason
+is instructive.** The three axes are read two different ways, and keeping them apart answers it:
+
+| | reads the 3 axes as… | object | consequence |
+|---|---|---|---|
+| **Colour** (SU(3)) | all three bound **jointly** — the Borromean triple | a hadron | confinement (`baryon_needs_all_three_axes`, `single_colour_not_baryon`) |
+| **Generation** (e/μ/τ) | three **depth-tiers** of a *single* closure | a free lepton | Koide-constrained masses (`num_generations_eq_three`, `three_generations_satisfy_koide`) |
+
+**μ and τ are colourless *by construction* — and that is precisely *why* they are free.** A lepton
+closes as a 2-body integrable system that always closes as a **singlet** (`singlet_closure`); a
+single-axis history carries `B = 0` (`single_colour_not_baryon`, [`Quarks.md`](Quarks.md) §1). Colour is
+the property of needing *all three* axes at once, so a single closure has none. This is not a gap to be
+filled: a *coloured* muon would be a non-singlet closure — **confined**, never observed free —
+contradicting both the muon we see in every cosmic-ray shower and QLF's own confinement theorems. So the
+electron → muon → tau progression is a **fold-*depth* shift** (`m = 1/R`, deeper = heavier,
+Koide-constrained), **not** a colour acquisition; "the muon is a recursive electron" is right only in the
+depth-tier sense. Quark masses aren't even QLF observables (`quark_not_closed`, [`lean/QLF_QuarkMass.lean`](lean/QLF_QuarkMass.lean)) — "colour" is a property of the *joint* closure, so it has no free-lepton analogue to hide.
+
+**What the ladder actually points at** is therefore *not* a hidden colour charge but the
+**`(R, axis) → mass-ratio` map** (§5): `m_e : m_μ : m_τ` as an explicit function of fold depth — where
+"the geometry of how the folds are accessed" *would* show up. QLF fixes the count, one relation, and the
+exponential structure; that full depth→ratio ladder, and the lepton↔quark mass correlation, remain the
+named open target (`mass_spectrum_in_progress`; [`Quarks.md`](Quarks.md)).
+
 ---
 
 ## 3. The downward ladder — black holes → vacuum
