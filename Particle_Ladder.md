@@ -141,10 +141,22 @@ and show that content reproduces the Koide-constrained mass ratios — the `(R, 
 [`Quarks.md`](Quarks.md)). The electron's verified `{x, y}` content is the one anchor to build from.
 
 **A first computational step** ([`lepton_flavor_axes.py`](lepton_flavor_axes.py), toward issue #140) enumerates
-the short spatial ZFA closures and classifies them by axis content: the electron is one of the two-axis
-`{x,y}` closures, and **1-axis, other-2-axis (`{y,z}`, `{x,z}`), and full 3-axis `{x,y,z}` singlet closures
-all exist and close** (e.g. `^v<>/\` at length 6). So the candidate μ/τ contents are laid out concretely —
-the next step is picking the ones that keep `B = 0` and reproduce Koide.
+the short spatial ZFA closures and classifies them by axis content, splitting `B=0` **lepton singlets** from
+`B≠0` **baryons**: the electron is one of the two-axis `{x,y}` singlets, and 1-axis, other-2-axis, and full
+3-axis `{x,y,z}` **singlets** all exist — e.g. at length 6 the 3-axis content splits into **144 `B=0`
+singlets** (candidate "three-colour" lepton content, `^v<>/\`) vs **576 `B≠0` baryons** (correctly confined).
+So a colour-neutral 3-axis lepton genuinely exists and is distinct from the 3-axis baryon.
+
+**This connects directly to Koide — the open piece is now *located*.** `QLF_Koide` derives `Q = 2/3` from
+`N = 3` axes ∧ `A² = 2` — the **two *transverse* axes**, the one longitudinal axis being the common "1"
+(`koide_two_thirds`, verified `Q = 0.6667` to 0.001%; `m_τ = 1776.97` MeV, 0.006%). And the electron `^<v>`
+verifiably engages exactly **two axes `{x,y}`** — so **`{x,y}` *is* Koide's two transverse axes**, and the
+longitudinal `z` is the "1" the electron does *not* engage. QLF_Koide already names the remaining input as
+"the identification of the lepton √-mass vector with this 1-longitudinal + 2-transverse three-axis
+structure; the Koide angle and overall scale stay open." **That is exactly issue #140**, now with the
+electron's `{x,y}` as a *verified anchor*: the muon and tau reach the longitudinal `z` (the 3-axis content,
+the 144 `B=0` singlets), and pinning their √-mass↔axis identification + the Koide angle + scale is the
+open derivation.
 
 ---
 
