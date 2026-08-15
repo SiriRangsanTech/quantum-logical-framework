@@ -219,8 +219,12 @@ The whole ladder is a single loop, both directions:
   → mass-ratio function reproducing the Koide relation as a special case and the measured `m_μ/m_e`,
   `m_τ/m_μ` to stated precision — the honest next module for this ladder.
 - **The pair-production rate** — the *mechanism* is modeled (deterministic census creation + thermal
-  freeze-out, [`pair_production_demo.py`](pair_production_demo.py)); **open** is calibrating the census
-  buckets to the measured onsets and deriving the freeze-out fraction analytically from the census.
+  freeze-out, [`pair_production_demo.py`](pair_production_demo.py)), and the **onsets are now calibrated**
+  ([`pair_freezeout_calibration.py`](pair_freezeout_calibration.py), #141): each species turns on at
+  `T_onset = K_e·(m/m_e)`, so the census's frequency ordering (`m = ℏf/R`, lightest dominate) **is** the
+  observed e→μ→p onset sequence, at the textbook temperatures (~10¹⁰, 10¹², 10¹³ K). **Still open:**
+  deriving the freeze-out functional form + normalisation from the census itself (rather than gating the
+  onsets by the measured masses).
 - absolute mass scale (`v = R_stable`, frontier #1, [`Open_Problems.md`](Open_Problems.md)).
 
 **Deliberately *not* built:** a "unified Lean module" for the ladder. It would be reuse-only — re-exporting the theorems above with no new content — so it is not worth a module. The ladder's value is as this synthesis; each rung is already verified in its own module.
