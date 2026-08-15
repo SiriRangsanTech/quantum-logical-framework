@@ -31,9 +31,24 @@ and [`Information_Physics.md`](Information_Physics.md) — not a claim that the 
 
 <p align="center"><a href="#rung-links"><img src="diagrams/particle_ladder.svg" alt="Bidirectional ladder: up the left (vacuum pair → lepton → generations e/μ/τ → hadron → atom → collective), down the right (black hole → Hawking unwind releasing log 2 → cascade → vacuum), hinged by particle = quantum black hole (Compton = Schwarzschild); creation is a deterministic census, temperature sets the freeze-out fraction" width="760"></a></p>
 
-> The diagram is a static picture — GitHub can't make image regions clickable. **The links to the supporting text are the legend just below:** each rung → its doc (which in turn links to the live constructor).
+> The diagram is a static picture — GitHub can't make image regions clickable. **The per-box links to the QLF explanation of each layer are the table just below** (each doc in turn links to the live constructor).
 
-<a id="rung-links"></a>**Diagram legend — each rung → its supporting text.** *Up:* **0** [vacuum pair](Creation.md) ([▶ e⁺e⁻](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=positronium%20%40%200%2C0%2C0)) → **1** [lepton](Spin_QLF.md) → **2** [generations](lean/QLF_Generations.lean) → **3** [hadron](Quarks.md) → **4** [atom](Bound_States_QLF.md) ([▶ H](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%200%2C0%2C0)) → **5** [collective / chemistry](Chemistry.md). *Down:* [black hole](BLACK-HOLES.md) → [Hawking unwind](Annihilation.md) → [cascade](Decay.md) → vacuum. *Hinge:* [particle = quantum black hole](lean/QLF_QuantumBlackHole.lean) ([Hadron_BlackHoles.md](Hadron_BlackHoles.md)). *Dynamics:* [pair_production_demo.py](pair_production_demo.py) · [▶ the full cascade, live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#t=0.95).
+<a id="rung-links"></a>**Each ladder box → its QLF explanation:**
+
+| Ladder box | QLF explanation of that layer | live |
+|---|---|---|
+| **0 · Vacuum pair** | [`Creation.md`](Creation.md) — creation = separation of nothing into conjugate pairs (why the first distinction is two-valued) | [▶ e⁺e⁻](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=positronium%20%40%200%2C0%2C0) |
+| **1 · Stable lepton (½-spin)** | [`Spin_QLF.md`](Spin_QLF.md) — spin *is* the twists; the ½-spin closure | |
+| **2 · Generations e/μ/τ** | [`Standard_Model.md`](Standard_Model.md) — three generations = the three spatial axes | |
+| **3 · Hadron / proton** | [`Quarks.md`](Quarks.md) — colour = the three axes; Borromean confinement | |
+| **4 · Atom** | [`Bound_States_QLF.md`](Bound_States_QLF.md) — atoms as bound joint-ZFA closures (the real observables) | [▶ H](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%200%2C0%2C0) |
+| **5 · Collective** | [`Chemistry.md`](Chemistry.md) — one valence rule; crystals, condensates | |
+| **Black hole** | [`BLACK-HOLES.md`](BLACK-HOLES.md) — finite interiors, no singularity | |
+| **Hawking / unwind** | [`Hadron_BlackHoles.md`](Hadron_BlackHoles.md) — hadron = quantum black hole; decay = Hawking evaporation | |
+| **Cascade** | [`Decay.md`](Decay.md) — the census-exponential prime-slip cascade | |
+| **Vacuum (return)** | [`Creation.md`](Creation.md) §8a — the logical bang / Stage 0 | |
+| **Hinge · particle = quantum BH** | [`Hadron_BlackHoles.md`](Hadron_BlackHoles.md) — Compton = Schwarzschild (`QLF_QuantumBlackHole`) | |
+| *Dynamics* | [`pair_production_demo.py`](pair_production_demo.py) — census creation + freeze-out | [▶ full cascade](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#t=0.95) |
 
 ---
 

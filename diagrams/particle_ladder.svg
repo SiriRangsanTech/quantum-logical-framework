@@ -26,7 +26,7 @@
     <rect x="60" y="220" width="310" height="42" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2.2"/>
     <text x="215" y="246" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1d4ed8">3 · Hadron / proton — 3-colour locked</text>
   </a>
-  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_Generations.lean" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_Generations.lean">
+  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Standard_Model.md">
     <rect x="60" y="280" width="310" height="42" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
     <text x="215" y="306" text-anchor="middle" font-size="13.5" fill="#1e3a8a">2 · Generations — e / μ / τ (= 3 axes)</text>
   </a>
@@ -47,7 +47,7 @@
     <rect x="530" y="100" width="310" height="42" rx="8" fill="#111827"/>
     <text x="685" y="126" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">Black hole — deep gauge-folded closure</text>
   </a>
-  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Annihilation.md" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Annihilation.md">
+  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Hadron_BlackHoles.md" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Hadron_BlackHoles.md">
     <rect x="530" y="200" width="310" height="42" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
     <text x="685" y="220" text-anchor="middle" font-size="13.5" fill="#9a3412">Hawking / unwind — one-step re-entry</text>
     <text x="685" y="236" text-anchor="middle" font-size="11.5" fill="#c2410c">releases log 2 per ½-spin atom · unitary</text>
@@ -66,7 +66,7 @@
 
   <!-- hinge: particle = quantum black hole -->
   <line x1="370" y1="241" x2="530" y2="121" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5 4"/>
-  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_QuantumBlackHole.lean" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_QuantumBlackHole.lean">
+  <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Hadron_BlackHoles.md" target="_blank" xlink:href="https://github.com/jimscarver/quantum-logical-framework/blob/main/Hadron_BlackHoles.md">
     <rect x="372" y="150" width="156" height="52" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.4"/>
     <text x="450" y="171" text-anchor="middle" font-size="12" font-weight="700" fill="#374151">particle = quantum</text>
     <text x="450" y="187" text-anchor="middle" font-size="12" font-weight="700" fill="#374151">black hole</text>
