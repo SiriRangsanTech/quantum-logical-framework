@@ -31,6 +31,8 @@ and [`Information_Physics.md`](Information_Physics.md) — not a claim that the 
 
 <p align="center"><img src="diagrams/particle_ladder.svg" alt="Bidirectional ladder: up the left (vacuum pair → lepton → generations e/μ/τ → hadron → atom → collective), down the right (black hole → Hawking unwind releasing log 2 → cascade → vacuum), hinged by particle = quantum black hole (Compton = Schwarzschild); creation is a deterministic census, temperature sets the freeze-out fraction" width="760"></p>
 
+**Diagram legend — follow each rung.** *Up:* **0** [vacuum pair](Creation.md) ([▶ e⁺e⁻](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=positronium%20%40%200%2C0%2C0)) → **1** [lepton](Spin_QLF.md) → **2** [generations](lean/QLF_Generations.lean) → **3** [hadron](Quarks.md) → **4** [atom](Bound_States_QLF.md) ([▶ H](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%200%2C0%2C0)) → **5** [collective / chemistry](Chemistry.md). *Down:* [black hole](BLACK-HOLES.md) → [Hawking unwind](Annihilation.md) → [cascade](Decay.md) → vacuum. *Hinge:* [particle = quantum black hole](lean/QLF_QuantumBlackHole.lean) ([Hadron_BlackHoles.md](Hadron_BlackHoles.md)). *Dynamics:* [pair_production_demo.py](pair_production_demo.py) · [▶ the full cascade, live](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#t=0.95).
+
 ---
 
 ## 1. The primitives (each already anchored)
