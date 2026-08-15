@@ -87,6 +87,8 @@ From [Primordial_Entanglement.md §2](Primordial_Entanglement.md) and [Particles
 
 **What's open**: why exactly **three** generations and not two or four; the specific mass ratios $m_\mu / m_e \approx 207$, $m_\tau / m_\mu \approx 16.8$; the lepton-quark mass-ratio correlation across generations.
 
+**Colour content vs colour charge — the structure question.** A generation is *not* colour-**charged**: leptons are colour **singlets** (`B = 0`, `singlet_closure`), which is exactly *why* they are free (a net-coloured lepton would be confined). But a singlet is not structureless — the electron loop `^<v>` is machine-verified to engage **two** of the three axes, x and y, not z (`interleaved_xlvr_folds_to_negI`, [`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean)). Since `num_generations_eq_three` ties the three generations to the three axes, the open structural question is each generation's **axis/colour content** — which axes the muon (`N=8`) and tau (`N=12`) loops occupy relative to the electron's `{x, y}` — held colour-neutral (`B = 0`, else it would be a confined baryon, not a free lepton). *That* content, not a hidden charge, is where the mass ratios above would be decided. Full treatment: [`Particle_Ladder.md`](Particle_Ladder.md) § *Colour content vs colour charge*.
+
 ### 3.4 Strong SU(3) and weak SU(2) groups
 
 From [Hadrons_Markov_Blankets.md](Hadrons_Markov_Blankets.md) and [Beta_Decay_Neutrino_Nature.md](Beta_Decay_Neutrino_Nature.md): the strong force is the Borromean three-quark binding; the weak force is the gauge-fold pair-flip that mediates beta decay.
