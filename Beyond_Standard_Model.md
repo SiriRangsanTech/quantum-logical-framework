@@ -7,6 +7,18 @@
 
 The bright line: ✅ **derived** (machine-verified the value is *not free* but a consequence of substrate structure) · 🔭 **predicted** (falsifiable, untested) · 🔵 **open**.
 
+**Falsifiability at a glance.** The sharp, currently-testable verdicts (details in §3, [`Experimental_Consistency.md`](Experimental_Consistency.md) §10):
+
+| Observation | Verdict on QLF |
+|---|---|
+| **0νββ detected** (`ΔL = 2`) | ✅ **supports** — the Majorana neutrino (`neutrino_majorana`) |
+| **neutrino shown to be Dirac** (definitive) | ❌ **refutes** — QLF entails Majorana |
+| **a dark-matter particle detected** (WIMP, axion-DM, …) | ❌ **refutes** emergent-DM — dark matter is denser logic, no particle |
+| **cosmological drift of `α(0)`** confirmed | ❌ **refutes** the substrate — `α` is atemporal (`no_cosmological_drift_of_alpha`) |
+| **`α⁻¹` outside `137 < α⁻¹ < 137.048`** | ❌ **refutes** the leading α construction |
+| **TeV-scale superpartners** (squarks/sleptons) | ❌ **against** QLF — no doubled spectrum (§3c) |
+| **`v_GW ≠ c`** | ❌ **refutes** the synthesized-metric reading |
+
 ---
 
 ## 1. The SM free-parameter ledger
@@ -51,6 +63,8 @@ You cannot *prove* beyond-SM physics; you test it. QLF makes **two sharp, clean,
 
 The SM is *agnostic* (Dirac vs Majorana is open); QLF **entails Majorana** and this is **machine-verified**: the antiparticle is the Hermitian conjugate (conjugate-and-reverse), and the neutrino loop `^v` is a *fixed point* of it — `neutrino_majorana` ([`lean/QLF_Majorana.lean`](lean/QLF_Majorana.lean)) — while the electron is **not** (`electron_not_majorana`, so the charged lepton is Dirac). The neutrino is the unique self-conjugate fermion (the only one with neither charge nor chiral/linked structure). So lepton number is violated and **`0νββ` (`ΔL=2`) is the signature** ([`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) §1, [`Experimental_Consistency.md`](Experimental_Consistency.md) §10). **LEGEND, nEXO, KamLAND-Zen are searching now**; an observation confirms it, a definitive Dirac result would refute it. This is the corpus's clearest empirical commitment distinguishable from the Standard Model.
 
+*What stays open, stated precisely:* QLF fixes the neutrino's **type** (Majorana) and the **count** of PMNS parameters (`pmns_total_cp_phases`), but **not** the *quantitative* sector — the absolute mass scale, the two mass-squared splittings `Δm²₂₁`, `Δm²₃₁` (and the ordering), the three mixing angles, and the values of the `1 Dirac + 2 Majorana` CP phases are all 🔵 open. A successful derivation would have to deliver all of these from the substrate; none is yet in hand ([`Open_Problems.md`](Open_Problems.md)).
+
 **(ii) The fundamental fine-structure constant `α(0)` does not drift over cosmological time.** The SM treats `α(0)` as a *free input* that varying-constants models can promote to a slowly-drifting scalar field (dilaton-style) — it is *agnostic*. QLF **forbids** it: α is a function of the rendering dimension alone, `α(d)=1/(128+d²)` (`alpha_at_dim_closed_form`) — **no time argument** — so `α(0)=1/137` is an atemporal structural fact (`no_cosmological_drift_of_alpha`, [`lean/QLF_FineStructureSubstrate.lean`](lean/QLF_FineStructureSubstrate.lean); [`Alpha.md`](Alpha.md) §5). A confirmed cosmological drift of `α(0)` would **falsify the QLF substrate** — it cannot be absorbed by it, unlike in the SM. **Quasar-absorption spectroscopy and atomic-clock comparisons are testing `Δα/α` now**; the mainstream null result is the prediction (the SM-side "running of the *effective* α with energy" is a separate, real effect — [`Alpha.md`](Alpha.md) §4 — not a drift of the fundamental value). A second clean, distinguishable, Lean-anchored commitment.
 
 Softer, also beyond-SM but less sharp:
@@ -90,6 +104,14 @@ mark "open" are **calculational depth — values awaiting derivation, requiring 
 not gaps where the theory could be wrong.** The ontology is closed. The one genuine *external* limit
 is the continuum/choice boundary of the Millennium program, and that is **ZFC's** proven defect
 ([`Continuum_Choice_Fallacy.md`](Continuum_Choice_Fallacy.md)), not QLF's.
+
+---
+
+## 3c. Supersymmetry and the hierarchy problem — neither is required
+
+**Low-energy SUSY is not required and not predicted — QLF favours the LHC null.** In QLF the supercharge is not an operator relating new *particles* to old ones; it is the **half-spin shift** — adjoin one Hermitian twist pair — and boson↔fermion is the **even/odd parity of the closure** (`supercharge_flips_statistics`, `supercharge_boson_to_fermion`; `{Q,Q†}=2P` is two half-spins closing one spacetime event, `two_supercharges_close_event`, [`lean/QLF_Supersymmetry.lean`](lean/QLF_Supersymmetry.lean), [`SUSY_QLF.md`](SUSY_QLF.md)). The symmetry is realized **without a doubled spectrum** — `Q` shifts the *same* closure, it does not mint a superpartner — so there are no squarks or sleptons, and the decades of null LHC superpartner searches are the *expected* result, not a puzzle. (The full super-Poincaré algebra and any high-scale structure stay open, `supersymmetry_in_progress`.)
+
+**And the usual reason for expecting TeV SUSY — the hierarchy problem — is dissolved, not solved.** The hierarchy problem is the worry that the Higgs mass, a *continuum* parameter, receives huge radiative corrections that must be finely cancelled to sit far below the Planck scale — so a symmetry (SUSY) is invoked to *protect* it. QLF removes the premise: **there is no large ratio of fundamental scales that needs protecting**, because the continuum mass scales are not fundamental inputs at all — they are **large-number renderings of discrete ZFA structure**. The Planck/proton ratio is `ln R_p = 14π`, dimensional transmutation from the single integer `b₀ = 7` (§1), not a fine-tuned cancellation; mass is gauge-fold *depth* (`m = 1/R`), an integer of closure with no continuum self-energy to diverge (the UV-finiteness of [`TheContinuum.md`](TheContinuum.md)). A quantity that was never a fundamental continuum input has nothing to protect. So any SUSY-like structure would live only at the **continuum-rendering layer**, never as a new particle spectrum at the TeV scale.
 
 ---
 
@@ -156,6 +178,7 @@ QLF takes neither as an axiom: reversibility and energy conservation are *output
 - [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) — the three machine-verified gauge algebras.
 - [`Weak_Force.md`](Weak_Force.md) §5 — Koide `Q=2/3`, `m_τ`, the Koide angle.
 - [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md), [`DarkMatter.md`](DarkMatter.md) — the beyond-SM predictions.
+- [`SUSY_QLF.md`](SUSY_QLF.md) — supersymmetry as the half-spin shift; no doubled spectrum, and the hierarchy problem dissolved (§3c).
 - [`Cosmological_Constant.md`](Cosmological_Constant.md) — `Ω_Λ = log 2`, the vacuum catastrophe.
 - [`CP-Violation-and-Chirality.md`](CP-Violation-and-Chirality.md) §4a–4b — strong-CP `θ̄=0` without an axion, and the Sakharov baryogenesis conditions.
 - [`Alpha.md`](Alpha.md) — the canonical α doc: first-principles derivation, the IR / 3-D-rendered scale, the dimension-flow running, the no-cosmological-drift prediction, and the 4D/5D over-determination.
