@@ -14,6 +14,23 @@ pair-production *rate* derived from the census. Those are named open, not glosse
 **synthesis + honest ledger**, in the style of [`Mysteries_Of_Physics.md`](Mysteries_Of_Physics.md)
 and [`Information_Physics.md`](Information_Physics.md) — not a claim that the full ladder is proven.
 
+**Status at a glance** (full detail in §5):
+
+| Rung / claim | Status |
+|---|---|
+| ½-spin atom = one bit, `ΔF = −log 2` | ✅ machine-checked |
+| 3 generations = 3 axes; Koide `⟹ m_τ` | ✅ machine-checked |
+| baryon needs all 3 colours (confinement) | ✅ machine-checked |
+| particle = quantum black hole (Compton = Schwarzschild) | ✅ machine-checked |
+| decay = Hawking unwind, `log 2` released per unlock | ✅ machine-checked |
+| mass spectrum = one exponentially-generated scale | ✅ machine-checked |
+| bound-state atoms · fusion channel opening · temperature → stable rung | ◻ structural / modeled |
+| pair-production mechanism (deterministic census + thermal freeze-out) | ◻ modeled — constructor + [`pair_production_demo.py`](pair_production_demo.py) |
+| **`(R, axis) → observed mass ratios`** along the full chain | 🔵 **open — the priority gap** |
+| **analytic pair-production rate calibrated to measured onsets** | 🔵 open |
+
+<p align="center"><img src="diagrams/particle_ladder.svg" alt="Bidirectional ladder: up the left (vacuum pair → lepton → generations e/μ/τ → hadron → atom → collective), down the right (black hole → Hawking unwind releasing log 2 → cascade → vacuum), hinged by particle = quantum black hole (Compton = Schwarzschild); creation is a deterministic census, temperature sets the freeze-out fraction" width="760"></p>
+
 ---
 
 ## 1. The primitives (each already anchored)
@@ -24,7 +41,7 @@ and [`Information_Physics.md`](Information_Physics.md) — not a claim that the 
 | **Gauge fold `+−`** | a closure carrying a constructing delay `Δt = R/f` → local time + a Planck-scale Markov blanket (a primordial quantum-black-hole seed) | `QLF_PlanckScale` (`planck_self_dual`, `coherent_iff_subplanck`) |
 | **Depth `R` / frequency `f`** | number of nested/sequential folds; sets the mass–frequency scale (`m = ℏf/R`) and the local clock rate (`f = 1/t`) | [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md), [`Time.md`](Time.md) |
 | **Three axes** | the three spatial twist axes generate the three fermion generations | `num_generations_eq_three`, `generations_from_three_axes_constructive` ([`lean/QLF_Generations.lean`](lean/QLF_Generations.lean)) |
-| **Logical density = temperature** | local closure rate; high density stabilizes deeper / multi-axis folds (this is what the constructor's Temperature slider drives) | [`Spacetime_Constructor.md`](Spacetime_Constructor.md), [`VacuumEnergy.md`](VacuumEnergy.md) |
+| **Temperature = logical density** | *precisely:* the local ZFA-closure rate (equivalently the inverse latency, `f = 1/latency`); it does **not** create pairs (the census does, §2) — it sets the **freeze-out fraction** of created pairs that persist as real vs virtual | [`Time.md`](Time.md), [`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean), [`Spacetime_Constructor.md`](Spacetime_Constructor.md) |
 
 **The particle = micro-black-hole identity is proven.** A closure is a Markov-blanket horizon; the
 Compton radius equals the Schwarzschild radius exactly at the Planck mass (`compton_eq_schwarzschild_iff`,
@@ -46,12 +63,23 @@ from particles to black holes and back.
 | **4. Atom** | lepton + hadron complementary joint-ZFA closure | bound state | ✅ structural — the QLF observable is the *bound* system (positronium/muonium/hydrogen), not the free lepton ([`Bound_States_QLF.md`](Bound_States_QLF.md)) |
 | **5. Collective** | many atoms phase-locked | crystal / molecule / condensate | ✅ chemistry (one valence rule), crystals (Pauli), Cooper/BEC ([`Chemistry.md`](Chemistry.md), `QLF_CondensedMatter`) |
 
-**Promotion rule (virtual → real).** A transient vacuum pair becomes a persistent event when a local
-input — high logical density / temperature, or an external field — supplies the free-energy cost
-`ΔF = −log 2` per bit and lets the history complete a ZFA closure. High temperature *is* a
-high-closure-rate environment that stabilizes deeper or multi-axis folds; this is why the constructor
-erupts `e⁺e⁻` near `~10¹⁰ K`, then `μ⁺μ⁻`, then `p p̄` as the slider rises. **The rate is the open piece**
-(§5).
+**Promotion rule (virtual → real) — two parts, and the split matters.** This is subtler than "heat
+makes pairs," and the constructor already gets it right (reproduced outside the browser in
+[`pair_production_demo.py`](pair_production_demo.py)):
+
+- **Creation is a *deterministic census* cascade — no dice, no thermal gate.** Pairs are read out of
+  the census by frequency (`m = 1/R`), so the *species ratios are the census multiplicities* —
+  lightest dominate (`e⁺e⁻ : μ⁺μ⁻ : p p̄` in the illustrative model ≈ `0.90 : 0.075 : 0.025`), **not**
+  a Boltzmann factor. "The census draws the space" (`QLF_CensusBrownian` / `QLF_BornProbability`).
+- **Temperature only sets the *freeze-out fraction* — real vs virtual.** A created pair persists as
+  **real** matter with a fraction that rises with the local logical density (temperature); at `T=0`
+  every pair is virtual foam, near the Planck top ~97% are real. Persisting one bit still pays
+  `ΔF = −log 2`. So heating does not *make* the heavier species — it lets more of the already-drawn
+  census *stay*.
+
+**Open:** calibrating the census buckets to the *measured* onsets (`e⁺e⁻ ~10¹⁰ K`, then `μ`, then `p`)
+and deriving the freeze-out fraction analytically from the census — the constructor's edges are
+illustrative, the *mechanism* is the QLF content (§5).
 
 **Generation rule.** The three generations are the *same* topological pattern realized on the three
 independent spatial axes (`generations_from_three_axes_constructive`). That the count is exactly three
@@ -77,6 +105,18 @@ The particle↔black-hole identity (§1) makes the descent the *same* ladder run
 child Markov blanket, it can host its own ladder — the *logical bang* drawn from inside
 ([`Creation.md`](Creation.md) §8a, `QLF_LogicalBang`), a fresh Stage-0 at the collapsed floor rather
 than a metric singularity (`planck_length_floor`).
+
+---
+
+**Falsifiability.** The ladder's structural commitments are sharp enough to break:
+
+| Observation | Verdict |
+|---|---|
+| a **fourth fermion generation** | ❌ tension with 3 generations = 3 axes (`num_generations_eq_three`) |
+| a definitive **Dirac neutrino** (0νββ excluded) | ❌ tension with the Majorana Stage-1 lepton |
+| a **new fundamental particle at the hadron scale** (WIMP-like) | ❌ against "hadron = quantum BH, no extra particle spectrum" |
+| a **stable free quark** | ❌ refutes colour-locked confinement (`single_colour_not_baryon`) |
+| black-hole evaporation shown **non-unitary** (information lost) | ❌ against the closure/unwind reading (`unlock_releases_log_two`) |
 
 ---
 
@@ -114,8 +154,15 @@ The whole ladder is a single loop, both directions:
 - the temperature → stable-rung correspondence, demonstrated in the constructor but not analytically derived.
 
 **🔵 Open (real research, not doc-work — do not fake):**
-- an explicit map **`(R, axis) ↦ observed mass ratio`** along the *whole* chain (e/μ/τ and the hadron scale); QLF fixes the count, one Koide relation, and the exponential *structure*, not the full ratio ladder (`mass_spectrum_in_progress`);
-- the **temperature-dependent pair-production rate** derived from the ZFA census (the constructor has the slider; the analytic rate is open);
+- **The priority gap — the ladder mass map `(R, axis) ↦ observed mass ratio`.** QLF fixes the *count*
+  (3 generations), *one* relation (Koide `Q=2/3`), and the *exponential structure* (`spectrum_one_scale`,
+  `log_transmuted_hierarchy`), but **not** the full ratio ladder `m_e:m_μ:m_τ:m_p` as an explicit
+  function of fold depth and axis (`mass_spectrum_in_progress`). *Suggested Lean target:* a `depth`/`axis`
+  → mass-ratio function reproducing the Koide relation as a special case and the measured `m_μ/m_e`,
+  `m_τ/m_μ` to stated precision — the honest next module for this ladder.
+- **The pair-production rate** — the *mechanism* is modeled (deterministic census creation + thermal
+  freeze-out, [`pair_production_demo.py`](pair_production_demo.py)); **open** is calibrating the census
+  buckets to the measured onsets and deriving the freeze-out fraction analytically from the census.
 - absolute mass scale (`v = R_stable`, frontier #1, [`Open_Problems.md`](Open_Problems.md)).
 
 **Deliberately *not* built:** a "unified Lean module" for the ladder. It would be reuse-only — re-exporting the theorems above with no new content — so it is not worth a module. The ladder's value is as this synthesis; each rung is already verified in its own module.
