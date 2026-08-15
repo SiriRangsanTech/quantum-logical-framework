@@ -123,13 +123,24 @@ has multiplicity `2` (`bit_multiplicity`), `n` independent bits multiplicity `2�
 per closure and the Landauer bridge `ΔF = −log 2` are the per-event quantum
 ([`lean/QLF_FreeEnergy.lean`](lean/QLF_FreeEnergy.lean)).
 
-**The measure is *forced*, not chosen.** Any information functional that is additive over
-independent joins is pinned uniquely: on a length-`|s|` uniform census it must equal `|s|·c`, and
-`c` is fixed by its value on one generator (`additive_unique`,
-[`lean/QLF_EntropyUniqueness.lean`](lean/QLF_EntropyUniqueness.lean)). This is the finite/counting
-wing of the **Baez–Fritz–Leinster** category-theoretic uniqueness of Shannon entropy and of
-**Knuth**'s "structure forces the measure" — executed on the substrate. (The full distributional
-`−Σ p log p` uniqueness is the analytic residual.)
+**The measure is *forced*, not chosen — because frequency *is* the number of ways.** The quantum
+happens **every way possible**; a closure's **frequency is its multiplicity** — the census count `W`
+of ways it can occur — so the probabilities are not primitive but way-counts, `pᵢ = Wᵢ/ΣW` (Born from
+counts, §6). Once information *is* the count of ways, the logarithm is not an axiom one imposes; it is
+**forced by a single fact — independent sets of ways multiply.** If A can happen `W_A` ways and B
+`W_B` ways, together they happen `W_A·W_B` ways (`independent_join_multiplies`), so for the information
+of "A and B" to be the *sum* of the parts, the measure must turn multiplication into addition:
+`S(A·B) = S(A) + S(B)` with `W(A·B) = W(A)·W(B)` ⟹ `S = log W`. The **only** function doing that is the
+logarithm — Boltzmann's `S = log(number of ways)`. For uniform ways (`p = 1/W`), `−Σ pᵢ log pᵢ = log W`
+(Shannon **is** Boltzmann); for non-uniform way-counts it is the same, weighted by the frequencies.
+
+So the uniqueness is a *consequence* of "frequency = ways" + "ways multiply," not a separate postulate.
+Any additive functional is pinned uniquely (`additive_unique`,
+[`lean/QLF_EntropyUniqueness.lean`](lean/QLF_EntropyUniqueness.lean); on a length-`|s|` uniform census
+it must equal `|s|·c`, `c` fixed by one generator) — the finite/counting wing of the
+**Baez–Fritz–Leinster** category-theoretic uniqueness and of **Knuth**'s "structure forces the
+measure." Only the **Lean formalization of the general distributional `−Σ p log p` case is open**; its
+*necessity* is already settled by multiplicity-multiplies (which the substrate proves).
 
 ---
 
@@ -352,8 +363,13 @@ made constructive end-to-end.
   is the *quantitative* content on the realization side. See
   [`Related_Frameworks.md`](Related_Frameworks.md) Part II and this repo's discussion of the
   distinction.
-- **Fisher-from-census** and the **full distributional entropy-uniqueness** are named forward work,
-  not done.
+- **Fisher-from-census:** the metric and the full dually-flat structure (KL = canonical divergence,
+  the Pythagorean theorem) are shown ([`fisher_from_census.py`](fisher_from_census.py)); the
+  continuum `n→∞` *manifold* is forward work (#142). **Distributional entropy-uniqueness:** its
+  *necessity* is settled — frequency = number of ways, and independent ways multiply, so `S = log W`
+  is forced (a *discrete* route, not the classical continuum smoothness axioms; §2); only the **Lean
+  formalization of the general (non-uniform) case** is open, beyond the finite-counting wing
+  already machine-checked (`QLF_EntropyUniqueness`).
 - "Information is physical" is used in the precise sense: the *toll of realizing* a distinction
   (`ΔF = −log 2`, finite realizability), never a reduction of the abstraction to matter.
 
