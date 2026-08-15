@@ -107,32 +107,38 @@ target — QLF fixes one relation (Koide) and the *structure* (one scale, expone
 `spectrum_one_scale`, `log_transmuted_hierarchy`, [`lean/QLF_MassSpectrum.lean`](lean/QLF_MassSpectrum.lean)),
 not the full ladder of ratios (`mass_spectrum_in_progress`).
 
-### Why μ and τ are colorless — color and generation are two readings of the same three axes
+### Colour *content* vs colour *charge* — the real question for μ and τ
 
-A natural question the ladder raises: since *both* colour and the generation count come from the
-substrate's **three spatial axes**, do the muon and tau carry a hidden colour? **No — and the reason
-is instructive.** The three axes are read two different ways, and keeping them apart answers it:
+The ladder raises a sharp question: since both colour and the generation count come from the same
+**three spatial axes**, what is the colour structure of the muon and tau? The key is to split **net
+colour charge** from **colour content** — they answer differently.
 
-| | reads the 3 axes as… | object | consequence |
-|---|---|---|---|
-| **Colour** (SU(3)) | all three bound **jointly** — the Borromean triple | a hadron | confinement (`baryon_needs_all_three_axes`, `single_colour_not_baryon`) |
-| **Generation** (e/μ/τ) | three **depth-tiers** of a *single* closure | a free lepton | Koide-constrained masses (`num_generations_eq_three`, `three_generations_satisfy_koide`) |
+- **Net colour charge — firm.** Leptons are colour **singlets**: `B = 0`, no net colour, and *therefore
+  free* — a net-coloured particle is confined (`singlet_closure`; a lone colour axis gives `B = 0`,
+  `single_colour_not_baryon`). This is *why* we see free muons, and it does not change across generations.
+- **Colour content — real, and mostly open.** A singlet is **not** structureless. The electron loop
+  `^<v>` is machine-verified to engage **two** axes — `σ_y·(−σ_x)·(−σ_y)·σ_x = −I`, i.e. the x (`<>`) and
+  y (`^v`) axes, *not* z (`interleaved_xlvr_folds_to_negI`, [`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean)).
+  So leptons carry genuine axis/colour content, and it is not obviously the same for every generation.
 
-**μ and τ are colourless *by construction* — and that is precisely *why* they are free.** A lepton
-closes as a 2-body integrable system that always closes as a **singlet** (`singlet_closure`); a
-single-axis history carries `B = 0` (`single_colour_not_baryon`, [`Quarks.md`](Quarks.md) §1). Colour is
-the property of needing *all three* axes at once, so a single closure has none. This is not a gap to be
-filled: a *coloured* muon would be a non-singlet closure — **confined**, never observed free —
-contradicting both the muon we see in every cosmic-ray shower and QLF's own confinement theorems. So the
-electron → muon → tau progression is a **fold-*depth* shift** (`m = 1/R`, deeper = heavier,
-Koide-constrained), **not** a colour acquisition; "the muon is a recursive electron" is right only in the
-depth-tier sense. Quark masses aren't even QLF observables (`quark_not_closed`, [`lean/QLF_QuarkMass.lean`](lean/QLF_QuarkMass.lean)) — "colour" is a property of the *joint* closure, so it has no free-lepton analogue to hide.
+So the right question is not "do μ, τ carry colour?" (no *net* charge — they're free) but **"what is each
+generation's axis/colour content?"** Since `num_generations_eq_three` ties the three generations to the
+three axes, the natural hypothesis is that each generation is a chiral loop engaging a **different set of
+axes** — the electron's verified content being `{x, y}`, with the muon and tau reaching the third axis
+(the other coordinate planes `{y,z}`, `{z,x}`, or a deeper multi-axis winding). *What those "colours" are*
+— which axes each generation occupies — is the open, promising structure, exactly as the second look
+suggests.
 
-**What the ladder actually points at** is therefore *not* a hidden colour charge but the
-**`(R, axis) → mass-ratio` map** (§5): `m_e : m_μ : m_τ` as an explicit function of fold depth — where
-"the geometry of how the folds are accessed" *would* show up. QLF fixes the count, one relation, and the
-exponential structure; that full depth→ratio ladder, and the lepton↔quark mass correlation, remain the
-named open target (`mass_spectrum_in_progress`; [`Quarks.md`](Quarks.md)).
+**The one guardrail (confinement).** Whatever the content, a lepton must stay a colour-*neutral* singlet
+(`B = 0`): "μ has two colours, τ three" has to mean a two-/three-axis **singlet**, not a coloured
+(confined) state — otherwise it would be a Borromean baryon, not a free lepton. Distinguishing a 3-axis
+lepton singlet from the 3-axis *baryon* (`B ≠ 0`, `baryon_needs_all_three_axes`) is precisely the content
+to pin down.
+
+**Where a proof would live.** Derive the μ and τ twist loops, read off their axis content, verify `B = 0`,
+and show that content reproduces the Koide-constrained mass ratios — the `(R, axis) → mass-ratio` map
+(§5, `mass_spectrum_in_progress`; the lepton↔quark mass correlation is still "separate and open,"
+[`Quarks.md`](Quarks.md)). The electron's verified `{x, y}` content is the one anchor to build from.
 
 ---
 

@@ -15,13 +15,14 @@ with no free end. That single fact is most of confinement.
 
 ## 1. Colour — the three axes (essentially complete ✓)
 
-> **Do μ and τ carry a hidden colour?** No — and it's instructive: colour reads the three axes *bound
-> jointly* (a hadron, confined), while a **generation** reads them as *depth-tiers* of a single free
-> closure (a lepton). A single closure is a singlet (`singlet_closure`) with `B = 0`, so μ/τ are
-> colourless *by construction* — which is exactly *why* they are free (a coloured lepton would be
-> confined). The e→μ→τ step is a fold-*depth* shift, not a colour acquisition; the open target is the
-> `(R, axis) → mass-ratio` map, not a hidden charge. Full argument: [`Particle_Ladder.md`](Particle_Ladder.md)
-> § *Why μ and τ are colorless*.
+> **What is the colour structure of μ and τ?** Split **net charge** from **content**. *Net charge:*
+> leptons are colour **singlets** (`B = 0`, `singlet_closure`) — no net colour, hence *free* (a
+> net-coloured lepton would be confined); this holds for all generations. *Content:* a singlet is not
+> structureless — the electron loop `^<v>` is machine-verified to engage **two** axes (x,y, not z:
+> `interleaved_xlvr_folds_to_negI`). So the real, open question is **each generation's axis/colour
+> content** — which axes μ and τ occupy (the electron's is `{x,y}`) — keeping `B = 0`. The open target is
+> the `(R, axis) → mass-ratio` map, not a hidden *charge*. Full argument:
+> [`Particle_Ladder.md`](Particle_Ladder.md) § *Colour content vs colour charge*.
 
 - **Colour = the three spatial axes.** `axOf` ([`QLF_BaryonWinding`](lean/QLF_BaryonWinding.lean)):
   `<>`→x, `^v`→y, `/\`→z; gauge `+−` carries no axis. R/G/B = (x,y,z).
