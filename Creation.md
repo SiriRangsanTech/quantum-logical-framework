@@ -260,7 +260,14 @@ synchronized release. Every stage is an already-anchored QLF object; this is the
    ([`Turbulence.md`](Turbulence.md), [`QLF_QuantumTurbulence`](lean/QLF_QuantumTurbulence.lean),
    [`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean)). Its statistical fingerprints — `π`, Kolmogorov `−5/3`,
    `1/f`, **Zipf** — are one reading of the closure census ([`Experimental_Consistency.md`](Experimental_Consistency.md) §6.7):
-   the young cosmos is a self-organized, scale-free tangle of quantized folds.
+   the young cosmos is a self-organized, scale-free tangle of quantized folds. These power laws are the
+   same fact seen from different observables: since the quantum happens **every way** and a closure's
+   **frequency is its multiplicity `W`** (the count of ways, [`Information_Physics.md`](Information_Physics.md) §2),
+   a *scale-free* census — no characteristic scale — distributes `W` as a **power law**, and Zipf (rank ∝ 1/freq),
+   `1/f`, and the turbulent `−5/3` are its members. The census fractal exponent is machine-anchored — the
+   **`−p/2` spectral exponent** (`census_p2_is_return_density`, [`QLF_CensusWalk`](lean/QLF_CensusWalk.lean);
+   computed in [`genesis.py`](genesis.py) §2) and the forced `−5/3` ([`QLF_Kolmogorov`](lean/QLF_Kolmogorov.lean));
+   the specific Zipf/`1/f` exponents per observable are the reading, not separately derived.
 
 2. **Matter condenses.** Where the tangle reaches the depth/density at which a three-axis **Borromean**
    fold locks, the first *persistent* closures appear — nucleons ([`QLF_QuarkStructure`](lean/QLF_QuarkStructure.lean),
