@@ -1854,11 +1854,22 @@ const TIP = {};                                     // per-row breakdown text (f
 /* ---------- go ---------- */
 c_vac.value = cfg.vac; v_vac.textContent = fmtT(vacT());   // temperature slider → CMB default
 c_flo.value = fToSlider(cfg.fLo); c_fhi.value = fToSlider(cfg.fHi); bandLabel();   // frequency band → "all"
+
+// Deep-link preset that must be applied BEFORE the first build() (octaves are assigned
+// at build time): a preloaded scene (#qc or &t) defaults to ONE harmonic octave so
+// particles render at full brightness; `&oct=N` (1..12) overrides.
+{ const H=location.hash||'';
+  const oc=H.match(/[#&]oct=(\d+)/);
+  if(oc) cfg.octaves=Math.max(1,Math.min(12,+oc[1]));
+  else if(/[#&](qc|t)=/.test(H)) cfg.octaves=1;
+  c_oct.value=cfg.octaves; v_oct.textContent=cfg.octaves; }
+
 resize(); build(); frame();
 
 // Deep links: a URL hash can preset the scene, so docs can link "(see)" to a live demo.
 //   #qc=<url-encoded QuCalc>   loads it into the QuCalc box and instantiates it
 //   &t=<0..1>                  sets the temperature slider (optional)
+//   &oct=<1..12>               sets harmonic octaves (default 1 for any preset scene)
 (function(){
   const H=location.hash||'';
   const t=H.match(/[#&]t=([\d.]+)/); if(t){ cfg.vac=Math.max(0,Math.min(1,+t[1])); c_vac.value=cfg.vac; v_vac.textContent=fmtT(vacT()); }

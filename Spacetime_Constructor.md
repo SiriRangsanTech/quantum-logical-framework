@@ -219,7 +219,10 @@ account in [`Chemistry.md`](Chemistry.md). And **crystals**: pick an element and
 (`lattice sc|bcc|fcc n spacing motif @ x,y,z`, or the element dropdown + SC/BCC/FCC buttons) — Pauli pressure then
 holds the lattice together (iron BCC as a metal; cold **helium Bose-condenses into a superfluid**). New closures
 never stack — Pauli exclusion places each in the nearest free spot. *A URL hash `#qc=…` preloads any of these scenes,
-so links can open a live demo.*
+so links can open a live demo.* Hash parameters: `#qc=<QuCalc>` (the scene), `&t=<0..1>` (temperature), and
+`&oct=<1..12>` (harmonic octaves). **Any preset scene defaults to a single harmonic octave** (`oct=1`) so the
+injected particles render at full brightness rather than being dimmed across the octave spread — pass `&oct=6`
+to restore the hierarchical vacuum-foam look.
 
 ---
 
