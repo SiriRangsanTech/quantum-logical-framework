@@ -234,6 +234,13 @@
       <div class="lbl">Temperature <span class="val" id="v_vac">2.7 K</span></div>
       <input type="range" id="c_vac" min="0" max="1" step="0.01" value="0">
     </div>
+    <div class="row">
+      <div class="lbl">Freeze-out <span class="val" id="v_freeze">logistic</span></div>
+      <select id="c_freeze" style="width:100%">
+        <option value="logistic">logistic — posited (gradual, #141)</option>
+        <option value="congestion">congestion — boundedPrune (sharper)</option>
+      </select>
+    </div>
     <div class="toggles">
       <button data-spawn="ee">e⁻e⁺</button>
       <button data-spawn="mm">μ⁻μ⁺</button>
@@ -1454,6 +1461,7 @@ function inspectAt(px,py){
 const bind=(id,fn)=>document.getElementById(id).addEventListener('input',fn);
 bind('c_nodes',e=>{cfg.N=+e.target.value; v_nodes.textContent=cfg.N; build();});
 bind('c_oct', e=>{cfg.octaves=+e.target.value; v_oct.textContent=cfg.octaves; build();});
+bind('c_freeze', e=>{FREEZE_MODE=e.target.value; v_freeze.textContent=FREEZE_MODE;});
 bind('c_flow',e=>{cfg.flow=+e.target.value; v_flow.textContent=cfg.flow.toFixed(1)+'×';});
 // frequency band — two log sliders over rest frequency f = m/mₑ
 const fmtFreq=f=> f<1?f.toFixed(f<0.1?3:2) : f<1e4?Math.round(f).toLocaleString() : (()=>{const e=Math.floor(Math.log10(f));return (f/Math.pow(10,e)).toFixed(1)+'×10'+_sup(e);})();
@@ -1898,7 +1906,8 @@ resize(); build(); frame();
 (function(){
   const H=location.hash||'';
   const t=H.match(/[#&]t=([\d.]+)/); if(t){ cfg.vac=Math.max(0,Math.min(1,+t[1])); c_vac.value=cfg.vac; v_vac.textContent=fmtT(vacT()); }
-  const fz=H.match(/[#&]freeze=(congestion|logistic)/); if(fz) FREEZE_MODE=fz[1];
+  const fz=H.match(/[#&]freeze=(congestion|logistic)/); if(fz){ FREEZE_MODE=fz[1];
+    const cf=document.getElementById('c_freeze'); if(cf){ cf.value=FREEZE_MODE; v_freeze.textContent=FREEZE_MODE; } }
   const q=H.match(/[#&]qc=([^&]*)/);
   if(q && typeof qcEl!=='undefined' && qcEl){ try{
     const txt=decodeURIComponent(q[1].replace(/\+/g,' ')); qcEl.value=txt;
