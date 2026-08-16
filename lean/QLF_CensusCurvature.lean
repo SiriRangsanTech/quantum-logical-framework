@@ -66,21 +66,53 @@ theorem isParent_length {c p : List Twist} (h : IsParent c p) :
 
 /-! ## 2. Count balance is inherited by parents -/
 
-/-- **The parent of a ZFA closure is a ZFA closure.** Deleting a
-    Hermitian-conjugate pair `t … conj t` decrements the counts of `t` and of
-    `conj t` by one each — and `t`, `conj t` are the two sides of exactly one
-    of the four balance equations, so every equation survives. This is what
-    makes the census graph a graph on ZFA closures at all. -/
-theorem countBalanced_of_isParent {c p : List Twist}
-    (hpar : IsParent c p) (h : countBalanced c) : countBalanced p := by
-  obtain ⟨l, m, r, t, hc, hp⟩ := hpar
+/-- Deleting a conjugate pair removes exactly the two twists `t`, `conj t`
+    from every count — everything else is untouched, in order. -/
+theorem isParent_count {c p : List Twist} (h : IsParent c p) :
+    ∃ t : Twist, ∀ x : Twist,
+      c.count x = p.count x + List.count x [t, Twist.conj t] := by
+  obtain ⟨l, m, r, t, hc, hp⟩ := h
   subst hc
   subst hp
-  cases t <;>
-    simp only [countBalanced, Twist.conj, List.count_append,
-      List.count_cons] at h ⊢ <;>
-    obtain ⟨h1, h2, h3, h4⟩ := h <;>
-    omega
+  refine ⟨t, fun x => ?_⟩
+  simp only [List.count_append, List.count_cons, List.count_nil]
+  omega
+
+/-- A deleted conjugate pair contributes **equally to both sides** of each of
+    the four balance equations: `t` and `conj t` are always the two members of
+    one conjugate pair, so either they are the pair that equation is about
+    (one each) or they are invisible to it (zero each). Sixty-four concrete
+    cases, by `decide`. -/
+theorem conj_pair_counts (t : Twist) :
+    List.count Twist.up [t, Twist.conj t]
+      = List.count Twist.down [t, Twist.conj t] ∧
+    List.count Twist.left [t, Twist.conj t]
+      = List.count Twist.right [t, Twist.conj t] ∧
+    List.count Twist.slash [t, Twist.conj t]
+      = List.count Twist.backslash [t, Twist.conj t] ∧
+    List.count Twist.plus [t, Twist.conj t]
+      = List.count Twist.minus [t, Twist.conj t] := by
+  cases t <;> decide
+
+/-- **The parent of a ZFA closure is a ZFA closure.** Deleting a
+    Hermitian-conjugate pair `t … conj t` decrements the counts of `t` and of
+    `conj t` by one each — and those are the two sides of exactly one of the
+    four balance equations, so every equation survives. This is what makes
+    the census graph a graph on ZFA closures at all. -/
+theorem countBalanced_of_isParent {c p : List Twist}
+    (hpar : IsParent c p) (h : countBalanced c) : countBalanced p := by
+  obtain ⟨t, ht⟩ := isParent_count hpar
+  obtain ⟨hUD, hLR, hSB, hPM⟩ := h
+  obtain ⟨kUD, kLR, kSB, kPM⟩ := conj_pair_counts t
+  have eU := ht Twist.up
+  have eD := ht Twist.down
+  have eL := ht Twist.left
+  have eR := ht Twist.right
+  have eS := ht Twist.slash
+  have eB := ht Twist.backslash
+  have eP := ht Twist.plus
+  have eM := ht Twist.minus
+  exact ⟨by omega, by omega, by omega, by omega⟩
 
 /-! ## 3. Census adjacency, and the layering -/
 
