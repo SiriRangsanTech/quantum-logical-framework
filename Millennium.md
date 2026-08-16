@@ -166,6 +166,21 @@ boundaries — *not* for the finitary conjectures (Hodge, BSD, P vs NP, the stan
 are ordinary hard statements. The boundary registry is [Open_Problems.md](Open_Problems.md); the
 unifying ontology is [Continuum_Choice_Fallacy.md](Continuum_Choice_Fallacy.md).
 
+### The competing-route trap — an audit of all six
+
+Each bridge axiom sits exactly where a *cheaper-looking* derivation of the same conclusion appears to be available. Those cheaper routes are the danger: one that looked passable would make a Class-A bridge look dischargeable when it is not. All six were checked. **Every one of them is closed** — and it is worth recording *why*, because the failures are not alike.
+
+| problem | the tempting alternative route | verdict |
+|---|---|---|
+| **Yang–Mills** | the gap is positive Ollivier–Ricci curvature of the possibility graph (curvature ⟹ spectral gap) | **closed twice.** `census_nowhere_positively_curved` proves `κ ≤ 0` at every length, so the bound is vacuous; and the census's normalized-Laplacian gap collapses `≈ 4×` per layer (`0.3169 → 0.0810 → 0.0192`) toward zero. No gap there to find ([`Curvature.md`](Curvature.md) §1c) |
+| **P vs NP** | an exponential possibility space plus a linear verify ⟹ search is hard | **closed, and it argues the other way.** Producing a ZFA closure of length `2n` is an `O(n)` loop — `^ⁿvⁿ`. `C(2n,n)` counts *solutions*, and a denser solution set makes sampling **easier**. All the hardness lives in the unspecified "with property `X`" |
+| **Riemann** | the closure census has a generating function, so it has a critical line | **closed by QLF's own theorem.** `central_binom_genfun` gives `Σ C(2n,n)xⁿ = (1−4x)^{−1/2}`, which is **zero-free** — there are no zeros to place on any line. (Nor does the census *graph* help: its gap collapse puts it outside the Ramanujan class, so the Ihara zeta's graph-RH fails there too) |
+| **Navier–Stokes** | vorticity is quantized to `±1` per cell, hence bounded, hence no blow-up | **vacuous as continuum evidence.** *Every* bounded lattice discretization has bounded fields — including discretizations of equations that provably do blow up (Burgers shocks). It proves too much, so it proves nothing about the limit. Precisely why the bridge is an axiom |
+| **BSD** | the Frobenius traces `a_p` are computed, so read the rank off `∏_{p≤X} N_p/p ~ C(log X)^r` | **closed.** That growth law is Birch & Swinnerton-Dyer's original *numerical discovery*, not a proof: the Euler product does not converge at `s = 1`, and the law presupposes the analytic continuation that **is** the content |
+| **Hodge** | Pauli closure certifies algebraicity | **non-discriminating.** `count_balanced_pauli_closed` makes closure *entailed* by count balance, so every balanced class passes — a certificate everything passes certifies nothing. (And "algebraic = the positively-curved locus" is empty: `κ ≤ 0` everywhere) |
+
+**The shape they share.** Each swaps a cheap structural fact for the expensive content — and the fact is then either **automatic** (Navier–Stokes, Hodge: true of any lattice, true of every closure), **pointed the wrong way** (P vs NP: density helps the searcher), or **about a different object** (Riemann: a zero-free algebraic GF is not a Dirichlet series; BSD: a computed `a_p` closure is not an analytic continuation; Yang–Mills: possibility-space curvature is not the YM spectrum). None is a near miss. That is the useful outcome: the six bridges are not standing where a little more work would remove them, and the audit says so with reasons rather than with confidence.
+
 ### The bridges, couched in the Witten-1988 precedent
 
 The right way to *couch* these bridge axioms is the **Witten 1988 → Reshetikhin–Turaev precedent**

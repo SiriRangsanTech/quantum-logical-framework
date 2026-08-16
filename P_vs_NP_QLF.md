@@ -62,8 +62,14 @@ QLF's selection principle gives a reason the asymmetry does not collapse:
   fast verification into fast search.
 - **Of the exponentially many depth-`2n` histories, exactly `C(2n,n)` are ZFA-balanced**
   (`find_stable_states_length_even`, [`lean/QLF_QuCalc.lean`](lean/QLF_QuCalc.lean)) —
-  a `~4^n/√n` fraction. The solutions are dense enough to verify one instantly yet
-  spread through the tree with no shortcut to *the one you want*.
+  a `~4^n/√n` fraction. **This count is *not* evidence for hardness, and must not be
+  cited as such** ([Millennium.md](Millennium.md) § *The competing-route trap*):
+  producing *a* ZFA closure of length `2n` is an `O(n)` loop — emit `^` `n` times, then
+  `v` `n` times — so the unqualified search problem is in **P**, and `C(2n,n)` counts
+  *solutions*, a density that makes random sampling **easier**, not harder. The entire
+  asymmetry therefore rests on the qualifier: search is "produce a closure **with
+  property `X`**", and `X` carries the whole burden. Stating that plainly is what keeps
+  the reformulation honest — a large haystack is not a hard needle.
 - This is the same wall as the **Busy-Beaver / ZFC ultraviolet catastrophe**
   ([Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) §6,
   [ReverseMathematics.md](ReverseMathematics.md)): QLF lives at the **RCA₀** floor,
@@ -71,9 +77,10 @@ QLF's selection principle gives a reason the asymmetry does not collapse:
   not bounded by the cost of *recognising* one — the generator and the filter are
   genuinely separate machines.
 
-QLF therefore *leans* P ≠ NP: search through the possibility space is structurally
-heavier than the linear closure check, and the framework exhibits no mechanism that
-reduces one to the other.
+QLF therefore *leans* P ≠ NP — but on the **no-extension-certificate** point above, not
+on the size of the space: constrained search through the possibility space exhibits no
+mechanism reducing it to the linear closure check. The lean is exactly as strong as that
+absence, and no stronger.
 
 ## 4. Where the boundary sits
 
