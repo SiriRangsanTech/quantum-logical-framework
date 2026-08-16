@@ -423,6 +423,21 @@ const CASCADE_RATE = 3.5;   // closures/s emitted by the deterministic frequency
 // Slider spans absolute zero → the Planck temperature (~1.4×10³² K, the highest
 // physical energy). s=0 is exactly 0 K; s>0 is log-scaled from a tiny floor to T_P.
 const T_CMB=2.725, T_P=1.416784e32, T_FLOOR=1e-3, K_e=5.93e9;
+
+// Freeze-out model (#141). 'logistic' = the posited width-0.6 curve; 'congestion'
+// = the boundedPrune-derived Poisson-tail survival P(Poisson(λ)≥d), λ=d·T/T_onset,
+// d=8 — the finite-capacity-horizon mechanism (census_congestion_freezeout.py).
+// Same onset T_onset∝mass; congestion is SHARPER. Flip with `&freeze=congestion`.
+let FREEZE_MODE='logistic';
+function freezeFrac(T, Ton){
+  const r=Math.max(T,1e-30)/Ton;
+  if(FREEZE_MODE==='congestion'){
+    const d=8, lam=d*r; let term=Math.exp(-lam), cdf=term;   // k=0
+    for(let k=1;k<d;k++){ term*=lam/k; cdf+=term; }           // Σ_{k<d} Poisson
+    return 1-cdf;                                             // survival = P(X≥d)
+  }
+  return 0.97/(1 + Math.exp(-Math.log(r)/Math.LN10/0.6));     // posited logistic
+}
 const vacT = () => cfg.vac<=0 ? 0 : T_FLOOR*Math.pow(T_P/T_FLOOR, cfg.vac);
 const sForT = T => Math.log(T/T_FLOOR)/Math.log(T_P/T_FLOOR);   // slider position for a temperature
 const COOPER_TMAX = 30;   // K — below this, free electrons pair into (bosonic) Cooper pairs (illustrative threshold)
@@ -906,7 +921,7 @@ function stepParticles(dt){
       // T_onset = K_e·(m/m_e), so e⁺e⁻ appear ~1e10 K, μ⁺μ⁻ ~1e12, p p̄ ~1e13 — the census
       // frequency ordering IS the observed onset sequence. Logistic in log10(T/T_onset).
       const Ton = K_e * KIND[a].m;
-      const real = lseq() < 0.97/(1 + Math.exp(-Math.log(Math.max(T,1e-30)/Ton)/Math.LN10/0.6));
+      const real = lseq() < freezeFrac(T, Ton);           // logistic | congestion (&freeze=)
       spawnPair(a, b, !real);
     }
     // Thermal blackbody glow — redder cold, bluer hot; a faint floor remains at T=0 as the
@@ -1879,9 +1894,11 @@ resize(); build(); frame();
 //   #qc=<url-encoded QuCalc>   loads it into the QuCalc box and instantiates it
 //   &t=<0..1>                  sets the temperature slider (optional)
 //   &oct=<1..12>               sets harmonic octaves (default 1 for any preset scene)
+//   &freeze=congestion         boundedPrune freeze-out (sharper) vs default logistic (#141)
 (function(){
   const H=location.hash||'';
   const t=H.match(/[#&]t=([\d.]+)/); if(t){ cfg.vac=Math.max(0,Math.min(1,+t[1])); c_vac.value=cfg.vac; v_vac.textContent=fmtT(vacT()); }
+  const fz=H.match(/[#&]freeze=(congestion|logistic)/); if(fz) FREEZE_MODE=fz[1];
   const q=H.match(/[#&]qc=([^&]*)/);
   if(q && typeof qcEl!=='undefined' && qcEl){ try{
     const txt=decodeURIComponent(q[1].replace(/\+/g,' ')); qcEl.value=txt;

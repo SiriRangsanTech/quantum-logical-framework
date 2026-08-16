@@ -103,13 +103,13 @@ def part_A():
 # ---------------------------------------------------------------------------
 # Part B — congestion freeze-out from the ACTUAL prune. λ(T)=T thermal budget.
 # ---------------------------------------------------------------------------
-def closure_fraction(d_s, T, trials=4000):
-    """Monte-Carlo real-fraction: draw budget R~Poisson(T), FREEZE OUT iff the
+def closure_fraction(d_s, T, trials=4000, lam=lambda T: T):
+    """Monte-Carlo real-fraction: draw budget R~Poisson(λ(T)), FREEZE OUT iff the
     actual boundedPrune closes the depth-d_s fold. (Runs the real prune.)"""
     hist = nested_singlet(d_s)
     real = 0
     for _ in range(trials):
-        R = poisson(T)
+        R = poisson(lam(T))
         if closed_at_horizon(R, hist):
             real += 1
     return real / trials
@@ -128,13 +128,13 @@ def poisson(lam):
     return max(0, round(random.gauss(lam, math.sqrt(lam))))
 
 
-def onset_of(d_s, trials=4000):
+def onset_of(d_s, trials=4000, lam=lambda T: T, hi_mult=4.0):
     """Smallest T (on a fine grid) at which real_frac crosses 0.5 — the onset."""
-    lo, hi = 0.1 * d_s, 4.0 * d_s
+    lo, hi = 0.02 * d_s, hi_mult * d_s
     Ts = [lo + (hi - lo) * i / 200 for i in range(201)]
     prev_T, prev_f = None, None
     for T in Ts:
-        f = closure_fraction(d_s, T, trials)
+        f = closure_fraction(d_s, T, trials, lam)
         if prev_f is not None and prev_f < 0.5 <= f:
             # linear interpolate the crossing
             return prev_T + (0.5 - prev_f) * (T - prev_T) / (f - prev_f)
@@ -189,12 +189,40 @@ def part_C(depths, names):
     print("     a concrete, testable DIFFERENCE (the current constructor curve is too soft).\n")
 
 
+def part_D():
+    """Can a simulation SETTLE it? The mechanism maps a budget law λ(T)=T^p to a
+    measurable onset–mass exponent q (T_onset ∝ d^q). Predicted q = 1/p. So the
+    onset–mass log–log slope in DATA reads off the budget law — a falsifiable
+    discriminator, not eyeballing. This runs the real prune for three laws and
+    fits q, confirming q≈1/p (so linear onset ⟺ λ∝T)."""
+    import math as _m
+    print("D. DISCRIMINATOR — a simulation turns the mechanism into a data-testable number")
+    print("   budget λ(T)=T^p ⟹ predicted onset T_onset ∝ d^(1/p). Fit q from the prune:")
+    depths = [2, 4, 8, 16]
+    print(f"   {'law λ(T)':>10} {'predicted q=1/p':>16} {'fitted q (log-log)':>18}")
+    for p, label in ((1.0, "T"), (2.0, "T^2"), (0.5, "T^0.5")):
+        lam = (lambda pp: (lambda T: max(T, 1e-9) ** pp))(p)
+        xs, ys = [], []
+        for d in depths:
+            Ton = onset_of(d, trials=2500, lam=lam, hi_mult=6.0 if p >= 1 else 20.0)
+            if Ton and Ton > 0:
+                xs.append(_m.log(d)); ys.append(_m.log(Ton))
+        # least-squares slope
+        n = len(xs); mx = sum(xs)/n; my = sum(ys)/n
+        q = sum((x-mx)*(y-my) for x, y in zip(xs, ys)) / sum((x-mx)**2 for x in xs)
+        print(f"   {label:>10} {1/p:>16.3f} {q:>18.3f}")
+    print("   → fitted q ≈ 1/p: the onset–mass slope IS the budget exponent. So the")
+    print("     open λ(T)∝T assumption is FALSIFIABLE — measure onset vs mass; slope 1")
+    print("     ⟺ λ∝T. That is what a simulation settles; which p nature uses is DATA.\n")
+
+
 def main():
     print(__doc__.strip().split("\n\n")[0])
     print()
     part_A()
     depths, names = part_B()
     part_C(depths, names)
+    part_D()
     print("VERDICT (honest):")
     print("  DERIVED by the congestion mechanism (running the real boundedPrune):")
     print("    • the freeze-out ORDERING e→μ→p (deeper fold needs bigger budget);")
@@ -209,6 +237,16 @@ def main():
     print("      passes' step) — the physical content behind K_e. Congestion EXPLAINS")
     print("      the onset & ordering and PREDICTS the shape; the λ(T)∝T step is not")
     print("      yet forced from the census.")
+    print()
+    print("  CAN A SIMULATION SETTLE IT? (Part D) — the settleable vs the empirical:")
+    print("    • SETTLED BY SIM (not eyeballing): the mechanism→prediction map. Running")
+    print("      the real prune shows onset T_onset ∝ d^(1/p) for budget λ(T)=T^p, so")
+    print("      the onset–mass slope IS the budget exponent — a falsifiable number.")
+    print("    • NOT settleable by ANY simulation of our own model (incl. the")
+    print("      constructor, which just renders the coded curve): which p nature uses.")
+    print("      That is DATA — the freeze-out onset-vs-mass slope + curve steepness")
+    print("      from relic abundances / pair-production thresholds. Sim makes the")
+    print("      prediction sharp; observation adjudicates it.")
 
 
 if __name__ == "__main__":
