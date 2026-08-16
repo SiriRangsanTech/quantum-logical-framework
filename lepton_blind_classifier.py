@@ -16,7 +16,10 @@ A. BLIND TOPOLOGY SELECTION (no measured masses)
 
 B. KOIDE PHASE AUDIT (only after topology selection)
    Reproduce the exact-Q=2/3 phase implied by the repo's m_e and m_mu inputs,
-   then compare it with the existing 2/9 candidate.
+   then compare it with the existing 2/9 candidate -- including the provenance
+   of the stale 0.22227 (a single-channel tau extraction) and the fact that
+   2/9's residual is the same ~1e-5 order as Q's own deviation from 2/3.
+   2/9 is a CANDIDATE Koide-phase hypothesis throughout, never a derivation.
 
 No QLF imports are required.
 """
@@ -284,6 +287,11 @@ ME = 0.51099895000
 MMU = 105.6583755
 MTAU = 1776.86
 
+# PDG / CODATA 1-sigma uncertainties (MeV)
+D_ME = 0.00000000015
+D_MMU = 0.0000023
+D_MTAU = 0.12
+
 
 def koide_weights(delta: float):
     # k=(0,1,2) = (tau,e,mu)
@@ -322,6 +330,38 @@ def koide_tau_from_e_mu():
     return s_tau*s_tau
 
 
+def koide_Q() -> float:
+    s = math.sqrt(ME) + math.sqrt(MMU) + math.sqrt(MTAU)
+    return (ME + MMU + MTAU) / (s*s)
+
+
+def single_channel_deltas() -> dict[str, float]:
+    """
+    Extract delta from ONE mass at a time, with M pinned by all three measured
+    masses (M = sum(sqrt m)/3).  Because the measured Q is not exactly 2/3 the
+    three extractions disagree in the 5th decimal -- this is the provenance of
+    the stale 0.22227 that Weak_Force.md used to quote as "the phase m_e, m_mu
+    demand".  It is the tau-channel value, not a two-input solve.
+    """
+    M = (math.sqrt(ME) + math.sqrt(MMU) + math.sqrt(MTAU)) / 3.0
+    out = {}
+    for name, m, k in (("tau", MTAU, 0), ("e", ME, 1), ("mu", MMU, 2)):
+        c = (math.sqrt(m)/M - 1) / math.sqrt(2)
+        c = max(-1.0, min(1.0, c))
+        # the branch near delta ~ 0.222 rad
+        cands = [(sg*math.acos(c) - 2*math.pi*k/3) % (2*math.pi) for sg in (1, -1)]
+        out[name] = min(cands, key=lambda d: abs(d - 2/9))
+    return out
+
+
+def delta_sigma_from_experiment(delta: float) -> float:
+    """1-sigma spread in delta induced by the experimental m_mu/m_e error."""
+    rel = math.hypot(D_MMU/MMU, D_ME/ME)
+    h = 1e-9
+    dr = (mu_e_ratio(delta + h) - mu_e_ratio(delta - h)) / (2*h)
+    return (MMU/ME) * rel / abs(dr)
+
+
 def koide_audit():
     print("\n=== B. KOIDE PHASE AUDIT (AFTER BLIND SELECTION) ===\n")
 
@@ -333,41 +373,64 @@ def koide_audit():
     print(f"  m_mu  = {MMU:.7f} MeV")
     print(f"  m_tau = {MTAU:.2f} MeV\n")
 
-    print("If Q=2/3 is exact and m_e,m_mu are the two inputs:")
+    print("B1. The well-posed determination (exact Q=2/3; m_e, m_mu the two inputs):")
     print(f"  delta_required = {delta_exactQ:.15f} rad")
     print(f"  2/9            = {delta_29:.15f} rad")
     print(f"  difference     = {delta_29-delta_exactQ:+.3e} rad")
     print(f"  relative delta gap = {(delta_29/delta_exactQ-1)*100:+.8f}%\n")
 
+    print("B2. Provenance of the stale 0.22227 (single-channel extractions,")
+    print("    M pinned by all three MEASURED masses):")
+    sc = single_channel_deltas()
+    for name in ("tau", "mu", "e"):
+        print(f"  delta from {name:3} channel alone = {sc[name]:.9f} rad")
+    print("  -> they disagree in the 5th decimal because measured Q != 2/3.")
+    print("     0.22227 is the TAU-channel value; it is not what m_e,m_mu demand.\n")
+
     obs_mu_e = MMU / ME
     pred_mu_e = mu_e_ratio(delta_29)
     w = koide_weights(delta_29)
-    pred_tau_e = w[0] / w[1]
-    tau_from_e = ME * pred_tau_e
+    tau_from_e = ME * (w[0] / w[1])
 
-    print("Exact delta=2/9 as a zero-parameter ratio prediction:")
+    print("B3. Exact delta=2/9 as a zero-parameter mass-RATIO prediction")
+    print("    (m_e supplies only the overall scale):")
     print(f"  observed  m_mu/m_e = {obs_mu_e:.12f}")
     print(f"  predicted m_mu/m_e = {pred_mu_e:.12f}")
-    print(f"  relative error      = {(pred_mu_e/obs_mu_e-1)*100:+.8f}%")
-    print(f"  tau from e scale    = {tau_from_e:.6f} MeV")
-    print(f"  tau relative error  = {(tau_from_e/MTAU-1)*100:+.6f}%\n")
+    print(f"  relative error     = {(pred_mu_e/obs_mu_e-1)*100:+.8f}%  "
+          f"({(pred_mu_e/obs_mu_e-1)*1e6:+.1f} ppm)")
+    print(f"  m_tau from e scale = {tau_from_e:.6f} MeV")
+    print(f"  relative error     = {(tau_from_e/MTAU-1)*100:+.6f}%  "
+          f"= {(tau_from_e-MTAU)/D_MTAU:+.2f} sigma\n")
 
     mt_koide = koide_tau_from_e_mu()
-    print("For comparison, exact Q=2/3 with measured e,mu gives:")
-    print(f"  m_tau = {mt_koide:.6f} MeV")
-    print(f"  relative error vs repo tau = {(mt_koide/MTAU-1)*100:+.6f}%\n")
+    print("B4. For comparison, exact Q=2/3 with measured e,mu gives:")
+    print(f"  m_tau = {mt_koide:.6f} MeV  "
+          f"({(mt_koide/MTAU-1)*100:+.6f}% = {(mt_koide-MTAU)/D_MTAU:+.2f} sigma)\n")
+
+    print("B5. How 2/9 fails, and how Koide's own 2/3 fails -- same order:")
+    sig = delta_sigma_from_experiment(delta_exactQ)
+    Q = koide_Q()
+    print(f"  sigma(delta) from the m_mu/m_e error = {sig:.3e} rad")
+    print(f"  (2/9 - delta_required)               = {(delta_29-delta_exactQ)/sig:+.0f} sigma")
+    print(f"  measured Q                           = {Q:.9f}")
+    print(f"  (2/3 - Q)/Q                          = {(2/3)/Q-1:+.3e}")
+    print(f"  2/9 residual on m_mu/m_e             = {pred_mu_e/obs_mu_e-1:+.3e}")
+    print("  -> both deviations are ~1e-5.  2/9 fails exactly where Q=2/3 fails.\n")
 
     print("VERDICT")
-    print("  * Weak_Force.md's current 'delta=0.22227 from precise e,mu' is inconsistent")
-    print("    with the exact-Q=2/3 parameterization used by koide_tau_demo.py.")
-    print("  * Under that parameterization the required phase is 0.222222047...,")
-    print("    extraordinarily close to 2/9.")
-    print("  * Exact 2/9 is still NOT exact: the e/mu ratio residual is ~9.8 ppm,")
-    print("    far above the experimental mass uncertainty.")
-    print("  * Therefore 2/9 can only be a leading-order substrate candidate unless")
-    print("    QLF derives a correction.")
+    print("  * delta = 0.222222047 rad is the well-posed two-input value (B1).")
+    print("    The older 0.22227 was the tau-channel extraction (B2), not a solve")
+    print("    from m_e, m_mu -- Weak_Force.md sec 5c now states this correctly.")
+    print("  * 2/9 is NOT excluded by m_tau: 1.04 sigma, as good as exact Q=2/3")
+    print("    at 0.91 sigma (B3/B4).  Both sit inside the PDG error bar.")
+    print("  * 2/9 IS excluded by m_mu/m_e at ~9.8 ppm -- but only CONDITIONAL on")
+    print("    Q being exactly 2/3, which the data does not support at that")
+    print("    precision: Q itself is off by 9.2e-6 -- nearly the same number (B5).")
+    print("  * So 2/9 stays a flagged CANDIDATE Koide-phase hypothesis, pointing")
+    print("    at one common ~1e-5 correction rather than two coincidences.")
     print("  * The missing physics is not arithmetic: QLF still needs a reason why")
     print("    the Koide cosine phase should equal the count ratio 2/9 at all.")
+    print("    Until that exists this is numerology, however sharp.")
 
 
 def main():

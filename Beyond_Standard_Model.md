@@ -125,7 +125,7 @@ is the continuum/choice boundary of the Millennium program, and that is **ZFC's*
 ## 5. What QLF does **not** do (the gaps, plainly)
 
 - It does **not** derive most of the SM's *values*: the quark-mass values, the CKM/PMNS angles, the weak/strong coupling values, and the Higgs mass and VEV are all 🔵 open (§1) — the **Yukawa value sector**. The *mechanisms*, however, are machine-anchored: the gauge force as holonomy (`QLF_GaugeHolonomy`), confinement (`QLF_Confinement`), mass = gauge-fold delay + custodial `ρ=1` (`QLF_HiggsMechanism`), mixing unitarity (`QLF_CKM`/`QLF_PMNS`), and the Majorana neutrino mass (`QLF_NeutrinoMass`). (`θ_QCD` is ✅ derived as 0 without an axion.)
-- The lepton sector is **constrained, not closed**: `Q=2/3` is derived, but the scale and the Koide angle are inputs ([`Weak_Force.md`](Weak_Force.md) §5c — `2/9` is a flagged coincidence, not a derivation).
+- The lepton sector is **constrained, not closed**: `Q=2/3` is derived, but the scale and the Koide angle are inputs ([`Weak_Force.md`](Weak_Force.md) §5c — the angle is `δ = 0.222222047`; `2/9` is a flagged candidate hypothesis, not a derivation).
 - α matches at **0.026%**, not exactly — the residual (Schwinger-scale) is open.
 - The beyond-SM predictions (§3) **cannot be proved** by theory alone — the Majorana / `0νββ` prediction (though `neutrino_majorana` is machine-verified given the `^v` assignment) awaits an experimental `0νββ` observation; dark-matter-as-denser-logic now makes a **sharp, blind, parameter-free** prediction — the SPARC Radial Acceleration Relation reproduced at the observational floor with `a₀ = cH₀/2π` derived ([`SPARC.md`](SPARC.md)).
 - The Riemann-hypothesis link is an **axiom** (`spectral_hilbert_polya`), not a proof.

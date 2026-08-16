@@ -25,8 +25,10 @@ HONEST SCOPE (see Weak_Force.md sec 5/7):
     conjecture, not yet derived from the τ-decay closure.
   - m_e and m_μ are INPUTS; the prediction is m_τ. This is a parameter-light
     relation, not a from-nothing derivation of all three lepton masses.
-  - The overall phase offset δ (the "Koide angle", ≈ 2/9 rad) and the scale M
-    are not explained here — they are the remaining open pieces.
+  - The overall phase offset δ (the "Koide angle" = 0.222222047 rad, solved
+    from m_mu/m_e) and the scale M are not explained here — they are the
+    remaining open pieces.  δ = 2/9 is a flagged CANDIDATE hypothesis, not a
+    derivation; see Weak_Force.md sec 5c and lepton_blind_classifier.py sec B.
   - This is the charged LEPTON sector only (quark generations / CKM separate).
 
 Pure Python (stdlib math). PDG / CODATA masses.
@@ -105,7 +107,9 @@ def main():
     print()
     print("  The three lepton generations are three phases 2π/3 apart — QLF's")
     print("  recurring 'three' (three spatial axes).  The overall offset δ (the")
-    print("  Koide angle ≈ 2/9 rad) and the scale M are the remaining open inputs.")
+    print("  Koide angle = 0.222222047 rad) and the scale M are the remaining")
+    print("  open inputs.  δ = 2/9 is a flagged candidate, not a derivation —")
+    print("  see Weak_Force.md sec 5c / lepton_blind_classifier.py sec B.")
     print()
 
     header("3b. WHY Q = 2/3 — the derivation, with counterfactuals")
@@ -143,7 +147,8 @@ def main():
     print("  Koide/transverse-fraction structure now pins to ~0.006%.")
     print()
     print("  OPEN: the 2/3 identification proven from the closure; the Koide angle")
-    print("  δ; the scale M; why exactly three generations.  See Weak_Force.md.")
+    print("  δ = 0.222222047 (2/9 a flagged candidate); the scale M; why exactly")
+    print("  three generations.  See Weak_Force.md sec 5c.")
 
 
 if __name__ == "__main__":

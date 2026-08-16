@@ -30,7 +30,7 @@ $$\cos\theta_W = \frac{R_W}{R_Z}$$
 
 **The unification-scale value — `sin²θ_W = 3/8`.** There is, however, a structural value the alphabet does fix. The spatial fraction of the 8-twist alphabet is `sin²θ_W = (spatial axes)/(alphabet) = 3/8`, which is *exactly* the **SU(5) grand-unification normalization** `sin²θ_W = 3/8` (Georgi–Glashow). It is the **third** electroweak/cosmological constant read off the same `6 spatial + 2 gauge = 8` split that gives `α` (`N = 3² = 9`, [`QLF_FineStructureSubstrate`](lean/QLF_FineStructureSubstrate.lean); canonical doc [**Alpha.md**](Alpha.md)) and `Ω_Λ` (gauge fraction `2/8 = 1/4`, [`QLF_CosmologicalConstant`](lean/QLF_CosmologicalConstant.lean)) — machine-verified together in `electroweak_substrate_signature` ([`lean/QLF_WeinbergAngle.lean`](lean/QLF_WeinbergAngle.lean)), alongside the tree-level `ρ = 1` (`rho_one_of_mass_relation`) and on-shell `cos²θ_W = (M_W/M_Z)²` (`onshell_weinberg`).
 
-> **Honest scope (load-bearing).** `3/8 = 0.375` is the **unification-scale** value, **not** the measured `sin²θ_W(M_Z) ≈ 0.231` — reaching that needs standard renormalization-group running, which QLF does not derive (the open running-couplings sector). So `3/8` coincides with the established GUT normalization (a genuine group-theoretic value, *not* a fit to data — contrast the rejected `δ ≈ 2/9` Koide near-miss of §5c), the substrate's `3/8` matching it is a structural coherence, and the running + the absolute `W/Z` masses / `G_F` (which need the Higgs VEV) stay open (`weinberg_running_in_progress`).
+> **Honest scope (load-bearing).** `3/8 = 0.375` is the **unification-scale** value, **not** the measured `sin²θ_W(M_Z) ≈ 0.231` — reaching that needs standard renormalization-group running, which QLF does not derive (the open running-couplings sector). So `3/8` coincides with the established GUT normalization (a genuine group-theoretic value, *not* a fit to data — contrast the `δ = 2/9` Koide-phase **candidate** of §5c, which is a numerical near-miss with no structural argument behind it), the substrate's `3/8` matching it is a structural coherence, and the running + the absolute `W/Z` masses / `G_F` (which need the Higgs VEV) stay open (`weinberg_running_in_progress`).
 
 ---
 
@@ -110,7 +110,7 @@ Only the `2/3` is structural; `m_e, m_μ` are inputs — so this is a *parameter
 
 **The τ-decay vertex, in this reading.** The τ is the deepest phase (largest √m). Being the variety that cannot bind (§4a), it appears not as a bound atom but as the weak **decay vertex** `τ⁻ → ν_τ + W⁻`, un-spooling the deepest generation phase into lighter generations + neutrino — and the energetic threshold the vertex satisfies *is* `m_τ`, pinned to ~0.006% by the Koide/transverse-fraction structure. So the "named blocker" has moved from "no handle" to "a structural mass + a vertex reading," with a clear residual open list (below).
 
-**Honest scope (load-bearing).** The overall phase offset `δ` (the Koide angle ≈ `2/9` rad) and the scale `M` are **not** explained — they are why `m_e, m_μ` must still be inputs. And this is the charged-**lepton** sector only; quark generations and CKM are separate. The `Q = 2/3` itself, however, is no longer just an identification — it is **derived** (§5b).
+**Honest scope (load-bearing).** The overall phase offset `δ` (the Koide angle `≈ 0.2222220` rad, §5c) and the scale `M` are **not** explained — they are why `m_e, m_μ` must still be inputs. And this is the charged-**lepton** sector only; quark generations and CKM are separate. The `Q = 2/3` itself, however, is no longer just an identification — it is **derived** (§5b).
 
 ### 5b. Deriving `Q = 2/3` from the closure
 
@@ -139,13 +139,29 @@ So **Koide's `2/3` is QLF's `2 transverse + 1 longitudinal` split over `3` axes*
 
 What remains an **identification** (not a proof) is one sharp physical claim: that the lepton `√`-mass vector decomposes as `1` longitudinal baseline `+ 2` transverse 120°-phased oscillations across the `3` generation-axes. That is a far tighter conjecture than "`2/3` happens to match" — it pins the *entire* structure (`N=3`, `A=√2`, balanced phases) to the substrate's `6 = 2+1`-per-axis geometry, leaving only `δ` and `M` as inputs. Demo: [`koide_tau_demo.py`](koide_tau_demo.py) §3b.
 
-### 5c. The Koide angle `δ` — the genuine input (and a flagged coincidence)
+### 5c. The Koide angle `δ` — the genuine input (and a `2/9` candidate)
 
-With `Q = 2/3` derived (§5b), the three lepton masses are fixed by **two** inputs: the scale `M` and the overall phase offset `δ` (the Koide angle) — equivalently, `m_e` and `m_μ`. Solving `Q = 2/3` with the precisely-known `m_e, m_μ` pins
+With `Q = 2/3` derived (§5b), the three lepton masses are fixed by **two** inputs: the scale `M` and the overall phase offset `δ` (the Koide angle) — equivalently, `m_e` and `m_μ`. Solving the exact-`Q=2/3` form `√mₖ = M(1 + √2·cos(δ + 2πk/3))` for the measured ratio `m_μ/m_e = 206.768282988` pins
 
-$$\delta = 0.22227\ \text{rad}.$$
+$$\delta = 0.222222047\ \text{rad}.$$
 
-The famous near-coincidence `δ ≈ 2/9 = 0.22222` is tempting in QLF — `2/9 = 2/3²` reads as **(2 transverse axes) / (9 = 3² directional-coupling tensor)**, the *same* `N = 9 = 3²` that fixes α ([`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) §6.1). It matches to **0.02%** and predicts `m_τ` to 0.001%. **But it is a coincidence, not a result:** `m_e` and `m_μ` are known to `~10⁻⁸` and demand `δ = 0.22227`, not `0.22222`, so `δ = 2/9` is *excluded* at that precision (it misses the electron-sensitive ratios `m_μ/m_e` by ~0.2%). Like the `I_1S ≈ 2π²` near-miss ([`HadronicDepth.md`](HadronicDepth.md)-style honesty), `2/9` is flagged, not claimed. **`δ` remains a genuine input** — deriving it (which would make the lepton mass *ratios* first-principles, leaving only the scale) is open.
+The candidate `δ = 2/9 = 0.222222222…` is therefore **7.9 × 10⁻⁷ away in relative terms** — and in QLF `2/9 = 2/3²` reads as **(2 transverse axes) / (9 = 3² directional-coupling tensor)**, the *same* `N = 9 = 3²` that fixes α ([`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) §6.1).
+
+As a **zero-parameter prediction of the lepton mass ratios** (`δ = 2/9` fixed, `m_e` supplying only the overall scale):
+
+| quantity | `δ = 2/9` predicts | measured | residual |
+|---|---|---|---|
+| `m_μ/m_e` | `206.770316` | `206.768283` | **`+9.8 ppm`** |
+| `m_τ` | `1776.985 MeV` | `1776.86 ± 0.12` | `+0.007 %` = **`1.04 σ`** |
+
+**Honest scope (load-bearing).** `2/9` is a **candidate Koide-phase hypothesis, not a derivation** — QLF has no argument for why the Koide cosine phase should equal the count ratio `2/9`, and until it does, the agreement is numerology however sharp. Two things must be stated precisely about *how* it fails:
+
+1. It is **not** excluded by `m_τ`. At `1.04 σ` it is as good as the exact-`Q=2/3` value itself (`1776.969 MeV`, `0.91 σ`) — both sit inside the PDG error bar.
+2. It **is** excluded by `m_μ/m_e`, which is known to `~2 × 10⁻⁸` — the `9.8 ppm` residual is ~450σ in `δ`. **But** that exclusion is conditional on `Q` being *exactly* `2/3`, and the data does not support that at this precision: the measured `Q = 0.666660511` deviates from `2/3` by `9.23 × 10⁻⁶` — against the `2/9` residual of `9.83 × 10⁻⁶`. **Not merely the same order: the same number to within 6%.**
+
+So `δ = 2/9` fails exactly where Koide's own `Q = 2/3` fails, at the `10⁻⁵` level and by nearly the same amount. That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+
+> **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
 
 ---
 
@@ -223,11 +239,11 @@ A structural proposal for what makes a heavy lepton heavy, tying together §5b (
 
 ## 6. Honest open list (quantitative weak sector)
 
-- **The Koide angle `δ`** — the genuine remaining lepton-sector input (§5c); `2/9` is a flagged 0.02% coincidence, not a derivation.
+- **The Koide angle `δ`** — the genuine remaining lepton-sector input (§5c). The two-input solve gives `δ = 0.222222047`; `2/9` is a flagged **candidate hypothesis** matching it to `7.9 × 10⁻⁷`, with a `9.8 ppm` residual on `m_μ/m_e` — the same `10⁻⁵` order as `Q`'s own deviation from `2/3`. Not a derivation.
 - **`R_W`, `R_Z` from first principles** — the structure `M = αR` is there; the depths are not computed. ⇒ the absolute W/Z masses are open. The **Weinberg angle** has a structural value at the *unification* scale, `sin²θ_W = 3/8` (spatial/alphabet fraction = the SU(5) GUT normalization; `QLF_WeinbergAngle`); what is open is the **RG running** down to the measured `sin²θ_W(M_Z) ≈ 0.231` (the renormalization sector — its *structure* is Lean-anchored in [`QLF_RunningCouplings`](lean/QLF_RunningCouplings.lean): logarithmic running with the `2π` loop phase, asymptotic-freedom sign, and UV-finiteness from the substrate floor). **The β-coefficients are now substrate-fixed** ([`QLF_ElectroweakBeta`](lean/QLF_ElectroweakBeta.lean)): `(b₁,b₂,b₃) = (41/10, −19/6, −7)` (`sm_beta_triple`), each from QLF counts (colours = axes, 3 generations, the 15 hypercharges `Y = Q − T₃`, one Higgs doublet) + the universal one-loop weights `11/3, 2/3, 1/3` and the SU(5) GUT normalization `3/5` — the same posture as the QCD `b₀ = 7` (`neg_b3_eq_qcd` reproduces it). The `sin²θ_W` flow-*direction* is fixed (down from `3/8`, driven by `b₁ − b₂ > 0` — U(1) screens, SU(2) asymptotically free). **The GUT-scale structure is now anchored** ([`QLF_GUTScale`](lean/QLF_GUTScale.lean)): the unification-scale formula `t* = 2π·(α₂⁻¹ − α₁⁻¹)/(b₁ − b₂)` (`couplings_meet_at`) with QLF's derived slope `b₁ − b₂ = 109/15` (`b1_minus_b2_val`) and target `sin²θ_W = 3/8` — so QLF supplies the slope and target, reducing the GUT scale to the `M_Z` coupling gap in the numerator. What remains for the `0.231` and the absolute `M_GUT` *values* is the **`M_Z` couplings** `α_i(M_Z)` — the absolute-scale sector (frontier #1), the *same* boundary the SM/MSSM hit (they fit the couplings and run up, deriving no `M_GUT` either) — plus the absolute depth ratio `R_W/R_Z`. *(The `ln(M_Pl/M_GUT) ≈ 2π` proximity is pre-buried as non-robust in `QLF_GUTScale` — a Planck-convention/model-dependent match, not a result.)*
 - **The SU(2) coupling `g` and the breaking scale** (the Higgs VEV `v ≈ 246 GeV`) — not derived; [`Higgs.md`](Higgs.md) reframes the *mechanism* (gauge-fold delay) but not the numbers.
 - **Fermi constant `G_F`** — no derivation anywhere in the corpus.
-- **The τ-decay-vertex topology** — §5a gives a mass handle (Koide `Q=2/3` ⇒ `m_τ` to 0.006%) and a vertex reading (deepest-phase un-binding), but: **deriving `Q=2/3` from the τ-closure**, the **Koide angle `δ ≈ 2/9`**, and the **scale `M`** are open (`m_e, m_μ` are still inputs).
+- **The τ-decay-vertex topology** — §5a gives a mass handle (Koide `Q=2/3` ⇒ `m_τ` to 0.006%) and a vertex reading (deepest-phase un-binding), but: **deriving `Q=2/3` from the τ-closure**, the **Koide angle `δ = 0.222222047`** (`2/9` a flagged candidate, §5c), and the **scale `M`** are open (`m_e, m_μ` are still inputs).
 - **Why exactly three generations** — structurally Lean-anchored: the generation count = `substrate_spatial_dimension = 3`, the same `3` as Koide's phases, colour SU(3), and `α`'s `N=3²` ([`QLF_Generations`](lean/QLF_Generations.lean), `three_axis_signature`); this *reduces* "why 3 generations" to "why 3 spatial dimensions" — which is **derived** as the minimal dimension in which any relational/causal graph renders faithfully (every finite graph embeds crossing-free in ℝ³; 2D fails for non-planar graphs), so the closure graph's rendering is minimally 3D ([`SpaceTime.md`](SpaceTime.md) §3a, [`QLF_ReachableEvent`](lean/QLF_ReachableEvent.lean)). The quark generations and the lepton↔quark mass correlation remain separate and open.
 - **Flavor change** (`d → u + e⁻ + ν̄`) — the explicit topological flavor-change process is not detailed.
 - **Hadron mass splittings** (`m_n − m_p`, `π±−π0`, …) — §5e: the EM half's sign and ~MeV scale fall out of QLF (α + proton depth + quark-charge gauge structure), but the strong `d↔u` flavor-step energy and the precise sub-MeV cancellation are open. This is the well-posed "connect the quarks" target (the *difference*, not absolute masses).
