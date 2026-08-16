@@ -248,11 +248,43 @@ $$\text{census} \;\longrightarrow\; \Delta \;\longrightarrow\; \text{masses}.$$
 
 Two independent reasons. *Analytically*: `√mₖ/M = 1 + √2·cos(Δ/3 + 2πk/3)` — the ratios are cosine values at an `O(1)` phase, transcendental in `Δ`; a census yields integers and cannot produce them directly, only the phase, with the cosine doing the rest. *Structurally*: `Q = 2/3` is derived and holds to `10⁻⁵`, so any correct map must reproduce it — which a map onto `(M, Δ)` does automatically, while a map onto three independent masses would have to hit it by accident.
 
-And `Δ = 2/3` **is** exactly 5-smooth — precisely the kind of object a census *can* yield. So the ask is reshaped from "three masses" to **one small rational**, which is well posed. That reshaping is the result; the map itself is still open.
+And `Δ = 2/3` **is** exactly 5-smooth — precisely the kind of object a census *can* yield. So the ask is reshaped from "three masses" to **one small rational**, which is well posed. That reshaping is the result; the map itself is still open. (The second clause — *that a census can therefore yield it* — is **corrected in §5c⁗**: it holds in radians alone. The reshaping stands; the reachability does not.)
 
-> **Trap, recorded so it is not walked into.** The axis counts `(e, μ, τ) = (2, 2, 3)` look like the transverse fraction, and hence like a census route to `Δ = 2/3`. They are not usable as evidence: `e`'s two axes are *forced* (three axes need ≥6 twists to balance), `μ`'s are a genuine *output* (zero three-axis classes exist at `L = 6`) — but **τ's three axes are imposed** by the filter above. The `3` in the apparent `2/3` was put in by hand. That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+> **Trap, recorded so it is not walked into.** The axis counts `(e, μ, τ) = (2, 2, 3)` look like the transverse fraction, and hence like a census route to `Δ = 2/3`. They are not usable as evidence: `e`'s two axes are *forced* (three axes need ≥6 twists to balance), `μ`'s are a genuine *output* (zero three-axis classes exist at `L = 6`) — but **τ's three axes are imposed** by the filter above. The `3` in the apparent `2/3` was put in by hand. **`δ` remains a genuine input** — deriving it would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
 
 > **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
+
+### 5c⁗. The unit audit — which angular unit is the census unit?
+
+§5c‴ closed on `Δ = 2/3` being 5-smooth and hence "precisely the kind of object a census can yield." **That is a fact about the radian, not about the phase.** `Δ` is an *angle*; 5-smoothness is not an invariant of an angle, and the reading survives exactly one choice of unit:
+
+| unit | `Δ` in that unit |
+|---|---|
+| radian | **`0.666666667` = `2/3`** |
+| turn (`2π`) | `0.106103295` = `1/(3π)` |
+| Z₃ cell (`2π/3`) | `0.318309886` = `1/π` |
+| `π` | `0.212206591` |
+| degree | `38.197186` |
+
+As a fraction of a **turn** the phase is exactly `1/(3π)` — transcendental. So the unit is load-bearing and has to be *earned*. Doing that splits the census routes cleanly in two.
+
+**Circle-division is excluded.** If a census fixes the phase by cutting a turn into `q` equal parts and stepping `p` of them, then `Δ = 2πp/q`. Tested against the **data** (the free-fit `Δ = 0.666689 ± 0.000025`, §5c′), the turn-fractions inside the `2σ` band are `33/311` and `40/377` — smallest denominator **311**. Single divisions are nowhere near (`2π/9` misses by `4.7 %`). A census that cuts a circle into 311 parts and takes 33 of them is not a census; it is a fit. **No circle-division census can produce this phase.**
+
+**Arc-over-radius survives — and it is the only surviving shape.** A rational *radian* measure is exactly what `n` unit arc-steps at integer radius `R` give: `Δ = n/R`. Read that way `Δ = 2/3` is "2 steps at radius 3" — a **curvature** ratio, not a division of the circle. This is also the real reason the phase is a pure number rather than a multiple of `π` (§5c gave the weaker "ratio of invariants"): turn-fractions carry `π`, arc-over-radius ratios do not. It fixes the **form** of any future derivation, not the counts — and §5c‴'s trap still forbids supplying those counts from the `(2, 2, 3)` axis census.
+
+**And the physics never sees `Δ` — it sees `cos Δ`.** With `A² = 2`, the normalized `√`-mass triple has `e₁ = 3` and `e₂ = 3/2` fixed, so exactly **one** symmetric function carries the phase:
+
+$$e_3 \;=\; \frac{27\prod\sqrt{m_k}}{\left(\sum\sqrt{m_k}\right)^3} \;=\; -\tfrac12 + \tfrac{1}{\sqrt2}\cos\Delta \;=\; 0.05570621 \quad(\text{measured } 0.05570880).$$
+
+| quantity | value | closest `2^a3^b5^c` | error |
+|---|---|---|---|
+| `Δ` | `0.666666667` | `2·3⁻¹` | **`0.0000 %`** |
+| `cos Δ` | `0.785887261` | `2⁶3⁻⁴` | `0.5390 %` |
+| `e₃` | `0.055706211` | `2⁻¹3⁻²` | `0.2704 %` |
+
+`cos Δ` and `e₃` sit in the **same `0.1–0.6 %` band as the mass ratios** of §5c‴ — the same negative. Passing through the phase did not make the target census-shaped; it moved the non-smoothness into the cosine.
+
+> **Net.** §5c‴'s reshaping — three masses reduce to one small rational `Δ` — **stands**. Its closing claim that the rational is thereby within census reach is **corrected**: it holds in radians alone, the circle-division route is excluded outright, and the invariant the masses are actually built from is no more census-shaped than the masses. What is gained is a constraint on the shape of any derivation: **the phase must arise as arc-over-radius (a curvature), never as a division of the circle.** Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §H.
 
 ---
 

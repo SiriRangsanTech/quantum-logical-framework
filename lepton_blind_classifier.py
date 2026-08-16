@@ -53,6 +53,14 @@ G. THE (R, axis) -> MASS-RATIO MAP (issue #140's original ask)
    and Delta = 2/3 IS 5-smooth.  Also flags that part A's 3-axis filter is
    load-bearing, so the census 'axes = 2,2,3' cannot evidence the 2/3.
 
+H. THE UNIT AUDIT (corrects G2)
+   'Delta = 2/3 is 5-smooth, precisely what a census CAN yield' holds in
+   RADIANS alone -- as a fraction of a turn the phase is 1/(3 pi).  So any
+   circle-division census is excluded (the smallest turn-fraction fitting the
+   measured Delta is 33/311), only an arc-over-radius reading survives, and
+   the invariant the masses are actually built from, e3 = -1/2 + cos(Delta)
+   /sqrt2, is no more 5-smooth (0.27% off) than the mass ratios of G1.
+
 No QLF imports are required.
 """
 
@@ -892,6 +900,108 @@ def mass_ratio_map_audit():
     print("     as census evidence for Delta = 2/3.  Recorded so it is not.")
 
 
+# ---------- H. the unit audit: is 'Delta = 2/3 is 5-smooth' unit-luck? ----------
+
+def cf_convergents(x, n=12):
+    """Continued-fraction convergents p/q of x."""
+    a, v = [], x
+    for _ in range(n):
+        i = int(v)
+        a.append(i)
+        if abs(v - i) < 1e-15:
+            break
+        v = 1.0 / (v - i)
+    out, p0, q0, p1, q1 = [], 1, 0, a[0], 1
+    for i in a[1:]:
+        p0, q0, p1, q1 = p1, q1, i * p1 + p0, i * q1 + q0
+        out.append((p1, q1))
+    return out
+
+
+def unit_audit():
+    """Part G2 claimed Delta = 2/3 is 5-smooth, 'precisely what a census can
+    yield'.  That is true of the RADIAN measure only.  This part asks what
+    justifies radians, and audits every other reading."""
+    print("\n=== H. THE UNIT AUDIT: WHICH ANGULAR UNIT IS THE CENSUS UNIT? ===\n")
+    D = 2.0 / 3.0
+
+    print("H1. Delta = 2/3 is 5-smooth IN RADIANS.  In every other unit it is not.\n")
+    print(f"  {'unit':>22}   Delta in that unit")
+    for nm, u in (("turn (2pi)", 2 * math.pi),
+                  ("Z3 cell (2pi/3)", 2 * math.pi / 3),
+                  ("pi", math.pi),
+                  ("right angle (pi/2)", math.pi / 2),
+                  ("degree", math.pi / 180)):
+        print(f"  {nm:>22} = {D / u:.9f}")
+    print(f"\n  As a fraction of a TURN the phase is exactly 1/(3 pi) = "
+          f"{1/(3*math.pi):.9f}")
+    print("  -- transcendental.  A census cannot yield that.  So the 5-smoothness")
+    print("  of 2/3 is a fact about the radian, not about the phase: it survives")
+    print("  exactly one choice of unit and is destroyed by every other.\n")
+
+    print("H2. Consequence -- the CIRCLE-DIVISION route is EXCLUDED.")
+    print("  If a census fixes the phase by dividing a turn into q equal parts")
+    print("  and stepping p of them, then Delta = 2pi p/q.  Convergents of")
+    print(f"  Delta/2pi = {D/(2*math.pi):.9f} :\n")
+    print(f"    {'p/q':>14}   2pi p/q        rel err vs 2/3")
+    for p, q in cf_convergents(D / (2 * math.pi))[:8]:
+        v = 2 * math.pi * p / q
+        print(f"    {p:>6d}/{q:<7d} {v:.9f}   {abs(v/D - 1):.3e}")
+    # tested against the DATA, not against the hypothesis
+    DM, SD = 0.666689, 0.000025          # free 3-parameter fit, part C
+    lo, hi = DM - 2 * SD, DM + 2 * SD
+    hits = []
+    for q in range(1, 401):
+        for p in range(1, q):
+            if math.gcd(p, q) == 1 and lo <= 2 * math.pi * p / q <= hi:
+                hits.append((q, p))
+                break
+    print(f"\n  Against the DATA (free-fit Delta = {DM} +- {SD}, 2 sigma band")
+    print(f"  [{lo:.6f}, {hi:.6f}]), the turn-fractions that fit are")
+    print("    " + ", ".join(f"{p}/{q}" for q, p in hits[:4]))
+    print(f"  smallest denominator q = {hits[0][0]}.  A census that cuts a circle")
+    print("  into 311 parts and takes 33 of them is not a census; it is a fit.")
+    print("  Single divisions are nowhere near: 2pi/9 misses by 4.7%.")
+    print("  => NO circle-division census can produce this phase.\n")
+
+    print("H3. What SURVIVES: arc-over-radius.  A rational RADIAN measure is")
+    print("  what you get from n unit arc-steps at integer radius R: Delta = n/R.")
+    print("  Delta = 2/3 then reads '2 steps at radius 3' -- a CURVATURE ratio,")
+    print("  not a division of the circle.  This is the only surviving shape, and")
+    print("  it is what actually explains (part C) why the phase is a pure number")
+    print("  rather than a multiple of pi: turn-fractions carry pi, arc/radius")
+    print("  ratios do not.  NOTE: this fixes the FORM, not the counts, and G3's")
+    print("  trap still forbids supplying them from the (2,2,3) axis census.\n")
+
+    print("H4. And the physics never sees Delta -- it sees cos(Delta).")
+    s = [math.sqrt(m) for m in (ME, MMU, MTAU)]
+    M3 = sum(s) / 3
+    e3_meas = s[0] * s[1] * s[2] / M3**3
+    cosD = math.cos(D)
+    e3 = -0.5 + cosD / math.sqrt(2)
+    print("  With A^2 = 2 the normalized sqrt-mass triple has e1 = 3, e2 = 3/2")
+    print("  fixed, so exactly ONE symmetric function carries the phase:")
+    print("    e3 = 27 prod(sqrt m) / (sum sqrt m)^3 = -1/2 + cos(Delta)/sqrt2")
+    print(f"       model (Delta = 2/3) : {e3:.9f}")
+    print(f"       measured            : {e3_meas:.9f}   ({e3_meas/e3-1:+.2e})")
+    print("  Is THAT quantity census-shaped?\n")
+    print(f"  {'quantity':>12} {'value':>13}   closest 2^a 3^b 5^c      error")
+    for nm, t in (("cos Delta", cosD), ("e3", e3),
+                  ("e3^(1/3)", e3 ** (1 / 3)), ("Delta", D)):
+        e, a, b, c, v = five_smooth_best(t)
+        print(f"  {nm:>12} {t:13.9f}   2^{a:<3d}3^{b:<3d}5^{c:<3d} = {v:11.9f}"
+              f"  {e*100:7.4f}%")
+    print("\n  Only Delta itself is 5-smooth.  cos(Delta) misses by 0.54%, e3 by")
+    print("  0.27% -- the same 0.1-0.6% band as the mass ratios in G1, i.e. the")
+    print("  SAME negative.  Passing through the phase did not make the target")
+    print("  census-shaped; it moved the non-smoothness into the cosine.\n")
+    print("  => G2's 'Delta = 2/3 IS 5-smooth, precisely what a census CAN yield'")
+    print("     is CORRECTED: it holds in radians alone, and the invariant the")
+    print("     masses are built from is no more census-shaped than they are.")
+    print("     The reshaping to one small rational stands; the claim that the")
+    print("     rational is thereby within census reach does NOT.")
+
+
 def main():
     select_topologies()
     koide_audit()
@@ -900,6 +1010,7 @@ def main():
     delta_equals_q_test()
     delta_two_thirds_audit()
     mass_ratio_map_audit()
+    unit_audit()
 
 
 if __name__ == "__main__":
