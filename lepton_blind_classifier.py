@@ -36,6 +36,12 @@ E. IS Delta = Q A RELATION?
    proposed reduction is REFUTED: Q = 2/3 and Delta = 2/3 are two independent
    facts, and only the first is derived.
 
+F. WHAT Delta = 2/3 IS, AND WHERE THE LADDER STOPS
+   Delta = 2/3 is m_mu/m_e = 206.77 in other coordinates (not derived), and
+   the ladder's selection rule -- unique parented continuation -- goes
+   AMBIGUOUS at L=10, so part A is not an independent argument for exactly
+   three generations.
+
 No QLF imports are required.
 """
 
@@ -712,12 +718,109 @@ def delta_equals_q_test():
     print("  phase sector -- a structural coherence, not a derivation.")
 
 
+# ---------- F. what Delta = 2/3 actually is, and where the ladder stops ----------
+
+def first_return_pruned(length: int) -> list[str]:
+    """
+    Same set as generate_first_return, but with the balance-reachability and
+    first-return prunes applied during construction, so L=10 is tractable.
+    """
+    out: list[str] = []
+    c = [0, 0, 0]
+    pref: list[str] = []
+
+    def rec():
+        n = len(pref)
+        if n == length:
+            out.append("".join(pref))
+            return
+        r = length - n
+        s = abs(c[0]) + abs(c[1]) + abs(c[2])
+        if s > r or (r - s) % 2:
+            return
+        for t in SPATIAL:
+            if pref and t == CONJ[pref[-1]]:
+                continue
+            a, sg = TWIST[t]
+            c[a] += sg
+            pref.append(t)
+            n2 = n + 1
+            balanced_now = (c == [0, 0, 0])
+            # a PROPER prefix may not close; the final word must
+            if not (2 <= n2 < length and balanced_now) and \
+               not (n2 == length and not balanced_now):
+                rec()
+            c[a] -= sg
+            pref.pop()
+
+    rec()
+    return out
+
+
+def delta_two_thirds_audit():
+    print("\n=== F. WHAT Delta = 2/3 IS, AND WHERE THE LADDER STOPS ===\n")
+
+    print("F1. Delta = 2/3 IS the muon-to-electron mass ratio.")
+    print("  With A^2 = 2 derived, the form has parameters (M, Delta).  M is the")
+    print("  overall scale, so Delta is the ONLY remaining ratio freedom:")
+    print(f"  {'Delta':>10} {'m_mu/m_e':>14} {'m_tau/m_e':>14}")
+    for D in (0.60, 0.64, 2/3, 0.69, 0.72):
+        w = koide_weights(D/3)
+        print(f"  {D:10.4f} {w[2]/w[1]:14.4f} {w[0]/w[1]:14.2f}")
+    print(f"  {'measured':>10} {MMU/ME:14.4f} {MTAU/ME:14.2f}")
+    print("  -> 'derive Delta = 2/3' and 'derive m_mu/m_e = 206.77' are the SAME")
+    print("     statement in different coordinates.  That is the difficulty")
+    print("     class: a number nobody has derived.  NOT DERIVED here either.\n")
+
+    print("F2. Does the blind ladder stop at three generations?")
+    otau, omu, oe = orbit(TAU_REP), orbit(MU_REP), orbit(E_REP)
+    print("  signature of the rungs that WERE selected:")
+    for nm, h, po in (("mu", MU_REP, oe), ("tau", TAU_REP, omu)):
+        print(f"    {nm:4} parent-degree = {dict(child_parent_degree(orbit(h), po))}")
+    print("    tau's signature: every rooted history has EXACTLY ONE parent.\n")
+
+    free = [h for h in first_return_pruned(10)
+            if baryon_number(h) == 0 and fold_phase(h) == "-I"]
+    cls: dict[str, list[str]] = defaultdict(list)
+    for h in free:
+        cls[canonical(h)].append(h)
+    cand = [r for r in cls if len(axes_engaged(r)) == 3]
+    rows = []
+    for r in cand:
+        o = orbit(r)
+        e = parent_edges(o, otau)
+        if e:
+            rows.append((r, len(cls[r]), e, dict(child_parent_degree(o, otau))))
+    strict = [r for r, _, _, d in rows if set(d) == {1}]
+
+    print(f"  L=10: {len(cls)} classes, {len(cand)} three-axis,")
+    print(f"        {len(rows)} with a causal parent in the tau orbit,")
+    print(f"        {len(strict)} matching tau's exact degree signature.")
+    for r, w, e, d in sorted(rows, key=lambda x: key(x[0])):
+        mark = "  <-- tau signature" if set(d) == {1} else ""
+        print(f"    {r:12} ways={w:3d} edges={e:4d} degree={d}{mark}")
+
+    print("\n  VERDICT: the rule that produced e -> mu -> tau is AMBIGUOUS at L=10.")
+    print("  L=8 gave 1 of 2 candidates; L=10 gives 12 of 105 (4 under the strict")
+    print("  signature).  It yields neither 0 -- which would confirm the ladder")
+    print("  terminates at three generations -- nor 1, a fourth generation.")
+    print("  So the L=8 uniqueness looks like a small-numbers accident, and this")
+    print("  ladder is NOT an independent derivation of 'exactly three'.")
+    print("  QLF's three-generation claim rests on QLF_Generations (generation")
+    print("  count = spatial dimension = 3), which is untouched by this; what")
+    print("  fails is this combinatorial route as a second, independent argument.")
+
+
+E_REP, MU_REP, TAU_REP = "^<v>", "^^<vv>", "^^</>vv\\"
+
+
 def main():
     select_topologies()
     koide_audit()
     phase_audit()
     residual_audit()
     delta_equals_q_test()
+    delta_two_thirds_audit()
 
 
 if __name__ == "__main__":
