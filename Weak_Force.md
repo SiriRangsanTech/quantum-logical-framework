@@ -145,7 +145,7 @@ With `Q = 2/3` derived (§5b), the three lepton masses are fixed by **two** inpu
 
 $$\delta = 0.222222047\ \text{rad}.$$
 
-The candidate `δ = 2/9 = 0.222222222…` is therefore **7.9 × 10⁻⁷ away in relative terms** — and in QLF `2/9 = 2/3²` reads as **(2 transverse axes) / (9 = 3² directional-coupling tensor)**, the *same* `N = 9 = 3²` that fixes α ([`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) §6.1).
+The candidate `δ = 2/9 = 0.222222222…` is `7.9 × 10⁻⁷` away in relative terms. **That figure is conditional and is not the honest precision** — see *Honest precision* below, where the free-fit systematic (`3.4 × 10⁻⁵`) is shown to swamp it by `43×`. The older QLF reading of `2/9 = 2/3²` as **(2 transverse axes) / (9 = 3² directional-coupling tensor)** — the `N = 9 = 3²` that fixes α ([`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) §6.1) — is **superseded**: the `9` factorises the other way (below).
 
 As a **zero-parameter prediction of the lepton mass ratios** (`δ = 2/9` fixed, `m_e` supplying only the overall scale):
 
@@ -154,12 +154,26 @@ As a **zero-parameter prediction of the lepton mass ratios** (`δ = 2/9` fixed, 
 | `m_μ/m_e` | `206.770316` | `206.768283` | **`+9.8 ppm`** |
 | `m_τ` | `1776.985 MeV` | `1776.86 ± 0.12` | `+0.007 %` = **`1.04 σ`** |
 
-**Honest scope (load-bearing).** `2/9` is a **candidate Koide-phase hypothesis, not a derivation** — QLF has no argument for why the Koide cosine phase should equal the count ratio `2/9`, and until it does, the agreement is numerology however sharp. Two things must be stated precisely about *how* it fails:
+The `9.8 ppm` on `m_μ/m_e` is nominally ~450σ of *that ratio's* experimental error — but it is **not** a `450σ` exclusion of `2/9`. It is the one place where the three-phase picture's overall `~10⁻⁵` defect surfaces in an observable measured to `10⁻⁸`, and Koide's own `Q` misses `2/3` by `9.23 × 10⁻⁶` against this `9.83 × 10⁻⁶` — the same number to within 6%. One common `~10⁻⁵` correction, not two independent failures.
 
-1. It is **not** excluded by `m_τ`. At `1.04 σ` it is as good as the exact-`Q=2/3` value itself (`1776.969 MeV`, `0.91 σ`) — both sit inside the PDG error bar.
-2. It **is** excluded by `m_μ/m_e`, which is known to `~2 × 10⁻⁸` — the `9.8 ppm` residual is ~450σ in `δ`. **But** that exclusion is conditional on `Q` being *exactly* `2/3`, and the data does not support that at this precision: the measured `Q = 0.666660511` deviates from `2/3` by `9.23 × 10⁻⁶` — against the `2/9` residual of `9.83 × 10⁻⁶`. **Not merely the same order: the same number to within 6%.**
+**`2/9` is the wrong object to derive.** The phase `δ` is a **Z₃ gauge parameter**: `δ → δ + 2π/3` permutes the three phases, hence merely relabels the generations, hence leaves the spectrum *identical* (verified exactly, [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §C1). So `δ` is defined only mod `2π/3`, and every physical invariant is a function of
 
-So `δ = 2/9` fails exactly where Koide's own `Q = 2/3` fails, at the `10⁻⁵` level and by nearly the same amount. That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+$$\Delta \;\equiv\; 3\delta \;=\; 2/3 .$$
+
+This is visible in the moment expansion: `Σcos = 0` and `Σcos² = 3/2` are `δ`-independent, and the **third** power sum is the first that sees the phase — through `cos(3δ)` alone. Two consequences:
+
+- The `9` in `2/9` is **not one count**. It factorises as `9 = 3` (generations, already carried by `Q`) `× 3` (the Z₃ quotient). Reading it as "`3²` directional couplings, the same `9` that fixes α" matches the right number to the **wrong decomposition**.
+- It explains why the phase is a *pure number* rather than a multiple of `π` — the natural target of suspicion. `Δ` is a ratio of invariants; the `1/3` is a quotient, not an angle.
+
+**The reduction: `Δ = Q`.** The target `Δ = 2/3` is numerically the Koide invariant `Q = 2/3`. That the two coincide is **not** an algebraic identity — over random mass triples `|Δ − Q|` runs to `O(1)`, while the charged leptons give `|Δ − Q| = 2.8 × 10⁻⁵` (§C3). So "the Z₃-invariant generation phase equals the Koide invariant" is a genuine second relation the leptons satisfy, and given the **derived** `Q = 2/3` (§5b) it yields `Δ = 2/3`, i.e. `δ = 2/9`. **Two magic numbers collapse to one.** What is still missing is any reason for `Δ = Q` — a phase equalling a mass-ratio invariant — so this is a *reduction, not a derivation*.
+
+**Honest precision — the `10⁻⁷` agreement is not evidence.** The `7.9 × 10⁻⁷` figure above is obtained *conditional on `Q = 2/3` exactly*. Extracting `δ` instead from a free three-parameter fit to the three measured masses (assuming nothing, not even `Q`) gives `δ = 0.2222296` — a **systematic of `3.4 × 10⁻⁵`** between the two legitimate extractions, `43×` larger than the celebrated agreement. The whole three-phase picture is only accurate to `~10⁻⁵` (the `Q` defect). So:
+
+> **`δ = 2/9` holds at `10⁻⁵`, and no better.** Chasing the seventh digit is chasing an artefact of assuming `Q = 2/3`.
+
+At that honest precision, with experimental errors propagated (dominated by `m_τ = 1776.86 ± 0.12`), the free fit gives `A² = 1.999963 ± 0.000041` and `Δ = 0.666689 ± 0.000025` — so `A² = 2` sits at `−0.91 σ` and `Δ = 2/3` at `+0.89 σ`. **Neither is excluded.**
+
+**What cannot supply the phase.** The Pauli fold **cannot**: the fold group is `μ₄ = {±I, ±iI}`, the half-spin signature is one bit (`−I` vs `+I`), and the free-energy quantum is one bit (`ΔF = −log 2`). A *finite* group has no continuous parameter, so no amount of fold structure yields a real angle. One-bit precision does do one useful thing — it sets the resolution floor, which is exactly what rules the `10⁻⁷` chase out of court. A derivation must therefore produce `Δ = 2/3` as a ratio of **census counts** with the Z₃ quotient already built in, *and* produce the common `~10⁻⁵` correction that `Q` and `Δ` share. **Not derived. Consistent, reduced, and open.** That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
 
 > **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
 

@@ -21,6 +21,12 @@ B. KOIDE PHASE AUDIT (only after topology selection)
    2/9's residual is the same ~1e-5 order as Q's own deviation from 2/3.
    2/9 is a CANDIDATE Koide-phase hypothesis throughout, never a derivation.
 
+C. THE PHASE, PROPERLY POSED
+   Why 2/9 is the wrong object to derive (delta is a Z3 gauge parameter, so
+   only Delta = 3*delta is physical), the free 3-parameter fit with propagated
+   experimental errors, the non-trivial relation Delta = Q, the noise floor
+   that forbids chasing the 7th digit, and what a derivation would still need.
+
 No QLF imports are required.
 """
 
@@ -28,6 +34,7 @@ from __future__ import annotations
 
 import itertools
 import math
+import random
 from collections import Counter, defaultdict
 
 SPATIAL = "^v<>/\\"
@@ -431,11 +438,140 @@ def koide_audit():
     print("  * The missing physics is not arithmetic: QLF still needs a reason why")
     print("    the Koide cosine phase should equal the count ratio 2/9 at all.")
     print("    Until that exists this is numerology, however sharp.")
+    print("  * See part C: 2/9 is in fact the WRONG object to derive.")
+
+
+# ---------- C. the phase, properly posed ----------
+
+def fit_three_phase(me: float, mmu: float, mtau: float):
+    """
+    EXACT 3-parameter fit of  sqrt(m_k) = M(1 + A cos(delta + 2pi k/3)),
+    k = 0,1,2 -> tau,e,mu.  Nothing is assumed: three masses determine
+    (M, A, delta) with no residual, via the first three power sums.
+
+        sum cos      = 0     ->  M     = (sum sqrt m)/3
+        sum cos^2    = 3/2   ->  A     = sqrt(2/3 sum u^2),  u_k = sqrt(m_k)/M - 1
+        sum cos^3    = (3/4) cos(3 delta)
+                             ->  delta = arccos(4 sum u^3 / 3A^3)/3
+
+    Note the third power sum is the FIRST one that sees delta, and it sees it
+    only through cos(3 delta).  That is not an accident -- see z3_redundancy().
+    """
+    s = [math.sqrt(mtau), math.sqrt(me), math.sqrt(mmu)]
+    M = sum(s) / 3.0
+    u = [x / M - 1.0 for x in s]
+    A = math.sqrt(2 * sum(x * x for x in u) / 3.0)
+    c3 = max(-1.0, min(1.0, 4 * sum(x**3 for x in u) / (3 * A**3)))
+    return M, A, math.acos(c3) / 3.0
+
+
+def z3_redundancy() -> bool:
+    """
+    delta -> delta + 2pi/3 permutes the three phases, hence relabels the three
+    generations, hence leaves the SPECTRUM identical.  So delta is a Z3 gauge
+    parameter: it is defined only mod 2pi/3, and every physical invariant is a
+    function of Delta = 3*delta.  Returns True if verified numerically.
+    """
+    M, A = 17.715561710, math.sqrt(2)
+    def spec(d):
+        return sorted((M*(1 + A*math.cos(d + 2*math.pi*k/3)))**2 for k in range(3))
+    base = spec(2/9)
+    return all(
+        all(abs(x - y) < 1e-9 for x, y in zip(base, spec(2/9 + n*2*math.pi/3)))
+        for n in (1, 2)
+    )
+
+
+def mc_phase_errors(trials: int = 60000, seed: int = 1):
+    """Propagate the experimental mass errors into the fitted (A^2, delta)."""
+    rng = random.Random(seed)
+    a2s, ds = [], []
+    for _ in range(trials):
+        _, a, d = fit_three_phase(rng.gauss(ME, D_ME),
+                                  rng.gauss(MMU, D_MMU),
+                                  rng.gauss(MTAU, D_MTAU))
+        a2s.append(a*a); ds.append(d)
+    def stat(v):
+        m = sum(v)/len(v)
+        return m, math.sqrt(sum((x-m)**2 for x in v)/(len(v)-1))
+    return stat(a2s), stat(ds)
+
+
+def phase_audit():
+    print("\n=== C. THE PHASE, PROPERLY POSED ===\n")
+
+    print("C1. delta is a Z3 GAUGE PARAMETER, so 2/9 is the wrong target.")
+    print(f"  delta -> delta + 2pi/3 leaves the spectrum identical: "
+          f"{'VERIFIED' if z3_redundancy() else 'FAILED'}")
+    print("  Only Delta = 3*delta is physical.  Consequently:")
+    print("    - the object to derive is  Delta = 2/3,  not  delta = 2/9;")
+    print("    - the 9 in 2/9 is NOT one count.  It factorises as")
+    print("        9 = 3 (generations, from Q) x 3 (the Z3 quotient),")
+    print("      so reading it as '3^2 directional couplings, the same 9 as")
+    print("      alpha' matches the right number to the wrong decomposition.")
+    print("  This also explains why the phase is a pure number rather than a")
+    print("  multiple of pi: Delta is a ratio of invariants; the 1/3 is the")
+    print("  quotient, not an angle.\n")
+
+    print("C2. Free 3-parameter fit (NOTHING assumed -- not even Q=2/3):")
+    M, A, d = fit_three_phase(ME, MMU, MTAU)
+    (a2m, a2s), (dm, ds) = mc_phase_errors()
+    print(f"  M       = {M:.6f} MeV^1/2")
+    print(f"  A^2     = {a2m:.9f} +- {a2s:.9f}   (predicted 2)")
+    print(f"  delta   = {dm:.9f} +- {ds:.9f}   (candidate 2/9)")
+    print(f"  Delta   = {3*dm:.9f} +- {3*ds:.9f}   (candidate 2/3)")
+    print(f"  -> A^2 = 2   at {(a2m-2)/a2s:+.2f} sigma")
+    print(f"  -> Delta=2/3 at {(3*dm-2/3)/(3*ds):+.2f} sigma")
+    print("  Errors are dominated by m_tau (+-0.12 MeV).  NEITHER is excluded.\n")
+
+    print("C3. Delta = Q is NOT an identity -- it is a second relation.")
+    rng = random.Random(11)
+    worst = 0.0
+    for _ in range(20000):
+        a = 10**rng.uniform(-1, 0.5); b = 10**rng.uniform(1, 2.5)
+        c = 10**rng.uniform(2.5, 4)
+        _, _, dd = fit_three_phase(a, b, c)
+        q = (a+b+c)/(math.sqrt(a)+math.sqrt(b)+math.sqrt(c))**2
+        worst = max(worst, abs(3*dd - q))
+    Q = koide_Q()
+    print(f"  random mass triples: |Delta - Q| reaches {worst:.3f}  (O(1) generic)")
+    print(f"  charged leptons    : |Delta - Q| = {abs(3*d-Q):.2e}")
+    print("  So 'the Z3-invariant generation phase equals the Koide invariant'")
+    print("  is a genuine constraint the leptons satisfy, not an algebraic")
+    print("  triviality.  Given the DERIVED Q = 2/3 it yields Delta = 2/3,")
+    print("  i.e. delta = 2/9 -- two magic numbers collapse to one.\n")
+
+    print("C4. NOISE FLOOR -- why the 1e-7 'agreement' is not evidence.")
+    delta_condQ = solve_delta_from_e_mu()
+    syst = abs(d - delta_condQ) / delta_condQ
+    agree = abs(2/9 - delta_condQ) / (2/9)
+    print(f"  delta from the free fit           = {d:.10f}")
+    print(f"  delta conditional on Q=2/3 exactly= {delta_condQ:.10f}")
+    print(f"  systematic between the two        = {syst:.2e}")
+    print(f"  |2/9 - (conditional value)|       = {agree:.2e}")
+    print(f"  -> the celebrated agreement is {syst/agree:.0f}x SMALLER than the")
+    print("     choice of extraction.  It is below the model's own noise floor,")
+    print(f"     which the Q defect sets at {(2/3)/Q-1:.1e}.")
+    print("  HONEST PRECISION:  delta = 2/9 holds at 1e-5, and no better.")
+    print("  Chasing the 7th digit is chasing an artefact of assuming Q=2/3.\n")
+
+    print("C5. WHAT A DERIVATION STILL NEEDS (and what cannot supply it).")
+    print("  The Pauli fold CANNOT supply the phase.  The fold group is mu_4 =")
+    print("  {+-I, +-iI}; the half-spin signature is one bit (-I vs +I); the")
+    print("  free-energy quantum is one bit (dF = -log 2).  A FINITE group has")
+    print("  no continuous parameter, so no amount of fold structure yields a")
+    print("  real angle.  One-bit precision does do one useful thing: it sets")
+    print("  the resolution floor, which is what rules the 1e-7 chase out (C4).")
+    print("  A derivation must therefore produce  Delta = 2/3  as a ratio of")
+    print("  CENSUS COUNTS, with the Z3 quotient already built in -- and must")
+    print("  also produce the common ~1e-5 correction that Q and Delta share.")
+    print("  Until then: not derived.  Consistent, reduced, and open.")
 
 
 def main():
     select_topologies()
     koide_audit()
+    phase_audit()
 
 
 if __name__ == "__main__":
