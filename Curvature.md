@@ -74,6 +74,14 @@ The discrete Lie bracket is the *infinitesimal generator* that becomes the diffe
 curvature 2-form in the limit — one instance of differential calculus emerging as the continuum rendering
 of the discrete substrate ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)).
 
+### 1b. What these two curvatures cannot do — a boundary found by using them
+
+Both curvatures above are **divisions of the turn**: the holonomy plaquette takes values in the Pauli fold group `μ₄ = {±I, ±iI}` (a quarter-turn unit), and the pentamon deficit `2π − 5·(π/3) = π/3` is a sixth of one. Neither is an **arc-over-radius** ratio — `n` unit steps at radius `R` — and that turns out to be a real boundary rather than a bookkeeping remark.
+
+The lepton Koide phase `Δ = 3δ = 2/3` is a *rational number of radians*. [`Weak_Force.md`](Weak_Force.md) §5c⁗ shows that no division of the circle can produce it (as a fraction of a turn it is `1/(3π)`; the smallest turn-fraction fitting the measurement is `33/311`), so **if** the phase is a curvature it must be an arc-over-radius one. §5c⁶ then computes curvature directly on the lepton ladder closures — closed walks in `ℤ³`, since count balance *is* closure — and finds no rung-independent ratio equal to `2/3`; the complete set is `{1/2, 1, 2}`.
+
+So the two curvatures of §1–§1a are excluded from that job **twice over, by their own value sets**, and QLF as it stands carries no third object of the required shape. Recorded here because it is a genuine limit of the curvature notions this document builds on, not a defect of the lepton sector: a curvature that is a **ratio of counts** rather than a holonomy or a topological deficit would be a new primitive, and nothing above supplies one.
+
 ## 2. Two deformations: expand and contract
 
 A blanket changes shape by gaining or losing substrate events on its surface. There are exactly two primitives, and they recur at every scale:

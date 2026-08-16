@@ -313,7 +313,48 @@ $$e_3 \;=\; \frac{27\prod\sqrt{m_k}}{\left(\sum\sqrt{m_k}\right)^3} \;=\; -\tfra
 
 This is **common cause, not implication.** §5c′ refuted `Δ = Q` as a relation between functions on mass-triple space, and that refutation stands untouched — `Q = 2/3` does not imply `Δ = 2/3`. What §5c⁗–5c⁵ add is that *one* geometric split can feed both: as an **amplitude** in the Koide sector and as a **curvature** in the phase sector. That is why the substrate's transverse fraction shows up twice without either being derivable from the other.
 
-> **Honest limit.** This is an **identification**, at exactly the status of the `A² = 2` identification it leans on (§5b) — not a derivation. No substrate computation yet produces "2 arc-steps at radius 3" for the lepton phase; §§5c⁗–5c⁵ establish only that any derivation must have that *shape*, and that the shape is cheap and rigid where the alternative is neither. **What would close it:** a curvature computed *on* the ladder closures, whose arc count and radius are read off the geometry rather than matched to `2/3`. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §I.
+> **Honest limit.** This is an **identification**, at exactly the status of the `A² = 2` identification it leans on (§5b) — not a derivation. No substrate computation yet produces "2 arc-steps at radius 3" for the lepton phase; §§5c⁗–5c⁵ establish only that any derivation must have that *shape*, and that the shape is cheap and rigid where the alternative is neither. **What would close it:** a curvature computed *on* the ladder closures, whose arc count and radius are read off the geometry rather than matched to `2/3`. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §I. **That computation is done in §5c⁶ — and it fails.**
+
+### 5c⁶. The curvature computed on the ladder closures — a negative
+
+§5c⁵ closed by naming the one thing that would turn its identification into a derivation: a curvature computed *on* the ladder closures, arc count and radius read off the geometry rather than matched to `2/3`. Here it is, and it is a **negative** — the identification does not survive it.
+
+**The rungs are closed lattice loops.** Count balance *is* closure: `#^ = #v`, `#< = #>`, `#/ = #\` says exactly that the twist history returns to its starting point, so each rung is a closed walk in `ℤ³` with ordinary integer geometry. Every entry below is invariant under §5a's quotient (signed axis permutations + antiparticle):
+
+| | `e` = `^<v>` | `μ` = `^^<vv>` | `τ` = `^^</>vv\` |
+|---|---|---|---|
+| arc length `L` | 4 | 6 | 8 |
+| vertices | 4 | 6 | 8 |
+| runs (turns) | 4 | 4 | 6 |
+| axes engaged | 2 | 2 | 3 |
+| signed directions | 4 | 4 | 6 |
+| box extents `Σ` | 2 | 3 | 4 |
+| projected area `Σ` | 1 | 2 | 3 |
+
+One relation holds at every rung: **`runs = 2 × axes`** — each engaged axis is traversed out and back exactly once, no zig-zag. That is a genuine property of the *selected* ladder rather than of loops in general (`100 %`, `100 %`, but only `42 %` of half-spin-free classes at `L = 8`).
+
+**The blind search returns `{1/2, 1, 2}`.** `Δ` is one number for the whole family, so any curvature that could *be* it must take the same value at all three rungs. Every ratio of two observables that does:
+
+```
+1/2 :  axes/runs, axes/dirs, bsum/L, bsum/sites
+  1 :  L/sites, sites/L, runs/dirs, dirs/runs
+  2 :  L/bsum, sites/bsum, runs/axes, dirs/axes
+```
+
+**`2/3` is not among them**, and the failure is specific: §5c⁵'s "2 transverse arc-steps at radius 3" needs `runs/dim`, which is `4/3, 4/3, 2` — *not* rung-independent. The only rung-independent version divides by the **engaged** axes, and that gives **`2`, not `2/3`**, because `e` and `μ` engage two axes, not three. The ambient-versus-engaged choice §5c⁵ flagged is therefore not a choice at all: the reading that makes the invariant an invariant is the one that destroys the `2/3`.
+
+**And QLF's own curvatures are the wrong kind.** [`Curvature.md`](Curvature.md) defines curvature twice, and §5c⁗ excludes both:
+
+| QLF curvature | value set | verdict |
+|---|---|---|
+| gauge / holonomy = the Lie bracket, the plaquette `σₓσᵧσₓσᵧ = −1` (§1a) | the Pauli fold group `μ₄ = {±I, ±iI}` | a **4-fold division of the turn** — exactly the excluded channel. All three rungs fold to `−I`: three quarter-turn units, no continuous parameter anywhere |
+| topological deficit = the 12 pentamons of a Fuller blanket (§1) | a pure **count**, with no radius | its angular form, the deficit `2π − 5·(π/3) = π/3`, is again a division of the turn |
+
+So the arc-over-radius object §5c⁗ left standing **is not instantiated by either QLF curvature.** The same exclusion, twice, from the framework's own definitions — which is a much better reason to stop than a failed search would have been.
+
+**The price, and the criterion it yields.** The ladder's integer pool `{1,2,3,4,6,8}` reaches 13 distinct small ratios; the full census pool of §5c‴ reaches 17. Naming `2/3` among them costs `3.7` and `4.1` bits respectively — where §5c⁵ priced the constant itself at **3 bits**, `2/3` being the cheapest non-trivial fraction there is, already sitting at the experimental floor.
+
+> **A derivation that costs more bits than the constant it derives is not a derivation — it is a re-encoding.** By that criterion the census route to `Δ` is **retired**. What survives is §5c⁗'s *requirement* (the phase must be arc-over-radius, never a division of the circle) together with the finding that QLF, as it stands, has no object of that shape. Either the phase is not a curvature in QLF's sense, or a third notion of curvature is needed — one that is a ratio of counts rather than a holonomy or a deficit. `Δ = 2/3` remains **open**, and the honest reading of these three rounds is that the search space has been narrowed by elimination, not by construction. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §J.
 
 ---
 

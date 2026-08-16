@@ -70,6 +70,17 @@ I. PRICING THE TWO CHANNELS (an Occam curve)
    and R = 3 would have to be, why part G3's trap does not apply to them,
    and why this is common cause with Q = 2/3 rather than implication.
 
+J. THE CURVATURE COMPUTATION (retires part I's identification)
+   Count balance IS closure, so each rung is a closed walk in Z^3 with
+   ordinary integer geometry.  Blind search over rung-independent ratios of
+   its observables returns the complete set {1/2, 1, 2} -- 2/3 is NOT among
+   them, and '2 transverse at radius 3' fails because runs/dim = 4/3, 4/3, 2
+   is not rung-independent.  Both of QLF's own curvatures (Curvature.md:
+   the mu_4 holonomy plaquette, the 12-pentamon topological deficit) are
+   divisions of the turn, the channel part H excluded.  And reading 2/3 off
+   the census costs 3.7-4.1 bits where positing it costs 3 -- a derivation
+   costing more than its constant is a re-encoding.  Census route RETIRED.
+
 No QLF imports are required.
 """
 
@@ -1103,6 +1114,132 @@ def occam_audit():
     print("  count and radius are read off the geometry, not matched to 2/3.")
 
 
+# ---------- J. the curvature computation on the ladder closures ----------
+
+def loop_path(h: str):
+    """Count-balance IS closure: a ZFA twist history is a closed walk in Z^3."""
+    p = [(0, 0, 0)]
+    for t in h:
+        a, s = TWIST[t]
+        q = list(p[-1])
+        q[a] += s
+        p.append(tuple(q))
+    return p
+
+
+def loop_observables(h: str) -> dict:
+    """Integer geometry of the closed loop.  Every entry is invariant under the
+    part-A quotient (signed axis permutations + antiparticle)."""
+    ax = [TWIST[t][0] for t in h]
+    n = len(h)
+    p = loop_path(h)
+    ext = [max(q[k] for q in p) - min(q[k] for q in p) for k in range(3)]
+
+    def proj_area(i, j):
+        return sum(a[i]*b[j] - b[i]*a[j] for a, b in zip(p, p[1:])) // 2
+
+    A = [proj_area(0, 1), proj_area(1, 2), proj_area(2, 0)]
+    return {
+        "L":     n,                                             # arc length
+        "sites": len(set(p[:-1])),                              # vertices
+        "runs":  sum(1 for i in range(n) if ax[i] != ax[(i+1) % n]),
+        "axes":  len(set(ax)),
+        "dirs":  len(set(h)),
+        "bsum":  sum(ext),                                      # box extents
+        "asum":  sum(abs(a) for a in A),                        # projected area
+        "amax":  max(abs(a) for a in A),
+    }
+
+
+def curvature_audit():
+    """Part I closed by asking for a curvature computed ON the ladder closures,
+    arc count and radius read off the geometry rather than matched to 2/3.
+    Here it is.  It is a NEGATIVE."""
+    print("\n=== J. THE CURVATURE COMPUTATION ON THE LADDER CLOSURES ===\n")
+    reps = (("e", E_REP), ("mu", MU_REP), ("tau", TAU_REP))
+    O = {nm: loop_observables(h) for nm, h in reps}
+    keys = list(O["e"])
+
+    print("J1. Count balance IS closure, so each ladder rung is a CLOSED WALK")
+    print("  in Z^3 and has ordinary integer geometry:\n")
+    print(f"  {'':>6} " + " ".join(f"{nm:>6}" for nm, _ in reps))
+    for k in keys:
+        print(f"  {k:>6} " + " ".join(f"{O[nm][k]:>6}" for nm, _ in reps))
+    print("\n  One relation holds at every rung: runs = 2 * axes -- each engaged")
+    print("  axis is traversed out and back exactly once, no zig-zag.  That is")
+    print("  a genuine property of the SELECTED ladder, not of loops generally:")
+    for n in (4, 6, 8):
+        cs = list(classes(half_spin_free(n)))
+        hit = sum(1 for r in cs
+                  if loop_observables(r)["runs"] == 2 * loop_observables(r)["axes"])
+        print(f"    L={n}: {hit}/{len(cs)} half-spin free classes "
+              f"({hit/len(cs)*100:.0f}%) satisfy it")
+    print()
+
+    print("J2. BLIND SEARCH for a rung-independent arc-over-radius ratio.")
+    print("  Delta is one number for the whole family, so any curvature that")
+    print("  can be it must take the SAME value at all three rungs.  Every")
+    print("  ratio of two observables that does:\n")
+    for nm in O:
+        O[nm]["dim"] = 3                    # substrate_spatial_dimension
+    pool = keys + ["dim"]
+    const = defaultdict(list)
+    for a in pool:
+        for b in pool:
+            if a == b:
+                continue
+            vals = [O[nm][a] / O[nm][b] for nm, _ in reps if O[nm][b]]
+            if len(vals) == 3 and max(vals) - min(vals) < 1e-12:
+                const[round(vals[0], 9)].append(f"{a}/{b}")
+    for v in sorted(const):
+        print(f"    {v:>8} :  " + ", ".join(const[v][:5])
+              + (" ..." if len(const[v]) > 5 else ""))
+    print(f"\n  The complete set of rung-independent values is "
+          f"{{{', '.join(str(v) for v in sorted(const))}}}.")
+    print("  2/3 IS NOT AMONG THEM.  In particular sec 5c^5's identification")
+    print("  '2 transverse arc-steps at radius 3' does NOT survive: dividing")
+    print("  the runs by the ambient dimension gives")
+    print("    runs/dim = " + ", ".join(
+        f"{O[nm]['runs']}/3" for nm, _ in reps) + " = 1.33, 1.33, 2.00")
+    print("  which is not rung-independent.  Only runs/axes is -- and that is 2,")
+    print("  not 2/3, because e and mu engage two axes, not three.\n")
+
+    print("J3. AND QLF'S OWN CURVATURES ARE THE WRONG KIND (Curvature.md).")
+    print("  QLF defines curvature twice, and part H excludes both:")
+    print("   (a) GAUGE / HOLONOMY curvature = the Lie bracket, i.e. the")
+    print("       plaquette sigma_x sigma_y sigma_x sigma_y = -1 (sec 1a).  Its")
+    print("       values are the Pauli fold group mu_4 = {+-I, +-iI} -- a 4-fold")
+    print("       DIVISION OF THE TURN.  That is exactly the channel part H")
+    print("       excluded.  Check: the fold of every rung is")
+    print("         " + ", ".join(f"{nm} -> {fold_phase(h)}" for nm, h in reps))
+    print("       three quarter-turn units, no continuous parameter anywhere.")
+    print("   (b) TOPOLOGICAL DEFICIT curvature = the 12 pentamons of a Fuller")
+    print("       blanket (sec 1).  A pure COUNT with no radius; its angular")
+    print("       form, the deficit 2pi - 5*(pi/3) = pi/3, is again a division")
+    print("       of the turn.")
+    print("  So the arc-over-radius object part H left standing is not")
+    print("  instantiated by either QLF curvature.  Same exclusion, twice.\n")
+
+    print("J4. THE PRICE -- and the general criterion.")
+    ladder = sorted({4, 6, 8, 2, 3, 1})
+    full = sorted({4, 6, 8, 24, 48, 96, 2, 3, 5, 6, 192, 1})
+    for nm, p in (("ladder geometry", ladder), ("full census (part G)", full)):
+        vals = {(a, b) for a in p for b in p}
+        small = {round(a/b, 9) for a, b in vals if b and a/b <= 8
+                 and abs(round(a/b*6) - a/b*6) < 1e-9}
+        print(f"  {nm:>22}: pool {p}")
+        print(f"  {'':>22}  reaches {len(small)} distinct small ratios "
+              f"-> naming 2/3 among them costs {math.log2(len(small)):.1f} bits")
+    print("\n  Part I priced the CONSTANT at 3 bits: 2/3 is the cheapest")
+    print("  non-trivial fraction there is, and it already sits at the")
+    print("  experimental floor.  Reading it off the census costs MORE than")
+    print("  that.  A derivation that costs more bits than the constant it")
+    print("  derives is not a derivation -- it is a re-encoding.")
+    print("  => the census route to Delta is RETIRED.  The arc-over-radius")
+    print("     requirement (part H) stands; QLF has no object of that shape,")
+    print("     and the ladder census cannot supply one at an honest price.")
+
+
 def main():
     select_topologies()
     koide_audit()
@@ -1113,6 +1250,7 @@ def main():
     mass_ratio_map_audit()
     unit_audit()
     occam_audit()
+    curvature_audit()
 
 
 if __name__ == "__main__":
