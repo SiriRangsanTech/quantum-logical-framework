@@ -82,6 +82,36 @@ The lepton Koide phase `Δ = 3δ = 2/3` is a *rational number of radians*. [`Wea
 
 So the two curvatures of §1–§1a are excluded from that job **twice over, by their own value sets**, and QLF as it stands carries no third object of the required shape. Recorded here because it is a genuine limit of the curvature notions this document builds on, not a defect of the lepton sector: a curvature that is a **ratio of counts** rather than a holonomy or a topological deficit would be a new primitive, and nothing above supplies one.
 
+### 1c. The third curvature — Ollivier–Ricci on the possibility graph
+
+§1b is a specification with nothing yet filling it: a curvature that is a **ratio of counts** — not a holonomy (a finite group, a division of the turn) and not a bare deficit count. Exactly one standard discrete curvature meets it.
+
+$$\kappa(x,y) \;=\; 1 \;-\; \frac{W_1(m_x, m_y)}{d(x,y)}$$
+
+**Ollivier–Ricci curvature** (Ollivier 2009): `mₓ` is the lazy random-walk measure at `x`, `W₁` the optimal-transport cost between the two measures, `d` the graph distance. Both numerator and denominator are pure step counts, so `κ` is rational by construction — no angle, no metric, no finite group. It is the discrete Ricci curvature in the sense that matters: `κ > 0` on spheres and complete graphs, `κ = 0` on flat lattices, `κ < 0` on trees and hyperbolic graphs.
+
+| candidate | why it does or does not qualify |
+|---|---|
+| Regge angular deficit | a division of the turn — **no** |
+| pentamon deficit (§1) | a count with no radius — **no** |
+| holonomy / Wilson plaquette (§1a) | valued in the finite group `μ₄` — **no** |
+| Benincasa–Dowker (`QLF_CausalContinuum`) | needs a length scale `ℓ²` to be a curvature — **no** |
+| Forman–Ricci | combinatorial but integer-valued, not a ratio — partial |
+| **Ollivier–Ricci** | `1 − W₁/d`, counts only — **yes** |
+
+**QLF has two graphs, and they have opposite curvature.** Validated first on graphs of known curvature (`C₈ → 0`; `K₅ → +0.625`; `6×6` grid `→ 0` interior; `3`-regular tree `→ −1/3` interior, its positive values all leaf edges — a truncation artefact worth remembering):
+
+| QLF graph | what it is | Ollivier–Ricci |
+|---|---|---|
+| the `ℤ³` lattice | **synthesized space** | `κ = 0` on every interior edge — **flat** |
+| closure classes under the causal parent relation | the **census / possibility space** | `κ < 0` on **every** interior edge (`−0.646 … −0.125`) — **hyperbolic** |
+
+Computed on the half-spin free first-return closure classes at `L = 4, 6, 8, 10` (1, 2, 12, 165 classes; 119 connected vertices, 186 edges) so that the `L = 6` and `L = 8` layers are interior rather than boundary. All 63 positive values sit on the `L = 10` truncation boundary — the leaf artefact the tree control exhibits — while all 14 interior edges are negative without exception.
+
+> **Space is flat; possibility is hyperbolic.** That is the discrete AdS signature, and it is precisely what QLF's holography says in words ([`Holographic.md`](Holographic.md); [`README.md`](README.md) §holography): *the bulk is the space of unresolved internal nodes of the generator tree, the boundary is the ZFA-closed leaves.* A generator tree is negatively curved; here that is **measured** rather than asserted, with a curvature notion that is a ratio of counts. **Honest scope:** a finite truncated census, one curvature estimator, and a structural reading — not a derivation of AdS/CFT. What it does establish is that the deformation picture of §2–§6 is a statement about the *flat* graph, and that the possibility graph carries curvature of the opposite sign intrinsically, before any deformation.
+
+The notion was found by looking for what the lepton Koide phase would need ([`Weak_Force.md`](Weak_Force.md) §5c⁷). **It does not supply that phase** — there is no positive interior curvature anywhere and no value equal to `2/3` — so the curvature route to `Δ` is closed at all three notions. The notion itself outlived the question that produced it.
+
 ## 2. Two deformations: expand and contract
 
 A blanket changes shape by gaining or losing substrate events on its surface. There are exactly two primitives, and they recur at every scale:

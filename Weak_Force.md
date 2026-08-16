@@ -354,7 +354,28 @@ So the arc-over-radius object §5c⁗ left standing **is not instantiated by eit
 
 **The price, and the criterion it yields.** The ladder's integer pool `{1,2,3,4,6,8}` reaches 13 distinct small ratios; the full census pool of §5c‴ reaches 17. Naming `2/3` among them costs `3.7` and `4.1` bits respectively — where §5c⁵ priced the constant itself at **3 bits**, `2/3` being the cheapest non-trivial fraction there is, already sitting at the experimental floor.
 
-> **A derivation that costs more bits than the constant it derives is not a derivation — it is a re-encoding.** By that criterion the census route to `Δ` is **retired**. What survives is §5c⁗'s *requirement* (the phase must be arc-over-radius, never a division of the circle) together with the finding that QLF, as it stands, has no object of that shape. Either the phase is not a curvature in QLF's sense, or a third notion of curvature is needed — one that is a ratio of counts rather than a holonomy or a deficit. `Δ = 2/3` remains **open**, and the honest reading of these three rounds is that the search space has been narrowed by elimination, not by construction. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §J.
+> **A derivation that costs more bits than the constant it derives is not a derivation — it is a re-encoding.** By that criterion the census route to `Δ` is **retired**. What survives is §5c⁗'s *requirement* (the phase must be arc-over-radius, never a division of the circle) together with the finding that QLF, as it stands, has no object of that shape. Either the phase is not a curvature in QLF's sense, or a third notion of curvature is needed — one that is a ratio of counts rather than a holonomy or a deficit. `Δ = 2/3` remains **open**, and the honest reading of these three rounds is that the search space has been narrowed by elimination, not by construction. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §J. **The third notion is found in §5c⁷ — and it does not supply the phase either.**
+
+### 5c⁷. The third curvature notion — found, and it is not the phase
+
+§5c⁶ ended with a specification and nothing to fill it: a curvature that is a **ratio of counts**, not a holonomy and not a deficit. Exactly one standard discrete curvature meets it —
+
+$$\kappa(x,y) \;=\; 1 - \frac{W_1(m_x,m_y)}{d(x,y)},$$
+
+**Ollivier–Ricci curvature**: an optimal-transport cost over a graph distance, both pure step counts, rational by construction, with no angle, no metric and no finite group anywhere in it. (Rejected on the way: Regge deficit and the Wilson plaquette — divisions of the turn; the pentamon deficit — a count with no radius; Benincasa–Dowker — needs a length scale `ℓ²`; Forman–Ricci — integer-valued, not a ratio.)
+
+Applied to QLF's two graphs, after validation against graphs of known curvature, it gives opposite signs:
+
+| QLF graph | Ollivier–Ricci |
+|---|---|
+| the `ℤ³` lattice — **synthesized space** | `κ = 0` on every interior edge — **flat** |
+| closure classes under the causal parent relation — the **possibility space** | `κ < 0` on **every** interior edge (`−0.646 … −0.125`) — **hyperbolic** |
+
+That is a real result and it belongs to the curvature sector, not this one — it is the discrete AdS signature, QLF's holography measured rather than asserted; it is written up in [`Curvature.md`](Curvature.md) §1c.
+
+**For the phase it is another negative, and a clean one.** `Δ = 2/3` is *positive*, and the possibility graph carries **no positive interior curvature at all**; no edge anywhere takes the value `2/3`; and the 14 interior edges carry 14 distinct values, so naming one costs `≈ 3.8` bits against the `3` bits §5c⁵ prices the constant at — §5c⁶'s criterion, failed a second time.
+
+> **Verdict on the curvature route.** All three notions are now examined — holonomy, topological deficit, and optimal-transport — and none produces `Δ`. The phase is not a curvature of either QLF graph. `Δ = 2/3` remains **open**, and the four rounds §5c⁗–5c⁷ have narrowed the space entirely by elimination. What was gained along the way is worth stating separately: a unit constraint (arc-over-radius, never a division of the circle), a bit-cost criterion for what counts as a derivation, and a third curvature notion that outlived the question that produced it. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §K.
 
 ---
 
