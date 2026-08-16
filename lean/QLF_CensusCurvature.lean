@@ -77,9 +77,10 @@ theorem countBalanced_of_isParent {c p : List Twist}
   subst hc
   subst hp
   cases t <;>
-    simp only [countBalanced, Twist.conj, List.count_append, List.count_cons,
-      List.count_nil] at h ⊢ <;>
-    simp_all <;> omega
+    simp only [countBalanced, Twist.conj, List.count_append,
+      List.count_cons] at h ⊢ <;>
+    obtain ⟨h1, h2, h3, h4⟩ := h <;>
+    omega
 
 /-! ## 3. Census adjacency, and the layering -/
 
