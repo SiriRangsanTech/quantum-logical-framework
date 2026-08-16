@@ -368,12 +368,12 @@ Applied to QLF's two graphs, after validation against graphs of known curvature,
 
 | QLF graph | Ollivier–Ricci |
 |---|---|
-| the `ℤ³` lattice — **synthesized space** | `κ = 0` on every interior edge — **flat** |
-| closure classes under the causal parent relation — the **possibility space** | `κ < 0` on **every** interior edge (`−0.646 … −0.125`) — **hyperbolic** |
+| the `ℤ³` lattice — **synthesized space** | `κ = 0` on every interior edge — **Ollivier-flat** (*not* flat: space carries one bit per fold and its plaquette is `−I`; this notion is structurally blind to holonomy — [`Curvature.md`](Curvature.md) §1c) |
+| closure classes under the causal parent relation — the **possibility space** | `κ < 0` on **every** one of 162 interior edges (`−0.801 … −0.112`) — **hyperbolic**, and stable when the census is extended a layer |
 
 That is a real result and it belongs to the curvature sector, not this one — it is the discrete AdS signature, QLF's holography measured rather than asserted; it is written up in [`Curvature.md`](Curvature.md) §1c.
 
-**For the phase it is another negative, and a clean one.** `Δ = 2/3` is *positive*, and the possibility graph carries **no positive interior curvature at all**; no edge anywhere takes the value `2/3`; and the 14 interior edges carry 14 distinct values, so naming one costs `≈ 3.8` bits against the `3` bits §5c⁵ prices the constant at — §5c⁶'s criterion, failed a second time.
+**For the phase it is another negative, and a clean one.** `Δ = 2/3` is *positive*, and the possibility graph carries **no positive interior curvature at all**; no edge anywhere takes the value `2/3`; and the interior edges carry essentially as many distinct values as there are edges (14 of 14 at four layers, and the 162-edge sample only widens the spread), so naming one costs more than the `3` bits §5c⁵ prices the constant at — §5c⁶'s criterion, failed a second time.
 
 > **Verdict on the curvature route.** All three notions are now examined — holonomy, topological deficit, and optimal-transport — and none produces `Δ`. The phase is not a curvature of either QLF graph. `Δ = 2/3` remains **open**, and the four rounds §5c⁗–5c⁷ have narrowed the space entirely by elimination. What was gained along the way is worth stating separately: a unit constraint (arc-over-radius, never a division of the circle), a bit-cost criterion for what counts as a derivation, and a third curvature notion that outlived the question that produced it. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §K.
 

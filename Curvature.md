@@ -99,16 +99,39 @@ $$\kappa(x,y) \;=\; 1 \;-\; \frac{W_1(m_x, m_y)}{d(x,y)}$$
 | Forman–Ricci | combinatorial but integer-valued, not a ratio — partial |
 | **Ollivier–Ricci** | `1 − W₁/d`, counts only — **yes** |
 
-**QLF has two graphs, and they have opposite curvature.** Validated first on graphs of known curvature (`C₈ → 0`; `K₅ → +0.625`; `6×6` grid `→ 0` interior; `3`-regular tree `→ −1/3` interior, its positive values all leaf edges — a truncation artefact worth remembering):
+**QLF has two graphs, and they read oppositely under it.** Validated first on graphs of known curvature (`C₈ → 0`; `K₅ → +0.625`; `6×6` grid `→ 0` interior; `3`-regular tree `→ −1/3` interior, its positive values all leaf edges — a truncation artefact worth remembering):
 
 | QLF graph | what it is | Ollivier–Ricci |
 |---|---|---|
-| the `ℤ³` lattice | **synthesized space** | `κ = 0` on every interior edge — **flat** |
-| closure classes under the causal parent relation | the **census / possibility space** | `κ < 0` on **every** interior edge (`−0.646 … −0.125`) — **hyperbolic** |
+| the `ℤ³` lattice | **synthesized space** | `κ = 0` on every interior edge — **Ollivier-flat** |
+| closure classes under the causal parent relation | the **census / possibility space** | `κ < 0` on **every** interior edge (`−0.801 … −0.112`) — **hyperbolic** |
 
-Computed on the half-spin free first-return closure classes at `L = 4, 6, 8, 10` (1, 2, 12, 165 classes; 119 connected vertices, 186 edges) so that the `L = 6` and `L = 8` layers are interior rather than boundary. All 63 positive values sit on the `L = 10` truncation boundary — the leaf artefact the tree control exhibits — while all 14 interior edges are negative without exception.
+> **This does not say space is flat — and the reason matters.** §1a is the primary statement: every fold carries **one bit**, and the plaquette of the one-bit orthogonal axes is `σₓσᵧσₓσᵧ = −I ≠ +I` (`nonabelian_plaquette`; the electron loop `^<v>` folds to `−I`). **That is curvature**, and it is present at every fold. So the `κ = 0` above cannot be read as "space is flat."
+>
+> Is it an artefact of throwing the fold away? Tested directly: **lift** the lattice by the fold — vertices `(position, fold element)`, edges carrying the twist's Pauli factor, the graph space actually is; the six twists generate a fold group of order 16. On a `4³` chunk (1024 vertices, 384 interior edges) the answer is **`κ = 0` again**.
+>
+> So the blindness is **structural, not an artefact**. Ollivier–Ricci is a metric-combinatorial quantity: it sees neighbourhood matching and graph distance, and holonomy is invisible to it by construction — which is exactly *why* it was reached for ([`Weak_Force.md`](Weak_Force.md) §§5c⁗–5c⁶ excluded holonomy curvatures on independent grounds). Reading "space is flat" off it measures the instrument, not the space. The correct statement is a pair:
+>
+> | | holonomy curvature (§1a) | transport curvature (§1c) |
+> |---|---|---|
+> | **space** | **curved** — one bit per fold, plaquette `−I` | flat |
+> | **possibility graph** | free — its edges carry no `σ` | **hyperbolic** |
+>
+> The two notions are **complementary, not competing**: each is blind to precisely the curvature the other measures. That is the substantive content — not a flat/curved verdict on space.
 
-> **Space is flat; possibility is hyperbolic.** That is the discrete AdS signature, and it is precisely what QLF's holography says in words ([`Holographic.md`](Holographic.md); [`README.md`](README.md) §holography): *the bulk is the space of unresolved internal nodes of the generator tree, the boundary is the ZFA-closed leaves.* A generator tree is negatively curved; here that is **measured** rather than asserted, with a curvature notion that is a ratio of counts. **Honest scope:** a finite truncated census, one curvature estimator, and a structural reading — not a derivation of AdS/CFT. What it does establish is that the deformation picture of §2–§6 is a statement about the *flat* graph, and that the possibility graph carries curvature of the opposite sign intrinsically, before any deformation.
+Computed on the half-spin free first-return closure classes, extended to `L = 4, 6, 8, 10, 12` (1, 2, 12, 165, 1964 classes; 1597 connected vertices, 2773 edges) so that three layers are interior rather than boundary. Every positive value sits on the outermost truncation layer — the leaf artefact the tree control exhibits — while **all 162 interior edges are negative without exception.**
+
+**The truncation was tested, not assumed.** At four layers the interior sample is 14 edges; adding the fifth does two things, both diagnostic:
+
+| | 4 layers (`L ≤ 10`) | 5 layers (`L ≤ 12`) |
+|---|---|---|
+| `L6–L8` interior edges | 14, `κ ∈ [−0.646, −0.125]` | 14, **identical to the last digit** |
+| `L8–L10` interior edges | — (boundary) | 148, `κ ∈ [−0.801, −0.112]`, all negative |
+| interior total | 14, all negative | **162, all negative** |
+
+The existing values do not move at all — a deeper layer cannot shorten any distance in their transport problems — and the newly interior edges are a ten-times larger sample with the same sign throughout. The positive values simply migrate to the new outermost layer, which is exactly what a leaf artefact does. **Hyperbolicity is not a truncation effect.**
+
+> **Possibility is hyperbolic — under the very notion that cannot see space's curvature.** That is the discrete AdS signature, and it is precisely what QLF's holography says in words ([`Holographic.md`](Holographic.md); [`README.md`](README.md) §holography): *the bulk is the space of unresolved internal nodes of the generator tree, the boundary is the ZFA-closed leaves.* A generator tree is negatively curved; here that is **measured** rather than asserted, with a curvature that is a ratio of counts. **Honest scope:** a finite census (stable under extension, but still finite), one curvature estimator, and a structural reading — not a derivation of AdS/CFT. And per the box above, it is *not* a flat-vs-curved verdict on space: the deformation picture of §2–§6 acts on a substrate that is already holonomy-curved at every fold, and what §1c adds is that the possibility graph carries transport curvature of definite negative sign, intrinsically, before any deformation.
 
 The notion was found by looking for what the lepton Koide phase would need ([`Weak_Force.md`](Weak_Force.md) §5c⁷). **It does not supply that phase** — there is no positive interior curvature anywhere and no value equal to `2/3` — so the curvature route to `Δ` is closed at all three notions. The notion itself outlived the question that produced it.
 
