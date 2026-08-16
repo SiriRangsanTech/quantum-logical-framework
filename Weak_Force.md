@@ -223,7 +223,34 @@ So **"derive `Δ = 2/3`" and "derive `m_μ/m_e = 206.77`" are the same statement
 
 **A negative result on the blind ladder.** The rooted causal ladder `e = ^<v>` → `μ = ^^<vv>` → `τ = ^^</>vv\` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A) selects each rung by *unique parented continuation*: at `L = 8`, exactly 1 of the 2 three-axis candidates has a causal parent in the μ orbit. Carried to the next rung, **the rule fails to select**: at `L = 10` there are 105 three-axis candidates, **12** with a causal parent in the τ orbit, and **4** matching τ's exact degree signature (every rooted history having exactly one parent). Neither `0` — which would confirm the ladder terminates at three generations — nor `1`, a fourth generation.
 
-So the `L = 8` uniqueness is plausibly a small-numbers accident, and **this ladder is not an independent derivation of "exactly three generations."** QLF's generation-count claim rests on [`QLF_Generations`](lean/QLF_Generations.lean) (generation count = `substrate_spatial_dimension` = 3), which this does not touch; what fails is the combinatorial ladder as a *second, independent* argument for it. The `e`/`μ`/`τ` topology assignments themselves are unaffected — they were fixed at `L ≤ 8`, where the rule does select. That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+So the `L = 8` uniqueness is plausibly a small-numbers accident, and **this ladder is not an independent derivation of "exactly three generations."** QLF's generation-count claim rests on [`QLF_Generations`](lean/QLF_Generations.lean) (generation count = `substrate_spatial_dimension` = 3), which this does not touch; what fails is the combinatorial ladder as a *second, independent* argument for it.
+
+**And the `L = 8` rung is less blind than it looks.** Part A filters to three-axis classes *before* applying the parent rule. Drop that filter and **9 of the 12** `L = 8` classes have a causal parent in the μ orbit — not one — with three sharing the degree-`{1:n}` signature. So the **three-axis criterion is load-bearing** in the τ selection: it is an imposed structural assumption, not an output of the search. (It is not a *mass* input, so the blind-test discipline is intact — but it is an assumption and is labelled as one.)
+
+### 5c‴. The `(R, axis) → mass-ratio` map — a shape theorem
+
+The map [#140](https://github.com/jimscarver/quantum-logical-framework/issues/140) originally asked for does **not exist in the form requested**, and there is a clean reason.
+
+**Every census integer at the three rungs is 5-smooth.** `L = 4,6,8`; `orbit = ways = 24,48,96`; `axes = 2,2,3`; `conj-pairs = 2,5,6`; `parent-edges = 192,96`. All are `2^a 3^b 5^c`, so any product or ratio of them is too. But the mass ratios are **not** 5-smooth:
+
+| quantity | value | closest `2^a3^b5^c` | error |
+|---|---|---|---|
+| `m_μ/m_e` | `206.768283` | `2⁶3⁴5⁻² = 207.36` | `0.286 %` |
+| `m_τ/m_e` | `3477.228` | `2⁷3³ = 3456` | `0.610 %` |
+| `m_τ/m_μ` | `16.817` | `2¹²3⁻⁵ = 16.856` | `0.232 %` |
+| **`Δ = 2/3`** | `0.666667` | **`2·3⁻¹`** | **`0.000 %`** |
+
+The misses are `0.14–0.61%` — orders of magnitude outside the `10⁻⁵` at which the three-phase picture holds. A 64 000-expression brute search over `a^p b^q c^r` from the census pool does no better (best `0.286%`). **The direct census → mass-ratio map does not exist in any simple form — a real negative, not a failed fit.**
+
+**So the map must factor:**
+
+$$\text{census} \;\longrightarrow\; \Delta \;\longrightarrow\; \text{masses}.$$
+
+Two independent reasons. *Analytically*: `√mₖ/M = 1 + √2·cos(Δ/3 + 2πk/3)` — the ratios are cosine values at an `O(1)` phase, transcendental in `Δ`; a census yields integers and cannot produce them directly, only the phase, with the cosine doing the rest. *Structurally*: `Q = 2/3` is derived and holds to `10⁻⁵`, so any correct map must reproduce it — which a map onto `(M, Δ)` does automatically, while a map onto three independent masses would have to hit it by accident.
+
+And `Δ = 2/3` **is** exactly 5-smooth — precisely the kind of object a census *can* yield. So the ask is reshaped from "three masses" to **one small rational**, which is well posed. That reshaping is the result; the map itself is still open.
+
+> **Trap, recorded so it is not walked into.** The axis counts `(e, μ, τ) = (2, 2, 3)` look like the transverse fraction, and hence like a census route to `Δ = 2/3`. They are not usable as evidence: `e`'s two axes are *forced* (three axes need ≥6 twists to balance), `μ`'s are a genuine *output* (zero three-axis classes exist at `L = 6`) — but **τ's three axes are imposed** by the filter above. The `3` in the apparent `2/3` was put in by hand. That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
 
 > **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
 

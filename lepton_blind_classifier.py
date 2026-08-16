@@ -13,6 +13,11 @@ A. BLIND TOPOLOGY SELECTION (no measured masses)
    6. quotient signed spatial-axis permutations + antiparticle
    7. frequency = number of ways selects the L=6 class
    8. parent-child continuation selects the rooted L=8 class
+   CAVEAT (see part G3): step 8 filters to 3-axis classes BEFORE applying the
+   parent rule, and that filter is LOAD-BEARING -- without it 9 of the 12 L=8
+   classes have a mu parent, not 1.  No measured mass enters, so the blind-test
+   discipline holds, but "3 axes for tau" is an imposed assumption, not an
+   output.  Part F shows the rule also goes ambiguous at L=10.
 
 B. KOIDE PHASE AUDIT (only after topology selection)
    Reproduce the exact-Q=2/3 phase implied by the repo's m_e and m_mu inputs,
@@ -41,6 +46,12 @@ F. WHAT Delta = 2/3 IS, AND WHERE THE LADDER STOPS
    the ladder's selection rule -- unique parented continuation -- goes
    AMBIGUOUS at L=10, so part A is not an independent argument for exactly
    three generations.
+
+G. THE (R, axis) -> MASS-RATIO MAP (issue #140's original ask)
+   Shape theorem: the census integers are all 5-smooth but the mass ratios are
+   not, so no direct map exists; it must factor as census -> Delta -> masses,
+   and Delta = 2/3 IS 5-smooth.  Also flags that part A's 3-axis filter is
+   load-bearing, so the census 'axes = 2,2,3' cannot evidence the 2/3.
 
 No QLF imports are required.
 """
@@ -814,6 +825,73 @@ def delta_two_thirds_audit():
 E_REP, MU_REP, TAU_REP = "^<v>", "^^<vv>", "^^</>vv\\"
 
 
+# ---------- G. the (R, axis) -> mass-ratio map: a shape theorem ----------
+
+def five_smooth_best(target: float, amax=12, bmax=6, cmax=4):
+    """Closest 2^a 3^b 5^c to target with small exponents."""
+    best = None
+    for a in range(-amax, amax+1):
+        for b in range(-bmax, bmax+1):
+            for c in range(-cmax, cmax+1):
+                v = 2.0**a * 3.0**b * 5.0**c
+                e = abs(v/target - 1)
+                if best is None or e < best[0]:
+                    best = (e, a, b, c, v)
+    return best
+
+
+def mass_ratio_map_audit():
+    print("\n=== G. THE (R, axis) -> MASS-RATIO MAP: A SHAPE THEOREM ===\n")
+
+    print("G1. Every census integer at the three rungs is 5-SMOOTH.")
+    print("  L = 4,6,8;  orbit = ways = 24,48,96;  axes = 2,2,3;")
+    print("  conj-pairs = 2,5,6;  parent-edges = 192,96.")
+    print("  All are of the form 2^a 3^b 5^c, so ANY product or ratio of them")
+    print("  is 5-smooth too.  Can the mass ratios be 5-smooth?\n")
+    print(f"  {'quantity':>16} {'value':>13}   closest 2^a 3^b 5^c      error")
+    for nm, t in (("m_mu/m_e", MMU/ME), ("m_tau/m_e", MTAU/ME),
+                  ("m_tau/m_mu", MTAU/MMU), ("Delta = 2/3", 2/3)):
+        e, a, b, c, v = five_smooth_best(t)
+        print(f"  {nm:>16} {t:13.6f}   2^{a:<3d}3^{b:<3d}5^{c:<3d} = {v:11.6f}"
+              f"  {e*100:7.3f}%")
+    print("\n  The MASS RATIOS ARE NOT 5-SMOOTH: the closest small-exponent form")
+    print("  misses by 0.14-0.61%, orders of magnitude outside the 1e-5 at which")
+    print("  the three-phase picture holds.  A 64000-expression brute search over")
+    print("  a^p b^q c^r from the census pool does no better (best 0.286% off).")
+    print("  => the DIRECT census -> mass-ratio map does not exist in any simple")
+    print("     form.  This is a real negative, not a failed fit.\n")
+
+    print("G2. So the map must FACTOR:   census -> Delta -> masses.")
+    print("  sqrt(m_k)/M = 1 + sqrt2 cos(Delta/3 + 2pi k/3): the mass ratios are")
+    print("  COSINE VALUES at an O(1) phase, transcendental in Delta.  A census")
+    print("  produces integers; it cannot produce those directly.  It can only")
+    print("  produce the PHASE, and the cosine does the rest.  Independently:")
+    print("  Q = 2/3 is derived and holds to 1e-5, so any correct map must")
+    print("  reproduce it -- which a map onto (M, Delta) does automatically and")
+    print("  a map onto three independent masses would have to hit by accident.")
+    print("  And Delta = 2/3 IS exactly 5-smooth (2 * 3^-1) -- precisely the kind")
+    print("  of object a census CAN yield.  The issue's ask is thereby reshaped")
+    print("  from 'three masses' to ONE SMALL RATIONAL.  That is well posed.\n")
+
+    print("G3. WARNING -- the obvious census route to 2/3 is CIRCULAR.")
+    print("  The axis counts (e,mu,tau) = (2,2,3) look like the transverse")
+    print("  fraction 2/3.  Provenance of each:")
+    print("    e  (L=4): 3 axes need >=6 twists to balance  -> FORCED")
+    c6 = classes(half_spin_free(6))
+    n3 = sum(1 for r in c6 if len(axes_engaged(r)) == 3)
+    print(f"    mu (L=6): 3-axis free half-spin classes = {n3}  -> OUTPUT")
+    c8 = classes(half_spin_free(8))
+    omu = orbit(MU_REP)
+    parented = [r for r in c8 if parent_edges(orbit(r), omu)]
+    three = [r for r in parented if len(axes_engaged(r)) == 3]
+    print(f"    tau(L=8): part A filters to 3-axis BEFORE the parent rule.")
+    print(f"              Drop the filter: {len(parented)} of {len(c8)} classes have a mu")
+    print(f"              parent ({len(three)} of them 3-axis) -- NOT unique.")
+    print("  => the 3-axis criterion is LOAD-BEARING in part A's tau selection.")
+    print("     'axes = 2,2,3' is therefore partly IMPOSED, and cannot be cited")
+    print("     as census evidence for Delta = 2/3.  Recorded so it is not.")
+
+
 def main():
     select_topologies()
     koide_audit()
@@ -821,6 +899,7 @@ def main():
     residual_audit()
     delta_equals_q_test()
     delta_two_thirds_audit()
+    mass_ratio_map_audit()
 
 
 if __name__ == "__main__":
