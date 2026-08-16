@@ -24,8 +24,17 @@ B. KOIDE PHASE AUDIT (only after topology selection)
 C. THE PHASE, PROPERLY POSED
    Why 2/9 is the wrong object to derive (delta is a Z3 gauge parameter, so
    only Delta = 3*delta is physical), the free 3-parameter fit with propagated
-   experimental errors, the non-trivial relation Delta = Q, the noise floor
-   that forbids chasing the 7th digit, and what a derivation would still need.
+   experimental errors, the noise floor that forbids chasing the 7th digit,
+   and what a derivation would still need.
+
+D. THE RESIDUAL
+   Which defect is statistically real (one: +9.83 ppm on m_mu/m_e), and the
+   much larger radiative puzzle behind it -- why Koide survives at all.
+
+E. IS Delta = Q A RELATION?
+   No.  Conditioned on Q = 2/3 the phase Delta is essentially free, so the
+   proposed reduction is REFUTED: Q = 2/3 and Delta = 2/3 are two independent
+   facts, and only the first is derived.
 
 No QLF imports are required.
 """
@@ -536,10 +545,9 @@ def phase_audit():
     Q = koide_Q()
     print(f"  random mass triples: |Delta - Q| reaches {worst:.3f}  (O(1) generic)")
     print(f"  charged leptons    : |Delta - Q| = {abs(3*d-Q):.2e}")
-    print("  So 'the Z3-invariant generation phase equals the Koide invariant'")
-    print("  is a genuine constraint the leptons satisfy, not an algebraic")
-    print("  triviality.  Given the DERIVED Q = 2/3 it yields Delta = 2/3,")
-    print("  i.e. delta = 2/9 -- two magic numbers collapse to one.\n")
+    print("  The leptons do satisfy it -- but this does NOT make it a relation.")
+    print("  See part E: conditioned on Q = 2/3, Delta is essentially free, so")
+    print("  'Delta = Q' has no content beyond two separate facts.  REFUTED.\n")
 
     print("C4. NOISE FLOOR -- why the 1e-7 'agreement' is not evidence.")
     delta_condQ = solve_delta_from_e_mu()
@@ -645,11 +653,71 @@ def residual_audit():
     print("  Status: open.")
 
 
+# ---------- E. is Delta = Q a relation?  (no) ----------
+
+def fit_any(ms):
+    """(A, Delta) for an arbitrary triple of positive masses, heaviest -> k=0."""
+    s = sorted((math.sqrt(m) for m in ms), reverse=True)
+    s = [s[0], s[2], s[1]]
+    M = sum(s) / 3.0
+    u = [x / M - 1.0 for x in s]
+    A = math.sqrt(2 * sum(x*x for x in u) / 3.0)
+    c3 = max(-1.0, min(1.0, 4 * sum(x**3 for x in u) / (3 * A**3)))
+    return A, math.acos(c3)
+
+
+def q_any(ms):
+    return sum(ms) / sum(math.sqrt(m) for m in ms)**2
+
+
+def delta_equals_q_test():
+    print("\n=== E. IS  Delta = Q  A RELATION?  (REFUTED) ===\n")
+
+    print("E1. Conditioned on Q = 2/3, is Delta pinned near 2/3?")
+    rng = random.Random(3)
+    ds = []
+    while len(ds) < 4000:
+        ms = [10**rng.uniform(-2, 0), 10**rng.uniform(0, 3), 10**rng.uniform(2, 5)]
+        if abs(q_any(ms) - 2/3) < 0.001:
+            ds.append(fit_any(ms)[1])
+    ds.sort()
+    near = sum(1 for x in ds if abs(x - 2/3) < 0.01) / len(ds)
+    print(f"  {len(ds)} random triples with Q = 2/3 +- 0.001")
+    print(f"  Delta range          : {ds[0]:.4f} .. {ds[-1]:.4f}")
+    print(f"  Delta median         : {ds[len(ds)//2]:.4f}")
+    print(f"  5th / 95th percentile: {ds[len(ds)//20]:.4f} / {ds[-len(ds)//20]:.4f}")
+    print(f"  within 0.01 of 2/3   : {near*100:.1f}%")
+    print("  -> Q = 2/3 carries essentially NO information about Delta.\n")
+
+    print("E2. The sharpest counterexample, from real numbers:")
+    cbt = [1270.0, 4180.0, 172690.0]          # (c, b, t)
+    _, D = fit_any(cbt); q = q_any(cbt)
+    print(f"  (c,b,t):  Q = {q:.6f}  -- within {abs(q-2/3)/(2/3)*100:.1f}% of 2/3")
+    print(f"            Delta = {D:.6f}  -- a factor {(2/3)/D:.2f} away from 2/3")
+    print("  A triple with Koide's invariant AT 2/3 whose phase is nowhere near.")
+    print("  (Quark masses are scheme-dependent parameters, not observables, so")
+    print("   they cannot test a physical law -- but that objection does not")
+    print("   apply here: the question is the MATHEMATICAL one, whether Q fixes")
+    print("   Delta as functions of a triple of positive reals.  E1 settles it")
+    print("   with random triples and no physics at all.)\n")
+
+    print("E3. VERDICT")
+    print("  'Delta = Q' is REFUTED as a relation.  Delta and Q are independent")
+    print("  functions on mass-triple space; the leptons satisfying both is two")
+    print("  separate facts wearing one costume, not a reduction.")
+    print("    Q = 2/3      -- DERIVED (N=3 axes, A^2=2 transverse; sec 5b)")
+    print("    Delta = 2/3  -- INDEPENDENT, NOT derived, NOT implied by Q")
+    print("  The honest residue is weaker: the substrate's transverse fraction")
+    print("  2/3 appears twice -- once in the amplitude sector, once in the")
+    print("  phase sector -- a structural coherence, not a derivation.")
+
+
 def main():
     select_topologies()
     koide_audit()
     phase_audit()
     residual_audit()
+    delta_equals_q_test()
 
 
 if __name__ == "__main__":

@@ -165,7 +165,16 @@ This is visible in the moment expansion: `Σcos = 0` and `Σcos² = 3/2` are `δ
 - The `9` in `2/9` is **not one count**. It factorises as `9 = 3` (generations, already carried by `Q`) `× 3` (the Z₃ quotient). Reading it as "`3²` directional couplings, the same `9` that fixes α" matches the right number to the **wrong decomposition**.
 - It explains why the phase is a *pure number* rather than a multiple of `π` — the natural target of suspicion. `Δ` is a ratio of invariants; the `1/3` is a quotient, not an angle.
 
-**The reduction: `Δ = Q`.** The target `Δ = 2/3` is numerically the Koide invariant `Q = 2/3`. That the two coincide is **not** an algebraic identity — over random mass triples `|Δ − Q|` runs to `O(1)`, while the charged leptons give `|Δ − Q| = 2.8 × 10⁻⁵` (§C3). So "the Z₃-invariant generation phase equals the Koide invariant" is a genuine second relation the leptons satisfy, and given the **derived** `Q = 2/3` (§5b) it yields `Δ = 2/3`, i.e. `δ = 2/9`. **Two magic numbers collapse to one.** What is still missing is any reason for `Δ = Q` — a phase equalling a mass-ratio invariant — so this is a *reduction, not a derivation*.
+**A proposed reduction `Δ = Q` — and its refutation.** The target `Δ = 2/3` is numerically the Koide invariant `Q = 2/3`, which invites reading them as one relation ("the Z₃-invariant generation phase equals the Koide invariant"), so that the derived `Q = 2/3` would *yield* `Δ = 2/3` and two magic numbers would collapse to one. **That reduction is false.** `Δ` and `Q` are independent functions on mass-triple space:
+
+- Sample mass triples conditioned on `Q = 2/3` (±0.001): `Δ` spans `0.18 … 0.78`, median `0.71`, with only **6%** landing within `0.01` of `2/3`. Knowing `Q = 2/3` tells you essentially nothing about `Δ`.
+- The sharpest single counterexample is real: the `(c, b, t)` triple has `Q = 0.6694` — within `0.4%` of `2/3` — yet `Δ = 0.2060`, a factor of **`3.24`** away. A family with Koide's invariant at `2/3` whose phase is nowhere near it.
+
+(The `(c,b,t)` masses are scheme-dependent parameters, not observables, per §5d — but that objection does not apply here. The claim being tested is the *mathematical* one, whether `Q` determines `Δ` as functions of a triple of positive reals; the 4000-sample conditional test uses purely random triples and no physics at all.)
+
+So `Δ = 2/3` and `Q = 2/3` are **two independent facts**, not one. The earlier "`|Δ − Q| = 2.8 × 10⁻⁵` while random triples give `O(1)`" observation is real but does not establish a relation — it is what "both happen to equal `2/3`" looks like. `Q = 2/3` is derived (§5b); `Δ = 2/3` is **not**, and is not implied by it.
+
+What can honestly be said is weaker: the substrate's transverse fraction `2/3` appears **twice** — once in the amplitude sector (`A² = 2 ⟹ Q = 2/3`) and once, independently, in the phase sector (`Δ = 2/3`). That is a structural coherence of the same kind as `sin²θ_W = 3/8` matching the SU(5) normalization (§2) — suggestive, unfitted, and **not a derivation of either**.
 
 **Honest precision — the `10⁻⁷` agreement is not evidence.** The `7.9 × 10⁻⁷` figure above is obtained *conditional on `Q = 2/3` exactly*. Extracting `δ` instead from a free three-parameter fit to the three measured masses (assuming nothing, not even `Q`) gives `δ = 0.2222296` — a **systematic of `3.4 × 10⁻⁵`** between the two legitimate extractions, `43×` larger than the celebrated agreement. The whole three-phase picture is only accurate to `~10⁻⁵` (the `Q` defect). So:
 
