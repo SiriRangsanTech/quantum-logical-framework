@@ -61,6 +61,15 @@ H. THE UNIT AUDIT (corrects G2)
    the invariant the masses are actually built from, e3 = -1/2 + cos(Delta)
    /sqrt2, is no more 5-smooth (0.27% off) than the mass ratios of G1.
 
+I. PRICING THE TWO CHANNELS (an Occam curve)
+   Arc-over-radius reaches the experimental floor at 3 BITS (with 2/3, the
+   cheapest non-trivial fraction) and cannot improve; circle-division needs
+   14 bits and improves at every budget on the way -- structure vs fit, an
+   11-bit gap.  And 2/3 is the only rational in the measured band below
+   denominator 4609, so the arc channel has no freedom to tune.  What n = 2
+   and R = 3 would have to be, why part G3's trap does not apply to them,
+   and why this is common cause with Q = 2/3 rather than implication.
+
 No QLF imports are required.
 """
 
@@ -1002,6 +1011,98 @@ def unit_audit():
     print("     rational is thereby within census reach does NOT.")
 
 
+# ---------- I. Occam curve: arc-over-radius vs circle-division ----------
+
+def occam_curve(kind, target, bmax=15):
+    """Best fit to `target` achievable at each description-length budget.
+
+    A fraction n/d costs log2(n*d) bits.  `kind` fixes how the fraction is
+    read as an angle: 'arc' means Delta = n/d radians (n unit arc-steps at
+    radius d); 'turn' means Delta = 2 pi n/d (n parts of a d-fold division).
+    """
+    best = [None] * (bmax + 1)
+    lim = 2 ** bmax
+    for d in range(1, lim + 1):
+        for n in range(1, lim // d + 1):
+            if math.gcd(n, d) != 1:
+                continue
+            v = 2 * math.pi * n / d if kind == "turn" else n / d
+            e = abs(v / target - 1)
+            b = max(2, (n * d - 1).bit_length())
+            if best[b] is None or e < best[b][0]:
+                best[b] = (e, n, d)
+    out, run = [], None
+    for b in range(2, bmax + 1):          # make it cumulative: budget <= b
+        if best[b] is not None and (run is None or best[b][0] < run[0]):
+            run = best[b]
+        out.append((b, run))
+    return out
+
+
+def occam_audit():
+    """Part H left two channels standing or falling; this prices them.
+
+    How many bits of arithmetic does each hypothesis class need to spend to
+    reach the measured phase?  A structure pays once and saturates at the
+    experimental floor; a fit pays steadily and keeps improving."""
+    print("\n=== I. PRICING THE TWO CHANNELS: AN OCCAM CURVE ===\n")
+    DM, SD = 0.666689, 0.000025           # free 3-parameter fit, part C
+
+    print(f"I1. Best fit to the measured Delta = {DM} reachable on a budget of")
+    print("  b bits, in each channel (a fraction n/d costs log2(n*d) bits):\n")
+    print(f"  {'bits':>4} | {'circle-division  2 pi n/d':>30}"
+          f" | {'arc-over-radius  n/d':>26}")
+    print("  " + "-" * 5 + "+" + "-" * 32 + "+" + "-" * 28)
+    for (b, t), (_, a) in zip(occam_curve("turn", DM),
+                              occam_curve("arc", DM)):
+        ts = f"{t[1]:>5d}/{t[2]:<6d} err {t[0]:.2e}" if t else "-"
+        as_ = f"{a[1]:>4d}/{a[2]:<5d} err {a[0]:.2e}" if a else "-"
+        print(f"  {b:>4} | {ts:>30} | {as_:>26}")
+    print("\n  ARC reaches the experimental floor (3.3e-5, the free-fit")
+    print("  systematic of part C) at 3 BITS -- with 2/3, the cheapest")
+    print("  non-trivial fraction there is -- and never improves, because it")
+    print("  cannot: it is already at the floor.  That is what a structure")
+    print("  looks like.  CIRCLE-DIVISION needs 14 BITS to match it, and")
+    print("  improves smoothly at every budget along the way.  That is what a")
+    print("  fit looks like.  The gap is 11 bits ~ 2000 : 1.\n")
+
+    print("I2. RIGIDITY -- in the arc channel there is nothing else to choose.")
+    lo, hi = DM - 2 * SD, DM + 2 * SD
+    other = None
+    for R in range(1, 60000):
+        for n in (round(2 * R / 3) - 1, round(2 * R / 3), round(2 * R / 3) + 1):
+            if n > 0 and lo <= n / R <= hi and abs(n / R - 2 / 3) > 1e-15:
+                other = (n, R)
+                break
+        if other:
+            break
+    print(f"  Inside the 2-sigma band [{lo:.6f}, {hi:.6f}], 2/3 is the ONLY")
+    print(f"  rational value with denominator below {other[1]}; the next distinct")
+    print(f"  one is {other[0]}/{other[1]}.  So committing to a small radius leaves")
+    print("  exactly ONE candidate -- no freedom to tune.  The circle-division")
+    print("  channel already has two (33/311, 40/377) below q = 400.\n")
+
+    print("I3. WHAT n = 2 AND R = 3 WOULD HAVE TO BE.")
+    print("  R = 3 : the three spatial axes -- substrate_spatial_dimension,")
+    print("          machine-verified (QLF_Generations), NOT the imposed")
+    print("          3-axis filter of part G3.  Different object, different")
+    print("          provenance; the trap does not apply.")
+    print("  n = 2 : the two transverse axes -- the same 6 = 2+1-per-axis")
+    print("          split that supplies A^2 = 2 in the derived Q = 2/3.")
+    print("  Note this is COMMON CAUSE, not implication: Q = 2/3 does not imply")
+    print("  Delta = 2/3 (part E refuted that, as functions on mass-triple")
+    print("  space), but one geometric split can feed both -- as an amplitude")
+    print("  in the Koide sector and as a curvature in the phase sector.\n")
+
+    print("I4. HONEST LIMIT.  This is an IDENTIFICATION, not a derivation --")
+    print("  the same status as the A^2 = 2 identification it leans on.  No")
+    print("  substrate computation yet produces '2 arc-steps at radius 3' for")
+    print("  the lepton phase; parts H-I say only that any derivation must have")
+    print("  that shape and that the shape is cheap and rigid.  What would")
+    print("  close it: a curvature computed ON the ladder closures whose arc")
+    print("  count and radius are read off the geometry, not matched to 2/3.")
+
+
 def main():
     select_topologies()
     koide_audit()
@@ -1011,6 +1112,7 @@ def main():
     delta_two_thirds_audit()
     mass_ratio_map_audit()
     unit_audit()
+    occam_audit()
 
 
 if __name__ == "__main__":

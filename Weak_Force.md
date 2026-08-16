@@ -286,6 +286,35 @@ $$e_3 \;=\; \frac{27\prod\sqrt{m_k}}{\left(\sum\sqrt{m_k}\right)^3} \;=\; -\tfra
 
 > **Net.** §5c‴'s reshaping — three masses reduce to one small rational `Δ` — **stands**. Its closing claim that the rational is thereby within census reach is **corrected**: it holds in radians alone, the circle-division route is excluded outright, and the invariant the masses are actually built from is no more census-shaped than the masses. What is gained is a constraint on the shape of any derivation: **the phase must arise as arc-over-radius (a curvature), never as a division of the circle.** Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §H.
 
+### 5c⁵. Pricing the two channels — structure costs 3 bits, the fit costs 14
+
+§5c⁗ left one channel standing and one falling on a single comparison (denominator 3 vs 311). That comparison can be made properly. Price each hypothesis class by **description length**: a fraction `n/d` costs `log₂(nd)` bits, and ask what accuracy each channel buys at each budget, against the free-fit `Δ = 0.666689 ± 0.000025`.
+
+| bits | circle-division `2πn/d` | arc-over-radius `n/d` |
+|---|---|---|
+| 3 | `1/8` — `1.8 × 10⁻¹` | **`2/3` — `3.3 × 10⁻⁵`** |
+| 4 | `1/9` — `4.7 × 10⁻²` | `2/3` — `3.3 × 10⁻⁵` |
+| 6 | `2/19` — `8.0 × 10⁻³` | `2/3` — `3.3 × 10⁻⁵` |
+| 8 | `5/47` — `2.6 × 10⁻³` | `2/3` — `3.3 × 10⁻⁵` |
+| 9 | `7/66` — `4.4 × 10⁻⁴` | `2/3` — `3.3 × 10⁻⁵` |
+| 13 | `26/245` — `1.5 × 10⁻⁴` | `2/3` — `3.3 × 10⁻⁵` |
+| **14** | **`33/311` — `2.3 × 10⁻⁵`** | `2/3` — `3.3 × 10⁻⁵` |
+
+**Arc-over-radius hits the experimental floor at 3 bits** — with `2/3`, the cheapest non-trivial fraction there is — and then never improves, *because it cannot*: it is already at the `3.3 × 10⁻⁵` free-fit systematic of §5c′. That is the signature of a structure. **Circle-division needs 14 bits** to match it and improves smoothly at every budget along the way — the signature of a fit. The gap is **11 bits ≈ 2000 : 1**.
+
+**Rigidity: the arc channel has nothing else to choose.** Inside the `2σ` band `[0.666639, 0.666739]`, `2/3` is the **only** rational value with denominator below `4609` (the next distinct one is `3073/4609`). Commit to a small radius and exactly one candidate exists — there is no tuning freedom. The circle-division channel already carries two below `q = 400`.
+
+**What `n = 2` and `R = 3` would have to be.**
+
+| | reading | provenance |
+|---|---|---|
+| `R = 3` | the three spatial axes | `substrate_spatial_dimension = 3`, machine-verified ([`QLF_Generations`](lean/QLF_Generations.lean), `num_generations_eq_three`) — **not** the imposed 3-axis filter of §5c‴'s trap. Different object, different provenance; the trap does not apply |
+| `n = 2` | the two transverse axes | the same `6 = 2+1`-per-axis split that supplies `A² = 2` in the derived `Q = 2/3` (§5b) |
+
+This is **common cause, not implication.** §5c′ refuted `Δ = Q` as a relation between functions on mass-triple space, and that refutation stands untouched — `Q = 2/3` does not imply `Δ = 2/3`. What §5c⁗–5c⁵ add is that *one* geometric split can feed both: as an **amplitude** in the Koide sector and as a **curvature** in the phase sector. That is why the substrate's transverse fraction shows up twice without either being derivable from the other.
+
+> **Honest limit.** This is an **identification**, at exactly the status of the `A² = 2` identification it leans on (§5b) — not a derivation. No substrate computation yet produces "2 arc-steps at radius 3" for the lepton phase; §§5c⁗–5c⁵ establish only that any derivation must have that *shape*, and that the shape is cheap and rigid where the alternative is neither. **What would close it:** a curvature computed *on* the ladder closures, whose arc count and radius are read off the geometry rather than matched to `2/3`. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §I.
+
 ---
 
 ### 5d. Quarks: it's the mass *difference* that's physical, not the mass
