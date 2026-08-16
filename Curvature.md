@@ -135,6 +135,16 @@ The existing values do not move at all — a deeper layer cannot shorten any dis
 
 **The sign has a machine-verified structural core** ([`lean/QLF_CensusCurvature.lean`](lean/QLF_CensusCurvature.lean)). The measurement is a finite census, however stable; the Lean module supplies what no truncation can. Proven with **no axiom**: the causal parent relation deletes exactly two twists, so adjacency changes the length by exactly `2`, so the graph is **layered** (`length % 4` flips across every edge) and irreflexive — hence **triangle-free**, because three mutual neighbours would need three lengths pairwise differing by `2` and no three naturals do. Also proven: the parent relation **preserves count balance**, so the census really is a graph *on* ZFA closures. One cited bridge — `jost_liu_triangle_free` (Jost & Liu 2014: triangle-free ⟹ `κ ≤ 0`), named because Mathlib carries no discrete optimal transport — makes **`census_nowhere_positively_curved`** a theorem: the possibility graph is nowhere positively curved **at every length**. Note the trade honestly: the numerical result is *stronger* where it applies (`κ < 0`, strict) but truncation-bounded; the theorem is *weaker* (`κ ≤ 0`) and unbounded in scope. Strict negativity does not follow from triangle-freeness and remains numerical.
 
+**What the sign closes: a wrong route to the Yang–Mills mass gap.** Positive Ollivier curvature buys a *spectral gap* — Ollivier's graph Lichnerowicz bound, `κ ≥ κ₀ > 0` on every edge `⟹ λ₁ ≥ κ₀`. That makes "the gap is the curvature of the possibility graph" a natural-looking alternative to QLF's actual derivation (the gap **is** the `log 2` closure quantum, `gaugeMassGap`, [`QLF_MassGap`](lean/QLF_MassGap.lean)). **The route is closed, twice over.** The hypothesis fails structurally — `census_nowhere_positively_curved` proves `κ ≤ 0` at every length, so the bound yields nothing. And the conclusion fails empirically: the normalized-Laplacian gap of the census collapses geometrically as the census deepens,
+
+| census | component | `λ₁` |
+|---|---|---|
+| `L ≤ 8` | 14 vertices | `0.3169` |
+| `L ≤ 10` | 119 vertices | `0.0810` |
+| `L ≤ 12` | 1572 vertices | `0.0192` |
+
+— a factor of `≈ 4` per added layer, heading to zero, which is exactly what a hyperbolic (tree-like) graph does. **The possibility graph has no spectral gap, so it is not where a mass gap can come from.** That leaves QLF's `log 2` derivation not merely intact but preferred, by elimination of the competitor. (It also puts the census emphatically outside the Ramanujan/expander class, so the *graph* Riemann hypothesis of the Ihara zeta fails here too — a fact about this graph, carrying no implication for the classical `ζ` or for [`QLF_Riemann`](lean/QLF_Riemann.lean).)
+
 The notion was found by looking for what the lepton Koide phase would need ([`Weak_Force.md`](Weak_Force.md) §5c⁷). **It does not supply that phase** — there is no positive interior curvature anywhere and no value equal to `2/3` — so the curvature route to `Δ` is closed at all three notions. The notion itself outlived the question that produced it.
 
 ## 2. Two deformations: expand and contract
