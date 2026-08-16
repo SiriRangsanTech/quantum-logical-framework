@@ -173,7 +173,31 @@ This is visible in the moment expansion: `Σcos = 0` and `Σcos² = 3/2` are `δ
 
 At that honest precision, with experimental errors propagated (dominated by `m_τ = 1776.86 ± 0.12`), the free fit gives `A² = 1.999963 ± 0.000041` and `Δ = 0.666689 ± 0.000025` — so `A² = 2` sits at `−0.91 σ` and `Δ = 2/3` at `+0.89 σ`. **Neither is excluded.**
 
-**What cannot supply the phase.** The Pauli fold **cannot**: the fold group is `μ₄ = {±I, ±iI}`, the half-spin signature is one bit (`−I` vs `+I`), and the free-energy quantum is one bit (`ΔF = −log 2`). A *finite* group has no continuous parameter, so no amount of fold structure yields a real angle. One-bit precision does do one useful thing — it sets the resolution floor, which is exactly what rules the `10⁻⁷` chase out of court. A derivation must therefore produce `Δ = 2/3` as a ratio of **census counts** with the Z₃ quotient already built in, *and* produce the common `~10⁻⁵` correction that `Q` and `Δ` share. **Not derived. Consistent, reduced, and open.** That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+**What cannot supply the phase.** The Pauli fold **cannot**: the fold group is `μ₄ = {±I, ±iI}`, the half-spin signature is one bit (`−I` vs `+I`), and the free-energy quantum is one bit (`ΔF = −log 2`). A *finite* group has no continuous parameter, so no amount of fold structure yields a real angle. One-bit precision does do one useful thing — it sets the resolution floor, which is exactly what rules the `10⁻⁷` chase out of court. A derivation must therefore produce `Δ = 2/3` as a ratio of **census counts** with the Z₃ quotient already built in. **Not derived. Consistent, reduced, and open.**
+
+### 5c′. The residual: one number, and a much larger puzzle behind it
+
+**There is no "common `10⁻⁵` correction to `Q` and `Δ`."** That was an over-reading. With experimental errors propagated, both defects are `m_τ` noise:
+
+| | defect | uncertainty | |
+|---|---|---|---|
+| `A² − 2` | `−3.69 × 10⁻⁵` | `± 4.1 × 10⁻⁵` | `−0.91 σ` — **not significant** |
+| `Δ − 2/3` | `+2.22 × 10⁻⁵` | `± 2.5 × 10⁻⁵` | `+0.89 σ` — **not significant** |
+| `m_μ/m_e` | `+9.83 × 10⁻⁶` | `± 2.2 × 10⁻⁸` | `+452 σ` — **significant** |
+
+Exactly **one** number needs explaining: the model (`A² = 2` *and* `Δ = 2/3` both exact, `M` the only freedom) overpredicts `m_μ/m_e` by **`+9.83 ppm`**. The locus is the **e–μ sector** — which is also where the blind ladder carries its one structural asymmetry: `e = ^<v>` and `μ = ^^<vv>` share axis content `{x,y}`, while only `τ = ^^</>vv\` engages `z` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A). The symmetric three-phase ansatz treats all three alike; the substrate does not. Suggestive of where a correction lives — **not** a calculation of it.
+
+**The larger puzzle: why the relation survives radiative corrections at all.** `Q` is invariant under `mₖ → c·mₖ`, so flavour-*universal* corrections cancel exactly; only the flavour-dependent `log mₖ` terms can move it. Those are not small — `(α/π)·ln(m_μ/m_e) ≈ 1.24 × 10⁻²`. Running the pole masses to a common scale with one-loop QED gives
+
+$$Q_{\text{running}} - 2/3 \;\approx\; +1.13 \times 10^{-3},$$
+
+**183× worse than the pole-mass defect** of `−6.2 × 10⁻⁶`. And there is **no scale that rescues it**: the `μ`-dependence enters as a common `ln μ` factor, which cancels in `Q`, so `Q_running` is essentially scale-*independent* and never returns to `2/3` (verified from `1 MeV` to `10¹² MeV`, §D). **Koide is a pole-mass relation, full stop.**
+
+So the real question is not "where does `9.8 ppm` come from" but **"why is the `1.1 × 10⁻³` absent"** — a discrepancy 115× larger. This is the long-standing Koide puzzle (it is what Sumino's family-gauge cancellation was built to address).
+
+**QLF already answers that one — and was committed to the answer before the question arose.** §5d's principle is that *only observables carry physical mass*: the quoted quark masses are "scheme-dependent *running* Lagrangian parameters (MS-bar at a chosen scale), never measured," which is why QLF **predicts** clean mass relations live among the observables and are absent among the quark parameters. The pole mass is the on-shell, gauge-invariant, IR-complete observable — precisely what a ZFA closure *is*. A running mass is bookkeeping. So the substrate relation must hold for **pole** masses, and the `183×` preference for pole over running is that prediction confirmed. One principle — observables are physical, schemes are not — yields both the *failure* of quark-Koide (§5d) and the *pole-mass form* of lepton-Koide. Neither was fitted.
+
+**The `9.83 ppm` itself is not derived, and is not being fitted.** Candidates checked and **rejected**: `1/(24·48·96)` from the blind-ladder orbit sizes (`9.04 × 10⁻⁶`, 8% off — an exact census count must come out *exact*, so an 8% miss is a failure, not a near-miss); `2(α/π)²` (10% off); `α²/2π` (14% off). With `α`, `π` and small rationals, any single number can be matched to a few percent; that is not evidence and none of these are carried as candidates. **Open.** That points at *one* common `~10⁻⁵` correction to the whole three-phase picture rather than two independent coincidences — which is why `2/9` is carried as a flagged candidate (compare the `I_1S ≈ 2π²` near-miss, [`HadronicDepth.md`](HadronicDepth.md)-style honesty) rather than discarded. **`δ` remains a genuine input** — deriving it, and the `10⁻⁵` correction with it, would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
 
 > **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
 

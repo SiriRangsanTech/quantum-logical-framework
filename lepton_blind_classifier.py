@@ -568,10 +568,88 @@ def phase_audit():
     print("  Until then: not derived.  Consistent, reduced, and open.")
 
 
+# ---------- D. the residual, and the radiative puzzle behind it ----------
+
+ALPHA = 1 / 137.035999177
+
+
+def q_running(mu: float) -> float:
+    """
+    Koide Q built from one-loop QED running masses at common scale mu:
+        mbar_k(mu) = M_k / (1 + (alpha/pi)[1 + (3/2) ln(mu/M_k)])
+    """
+    m = [M / (1 + (ALPHA/math.pi)*(1 + 1.5*math.log(mu/M)))
+         for M in (ME, MMU, MTAU)]
+    return sum(m) / (sum(math.sqrt(x) for x in m))**2
+
+
+def residual_audit():
+    print("\n=== D. THE RESIDUAL, AND THE LARGER PUZZLE BEHIND IT ===\n")
+
+    print("D1. There is no 'common 1e-5 correction to Q and Delta'.")
+    (a2m, a2s), (dm, ds) = mc_phase_errors()
+    w = koide_weights(2/9)
+    pred, obs = w[2]/w[1], MMU/ME
+    ru = math.hypot(D_MMU/MMU, D_ME/ME)
+    rows = [("A^2 - 2", a2m-2, a2s), ("Delta - 2/3", 3*dm-2/3, 3*ds),
+            ("m_mu/m_e (rel)", pred/obs-1, ru)]
+    print(f"  {'quantity':>16} {'defect':>12} {'+- unc':>12} {'sigma':>10}")
+    for n, d, s in rows:
+        print(f"  {n:>16} {d:+12.3e} {s:12.1e} {d/s:+10.1f}"
+              f"   {'SIGNIFICANT' if abs(d/s) > 3 else 'noise'}")
+    print("\n  The Q and Delta defects are m_tau noise.  EXACTLY ONE number is")
+    print(f"  significant: m_mu/m_e is overpredicted by {(pred/obs-1)*1e6:+.2f} ppm.")
+    print("  Its locus -- the e-mu sector -- is where the blind ladder carries")
+    print("  its one asymmetry: e and mu share axes {x,y}, only tau engages z.\n")
+
+    print("D2. Q is blind to universal shifts, so only log(m_k) terms can move it.")
+    c = 1.7
+    Qc = ((c*ME + c*MMU + c*MTAU)
+          / (math.sqrt(c*ME)+math.sqrt(c*MMU)+math.sqrt(c*MTAU))**2)
+    print(f"  m_k -> {c}*m_k :  Q = {koide_Q():.12f} -> {Qc:.12f}  (exactly equal)")
+    print(f"  flavour-dependent scale (alpha/pi)*ln(m_mu/m_e) = "
+          f"{(ALPHA/math.pi)*math.log(MMU/ME):.2e}\n")
+
+    print("D3. Radiative corrections are 100x LARGER than the residual,")
+    print("    and no scale rescues them:")
+    print(f"  {'mu (MeV)':>12} {'Q(running)':>14} {'Q - 2/3':>12}")
+    for mu in (1.0, 1e3, MTAU, 1e6, 1e12):
+        print(f"  {mu:12.3g} {q_running(mu):14.9f} {q_running(mu)-2/3:+12.2e}")
+    print(f"  {'POLE':>12} {koide_Q():14.9f} {koide_Q()-2/3:+12.2e}")
+    print(f"\n  running is {abs(q_running(1e4)-2/3)/abs(koide_Q()-2/3):.0f}x worse, and")
+    print("  essentially SCALE-INDEPENDENT (the ln mu is universal, so it cancels")
+    print("  in Q).  Koide is a POLE-MASS relation, full stop.")
+    print("  => the real question is not 'where does 9.8 ppm come from' but")
+    print("     'why is the 1.1e-3 absent' -- a discrepancy 115x larger.\n")
+
+    print("D4. QLF answers THAT one, and was committed to the answer already.")
+    print("  Weak_Force.md sec 5d: only observables carry physical mass; the")
+    print("  quoted quark masses are scheme-dependent running parameters, never")
+    print("  measured -- which is why quark-Koide is PREDICTED to fail.  The pole")
+    print("  mass is the on-shell, gauge-invariant, IR-complete observable, which")
+    print("  is exactly what a ZFA closure is; a running mass is bookkeeping.")
+    print("  So the substrate relation must hold for POLE masses -- and the 183x")
+    print("  preference for pole over running is that prediction confirmed.")
+    print("  One principle, two consequences (5d and this), neither fitted.\n")
+
+    print("D5. The 9.83 ppm itself: NOT derived, and not being fitted.")
+    resid = pred/obs - 1
+    for name, val in (("1/(24*48*96)  [orbit sizes]", 1/(24*48*96)),
+                      ("2*(alpha/pi)^2", 2*(ALPHA/math.pi)**2),
+                      ("alpha^2/(2pi)", ALPHA**2/(2*math.pi))):
+        print(f"  {name:28} = {val:.4e}  off by {abs(val/resid-1)*100:.0f}%  REJECTED")
+    print(f"  {'residual':28} = {resid:.4e}")
+    print("  An exact census count must come out EXACT: an 8% miss is a failure,")
+    print("  not a near-miss.  With alpha, pi and small rationals any single")
+    print("  number matches to a few percent, so none of these are candidates.")
+    print("  Status: open.")
+
+
 def main():
     select_topologies()
     koide_audit()
     phase_audit()
+    residual_audit()
 
 
 if __name__ == "__main__":
