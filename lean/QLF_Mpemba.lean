@@ -105,8 +105,7 @@ theorem equal_length_unequal_relaxation (n : ℕ) (hn : 0 < n) (bs : List Bool)
       maxExcursion (pairMatching bs) = 1 ∧ maxExcursion (nested n) = n := by
   refine ⟨?_, maxExcursion_pairMatching bs hne, maxExcursion_nested n⟩
   rw [pairMatching_length, hbs]
-  simp [nested, poss, negs]
-  omega
+  simp [nested, poss, negs] <;> omega
 
 /-- The same statement as an ordering: at equal length the nested preparation relaxes strictly slower
     once `n > 1`, though neither is farther from balance than the other. -/
@@ -132,8 +131,7 @@ theorem level_pairMatching : ∀ bs : List Bool, level (pairMatching bs) = 0
 
 /-- The length of a nested fold is twice its depth. -/
 theorem nested_length (d : ℕ) : (nested d).length = 2 * d := by
-  simp [nested, poss, negs]
-  omega
+  simp [nested, poss, negs] <;> omega
 
 /-- **A Mpemba instance, and an unbounded family of them.** For every depth `d > 1` and every `n > d`
     there are two balanced preparations — closing to the *same* equilibrium — such that the one with
@@ -154,7 +152,11 @@ theorem mpemba_instance (n d : ℕ) (hd : 1 < d) (hdn : d < n) :
     level_nested d, ?_, maxExcursion_nested d⟩
   · rw [nested_length, pairMatching_length, List.length_replicate]
     omega
-  · exact maxExcursion_pairMatching _ (by simp [List.replicate_eq_nil_iff]; omega)
+
+  · refine maxExcursion_pairMatching _ ?_
+    obtain ⟨k, hk⟩ : ∃ k, n = k + 1 := ⟨n - 1, by omega⟩
+    rw [hk]
+    simp [List.replicate_succ]
 
 /-- The same instance stated as the anomalous ordering itself: more energy, strictly faster closure. -/
 theorem mpemba_ordering (n d : ℕ) (hd : 1 < d) (hdn : d < n) :
