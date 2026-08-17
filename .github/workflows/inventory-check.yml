@@ -1,0 +1,44 @@
+name: Census inventory check
+
+# The inventory database (data/census_inventory.json) records what enumeration
+# discovers — counts, listenings and QuCalc folds — and asserts every invariant we
+# have proven in Lean against freshly enumerated data. This job runs that check, so
+# a change to twist_core.py that breaks one, or a hand-edited database, fails here
+# rather than being noticed later.
+#
+# `--quick` re-enumerates only the cheap lengths (fold ≤ 6, depth ≤ 12 — seconds),
+# compares them against the stored values, and asserts every invariant over the
+# whole stored file. The deep lengths are not re-enumerated on every push; extend
+# them deliberately with `--twist-len` / `--phase-len` and commit the result.
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'twist_core.py'
+      - 'census_inventory.py'
+      - 'data/census_inventory.json'
+      - '.github/workflows/inventory-check.yml'
+
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'twist_core.py'
+      - 'census_inventory.py'
+      - 'data/census_inventory.json'
+      - '.github/workflows/inventory-check.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify the census inventory
+        run: python3 census_inventory.py --quick

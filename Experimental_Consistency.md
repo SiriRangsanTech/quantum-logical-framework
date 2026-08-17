@@ -189,6 +189,14 @@ depths["16"]
 Counts are absolute; **listenings are capacity-relative**. `_invariants_asserted` lists what every run
 re-checks, and a run that breaks one exits non-zero.
 
+**It is enforced in CI.** [`.github/workflows/inventory-check.yml`](.github/workflows/inventory-check.yml)
+runs `census_inventory.py --quick` on any change to `twist_core.py`, the builder, or the database:
+the cheap lengths are re-enumerated from scratch and compared against what is stored (catching a
+regression in the runtime), and every invariant is asserted over the whole stored file (catching a
+corrupted or hand-edited database). Verified to fail as intended — an off-by-one in a stored count and a
+broken `2ⁿ` invariant were both caught, exit code 1. The deep lengths are not re-enumerated on every
+push; they are extended deliberately with `--twist-len` / `--phase-len` and committed.
+
 ### The data
 
 **Fold census** — every count-balanced twist history, with the Pauli phase it carries:

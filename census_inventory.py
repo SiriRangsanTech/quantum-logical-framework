@@ -47,7 +47,14 @@ deeper as compute allows:
     python3 census_inventory.py --twist-len 8        # push the fold census one step deeper
     python3 census_inventory.py --phase-len 20       # push the depth census deeper
     python3 census_inventory.py --verify             # recheck stored entries, write nothing
+    python3 census_inventory.py --quick              # CI gate: fast subset, seconds not minutes
     python3 census_inventory.py --rebuild            # discard and recompute from scratch
+
+`--quick` is what CI runs. It re-enumerates only the small lengths (fold <= 6,
+depth <= 12, a few seconds), compares them against what is stored, and asserts every
+invariant over the *whole* stored file. So a regression in `twist_core.py` is caught
+by the recomputation, and a corrupted or hand-edited database by the assertions,
+without paying for the deep lengths on every push.
 
 Cost, so the next step is a known quantity: the fold census is exhaustive over 8^L
 histories — length 6 is instant, 8 takes a few minutes, and 10 (10^9) is out of
@@ -343,6 +350,28 @@ def check(db: dict) -> list[str]:
     return fail
 
 
+QUICK_TWIST_LEN = 6
+QUICK_PHASE_LEN = 12
+
+
+def compare_shared(fresh: dict, stored: dict) -> list[str]:
+    """Compare every length present in both, ignoring depth of coverage."""
+    out = []
+    f_folds = fresh.get("folds", {}).get("by_length", {})
+    s_folds = stored.get("folds", {}).get("by_length", {})
+    for L in sorted(set(f_folds) & set(s_folds), key=int):
+        for field in ("count", "n_plus", "n_minus", "n_imaginary", "signed_amplitude"):
+            if f_folds[L][field] != s_folds[L][field]:
+                out.append(f"fold census length {L}: {field} recomputed as "
+                           f"{f_folds[L][field]}, stored says {s_folds[L][field]}")
+    f_dep, s_dep = fresh.get("depths", {}), stored.get("depths", {})
+    for L in sorted(set(f_dep) & set(s_dep), key=int):
+        for field in ("total_ways", "one_pass_ways", "deepest_stratum", "modal_depth", "strata"):
+            if f_dep[L][field] != s_dep[L][field]:
+                out.append(f"depth census length {L}: {field} differs from stored")
+    return out
+
+
 def _arg(flag: str, default: int) -> int:
     if flag in sys.argv:
         return int(sys.argv[sys.argv.index(flag) + 1])
@@ -351,12 +380,33 @@ def _arg(flag: str, default: int) -> int:
 
 def main() -> int:
     verify = "--verify" in sys.argv
+    quick = "--quick" in sys.argv
     rebuild = "--rebuild" in sys.argv
 
     stored = {}
     if os.path.exists(DB_PATH) and not rebuild:
         with open(DB_PATH) as fh:
             stored = json.load(fh)
+
+    if quick:
+        # CI gate: recompute the cheap lengths from scratch, compare, then assert
+        # every invariant over the whole stored file.
+        if not stored:
+            print(f"FAIL: {DB_PATH} missing")
+            return 1
+        recomputed = build(QUICK_TWIST_LEN, QUICK_PHASE_LEN, None)
+        fails = check(stored) + compare_shared(recomputed, stored)
+        for msg in fails:
+            print(f"FAIL: {msg}")
+        if fails:
+            return 1
+        nf = len(stored["folds"]["by_length"])
+        nd = len(stored["depths"])
+        print(f"quick check passed: recomputed fold census to length {QUICK_TWIST_LEN} and depth "
+              f"census to length {QUICK_PHASE_LEN}, matched the stored values, and all "
+              f"{len(stored['_invariants_asserted'])} proven invariants hold over the full stored "
+              f"database ({nf} fold lengths, {nd} depth lengths).")
+        return 0
 
     twist_len = _arg("--twist-len", max(DEFAULT_TWIST_LEN, stored.get("max_twist_length", 0)))
     phase_len = _arg("--phase-len", max(DEFAULT_PHASE_LEN, stored.get("max_phase_length", 0)))
