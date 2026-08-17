@@ -95,12 +95,12 @@ theorem level_cons (x : TopoElement) (t : TopoString) : level (x :: t) = imb x +
 
 @[simp] theorem hmax_cons_pos (c : Int) (t : TopoString) :
     hmax c (TopoElement.phase LogicPhase.pos :: t) = max c (hmax (c + 1) t) := by
-  have h : c + imb TopoElement.phase LogicPhase.pos = c + 1 := by simp [imb]
+  have h : c + imb (TopoElement.phase LogicPhase.pos) = c + 1 := by simp [imb]
   rw [hmax_cons, h]
 
 @[simp] theorem hmax_cons_neg (c : Int) (t : TopoString) :
     hmax c (TopoElement.phase LogicPhase.neg :: t) = max c (hmax (c - 1) t) := by
-  have h : c + imb TopoElement.phase LogicPhase.neg = c - 1 := by simp [imb]; ring
+  have h : c + imb (TopoElement.phase LogicPhase.neg) = c - 1 := by simp [imb]; ring
   rw [hmax_cons, h]
 
 @[simp] theorem level_cons_pos (t : TopoString) : level (TopoElement.phase LogicPhase.pos :: t) = level t + 1 := by
@@ -190,8 +190,8 @@ theorem hmax_zeno_prune : ∀ (s : TopoString), NoGauge s → ∀ c : Int,
 
 @[simp] theorem flip_cons (x : TopoElement) (t : TopoString) : flip (x :: t) = flipEl x :: flip t := rfl
 
-@[simp] theorem flipEl_pos : flipEl TopoElement.phase LogicPhase.pos = TopoElement.phase LogicPhase.neg := rfl
-@[simp] theorem flipEl_neg : flipEl TopoElement.phase LogicPhase.neg = TopoElement.phase LogicPhase.pos := rfl
+@[simp] theorem flipEl_pos : flipEl (TopoElement.phase LogicPhase.pos) = TopoElement.phase LogicPhase.neg := rfl
+@[simp] theorem flipEl_neg : flipEl (TopoElement.phase LogicPhase.neg) = TopoElement.phase LogicPhase.pos := rfl
 @[simp] theorem flipEl_gauge : flipEl TopoElement.gauge = TopoElement.gauge := rfl
 
 theorem imb_flipEl (x : TopoElement) : imb (flipEl x) = - imb x := by
