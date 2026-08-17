@@ -130,6 +130,27 @@ theorem balanced_phase_is_real {ts : List Twist} (h : countBalanced ts) :
   · rw [if_neg hc] at hdet
     exact absurd hdet (by norm_num)
 
+/-! ### And there is an exception — exactly where the hypothesis fails
+
+The restriction is genuinely a restriction *by balance*. Drop it and `μ₄` is fully exercised: the
+unbalanced history `^ > /` (one twist on each axis) folds to `−iI`, because `σx σz = −iσy` and
+`σy · (−iσy) = −i·I`. So the hypothesis is load-bearing, not decoration — and the Law of Exceptions
+holds of this law too, its exception living precisely outside the balanced sector (48 such histories at
+length 3 alone). -/
+
+/-- **The unbalanced sector does reach `±i`.** `^ > /` folds to `−iI`. -/
+theorem unbalanced_can_be_imaginary :
+    twistMatrixFold [Twist.up, Twist.right, Twist.slash] = -(Complex.I • (1 : M)) := by
+  show Twist.up.toMatrix * (Twist.right.toMatrix * (Twist.slash.toMatrix * 1)) = _
+  simp only [Twist.toMatrix, mul_one]
+  rw [sigma_xz, mul_neg, mul_smul_comm, sigma_y_sq]
+
+/-- And that witness is indeed **not** count-balanced — so it is an exception to the law's *scope*,
+    not a counterexample to the law. -/
+theorem unbalanced_witness_not_balanced :
+    ¬ countBalanced [Twist.up, Twist.right, Twist.slash] := by
+  simp [countBalanced]
+
 /-- **Established constructively, no axioms.** A count-balanced history folds to `±I`, never `±iI`
     (`balanced_phase_is_real`), so the phase group on closures is `μ₂` rather than the `μ₄` that
     `count_balanced_pauli_closed` allows. The proof is one determinant computation:
@@ -141,7 +162,10 @@ theorem balanced_phase_is_real {ts : List Twist} (h : countBalanced ts) :
     a parity argument on the symplectic form, or the `nf_decomp` phase bookkeeping, would likely serve
     too. **Consequence:** branch amplitudes over the balanced census are signed **integers**, not
     Gaussian integers, so the `μ₄` freedom assumed in `QLF_Degeneracy` is never exercised on closures
-    and every branch weight is a perfect square. -/
+    and every branch weight is a perfect square. **And the law has its exception**, exactly outside its
+    hypothesis: the unbalanced `^ > /` folds to `−iI` (`unbalanced_can_be_imaginary`,
+    `unbalanced_witness_not_balanced`), so balance is load-bearing rather than decorative and `μ₄` is
+    genuinely reached once it is dropped. -/
 theorem balanced_phase_real_summary : True := trivial
 
 end QLF.BalancedPhaseReal
