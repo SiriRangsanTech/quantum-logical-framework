@@ -99,6 +99,51 @@ $$
 
 Only ZFA-closed histories become events. All other histories remain pure possibility. This is the precise mathematical realization of possibilism: the set of all logically admissible systems exists *a priori*; physics is simply the subset that satisfies ZFA. The RhoQuCalc formalization of this ontology is in [possibilist-ontology.md](possibilist-ontology.md). Read as an account of **creation** — nothing comes from nothing, everything possible is a priori, and what adds to nothing becomes actual — this is [`Creation.md`](Creation.md). The intelligence implication — that possibilism + ZFA selection + token-persistence makes QLF structurally 4-of-4 on the intelligence axes where LLMs are 1-of-4 — is developed in [`QLF_as_Intelligence.md`](QLF_as_Intelligence.md).
 
+## 3a. It happens every way; what happens in the most ways happens first
+
+Possibilism has an operational face, and it is the working method of this repository, not a decoration
+on it.
+
+> **Nothing happens one way. Everything happens every way that closes. What happens in the most ways
+> happens first — a closure's frequency IS its multiplicity, the census count of ways.**
+
+There is no single history threading the possibility space, no preferred route, no chosen path. Every
+ZFA-closing way is taken. What we call a rate, a frequency, an amplitude, a preference — each is a
+*count of ways*, and the outcome we observe first and most is simply the one realized in the most
+ways. This is the reading enforced in [`Spacetime_Constructor.md`](Spacetime_Constructor.md): the
+census multiplicity is the frequency, read out as space, time, and colour — never a cause.
+
+And the counterpart, which is a statement about **us**, not about the substrate: we cannot hope to
+discover every way. When we exhibit a construction, we have shown that it happens in *some* way. That
+is a real result and worth stating plainly — but it is never the only way, and it must not be dressed
+as one.
+
+### What this demands of the work
+
+1. **Count the ways; don't merely exhibit one.** An existence result is a *lower bound on
+   multiplicity*, and should be read as such. The physical content of a closure is how many ways it
+   happens, so a theorem that counts (`W_1 = 2ⁿ` one-pass closers; the `C(2n,n)` census; the `2`
+   maximal-depth folds) says strictly more than a theorem that witnesses.
+2. **Report the mode, not the mean.** What happens *first* is the argmax of multiplicity. A mean over
+   ways is an average of things that all happen — it need not be a way at all, and it is not what
+   dominates. Where a distribution over ways exists, the modal way is the physical statement and the
+   mean is a summary.
+3. **A claim earns physical content only when it changes a count of ways.** This is the native form of
+   falsifiability here, and it is sharper than the imported kind: a statement that holds for *every*
+   possible multiplicity distribution selects nothing, hence predicts nothing. It is bookkeeping —
+   true, sometimes useful, never evidence. Before offering an identity as support for a mechanism, ask
+   what distribution over ways it would be **false** for. If the answer is "none," it is not support.
+4. **Never present our route as the route.** Independent derivations converging on one result are not
+   redundancy to be pruned — they are *multiplicity*, and multiplicity is exactly what makes a result
+   dominant. The eighteen convergent programs ([`README.md`](README.md)) and the shared `H↔H†`
+   involution behind the Millennium reformulations are this principle showing at the level of the
+   theory itself.
+
+So the machine-verified modules are best read not as *the* derivation of physics but as ways that
+close — each one a realized way, each one a lower bound on how many ways there are. That is why the
+repo's answer to "is this the only way?" is always no, and why that is a strength rather than a
+concession.
+
 ## 4. Zero Free Action as the Sole Fundamental Axiom
 
 We replace every traditional postulate with one imperative:

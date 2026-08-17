@@ -38,6 +38,54 @@ The maximally mixed reduced density matrix $\rho = I/2$ after a single 1/2-spin 
 
 This gives QLF entropy a **constructive microscopic foundation**: the $\log 2$ values appearing throughout this document (per gauge-folded loop, per minimal closure, per Planck area) are not coincidences but consequences of the per-event optimum. Multi-atom structures inherit the rate: a Pauli-closed history of length $2k$ carries $\log \binom{2k}{k}$ nats, recovering $\log 2$ for $k=1$ and the area law in the large-$k$ asymptotic.
 
+## 1b. Inventory: the ways `log 2` arises
+
+`log 2` is the most load-bearing number in the framework, so the ways it arises are worth
+inventorying rather than asserting. This is [`Philosophy.md`](Philosophy.md) §3a applied to a
+constant: **converging independent routes are multiplicity, and multiplicity is what makes a value
+dominant** — but only *independent* routes count. Several appearances below are the same route
+re-exported (`rfl` from the per-event quantum), and saying so is the point of an inventory. The
+`How it arises` column is the honest part.
+
+| # | Way `log 2` arises | Lean anchor | How it arises |
+|---|---|---|---|
+| 1 | **A resolved two-valued distinction against the uniform prior**: `D_KL(δ ‖ ½) = log 2` — the per-event free-energy quantum `ΔF = −log 2` | `binary_kl_delta_uniform` ([QLF_FreeEnergy](lean/QLF_FreeEnergy.lean)) | **Derived** — computed from the KL formula. The atom |
+| 2 | **Counting the ways a pair closes**: the depth-1 census stratum is exactly the boolean words, `2ⁿ` ways, so `log(2ⁿ) = n log 2` — **`log 2` per closure pair because a pair closes in exactly two ways** | `onePass_ways_iff`, `onePass_entropy` ([QLF_ClosureDepth](lean/QLF_ClosureDepth.lean)) | **Derived, independently** — pure combinatorics, no KL, no information theory. The multiplicity *is* the entropy |
+| 3 | **Spin-½ as the atom of information** — the two-valued half-spin closure is one bit | `two_valued_one_bit` ([QLF_SpinorInformation](lean/QLF_SpinorInformation.lean)) | Same as #1, applied to the half-spin atom (Cartan 1913 route) |
+| 4 | **The maximally-mixed single-closure state**: `S(I/2) = −Tr(ρ ln ρ) = log 2` | §1a above (von Neumann route) | **Derived, independently** — spectral, not combinatorial |
+| 5 | **MRE saturation**: the binary-partition bound `D_KL ≤ log 2`, saturated only by 50/50 closure | [MRE.md](MRE.md) §2.1; `binary_kl_uniform_le_log_two_endpoint`, `cumulative_kl_le_length_log_two` ([QLF_VacuumAlignment](lean/QLF_VacuumAlignment.lean)) | **Derived as a ceiling** — `log 2` as the maximum per step, a different modality from #1 (bound vs value) |
+| 6 | **The local clock tick** — one closure advances local time by one `log 2` | `local_clock_tick_is_log_two` ([QLF_LocalClock](lean/QLF_LocalClock.lean)) | Re-export of #1 into the time synthesis |
+| 7 | **Holographic area law** `S = 4πR² log 2` — per-event quantum × boundary event count | `per_event_entropy`, `holographic_entropy_eq` ([QLF_GravityFromDelay](lean/QLF_GravityFromDelay.lean)) | Re-export of #1 × a **counting** result (the event count is the independent content) |
+| 8 | **Bekenstein–Hawking `¼`** — the substrate→continuum factor is `4 log 2` | `residual_is_quarter_times_quantum` ([QLF_HolographicDensity](lean/QLF_HolographicDensity.lean)) | `rfl` from #7 — bookkeeping, not a new way |
+| 9 | **The Immirzi parameter** — LQG's puncture entropy IS the per-event quantum | `puncture_is_log_two` ([QLF_LoopQuantumGravity](lean/QLF_LoopQuantumGravity.lean)) | `rfl` from #1 — but the *convergence* is the content: LQG reached `log 2` independently of QLF ([LQG_QLF.md](LQG_QLF.md)) |
+| 10 | **The cosmological constant** `Ω_Λ = log 2 = 0.6931` vs measured `0.6889` | `Omega_Lambda_QLF`, `Omega_Lambda_4_gauge_eq` ([QLF_CosmologicalConstant](lean/QLF_CosmologicalConstant.lean)) | **Predicted and measured** — posited from #1, then confirmed to 0.6%; the 4-gauge counterfactual `2 log 2` shows it is not a fit ([Cosmological_Constant.md](Cosmological_Constant.md)) |
+| 11 | **The Yang–Mills mass gap** — the gap quantum is the closure quantum | `gaugeMassGap`, `lightest_closure_is_gap_quantum` ([QLF_MassGap](lean/QLF_MassGap.lean)) | Re-export of #1 into the spectral gap |
+| 12 | **Binding strength / the electroweak coupling** — `g` is the binding quantum × channel × packing | `binding_quantum_is_log_two` ([QLF_BindingStrength](lean/QLF_BindingStrength.lean)), `g_eq_binding_quantum` ([QLF_ElectroweakScale](lean/QLF_ElectroweakScale.lean)), `binding_quantum` ([QLF_ClosureBinding](lean/QLF_ClosureBinding.lean)) | Re-export of #1 into the coupling |
+| 13 | **No free duplication** — copying a closure costs `log 2` (Landauer; no-cloning ↔ no-Banach–Tarski) | `duplication_pays_log_two` ([QLF_NoFreeDuplication](lean/QLF_NoFreeDuplication.lean)) | Re-export of #1 as a **cost**, the thermodynamic modality ([Banach_Tarski_QLF.md](Banach_Tarski_QLF.md)) |
+| 14 | **Decay / cascade unlock** — an unlocked closure releases `log 2`; `n` of them release `n log 2` | `unlock_releases_log_two`, `collective_dump_positive` ([QLF_PrimeCascadeDecay](lean/QLF_PrimeCascadeDecay.lean)) | Re-export of #1, sign-flipped (release vs cost) |
+| 15 | **Turbulent cascade energy per closure** | `energyPerClosure`, `energyPerClosure_eq_free_energy_quantum` ([QLF_Kolmogorov](lean/QLF_Kolmogorov.lean)) | Re-export of #1 into the cascade |
+| 16 | **Vacuum / Casimir quantum** | `casimir_vacuum_quantum` ([QLF_Casimir](lean/QLF_Casimir.lean)) | Re-export of #1 into the vacuum |
+| 17 | **Orthogonal distinction in prime resonance** | `orthogonal_distinction_is_one_bit` ([QLF_PrimeResonance](lean/QLF_PrimeResonance.lean)) | Re-export of #1 into the resonance ladder |
+
+### What the inventory shows
+
+**Four independent routes, not seventeen.** Entries 1, 2, 4 and 5 reach `log 2` by genuinely different
+mathematics — information-theoretic (KL of a resolved bit), **combinatorial (counting the ways a pair
+closes)**, spectral (von Neumann entropy of `I/2`), and extremal (the saturated per-step ceiling). The
+remaining thirteen are that quantum *re-exported* into a physical setting, several by `rfl`. Reading
+seventeen appearances as seventeen confirmations would be double-counting, and the method forbids it.
+
+**The combinatorial route (#2) is the one that pays rent.** In the other three, "two" is put in by hand
+— two values of a bit, two eigenvalues of `I/2`, a binary partition. In #2 nothing is assumed binary:
+one enumerates the histories that close in a single pass, finds exactly `2ⁿ` of them, and `log 2` per
+pair falls out of the count. That makes it the derivation the others are shadows of — the `log 2` **is**
+the two ways a pair can close.
+
+**Where a new way would be worth having.** Two routes remain *predicted rather than derived*: `Ω_Λ`
+(#10, confirmed empirically to 0.6% but posited from #1) and the `4 log 2` substrate→continuum factor
+(#8, currently bookkeeping). An independent count yielding either — the way #2 yields the atom — would
+be a genuine addition to this inventory rather than another re-export.
+
 ## 2. Gauge Folding and Microscopic Entropy
 
 | Fold Type          | Particle Class          | Hidden Information          | Constructing Delay | Horizon Type      | Entropy Contribution                  | Radiation Mechanism                  |

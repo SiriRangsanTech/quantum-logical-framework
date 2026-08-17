@@ -247,6 +247,69 @@ def main():
     print("      That is DATA — the freeze-out onset-vs-mass slope + curve steepness")
     print("      from relic abundances / pair-production thresholds. Sim makes the")
     print("      prediction sharp; observation adjudicates it.")
+    print()
+    part_E()
+
+
+# ---------------------------------------------------------------------------
+# Part E — THE DEPTH CENSUS: count the ways at each depth (Philosophy.md §3a).
+#
+# The parts above sample a thermal budget R and ask whether a *chosen* fold
+# closes. This part asks the multiplicity question instead: over the ACTUAL
+# census of count-balanced histories, HOW MANY WAYS close at each exact depth?
+# Per Philosophy.md §3a the count is the physical content, and the MODE — not
+# the mean — is what happens first.
+#
+# Two exact results come straight out of the count (both now Lean theorems in
+# QLF_ClosureDepth.lean):
+#   * W_1 = 2^n  — the depth-1 stratum is exactly the 2^n pair matchings, so its
+#     entropy is n·log 2: **log 2 per closure pair, because a pair closes in
+#     exactly two ways**. This is the one route where the log-2 quantum is
+#     COUNTED rather than defined (Entropy.md §1b, inventory entry #2).
+#   * W_n = 2    — only [+^n −^n] and its mirror reach the maximal depth.
+#
+# And one exact empirical law (Lean-open, one lemma away, NOT axiomatized):
+#   * closure depth == max |prefix imbalance| (the maximum excess of the phase
+#     walk), 0 counterexamples over all balanced histories to length 18. Hence
+#     depth over the census is the maximum of a ±1 bridge, E ~ sqrt(pi*n/2):
+#     a horizon of capacity R closes histories of length ~R^2 — POLYNOMIAL.
+# ---------------------------------------------------------------------------
+def max_excursion(s):
+    """max |prefix imbalance| of the phase walk — the conjectured closure depth."""
+    m = c = 0
+    for x in s:
+        c += x
+        m = max(m, abs(c))
+    return m
+
+
+def part_E():
+    from itertools import product
+    print("E. THE DEPTH CENSUS — how many ways close at each depth (count the ways)")
+    print(f"   {'2n':>4} {'ways C(2n,n)':>13} {'W_1':>7} {'W_max':>6} {'modal d':>8} "
+          f"{'mode frac':>10}  depth==maxexc?")
+    for n in range(1, 9):
+        dist, law_ok = {}, True
+        for s in product((1, -1), repeat=2 * n):
+            if sum(s) != 0:
+                continue
+            s = list(s)
+            d = passes_to_close(s)
+            dist[d] = dist.get(d, 0) + 1
+            if d != max_excursion(s):
+                law_ok = False
+        tot = sum(dist.values())
+        mode = max(dist, key=lambda k: dist[k])
+        print(f"   {2*n:>4} {tot:>13} {dist.get(1,0):>7} {dist.get(n,0):>6} {mode:>8} "
+              f"{dist[mode]/tot:>10.4f}  {'exact' if law_ok else 'FAILS'}")
+    print("   → W_1 = 2^n exactly (two ways per pair ⟹ log 2 per closure, Lean:")
+    print("     onePass_ways_iff / onePass_entropy); W_max = 2 exactly (the nested")
+    print("     singlet and its mirror, Lean: nested_closed_at_d).")
+    print("   → the MODE sits far below the max: shallow closures dominate the census,")
+    print("     so the modal depth is what happens first (Philosophy.md §3a rule 2).")
+    print("   → depth == max|prefix imbalance| holds exactly at every length tested;")
+    print("     the missing Lean step is the per-pass lemma (one pass drops the")
+    print("     maximum excess by exactly 1). Left OPEN, not axiomatized.\n")
 
 
 if __name__ == "__main__":

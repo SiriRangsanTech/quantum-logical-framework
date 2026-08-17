@@ -276,6 +276,45 @@ field-equation work now sits.
 
 ---
 
+## §6c The third arrow: contracted Bianchi, with zero new axioms
+
+The remaining algebra of Jacobson's derivation is the step *out* of the metric form. Given
+`R_ab = κ T_ab + f g_ab`, take the divergence of both sides: conservation `∇^a T_ab = 0` kills the
+matter term, metric compatibility gives `∇^a (f g_ab) = ∂_b f`, and the **contracted Bianchi identity**
+`∇^a R_ab = ½ ∂_b R` handles the left. So
+
+```
+∂_b (f − R/2) = 0   ⟹   f = R/2 − Λ   for a CONSTANT Λ
+```
+
+and substituting back yields `R_ab − ½ R g_ab + Λ g_ab = κ T_ab`, i.e.
+
+```
+G_ab + Λ g_ab = κ T_ab
+```
+
+machine-checked as [`einstein_field_equations`](lean/QLF_BianchiClosure.lean). `Λ` is Jacobson's
+integration constant — the one QLF fixes independently as `Ω_Λ = log 2` (§5), and `κ = 8πG` is §4's
+coefficient. [`metric_form_from_null_probes`](lean/QLF_BianchiClosure.lean) chains §6b directly into
+it, so **arrows two and three compose with nothing left between them**.
+
+**How the differential-geometry boundary is handled — and why it is not an axiom.** QLF's Lean core
+carries no connections, so `∇^a` and `∂_b` cannot be *defined* here. Rather than posit them, the
+calculus is packaged as a **structure**,
+[`DivergenceCalculus`](lean/QLF_BianchiClosure.lean), whose fields are the laws it must satisfy
+(divergence additivity and homogeneity, metric compatibility, gradient linearity, and "vanishing
+gradient ⟹ constant", i.e. connectedness). Every theorem takes an instance as a hypothesis. So the
+module adds **nothing to the axiom inventory** — the boundary is visible in each signature instead,
+and a future construction (Mathlib connections, or a substrate difference calculus) discharges it by
+*building* an instance rather than by deleting an axiom. The two physics inputs, contracted Bianchi and
+conservation, are likewise explicit hypotheses of the main theorem.
+
+**What this leaves.** One arrow: `δQ = T δS ⟹ (R_ab − κ T_ab) k^a k^b = 0`, needing the local Rindler
+construction and Raychaudhuri focusing. That is now the *single* remaining substrate question for the
+field equations, rather than "the tensor derivation" as a whole.
+
+---
+
 ## §7 Honest scope
 
 This anchors the **coefficient and the thermodynamic skeleton** — `8πG = 2π/η`, both inputs being QLF
@@ -287,8 +326,10 @@ It does **not** carry out the full **tensor** derivation — but that derivation
 named arrows (§6b), of which the **algebraic middle one is closed with no axiom**: a symmetric tensor
 annihilating the null cone is a metric multiple, forced by **nine integer lattice probes** rather than a
 continuum of null directions ([`QLF_NullTensorReconstruction`](lean/QLF_NullTensorReconstruction.lean)).
-What is left is the arrow *into* it (local Rindler + Raychaudhuri focusing) and the arrow *out* of it
-(contracted Bianchi fixing `f = −R/2 + Λ`).
+The arrow *out* of it is closed too (§6c): contracted Bianchi plus conservation force `f = R/2 − Λ`
+with `Λ` constant, giving `G_ab + Λ g_ab = κ T_ab` — and with **zero new axioms**, the calculus being an
+interface (`DivergenceCalculus`) discharged by construction rather than posited. What is left is the
+arrow *into* the metric form: local Rindler + Raychaudhuri focusing.
 
 The remaining open step is *concrete and named*, not "differential geometry QLF lacks": it is the
 **causal-set order → metric** program
@@ -321,6 +362,10 @@ two meeting substrate legs — the equation of state (coefficient) and the causa
 | `null_annihilator_iff_metric_multiple` | the null-cone annihilators are **exactly** the metric multiples (one-dimensional, spanned by `g`); nine lattice points decide membership |
 | `contract_metricMultiple` | `contract (f·g) v = f · interval v` — a metric multiple annihilates the whole null cone |
 | `axis_probes_insufficient` | sharpness: the six axis probes alone fail (pure-`xy` witness), so the `3-4-5` probes are load-bearing |
+| `DivergenceCalculus` | the `∇^a`/`∂_b` interface — the differential-geometry boundary as a **structure**, so no axiom is added (§6c) |
+| `scalar_multiple_is_curvature` | contracted Bianchi + conservation ⟹ `f = R/2 − Λ` with `Λ` **constant** (the integration step) |
+| `einstein_field_equations` | `G_ab + Λ g_ab = κ T_ab` — the field equations over the interface (§6c) |
+| `metric_form_from_null_probes` | chains §6b into §6c: nine integer null probes deliver the metric form `einstein_field_equations` needs |
 
 ---
 

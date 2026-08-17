@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **187 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **189 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,9 +14,9 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## Modules — 187, machine-verified, zero `sorry`
+## Modules — 189, machine-verified, zero `sorry`
 
-Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 187 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 189 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
@@ -219,6 +219,31 @@ QLF is built on a **possibilist ontology**: all logically admissible histories e
 
 This is a **computable** form of modal realism (Lewis 1986) with a selection rule: where Lewis says all logically possible worlds are real, QLF says all computationally generable histories are real, and ZFA identifies the ones that persist. `full_zeno_prune` is the machine-verified implementation of this filter.
 
+### It happens every way; the most ways happen first (the working method — binding)
+
+Possibilism's operational face, and it governs **how problems are attacked**, not just how prose is
+written. See [`Philosophy.md`](Philosophy.md) §3a.
+
+> Nothing happens one way. Everything happens every way that closes. What happens in the most ways
+> happens first — **a closure's frequency IS its multiplicity**, the census count of ways. And we cannot
+> discover every way: exhibiting a construction shows it happens in **some** way, never the only way.
+
+Four rules that follow, to apply when choosing what to compute and what to claim:
+
+1. **Count ways; don't merely exhibit one.** An existence result is a *lower bound on multiplicity*.
+   Prefer the counting statement (`W_1 = 2ⁿ`, `C(2n,n)`, census multiplicities) over the witness.
+2. **Report the mode, not the mean.** What happens first is the argmax of multiplicity. A mean over ways
+   is an average of things that all happen and need not be a way at all. Pick the statistic the
+   principle demands *before* measuring.
+3. **A claim earns physical content only when it changes a count of ways.** The native falsifiability
+   test: ask what distribution over ways the claim would be **false** for. "None" ⟹ it is bookkeeping,
+   not evidence — however true. (Worked example: the horizon-congestion identity `Δ²C(R) = W_{R+1}` is
+   exact for *every* non-negative `W`, random noise included, so it supports no mechanism; see
+   `Open_Problems.md`.)
+4. **Never present our route as the route.** Converging independent derivations are *multiplicity*, not
+   redundancy — that is what makes a result dominant (the 18 programs; the shared `H↔H†` Millennium
+   involution).
+
 ### ZFA is the only filter — not a restriction
 
 A critical framing point: **ZFA is not a restriction on what can be computed.** `qlf_universality` proves the ZFA filter is Church-Turing complete — every *terminating* computation IS a ZFA string. What is pruned is not computation; it is the physically unrealizable tail (non-terminating, Turing-undecidable, Busy Beaver-class computations). The ZFA filter selects physical reality from the full ruliadic computational universe without discarding any computable physics.
@@ -297,7 +322,7 @@ Avoid framings that contradict the above:
 | Path | Purpose |
 |---|---|
 | `lean/` | All Lean source files |
-| `lakefile.lean` | Build config; `roots` array lists all 187 modules |
+| `lakefile.lean` | Build config; `roots` array lists all 189 modules |
 | `lean/README.md` | Module table and proof chain documentation |
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |
