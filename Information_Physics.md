@@ -354,6 +354,9 @@ capacity exists at all:
 | a **winding** invariant (baryon number, [`baryonNumber`](lean/QLF_BaryonWinding.lean)) | finite | `T_EW ≈ 160 GeV` — sphalerons; QLF *proves* `B` cannot be a conserved signed count ([`wcount_zero_on_ZFA`](lean/QLF_BMinusL.lean)), so its conservation was capacity-relative from the start |
 | an **annihilation-odd signed count** (electric charge, [`signed_count_conserved`](lean/QLF_BMinusL.lean)) | **none** — the proof quantifies over *all* histories, with no depth or excursion budget | never; exact at every scale |
 
+
+<p align="center"><img src="diagrams/capacity_ladder.svg" alt="A log energy axis from 1 MeV to 10 TeV with three survival bars: the proton as a bound closure ends at T_c = 155 MeV (dissolves, quark-gluon plasma observed); baryon number as a winding invariant runs further and ends at T_EW = 160 GeV (violated by sphalerons, with a dashed exp(-E_sph/T) tail marking the exponentially rare exception below threshold); electric charge as an annihilation-odd signed count runs the full width and continues past the edge with no threshold at any scale" width="820"></p>
+
 So "information is physical" acquires a graded, measurable form: an information capacity exists exactly
 when the invariant maintaining a structure is capacity-relative, and the temperature at which it fails
 reads that capacity off. Below a threshold the exception is not absent but *exponentially rare* — the

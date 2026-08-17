@@ -206,6 +206,9 @@ invariant its proof uses*:
 | winding / topological | baryon number ([`baryonNumber`](lean/QLF_BaryonWinding.lean)) | yes | **violated** above `T_EW ≈ 160 GeV` — sphalerons |
 | annihilation-odd signed count | electric charge ([`signed_count_conserved`](lean/QLF_BMinusL.lean)) | **no** | **none** — exact at every scale |
 
+
+<p align="center"><img src="diagrams/capacity_ladder.svg" alt="A log energy axis from 1 MeV to 10 TeV with three survival bars: the proton as a bound closure ends at T_c = 155 MeV (dissolves, quark-gluon plasma observed); baryon number as a winding invariant runs further and ends at T_EW = 160 GeV (violated by sphalerons, with a dashed exp(-E_sph/T) tail marking the exponentially rare exception below threshold); electric charge as an annihilation-odd signed count runs the full width and continues past the edge with no threshold at any scale" width="820"></p>
+
 Three decades of scale separate the first two (`160 / 0.155 ≈ 10³`); the third has no scale at all. And
 the rule is **falsifiable in both directions**: observing violation of a quantity whose QLF proof is a
 signed-count invariant would break it, and showing a winding quantity exactly conserved at all scales
