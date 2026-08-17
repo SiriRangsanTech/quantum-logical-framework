@@ -194,7 +194,7 @@ At that honest precision, with experimental errors propagated (dominated by `m_�
 | `Δ − 2/3` | `+2.22 × 10⁻⁵` | `± 2.5 × 10⁻⁵` | `+0.89 σ` — **not significant** |
 | `m_μ/m_e` | `+9.83 × 10⁻⁶` | `± 2.2 × 10⁻⁸` | `+452 σ` — **significant** |
 
-Exactly **one** number appears to need explaining: the model (`A² = 2` *and* `Δ = 2/3` both exact, `M` the only freedom) overpredicts `m_μ/m_e` by **`+9.83 ppm`**. (**Superseded by §5c⁸:** that `452σ` is measured against the *ratio's* experimental error while the model's own knowledge of `Δ` — `3.4 × 10⁻⁵` — covers `±424 ppm`, because the electron sits next to a zero of the three-phase form and amplifies by `12.5`. The residual is `2.3%` of the model's own band, and is **retired**. The paragraph below is retained for the locus it identifies, which remains the right place to look if a correction is ever needed.) The locus is the **e–μ sector** — which is also where the blind ladder carries its one structural asymmetry: `e = ^<v>` and `μ = ^^<vv>` share axis content `{x,y}`, while only `τ = ^^</>vv\` engages `z` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A). The symmetric three-phase ansatz treats all three alike; the substrate does not. Suggestive of where a correction lives — **not** a calculation of it.
+Exactly **one** number appears to need explaining: the model (`A² = 2` *and* `Δ = 2/3` both exact, `M` the only freedom) overpredicts `m_μ/m_e` by **`+9.83 ppm`**. (**Superseded by §5c⁗:** that `452σ` is measured against the *ratio's* experimental error while the model's own knowledge of `Δ` — `3.4 × 10⁻⁵` — covers `±424 ppm`, because the electron sits next to a zero of the three-phase form and amplifies by `12.5`. The residual is `2.3%` of the model's own band, and is **retired**. The paragraph below is retained for the locus it identifies, which remains the right place to look if a correction is ever needed.) The locus is the **e–μ sector** — which is also where the blind ladder carries its one structural asymmetry: `e = ^<v>` and `μ = ^^<vv>` share axis content `{x,y}`, while only `τ = ^^</>vv\` engages `z` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A). The symmetric three-phase ansatz treats all three alike; the substrate does not. Suggestive of where a correction lives — **not** a calculation of it.
 
 **The larger puzzle: why the relation survives radiative corrections at all.** `Q` is invariant under `mₖ → c·mₖ`, so flavour-*universal* corrections cancel exactly; only the flavour-dependent `log mₖ` terms can move it. Those are not small — `(α/π)·ln(m_μ/m_e) ≈ 1.24 × 10⁻²`. Running the pole masses to a common scale with one-loop QED gives
 
@@ -229,204 +229,50 @@ So the `L = 8` uniqueness is plausibly a small-numbers accident, and **this ladd
 
 ### 5c‴. The `(R, axis) → mass-ratio` map — a shape theorem
 
-The map [#140](https://github.com/jimscarver/quantum-logical-framework/issues/140) originally asked for does **not exist in the form requested**, and there is a clean reason.
+The map [#140](https://github.com/jimscarver/quantum-logical-framework/issues/140) originally asked for does **not exist in the form requested.** Every census integer at the three rungs is 5-smooth (`L = 4,6,8`; `orbit = ways = 24,48,96`; `axes = 2,2,3`; `conj-pairs = 2,5,6`; `parent-edges = 192,96`), hence so is every product and ratio of them — but the mass ratios are not: the closest small-exponent `2^a3^b5^c` misses `m_μ/m_e` by `0.286%`, `m_τ/m_e` by `0.610%`, `m_τ/m_μ` by `0.232%`, orders of magnitude outside the `10⁻⁵` at which the three-phase picture holds, and a 64 000-expression brute search over the census pool does no better. A real negative, not a failed fit.
 
-**Every census integer at the three rungs is 5-smooth.** `L = 4,6,8`; `orbit = ways = 24,48,96`; `axes = 2,2,3`; `conj-pairs = 2,5,6`; `parent-edges = 192,96`. All are `2^a 3^b 5^c`, so any product or ratio of them is too. But the mass ratios are **not** 5-smooth:
+**So the map must factor: `census → Δ → masses`.** Analytically the ratios are cosine values at an `O(1)` phase, transcendental in `Δ`, which a census cannot produce directly — only the phase, with the cosine doing the rest; structurally, any correct map must reproduce the derived `Q = 2/3`, automatic for a map onto `(M, Δ)` and accidental for one onto three independent masses. **The ask is thereby reshaped from three masses to one small rational, which is well posed** — that reshaping is the result. Whether a census can then *reach* that rational is answered in §5c⁗: no.
 
-| quantity | value | closest `2^a3^b5^c` | error |
-|---|---|---|---|
-| `m_μ/m_e` | `206.768283` | `2⁶3⁴5⁻² = 207.36` | `0.286 %` |
-| `m_τ/m_e` | `3477.228` | `2⁷3³ = 3456` | `0.610 %` |
-| `m_τ/m_μ` | `16.817` | `2¹²3⁻⁵ = 16.856` | `0.232 %` |
-| **`Δ = 2/3`** | `0.666667` | **`2·3⁻¹`** | **`0.000 %`** |
+> **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value comes from extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve of §5c is the well-posed determination. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
 
-The misses are `0.14–0.61%` — orders of magnitude outside the `10⁻⁵` at which the three-phase picture holds. A 64 000-expression brute search over `a^p b^q c^r` from the census pool does no better (best `0.286%`). **The direct census → mass-ratio map does not exist in any simple form — a real negative, not a failed fit.**
+### 5c⁗. Deriving `Δ = 2/3` — what stands, what is closed, and the one live candidate
 
-**So the map must factor:**
+`Δ` is the sole remaining ratio freedom (§5c″), so this is where the lepton sector's open work is. Six rounds of attack are recorded in [#140](https://github.com/jimscarver/quantum-logical-framework/issues/140); this section keeps the **results** and delegates the dead ends to a list. All of it is reproducible with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) (parts H–M).
 
-$$\text{census} \;\longrightarrow\; \Delta \;\longrightarrow\; \text{masses}.$$
+**1. The hierarchy needs no large number.** `1 + √2·cos θ = 0` at `θ = 3π/4` **exactly** — a massless wall. At `Δ = 2/3` the electron's phase sits `2.2676°` from it, and `√m_e/M = 0.040350` **is** that angular deficit to first order. The heaviest/lightest amplitude ratio is `58.970`; squared, `3477.5` against the measured `m_τ/m_e = 3477.2`. So the `~3500×` lepton hierarchy is **proximity to a wall, quadratically amplified** — not a hierarchy of scales, and not a fine-tuning: the deficit is `15.1%` of the available gap `π/12`, an `O(1)` fraction.
 
-Two independent reasons. *Analytically*: `√mₖ/M = 1 + √2·cos(Δ/3 + 2πk/3)` — the ratios are cosine values at an `O(1)` phase, transcendental in `Δ`; a census yields integers and cannot produce them directly, only the phase, with the cosine doing the rest. *Structurally*: `Q = 2/3` is derived and holds to `10⁻⁵`, so any correct map must reproduce it — which a map onto `(M, Δ)` does automatically, while a map onto three independent masses would have to hit it by accident.
+**2. And the wall exists only because `A² = 2`.** `1 + A·cos θ` has a zero **iff** `A ≥ 1`; below that the spectrum is capped for *every* phase at `((1+A)/(1−A))²` — `34×` at `A² = 1/2`, `9×` at `A² = 1/4`, against a measured `3477` that needs `A² ≥ 0.934`. `A² = 2` is **derived** (the two transverse axes of the `6 = 2+1` split, §5b), so **the substrate geometry is what makes a lepton hierarchy possible at all** — not its value, but its existence.
 
-And `Δ = 2/3` **is** exactly 5-smooth — precisely the kind of object a census *can* yield. So the ask is reshaped from "three masses" to **one small rational**, which is well posed. That reshaping is the result; the map itself is still open. (The second clause — *that a census can therefore yield it* — is **corrected in §5c⁗**: it holds in radians alone. The reshaping stands; the reachability does not.)
+**3. The `+9.83 ppm` residual is retired.** The near-zero amplifies: `d ln(m_μ/m_e)/d ln Δ = 12.48`. §5c knows `Δ` only to `3.4 × 10⁻⁵`, which propagates to **`±424 ppm`** on `m_μ/m_e` — so the residual is `2.3%` of the model's own uncertainty band, and `43×` inside the systematic in the phase coordinate. §5c′'s `452σ` measured it against the *ratio's* experimental error while ignoring the model's own input precision. Not evidence of missing structure. (This does not *verify* the ansatz to `424 ppm`; the discrepancy simply sits inside its own resolution.)
 
-> **Trap, recorded so it is not walked into.** The axis counts `(e, μ, τ) = (2, 2, 3)` look like the transverse fraction, and hence like a census route to `Δ = 2/3`. They are not usable as evidence: `e`'s two axes are *forced* (three axes need ≥6 twists to balance), `μ`'s are a genuine *output* (zero three-axis classes exist at `L = 6`) — but **τ's three axes are imposed** by the filter above. The `3` in the apparent `2/3` was put in by hand. **`δ` remains a genuine input** — deriving it would make the lepton mass *ratios* first-principles, leaving only the scale. Open.
+**4. The specification any derivation must meet.** Two constraints, both earned:
 
-> **Arithmetic note (why an older `δ = 0.22227` was wrong).** That value is what you get by extracting `δ` from the **τ** channel alone using `M = (Σ√m)/3` over all three *measured* masses. Because measured `Q ≠ 2/3`, the three single-channel extractions disagree in the fifth decimal — `0.222270` (τ), `0.222233` (μ), `0.222221` (e) — so no one of them is "the phase `m_e, m_μ` demand." The two-input solve above is the well-posed determination. Reproduce all of it with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §B.
+- **`O(1) rational in radians.`** `Δ = 2/3` is 5-smooth in **radians alone** — as a fraction of a turn it is `1/(3π)`, transcendental, and the smallest turn-fraction fitting the data has denominator `311`. So no division of the circle can produce it; only an arc-over-radius (curvature-shaped) reading survives.
+- **Forced, not selected.** Pricing hypothesis classes by description length, `Δ = 2/3` costs `log₂6 = 2.58` bits and already sits at the experimental floor, where circle-division needs `14` bits and improves at every budget on the way. Hence the criterion that has done most of the work here: **a derivation costing more bits than the constant it derives is a re-encoding, not a derivation.** Any route offering a menu of `N` options costs `log₂N` bits and must beat `3`.
 
-### 5c⁗. The unit audit — which angular unit is the census unit?
+**5. Closed routes.** Each was attacked and failed; details in [#140](https://github.com/jimscarver/quantum-logical-framework/issues/140).
 
-§5c‴ closed on `Δ = 2/3` being 5-smooth and hence "precisely the kind of object a census can yield." **That is a fact about the radian, not about the phase.** `Δ` is an *angle*; 5-smoothness is not an invariant of an angle, and the reading survives exactly one choice of unit:
-
-| unit | `Δ` in that unit |
+| route | why it is closed |
 |---|---|
-| radian | **`0.666666667` = `2/3`** |
-| turn (`2π`) | `0.106103295` = `1/(3π)` |
-| Z₃ cell (`2π/3`) | `0.318309886` = `1/π` |
-| `π` | `0.212206591` |
-| degree | `38.197186` |
+| `δ = 2/9` as the target | `δ` is Z₃ gauge; only `Δ = 3δ` is physical, and the `10⁻⁷` agreement is an artefact of assuming `Q = 2/3` |
+| `Δ = Q` (two magic numbers → one) | **refuted** — independent functions on mass-triple space; `(c,b,t)` has `Q` within `0.4%` of `2/3` and `Δ` a factor `3.24` away |
+| a direct `(R, axis) → mass-ratio` map | census integers are 5-smooth, the mass ratios are not (`0.14–0.61%` off); must factor through `Δ` |
+| a census count-ratio for `Δ` | costs `3.7–4.1` bits against the constant's `3` — a re-encoding. And `(e,μ,τ)` axis counts `(2,2,3)` are circular: `τ`'s `3` is imposed by a filter |
+| any division of the circle | as a turn-fraction the phase is `1/(3π)`; smallest fitting denominator `311` |
+| curvature on the ladder closures | rung-independent ratios are exactly `{1/2, 1, 2}`; `2/3` absent, and `runs/dim` is not rung-independent |
+| all three QLF curvature notions | holonomy (`μ₄`) and pentamon deficit are divisions of the turn; Ollivier–Ricci gives no positive interior curvature and no `2/3` ([`Curvature.md`](Curvature.md) §1c) |
+| `ε = 0.0396` as a better coordinate | `ε = π/12 − 2/9` — a transcendental minus a rational, algebraically *worse* than `Δ` |
+| extremizing a symmetric functional | with `A² = 2`, `e₁` and `e₂` are fixed, so every one is a function of `cos Δ` alone; `0` of `8` pre-registered candidates stationary at `2/3` |
+| an absolute mass scale | `ε` is dimensionless and `M` is free, so no absolute-mass statement constrains it |
+| `Δ = (2π/3)/π` | the `π` cancels **trivially** — `2/3` rewritten at identical bit cost. Every rational is a ratio of commensurable angles |
 
-As a fraction of a **turn** the phase is exactly `1/(3π)` — transcendental. So the unit is load-bearing and has to be *earned*. Doing that splits the census routes cleanly in two.
+**6. The one live candidate: `Δ` as a rotation number.** A circle map's rotation number is **mode-locked** at rationals — each `p/q` occupies an *interval* of parameter space (an Arnold tongue), not a point, and tongue width orders by Farey/Stern-Brocot simplicity. This is the first route that *fits* the specification of §4 rather than being excluded by it: rotation numbers are `O(1)` rationals, and the locking is **forced by the dynamics** rather than selected by us.
 
-**Circle-division is excluded.** If a census fixes the phase by cutting a turn into `q` equal parts and stepping `p` of them, then `Δ = 2πp/q`. Tested against the **data** (the free-fit `Δ = 0.666689 ± 0.000025`, §5c′), the turn-fractions inside the `2σ` band are `33/311` and `40/377` — smallest denominator **311**. Single divisions are nowhere near (`2π/9` misses by `4.7 %`). A census that cuts a circle into 311 parts and takes 33 of them is not a census; it is a fit. **No circle-division census can produce this phase.**
+It buys two things. First, it explains **why a rational at all, and why a simple one** — `2/3` has Stern-Brocot depth `2`, the second-simplest tier (after only `1/2`, alongside `1/3`), hence one of the widest tongues. Second, it explains the description-length result of §4: **Farey depth and bit cost are the same ordering**, so "cheap rational" *is* "wide tongue", and the Occam curve is the shadow of Farey structure rather than a model-selection heuristic.
 
-**Arc-over-radius survives — and it is the only surviving shape.** A rational *radian* measure is exactly what `n` unit arc-steps at integer radius `R` give: `Δ = n/R`. Read that way `Δ = 2/3` is "2 steps at radius 3" — a **curvature** ratio, not a division of the circle. This is also the real reason the phase is a pure number rather than a multiple of `π` (§5c gave the weaker "ratio of invariants"): turn-fractions carry `π`, arc-over-radius ratios do not. It fixes the **form** of any future derivation, not the counts — and §5c‴'s trap still forbids supplying those counts from the `(2, 2, 3)` axis census.
+What it does **not** do is pick `2/3`. Of the nine simple rationals (`q ≤ 6`) in the physically allowed range `(0, π/4)` — above `π/4` the electron amplitude changes sign — the measurement admits exactly one, `2/3`; the mechanism narrows to nine (`3.2` bits) and the data does the rest.
 
-**And the physics never sees `Δ` — it sees `cos Δ`.** With `A² = 2`, the normalized `√`-mass triple has `e₁ = 3` and `e₂ = 3/2` fixed, so exactly **one** symmetric function carries the phase:
-
-$$e_3 \;=\; \frac{27\prod\sqrt{m_k}}{\left(\sum\sqrt{m_k}\right)^3} \;=\; -\tfrac12 + \tfrac{1}{\sqrt2}\cos\Delta \;=\; 0.05570621 \quad(\text{measured } 0.05570880).$$
-
-| quantity | value | closest `2^a3^b5^c` | error |
-|---|---|---|---|
-| `Δ` | `0.666666667` | `2·3⁻¹` | **`0.0000 %`** |
-| `cos Δ` | `0.785887261` | `2⁶3⁻⁴` | `0.5390 %` |
-| `e₃` | `0.055706211` | `2⁻¹3⁻²` | `0.2704 %` |
-
-`cos Δ` and `e₃` sit in the **same `0.1–0.6 %` band as the mass ratios** of §5c‴ — the same negative. Passing through the phase did not make the target census-shaped; it moved the non-smoothness into the cosine.
-
-> **Net.** §5c‴'s reshaping — three masses reduce to one small rational `Δ` — **stands**. Its closing claim that the rational is thereby within census reach is **corrected**: it holds in radians alone, the circle-division route is excluded outright, and the invariant the masses are actually built from is no more census-shaped than the masses. What is gained is a constraint on the shape of any derivation: **the phase must arise as arc-over-radius (a curvature), never as a division of the circle.** Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §H.
-
-### 5c⁵. Pricing the two channels — structure costs 3 bits, the fit costs 14
-
-§5c⁗ left one channel standing and one falling on a single comparison (denominator 3 vs 311). That comparison can be made properly. Price each hypothesis class by **description length**: a fraction `n/d` costs `log₂(nd)` bits, and ask what accuracy each channel buys at each budget, against the free-fit `Δ = 0.666689 ± 0.000025`.
-
-| bits | circle-division `2πn/d` | arc-over-radius `n/d` |
-|---|---|---|
-| 3 | `1/8` — `1.8 × 10⁻¹` | **`2/3` — `3.3 × 10⁻⁵`** |
-| 4 | `1/9` — `4.7 × 10⁻²` | `2/3` — `3.3 × 10⁻⁵` |
-| 6 | `2/19` — `8.0 × 10⁻³` | `2/3` — `3.3 × 10⁻⁵` |
-| 8 | `5/47` — `2.6 × 10⁻³` | `2/3` — `3.3 × 10⁻⁵` |
-| 9 | `7/66` — `4.4 × 10⁻⁴` | `2/3` — `3.3 × 10⁻⁵` |
-| 13 | `26/245` — `1.5 × 10⁻⁴` | `2/3` — `3.3 × 10⁻⁵` |
-| **14** | **`33/311` — `2.3 × 10⁻⁵`** | `2/3` — `3.3 × 10⁻⁵` |
-
-**Arc-over-radius hits the experimental floor at 3 bits** — with `2/3`, the cheapest non-trivial fraction there is — and then never improves, *because it cannot*: it is already at the `3.3 × 10⁻⁵` free-fit systematic of §5c′. That is the signature of a structure. **Circle-division needs 14 bits** to match it and improves smoothly at every budget along the way — the signature of a fit. The gap is **11 bits ≈ 2000 : 1**.
-
-**Rigidity: the arc channel has nothing else to choose.** Inside the `2σ` band `[0.666639, 0.666739]`, `2/3` is the **only** rational value with denominator below `4609` (the next distinct one is `3073/4609`). Commit to a small radius and exactly one candidate exists — there is no tuning freedom. The circle-division channel already carries two below `q = 400`.
-
-**What `n = 2` and `R = 3` would have to be.**
-
-| | reading | provenance |
-|---|---|---|
-| `R = 3` | the three spatial axes | `substrate_spatial_dimension = 3`, machine-verified ([`QLF_Generations`](lean/QLF_Generations.lean), `num_generations_eq_three`) — **not** the imposed 3-axis filter of §5c‴'s trap. Different object, different provenance; the trap does not apply |
-| `n = 2` | the two transverse axes | the same `6 = 2+1`-per-axis split that supplies `A² = 2` in the derived `Q = 2/3` (§5b) |
-
-This is **common cause, not implication.** §5c′ refuted `Δ = Q` as a relation between functions on mass-triple space, and that refutation stands untouched — `Q = 2/3` does not imply `Δ = 2/3`. What §5c⁗–5c⁵ add is that *one* geometric split can feed both: as an **amplitude** in the Koide sector and as a **curvature** in the phase sector. That is why the substrate's transverse fraction shows up twice without either being derivable from the other.
-
-> **Honest limit.** This is an **identification**, at exactly the status of the `A² = 2` identification it leans on (§5b) — not a derivation. No substrate computation yet produces "2 arc-steps at radius 3" for the lepton phase; §§5c⁗–5c⁵ establish only that any derivation must have that *shape*, and that the shape is cheap and rigid where the alternative is neither. **What would close it:** a curvature computed *on* the ladder closures, whose arc count and radius are read off the geometry rather than matched to `2/3`. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §I. **That computation is done in §5c⁶ — and it fails.**
-
-### 5c⁶. The curvature computed on the ladder closures — a negative
-
-§5c⁵ closed by naming the one thing that would turn its identification into a derivation: a curvature computed *on* the ladder closures, arc count and radius read off the geometry rather than matched to `2/3`. Here it is, and it is a **negative** — the identification does not survive it.
-
-**The rungs are closed lattice loops.** Count balance *is* closure: `#^ = #v`, `#< = #>`, `#/ = #\` says exactly that the twist history returns to its starting point, so each rung is a closed walk in `ℤ³` with ordinary integer geometry. Every entry below is invariant under §5a's quotient (signed axis permutations + antiparticle):
-
-| | `e` = `^<v>` | `μ` = `^^<vv>` | `τ` = `^^</>vv\` |
-|---|---|---|---|
-| arc length `L` | 4 | 6 | 8 |
-| vertices | 4 | 6 | 8 |
-| runs (turns) | 4 | 4 | 6 |
-| axes engaged | 2 | 2 | 3 |
-| signed directions | 4 | 4 | 6 |
-| box extents `Σ` | 2 | 3 | 4 |
-| projected area `Σ` | 1 | 2 | 3 |
-
-One relation holds at every rung: **`runs = 2 × axes`** — each engaged axis is traversed out and back exactly once, no zig-zag. That is a genuine property of the *selected* ladder rather than of loops in general (`100 %`, `100 %`, but only `42 %` of half-spin-free classes at `L = 8`).
-
-**The blind search returns `{1/2, 1, 2}`.** `Δ` is one number for the whole family, so any curvature that could *be* it must take the same value at all three rungs. Every ratio of two observables that does:
-
-```
-1/2 :  axes/runs, axes/dirs, bsum/L, bsum/sites
-  1 :  L/sites, sites/L, runs/dirs, dirs/runs
-  2 :  L/bsum, sites/bsum, runs/axes, dirs/axes
-```
-
-**`2/3` is not among them**, and the failure is specific: §5c⁵'s "2 transverse arc-steps at radius 3" needs `runs/dim`, which is `4/3, 4/3, 2` — *not* rung-independent. The only rung-independent version divides by the **engaged** axes, and that gives **`2`, not `2/3`**, because `e` and `μ` engage two axes, not three. The ambient-versus-engaged choice §5c⁵ flagged is therefore not a choice at all: the reading that makes the invariant an invariant is the one that destroys the `2/3`.
-
-**And QLF's own curvatures are the wrong kind.** [`Curvature.md`](Curvature.md) defines curvature twice, and §5c⁗ excludes both:
-
-| QLF curvature | value set | verdict |
-|---|---|---|
-| gauge / holonomy = the Lie bracket, the plaquette `σₓσᵧσₓσᵧ = −1` (§1a) | the Pauli fold group `μ₄ = {±I, ±iI}` | a **4-fold division of the turn** — exactly the excluded channel. All three rungs fold to `−I`: three quarter-turn units, no continuous parameter anywhere |
-| topological deficit = the 12 pentamons of a Fuller blanket (§1) | a pure **count**, with no radius | its angular form, the deficit `2π − 5·(π/3) = π/3`, is again a division of the turn |
-
-So the arc-over-radius object §5c⁗ left standing **is not instantiated by either QLF curvature.** The same exclusion, twice, from the framework's own definitions — which is a much better reason to stop than a failed search would have been.
-
-**The price, and the criterion it yields.** The ladder's integer pool `{1,2,3,4,6,8}` reaches 13 distinct small ratios; the full census pool of §5c‴ reaches 17. Naming `2/3` among them costs `3.7` and `4.1` bits respectively — where §5c⁵ priced the constant itself at **3 bits**, `2/3` being the cheapest non-trivial fraction there is, already sitting at the experimental floor.
-
-> **A derivation that costs more bits than the constant it derives is not a derivation — it is a re-encoding.** By that criterion the census route to `Δ` is **retired**. What survives is §5c⁗'s *requirement* (the phase must be arc-over-radius, never a division of the circle) together with the finding that QLF, as it stands, has no object of that shape. Either the phase is not a curvature in QLF's sense, or a third notion of curvature is needed — one that is a ratio of counts rather than a holonomy or a deficit. `Δ = 2/3` remains **open**, and the honest reading of these three rounds is that the search space has been narrowed by elimination, not by construction. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §J. **The third notion is found in §5c⁷ — and it does not supply the phase either.**
-
-### 5c⁷. The third curvature notion — found, and it is not the phase
-
-§5c⁶ ended with a specification and nothing to fill it: a curvature that is a **ratio of counts**, not a holonomy and not a deficit. Exactly one standard discrete curvature meets it —
-
-$$\kappa(x,y) \;=\; 1 - \frac{W_1(m_x,m_y)}{d(x,y)},$$
-
-**Ollivier–Ricci curvature**: an optimal-transport cost over a graph distance, both pure step counts, rational by construction, with no angle, no metric and no finite group anywhere in it. (Rejected on the way: Regge deficit and the Wilson plaquette — divisions of the turn; the pentamon deficit — a count with no radius; Benincasa–Dowker — needs a length scale `ℓ²`; Forman–Ricci — integer-valued, not a ratio.)
-
-Applied to QLF's two graphs, after validation against graphs of known curvature, it gives opposite signs:
-
-| QLF graph | Ollivier–Ricci |
-|---|---|
-| the `ℤ³` lattice — **synthesized space** | `κ = 0` on every interior edge — **Ollivier-flat** (*not* flat: space carries one bit per fold and its plaquette is `−I`; this notion is structurally blind to holonomy — [`Curvature.md`](Curvature.md) §1c) |
-| closure classes under the causal parent relation — the **possibility space** | `κ < 0` on **every** one of 162 interior edges (`−0.801 … −0.112`) — **hyperbolic**, and stable when the census is extended a layer |
-
-That is a real result and it belongs to the curvature sector, not this one — it is the discrete AdS signature, QLF's holography measured rather than asserted; it is written up in [`Curvature.md`](Curvature.md) §1c.
-
-**For the phase it is another negative, and a clean one.** `Δ = 2/3` is *positive*, and the possibility graph carries **no positive interior curvature at all**; no edge anywhere takes the value `2/3`; and the interior edges carry essentially as many distinct values as there are edges (14 of 14 at four layers, and the 162-edge sample only widens the spread), so naming one costs more than the `3` bits §5c⁵ prices the constant at — §5c⁶'s criterion, failed a second time.
-
-> **Verdict on the curvature route.** All three notions are now examined — holonomy, topological deficit, and optimal-transport — and none produces `Δ`. The phase is not a curvature of either QLF graph. `Δ = 2/3` remains **open**, and the four rounds §5c⁗–5c⁷ have narrowed the space entirely by elimination. What was gained along the way is worth stating separately: a unit constraint (arc-over-radius, never a division of the circle), a bit-cost criterion for what counts as a derivation, and a third curvature notion that outlived the question that produced it. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §K.
-
-### 5c⁸. The massless wall — what `Δ = 2/3` actually *does*
-
-Four rounds attacked the *number*. This one asks what the number **does** in the three-phase form, and two things fall out — one of which retires an open item.
-
-**The form has a zero, and the electron sits next to it.** `1 + √2·cos θ = 0` at `θ = 3π/4 = 135.0000°` exactly. At `Δ = 2/3`:
-
-| `k` | `θ` | `1 + √2 cos θ` | `m/M²` |
-|---|---|---|---|
-| 0 (`τ`) | `12.7324°` | `2.379438` | `5.66172601` |
-| 1 (`e`) | **`132.7324°`** | **`0.040350`** | `0.00162812` |
-| 2 (`μ`) | `252.7324°` | `0.580212` | `0.33664587` |
-
-The electron's phase is **`2.2676°` from the wall** — `ε = 0.039577` rad — and `√m_e/M = 0.040350` *is* that deficit, to first order: `1 + √2·cos(3π/4 − ε) = 1 − cos ε + sin ε ≈ ε`.
-
-**So the lepton hierarchy needs no large parameter.** The heaviest/lightest amplitude ratio is `58.970`; squared, `3477.5` against the measured `m_τ/m_e = 3477.2`. A `~3500×` hierarchy is the *square* of a `59×` amplitude ratio, and the `59×` is one phase sitting `2.3°` from a zero. **The lepton hierarchy is proximity to a wall, quadratically amplified — not a hierarchy of scales.** (The target does *not* restate more cleanly as `ε` — §5c⁹ shows `ε = π/12 − 2/9` is a transcendental minus a rational, algebraically **worse** than `Δ`. `Δ` remains the coordinate.)
-
-**And the wall exists only because `A² = 2`.** `1 + A·cos θ` has a zero **iff** `A ≥ 1`; below that the spectrum is capped for *every* phase at `((1+A)/(1−A))²`:
-
-| `A²` | zero? | max possible `m_heavy/m_light` |
-|---|---|---|
-| `1/4` | no | `9.0` |
-| `1/2` | no | `34.0` |
-| `1` | **yes** | unbounded |
-| **`2`** | **yes** | unbounded |
-
-The measured `3477` is **unreachable** without a zero unless `A² ≥ 0.934` — already `93%` of the way to the threshold. `A² = 2` is **derived** (the two transverse axes of the `6 = 2+1` split, §5b), so **the substrate geometry is what makes a lepton hierarchy possible at all.** That is a payoff of `A² = 2` not previously read off it: not the *value* of the hierarchy, but its *existence*.
-
-> **The `+9.83 ppm` residual is a coordinate artefact — retired.** The near-zero amplifies: `d ln(m_μ/m_e) / d ln Δ = 12.48`. §5c knows `Δ` only to `3.4 × 10⁻⁵` (the systematic between two legitimate extractions), and that propagates to **`±424 ppm`** on `m_μ/m_e`. The residual is `9.83 ppm` — **`2.3%` of the model's own uncertainty band**; in the phase coordinate the required correction is `7.9 × 10⁻⁷`, **`43×` smaller** than the systematic. §5c′'s `452σ` was computed against the *ratio's* experimental error (`2.2 × 10⁻⁸`) while ignoring that the model's own input precision covers `±424 ppm`. **Demanding an explanation for `9.83 ppm` demands a correction `43×` more precise than the framework being corrected** — so it is not evidence of missing structure. (This does not *verify* the ansatz to `424 ppm`; it says the discrepancy sits inside its own resolution.) Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §L.
-
-
-### 5c⁹. The attempt on `ε` — and why it was the wrong target
-
-Taking §5c⁸ at its word and going after `ε = 0.0396` **fails**, in a way that corrects §5c⁸'s own framing twice over.
-
-**`ε` is algebraically worse than `Δ`.** The wall is at `3π/4` and the generation offset is `2π/3`, so
-
-$$\varepsilon \;=\; \tfrac{3\pi}{4} - \left(\tfrac{\Delta}{3} + \tfrac{2\pi}{3}\right) \;=\; \tfrac{\pi}{12} - \tfrac{\Delta}{3} \;=\; 0.2617993878 - 0.2222222222 .$$
-
-A **transcendental minus a rational**. `Δ = 2/3` is a pure rational; `ε` inherits a `π` from the wall's location. So "derive `ε`" does not restate the target more cleanly — it restates it *worse*. `Δ` is the coordinate.
-
-**And there is no fine-tuning to derive.** The gap from the Z₃ cell edge to the wall is `π/12 = 0.2618`, and `ε` is **`15.1%`** of it; equivalently `Δ` is `84.9%` of `Δ_wall = π/4`. Both are `O(1)`. The `3477×` hierarchy comes from *squaring a near-wall slope* (§5c⁸), not from a small parameter — so "derive the small number" was the wrong question. **There is no small number.**
-
-**No symmetric functional of the spectrum can single `Δ` out.** With `A² = 2` the amplitudes have `e₁ = 3` and `e₂ = 3/2` **fixed**, so every symmetric functional is a function of `e₃` alone — i.e. of `cos Δ`. Stationarity in `Δ` therefore requires `dF/d(cos Δ) = 0` exactly at `cos(2/3) = 0.785887`, so the route must still *produce* `cos Δ` — which §5c⁗ showed is `0.54%` off the nearest 5-smooth (`e₃`, `0.27%`). The same negative in new clothes. Checked anyway on a pre-registered list of eight natural functionals (spectrum entropies, `Var[log m]`, `e₃`, geometric/arithmetic ratios, the gap ratio, `max/min`, `Σ log m`): **0 of 8** are stationary there. And §5c⁶'s criterion pre-empts the route regardless — choosing among `N` functionals costs `log₂N` bits, so only `N ≤ 8` could beat the `3` bits that *positing* `2/3` costs. A hit would have been worth nothing.
-
-**Two more families, closed by inspection.**
-
-- **Absolute-mass arguments** ("`m_e` is the smallest closure, one `log 2` quantum"): dead — `ε` is dimensionless and `M` is a free scale, so no statement about an absolute mass constrains it.
-- **Ratio-of-angles**: `Δ = (2π/3)/π = 2/3`, the Z₃ cell over a half-turn, *looks* like a derivation with the `π` cancelling. It is not — the `π` cancels **trivially**, so this is `2/3` rewritten at identical bit cost. Every rational is a ratio of commensurable angles; that is a fact about rationals, not about leptons.
-
-> **Verdict.** `ε` is **not derived**, and `Δ = 2/3` stays the single open item. What the attempt buys is a much tighter specification of what any derivation must be: it must produce an **`O(1)` rational in radians**, and it must be **forced rather than selected**. It cannot come from a division of the circle (§5c⁗), a census count-ratio (§5c⁶), any of the three curvature notions (§5c⁶–5c⁷), a symmetric functional of the spectrum, an absolute mass scale, or a ratio of commensurable angles. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §M.
+> **Status.** A **candidate mechanism class**, not a derivation: QLF exhibits no substrate circle map for the generation phase, and until one is written down the "the dynamics chooses" move is unearned. What is genuinely new is that this is the first proposal *consistent* with the constraints the closed routes established, and that it retro-explains the bit-cost ordering. **`Δ = 2/3` remains open** — the single open item of the charged-lepton sector, with the scale `M` (§5c) and the `Δ` value the only inputs left.
 
 ---
 

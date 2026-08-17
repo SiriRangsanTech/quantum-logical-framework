@@ -78,7 +78,7 @@ of the discrete substrate ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md))
 
 Both curvatures above are **divisions of the turn**: the holonomy plaquette takes values in the Pauli fold group `μ₄ = {±I, ±iI}` (a quarter-turn unit), and the pentamon deficit `2π − 5·(π/3) = π/3` is a sixth of one. Neither is an **arc-over-radius** ratio — `n` unit steps at radius `R` — and that turns out to be a real boundary rather than a bookkeeping remark.
 
-The lepton Koide phase `Δ = 3δ = 2/3` is a *rational number of radians*. [`Weak_Force.md`](Weak_Force.md) §5c⁗ shows that no division of the circle can produce it (as a fraction of a turn it is `1/(3π)`; the smallest turn-fraction fitting the measurement is `33/311`), so **if** the phase is a curvature it must be an arc-over-radius one. §5c⁶ then computes curvature directly on the lepton ladder closures — closed walks in `ℤ³`, since count balance *is* closure — and finds no rung-independent ratio equal to `2/3`; the complete set is `{1/2, 1, 2}`.
+The lepton Koide phase `Δ = 3δ = 2/3` is a *rational number of radians*. [`Weak_Force.md`](Weak_Force.md) §5c⁗ shows that no division of the circle can produce it (as a fraction of a turn it is `1/(3π)`; the smallest turn-fraction fitting the measurement is `33/311`), so **if** the phase is a curvature it must be an arc-over-radius one. §5c⁗ then computes curvature directly on the lepton ladder closures — closed walks in `ℤ³`, since count balance *is* closure — and finds no rung-independent ratio equal to `2/3`; the complete set is `{1/2, 1, 2}`.
 
 So the two curvatures of §1–§1a are excluded from that job **twice over, by their own value sets**, and QLF as it stands carries no third object of the required shape. Recorded here because it is a genuine limit of the curvature notions this document builds on, not a defect of the lepton sector: a curvature that is a **ratio of counts** rather than a holonomy or a topological deficit would be a new primitive, and nothing above supplies one.
 
@@ -110,7 +110,7 @@ $$\kappa(x,y) \;=\; 1 \;-\; \frac{W_1(m_x, m_y)}{d(x,y)}$$
 >
 > Is it an artefact of throwing the fold away? Tested directly: **lift** the lattice by the fold — vertices `(position, fold element)`, edges carrying the twist's Pauli factor, the graph space actually is; the six twists generate a fold group of order 16. On a `4³` chunk (1024 vertices, 384 interior edges) the answer is **`κ = 0` again**.
 >
-> So the blindness is **structural, not an artefact**. Ollivier–Ricci is a metric-combinatorial quantity: it sees neighbourhood matching and graph distance, and holonomy is invisible to it by construction — which is exactly *why* it was reached for ([`Weak_Force.md`](Weak_Force.md) §§5c⁗–5c⁶ excluded holonomy curvatures on independent grounds). Reading "space is flat" off it measures the instrument, not the space. The correct statement is a pair:
+> So the blindness is **structural, not an artefact**. Ollivier–Ricci is a metric-combinatorial quantity: it sees neighbourhood matching and graph distance, and holonomy is invisible to it by construction — which is exactly *why* it was reached for ([`Weak_Force.md`](Weak_Force.md) §5c⁗ excluded holonomy curvatures on independent grounds). Reading "space is flat" off it measures the instrument, not the space. The correct statement is a pair:
 >
 > | | holonomy curvature (§1a) | transport curvature (§1c) |
 > |---|---|---|
@@ -145,7 +145,7 @@ The existing values do not move at all — a deeper layer cannot shorten any dis
 
 — a factor of `≈ 4` per added layer, heading to zero, which is exactly what a hyperbolic (tree-like) graph does. **The possibility graph has no spectral gap, so it is not where a mass gap can come from.** That leaves QLF's `log 2` derivation not merely intact but preferred, by elimination of the competitor. (It also puts the census emphatically outside the Ramanujan/expander class, so the *graph* Riemann hypothesis of the Ihara zeta fails here too — a fact about this graph, carrying no implication for the classical `ζ` or for [`QLF_Riemann`](lean/QLF_Riemann.lean).)
 
-The notion was found by looking for what the lepton Koide phase would need ([`Weak_Force.md`](Weak_Force.md) §5c⁷). **It does not supply that phase** — there is no positive interior curvature anywhere and no value equal to `2/3` — so the curvature route to `Δ` is closed at all three notions. The notion itself outlived the question that produced it.
+The notion was found by looking for what the lepton Koide phase would need ([`Weak_Force.md`](Weak_Force.md) §5c⁗). **It does not supply that phase** — there is no positive interior curvature anywhere and no value equal to `2/3` — so the curvature route to `Δ` is closed at all three notions. The notion itself outlived the question that produced it.
 
 ## 2. Two deformations: expand and contract
 

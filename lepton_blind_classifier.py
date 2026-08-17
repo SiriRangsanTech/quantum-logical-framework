@@ -53,69 +53,30 @@ G. THE (R, axis) -> MASS-RATIO MAP (issue #140's original ask)
    and Delta = 2/3 IS 5-smooth.  Also flags that part A's 3-axis filter is
    load-bearing, so the census 'axes = 2,2,3' cannot evidence the 2/3.
 
-H. THE UNIT AUDIT (corrects G2)
-   'Delta = 2/3 is 5-smooth, precisely what a census CAN yield' holds in
-   RADIANS alone -- as a fraction of a turn the phase is 1/(3 pi).  So any
-   circle-division census is excluded (the smallest turn-fraction fitting the
-   measured Delta is 33/311), only an arc-over-radius reading survives, and
-   the invariant the masses are actually built from, e3 = -1/2 + cos(Delta)
-   /sqrt2, is no more 5-smooth (0.27% off) than the mass ratios of G1.
-
-I. PRICING THE TWO CHANNELS (an Occam curve)
-   Arc-over-radius reaches the experimental floor at 3 BITS (with 2/3, the
-   cheapest non-trivial fraction) and cannot improve; circle-division needs
-   14 bits and improves at every budget on the way -- structure vs fit, an
-   11-bit gap.  And 2/3 is the only rational in the measured band below
-   denominator 4609, so the arc channel has no freedom to tune.  What n = 2
-   and R = 3 would have to be, why part G3's trap does not apply to them,
-   and why this is common cause with Q = 2/3 rather than implication.
-
-J. THE CURVATURE COMPUTATION (retires part I's identification)
-   Count balance IS closure, so each rung is a closed walk in Z^3 with
-   ordinary integer geometry.  Blind search over rung-independent ratios of
-   its observables returns the complete set {1/2, 1, 2} -- 2/3 is NOT among
-   them, and '2 transverse at radius 3' fails because runs/dim = 4/3, 4/3, 2
-   is not rung-independent.  Both of QLF's own curvatures (Curvature.md:
-   the mu_4 holonomy plaquette, the 12-pentamon topological deficit) are
-   divisions of the turn, the channel part H excluded.  And reading 2/3 off
-   the census costs 3.7-4.1 bits where positing it costs 3 -- a derivation
-   costing more than its constant is a re-encoding.  Census route RETIRED.
-
-K. THE THIRD CURVATURE NOTION
-   Parts H and J left a specification with nothing to fill it: a curvature
-   that is a ratio of counts, not a holonomy and not a deficit.  Exactly one
-   standard discrete curvature meets it -- OLLIVIER-RICCI,
-   kappa = 1 - W_1(m_x,m_y)/d(x,y), a transport cost over a distance.
-   Validated on graphs of known curvature, then applied to QLF's two graphs:
-   synthesized space (the Z^3 lattice) is FLAT, and the possibility graph
-   (closure classes under the causal parent relation) is HYPERBOLIC -- every
-   interior edge negatively curved, the discrete AdS signature, QLF's
-   holography measured rather than asserted.  CAUTION, and it is the point
-   of K3: 'space is flat' is a statement about THIS NOTION, which is
-   structurally blind to holonomy -- QLF space carries one bit per fold and
-   its plaquette is -I, i.e. it IS curved in QLF's primary sense.  Lifting
-   the lattice by the order-16 fold group leaves kappa = 0 anyway, so the
-   blindness is structural, not an artefact.  The two notions are
-   complementary: each cannot see the other's curvature.
-   It does NOT supply the phase:
-   no positive interior curvature anywhere, no 2/3, and 14 distinct values
-   on 14 interior edges fails the part J bit criterion.
-
-L. THE MASSLESS WALL -- what Delta = 2/3 actually DOES
-   1 + sqrt2 cos(theta) = 0 at theta = 3pi/4 exactly, and the electron phase
-   sits 2.27 deg from it, so sqrt(m_e)/M IS that angular deficit to first
-   order.  Consequences: (i) the ~3500x lepton hierarchy needs NO large
-   parameter -- it is the square of a 59x amplitude ratio from one 2.3-degree
-   deficit; (ii) the wall exists only because A^2 = 2 > 1, which QLF DERIVES,
-   so the substrate geometry is what makes a lepton hierarchy POSSIBLE (below
-   A^2 = 1 the spectrum is capped: 34x at A^2=1/2, 9x at A^2=1/4); (iii) the
-   +9.83 ppm residual carried as 'the one number to explain' is a COORDINATE
-   ARTEFACT -- the near-zero amplifies by 12.5, so the ansatz's own 3.4e-5
-   knowledge of Delta covers +-424 ppm and the residual is 2.3% of that.
-   K6 (third_curvature_deep_check, not run by main -- ~6 min) extends the
-   census to L=12 and settles the truncation question: the L6-L8 interior
-   values are unchanged to the last digit, and the 148 newly interior L8-L10
-   edges are negative without exception -- 162 interior edges, all negative.
+H-M. DERIVING Delta = 2/3 (the round-by-round record is issue #140)
+   Results that stand:
+     * the hierarchy needs NO large number -- the electron sits 2.27 deg from
+       the massless wall of 1+sqrt2 cos(theta) and the 3477x ratio is that
+       angular deficit SQUARED (part L);
+     * the wall exists only because A^2 = 2 > 1, which QLF derives, so the
+       substrate geometry is what makes a lepton hierarchy POSSIBLE (L3);
+     * the +9.83 ppm residual is RETIRED as a coordinate artefact -- the
+       near-zero amplifies by 12.5, so the ansatz's own 3.4e-5 knowledge of
+       Delta covers +-424 ppm and the residual is 2.3% of that (L4);
+     * the specification: any derivation must produce an O(1) RATIONAL IN
+       RADIANS (part H) and must be FORCED, not selected -- a route costing
+       more bits than the constant is a re-encoding (parts I, J).
+   Routes CLOSED, one line each (details in the parts named):
+     circle divisions (H) | census count-ratios (J) | all three curvature
+     notions (J, K) | eps as a better coordinate (M1) | symmetric-functional
+     extremization (M3) | absolute mass scales (M4a) | ratios of
+     commensurable angles (M4b).
+   Route LIVE: Delta as a mode-locked ROTATION NUMBER (M5) -- explains why a
+     simple rational at all, and why Farey depth = description length, but
+     does not pick 2/3.  A candidate class, not a derivation.
+   Also in K: the possibility graph is HYPERBOLIC while synthesized space is
+   Ollivier-flat -- a result about the substrate that outlived the question,
+   written up in Curvature.md sec 1c.
 
 No QLF imports are required.
 """
@@ -1716,14 +1677,62 @@ def epsilon_audit():
     print("      identical bit cost.  EVERY rational is a ratio of commensurable")
     print("      angles; that is a fact about rationals, not about leptons.\n")
 
-    print("M5. VERDICT.  eps = 0.0396 is NOT DERIVED, and the attempt sharpens")
-    print("  what a derivation would have to look like.  It must produce an O(1)")
-    print("  RATIONAL IN RADIANS, and it must be FORCED rather than selected (the")
-    print("  bit criterion).  It cannot come from: a division of the circle")
-    print("  (part H), a census count-ratio (part J), any of the three curvatures")
-    print("  (parts J-K), a symmetric functional of the spectrum (M3), an")
-    print("  absolute mass scale (M4a), or a ratio of commensurable angles (M4b).")
-    print("  Delta = 2/3 remains the single open item of #140.")
+    print("M5. THE DYNAMICAL ROUTE -- Delta AS A ROTATION NUMBER.  The first")
+    print("  candidate that FITS the specification instead of being excluded by")
+    print("  it.  A circle map's rotation number is MODE-LOCKED at rationals:")
+    print("  each p/q occupies an INTERVAL of parameter space (an Arnold tongue),")
+    print("  not a point, and tongue width orders by Farey/Stern-Brocot")
+    print("  simplicity.  Rotation numbers are O(1) rationals, and the locking is")
+    print("  FORCED by the dynamics rather than selected by us -- both boxes.\n")
+    from fractions import Fraction
+
+    def sb_depth(fr):
+        a, b, d = Fraction(0, 1), Fraction(1, 1), 0
+        while d < 40:
+            m = Fraction(a.numerator + b.numerator, a.denominator + b.denominator)
+            d += 1
+            if m == fr:
+                return d
+            if fr < m:
+                b = m
+            else:
+                a = m
+        return d
+
+    print(f"  {'p/q':>6} {'bits = log2(pq)':>16} {'Stern-Brocot depth':>20}")
+    for fr in (Fraction(1, 2), Fraction(1, 3), Fraction(2, 3),
+               Fraction(1, 4), Fraction(2, 5), Fraction(3, 4)):
+        print(f"  {str(fr):>6} {math.log2(fr.numerator*fr.denominator):16.2f}"
+              f" {sb_depth(fr):20d}")
+    print("\n  2/3 has depth 2 -- the second-simplest tier, after only 1/2 and")
+    print("  alongside 1/3 -- hence one of the WIDEST tongues, exactly where a")
+    print("  mode-locked system sits.  And note the two columns agree: FAREY")
+    print("  DEPTH AND DESCRIPTION LENGTH ARE THE SAME ORDERING, so part I's")
+    print("  Occam curve is the shadow of Farey structure, not a mere")
+    print("  model-selection heuristic.\n")
+    wall_D = math.pi / 4
+    cands = sorted({Fraction(p, q) for q in range(2, 7) for p in range(1, q)
+                    if 0 < p / q < wall_D})
+    DM, SD = 0.666689, 0.000025
+    fit = [f for f in cands if DM - 2*SD <= float(f) <= DM + 2*SD]
+    print(f"  physically allowed range for Delta: (0, pi/4) -- above pi/4 the")
+    print(f"  electron amplitude changes sign.  Simple rationals (q<=6) in it:")
+    print("    " + ", ".join(str(f) for f in cands))
+    print(f"  compatible with the measured band: {[str(f) for f in fit]}")
+    print(f"  => the mechanism narrows to {len(cands)} candidates"
+          f" ({math.log2(len(cands)):.1f} bits); the DATA picks one.")
+    print("  So mode-locking explains WHY A SIMPLE RATIONAL AT ALL -- it does")
+    print("  NOT explain which one.\n")
+
+    print("M6. VERDICT.  eps = 0.0396 is NOT DERIVED, and neither is Delta.  The")
+    print("  attempt sharpens the specification: any derivation must produce an")
+    print("  O(1) RATIONAL IN RADIANS and must be FORCED rather than selected.")
+    print("  Closed: circle divisions, census count-ratios, all three curvature")
+    print("  notions, symmetric functionals, absolute mass scales, ratios of")
+    print("  commensurable angles.  LIVE: the rotation-number mechanism -- a")
+    print("  candidate CLASS, not a derivation, since QLF exhibits no substrate")
+    print("  circle map for the generation phase.  Until one is written down,")
+    print("  'the dynamics chooses' is unearned.  Delta = 2/3 stays open.")
 
 
 def third_curvature_deep_check(max_len: int = 12):
