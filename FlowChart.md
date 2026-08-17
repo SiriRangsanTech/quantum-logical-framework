@@ -32,6 +32,12 @@ proton dissolves at `T_c` and baryon number at `T_EW` while electric charge — 
 capacity — has no exception at any scale. Corollary for everything below: **construction proves
 possibility, not uniqueness.**
 
+**An application of that same capacity machinery:** [`Mpemba.md`](Mpemba.md) — anomalous relaxation, where
+relaxation time *is* the maximum excursion, giving a proven no-go (none for the imbalance measure), a
+proven enabler (no scalar determines relaxation), and proven **instances** (more energy closing strictly
+faster) — while the ensemble effect and the water phenomenon stay open
+([`QLF_Mpemba`](lean/QLF_Mpemba.lean)).
+
 **Foundational logic & mathematics:** the substrate's *logic* is **quantum logic** — argued as the correct
 foundation of mathematics (bottom-up, sound vs. exploding) in [`Quantum_Logic_Foundations.md`](Quantum_Logic_Foundations.md),
 with the minimal quantum logic `MO2` machine-verified on the substrate (orthomodular + non-distributive,
