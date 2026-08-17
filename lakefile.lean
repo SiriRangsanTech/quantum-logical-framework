@@ -203,5 +203,6 @@ lean_lib QLF where
     `QLF_ClosureDepthLaw,
     `QLF_LineSpectra,
     `QLF_BornCounting,
-    `QLF_Degeneracy
+    `QLF_Degeneracy,
+    `QLF_PhaseAssignment
   ]

@@ -33,15 +33,20 @@ weight is `|a|²`. Two things follow immediately:
 
 | ways | phases | count | weight | reading |
 |---|---|---|---|---|
-| 2 | `1, i` — orthogonal | 2 | **2** (`orthogonal_two_ways`) | no interference: weight = count |
-| 2 | `1, 1` — aligned | 2 | **4** (`aligned_two_ways`) | constructive |
+| 2 | `1, i` — orthogonal | 2 | **2** (`orthogonal_two_ways`) | no interference — *not* the census pair, see the correction above |
+| 2 | `1, 1` — aligned | 2 | **4** (`aligned_two_ways`) | constructive — **this is the census pair** |
 | 2 | `1, −1` — opposed | 2 | **0** (`cancelling_two_ways`) | destructive |
 | n | all aligned | n | **n²** (`aligned_weight`) | fully coherent |
 
-**This is also why the generator check passed exactly where it did.** The pair generator's two ways are
-the two orderings `+−` and `−+`; their phases are *orthogonal* in `μ₄`, so `|1 + i|² = 2` — weight equals
-count, and `norm((1+i)ⁿ) = 2ⁿ` matches `onePass_ways_iff` on the nose. The partitions that failed were
-ones where weight and count were never meant to coincide.
+**Correction (see [`QLF_PhaseAssignment`](QLF_PhaseAssignment.lean)).** An earlier version of this
+docstring claimed the census pair's two orderings carry *orthogonal* phases, so that weight would equal
+count. **That is false**, and `QLF_TwistAlphabet.hermitian_pair_folds_to_negI` — already in the
+repository — shows why: *every* conjugate pair folds to `−I`, either way round. The two ways are
+**aligned**, so a pair branch weighs `4`, not `2`, and the depth-1 stratum weighs `4ⁿ`, not `2ⁿ`. The
+arithmetic in the table below is unaffected (`|1+i|² = 2` is just true); what was wrong was identifying
+the census pair with those phases. Consequently the "agreement on the pair generator" reported by
+[`born_generator_check.py`](../born_generator_check.py) compares a **count** with a **norm** — both
+`2ⁿ` — and is a numerical coincidence, not evidence about the amplitude.
 
 ## What this settles, and what it does not
 
