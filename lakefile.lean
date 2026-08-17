@@ -199,5 +199,6 @@ lean_lib QLF where
     `QLF_NullTensorReconstruction,
     `QLF_BianchiClosure,
     `QLF_ClosureDepth,
-    `QLF_LawOfExceptions
+    `QLF_LawOfExceptions,
+    `QLF_ClosureDepthLaw
   ]
