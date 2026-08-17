@@ -198,5 +198,6 @@ lean_lib QLF where
     `QLF_CensusCurvature,
     `QLF_NullTensorReconstruction,
     `QLF_BianchiClosure,
-    `QLF_ClosureDepth
+    `QLF_ClosureDepth,
+    `QLF_LawOfExceptions
   ]
