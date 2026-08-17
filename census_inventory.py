@@ -3,8 +3,22 @@
 census_inventory.py — build and verify the census inventory database.
 
 The inventory is what we actually discover when we enumerate: **counts** (how many
-ways close, graded by length and depth) and **QuCalc folds** (the Pauli phase each
-way carries). Both have turned up repeatedly in this program — the log-2 quantum,
+ways close, graded by length and depth), **listenings** (how many of those ways a
+given capacity can actually receive), and **QuCalc folds** (the Pauli phase each
+way carries).
+
+A *listening* is not a synonym for a count — it is the capacity-relative one, and
+the distinction is a theorem rather than a metaphor. A count is absolute: how many
+ways exist. A listening is what a horizon of capacity `R` can close, and by
+`QLF_ClosureDepthLaw.closedAtHorizon_iff_maxExcursion_le` that is exactly the ways
+whose phase walk never strays further than `R` from balance:
+
+    count(2n)        = |{ balanced histories of length 2n }|          = C(2n, n)
+    listening(2n, R) = |{ those with maxExcursion <= R }|             <= count(2n)
+
+So the same census sounds different to different capacities — a shallow observer
+hears only the shallow closures, a deeper one hears more (`lines_mono`), and no
+finite capacity hears everything (`law_of_exceptions`). Both have turned up repeatedly in this program — the log-2 quantum,
 the depth law, the Born-weight work — and each time they were recomputed from
 scratch. This script keeps them in one place, in `data/census_inventory.json`.
 
@@ -213,7 +227,14 @@ def build_depth_inventory(max_len: int, keep: dict | None = None) -> dict:
                 law_ok = False
         total = sum(dist.values())
         mode = max(dist, key=lambda k: dist[k])
+        # listening(R): what a capacity-R horizon receives — cumulative in depth.
+        listening = {}
+        cum = 0
+        for k in range(1, n + 1):
+            cum += dist.get(k, 0)
+            listening[str(k)] = {"ways_heard": cum, "fraction": round(cum / total, 6)}
         out[str(2 * n)] = {
+            "listening_by_capacity": listening,
             "total_ways": total,
             "central_binomial": comb(2 * n, n),
             "strata": {str(k): v for k, v in sorted(dist.items())},
@@ -332,6 +353,18 @@ def main() -> int:
         print(f"   {L:>3} {rec['total_ways']:>6} {rec['one_pass_ways']:>10}"
               f" {rec['deepest_stratum']:>9} {rec['modal_depth']:>13}"
               f"   {'yes' if rec['depth_equals_max_excursion'] else 'NO'}")
+
+    print("\nLISTENING — what a capacity-R horizon receives (fraction of the census)")
+    caps = [1, 2, 3, 4, 5]
+    print("   len  " + "".join(f"   R={c:<6}" for c in caps))
+    for L, rec in sorted(db_items(fresh), key=lambda kv: int(kv[0])):
+        cells = []
+        for c in caps:
+            e = rec["listening_by_capacity"].get(str(c))
+            cells.append(f"   {e['fraction']:<8.4f}" if e else "   {:<8}".format("1.0000"))
+        print(f"   {L:>3}  " + "".join(cells))
+    print("   a shallow capacity hears only the shallow closures; no finite capacity")
+    print("   hears everything (law_of_exceptions), and each step up adds lines (lines_mono).")
 
     print()
     if fails:

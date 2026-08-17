@@ -232,15 +232,19 @@ Four rules that follow, to apply when choosing what to compute and what to claim
 
 1. **Count ways; don't merely exhibit one.** An existence result is a *lower bound on multiplicity*.
    Prefer the counting statement (`W_1 = 2ⁿ`, `C(2n,n)`, census multiplicities) over the witness.
-2. **Report the mode, not the mean.** What happens first is the argmax of multiplicity. A mean over ways
+2. **Distinguish a count from a *listening*.** A count is absolute (how many ways exist); a **listening**
+   is capacity-relative — what a horizon of capacity `R` receives, exactly the ways with
+   `maxExcursion ≤ R` (`closedAtHorizon_iff_maxExcursion_le`). Both live in `data/census_inventory.json`.
+   State which one a number is.
+3. **Report the mode, not the mean.** What happens first is the argmax of multiplicity. A mean over ways
    is an average of things that all happen and need not be a way at all. Pick the statistic the
    principle demands *before* measuring.
-3. **A claim earns physical content only when it changes a count of ways.** The native falsifiability
+4. **A claim earns physical content only when it changes a count of ways.** The native falsifiability
    test: ask what distribution over ways the claim would be **false** for. "None" ⟹ it is bookkeeping,
    not evidence — however true. (Worked example: the horizon-congestion identity `Δ²C(R) = W_{R+1}` is
    exact for *every* non-negative `W`, random noise included, so it supports no mechanism; see
    `Open_Problems.md`.)
-4. **Never present our route as the route.** Converging independent derivations are *multiplicity*, not
+5. **Never present our route as the route.** Converging independent derivations are *multiplicity*, not
    redundancy — that is what makes a result dominant (the 18 programs; the shared `H↔H†` Millennium
    involution).
 
@@ -343,7 +347,7 @@ Avoid framings that contradict the above:
 | `Mathematics_From_QLF.md` | How mathematics emerges from the substrate — the emergence ladder (ℕ from counting closures; `+`/`×` = parallel/sequence composition; the unit group `μ₄=(ℤ[i])ˣ`; su(2)/su(3); the continuum as completion), the bootstrapping resolution (substrate generates, Mathlib renders, conservativity ⟹ not circular), how QLF is distinct from reverse mathematics (generative + active-inference selection + ontological commitment, vs RM's descriptive/neutral stratification), whether the resolution applies to the metalanguage (reflexively yes — verification is itself a ZFA closure — with the Gödel-II residue relocated to the finite-computation floor), and **why mathematics is so effective in physics (Wigner dissolved: effective math = realizable math = the substrate; effectiveness tracks realizability, which also explains where it fails)** |
 | `Reversibility.md` | Time-reversal = the Hermitian conjugate (`eval_dagger`); a balanced closure is `H=H†` (self-time-reverse, no per-event arrow); the arrow is forward *sequencing* in synthesized time (`f=1/t`), reversal = "go back in time" with no meta-axis; the `H↔H†` involution = the critical line (Hilbert–Pólya). Reversible *logic*, irreversible *process* |
 | `Open_Problems.md` | Gap registry: closed / principled-boundary / open items, each with its owning doc. Update here + owning doc when a status changes |
-| `census_inventory.py` / `data/census_inventory.json` | **The inventory database — counts and QuCalc folds, accumulated.** What enumeration actually discovers: how many ways close (graded by length and closure depth) and which Pauli phase each way carries. **It accumulates** — each run keeps what is stored and computes only what is missing, so the record is fleshed out over time by pushing one length deeper (`--twist-len 8`, `--phase-len 20`; the fold census is `8^L`, the depth census `2^L`, so those set the practical ceilings). And it is a **checker**: every proven invariant is asserted against freshly enumerated data, so a change to `twist_core.py` that breaks one is caught — count balance ⟹ Pauli closure; count balance ⟹ the fold is `±I` never `±iI`; unbalanced histories *do* reach `±iI`; closure depth = max phase excursion; one-pass closures number `2ⁿ`; the deepest stratum holds exactly `2`. Also records the two verified-not-proven findings (the phase rule `(−1)^{#neg}·sign(axis permutation)`, and which strata counts are Gaussian norms — mostly not: **counts are not weights**) |
+| `census_inventory.py` / `data/census_inventory.json` | **The inventory database — counts, listenings and QuCalc folds, accumulated.** What enumeration actually discovers: how many ways close (graded by length and closure depth) and which Pauli phase each way carries. **It accumulates** — each run keeps what is stored and computes only what is missing, so the record is fleshed out over time by pushing one length deeper (`--twist-len 8`, `--phase-len 20`; the fold census is `8^L`, the depth census `2^L`, so those set the practical ceilings). And it is a **checker**: every proven invariant is asserted against freshly enumerated data, so a change to `twist_core.py` that breaks one is caught — count balance ⟹ Pauli closure; count balance ⟹ the fold is `±I` never `±iI`; unbalanced histories *do* reach `±iI`; closure depth = max phase excursion; one-pass closures number `2ⁿ`; the deepest stratum holds exactly `2`. Also records the two verified-not-proven findings (the phase rule `(−1)^{#neg}·sign(axis permutation)`, and which strata counts are Gaussian norms — mostly not: **counts are not weights**) |
 | `Mysteries_Of_Physics.md` | Physics-facing survey of the canonical open questions (quantum foundations, spacetime/gravity, cosmology, the Standard Model, the deep/meta questions) and what QLF says about each — addressed/structural, value-open, principled boundary, predicted-absent (falsifiable nulls), or genuinely open. The reader's-eye companion to `Open_Problems.md` (which is status-organized) |
 | `QuantumOS.md` | QLF as capability-secure OS kernel for QPUs |
 | `.github/workflows/` | CI configuration |

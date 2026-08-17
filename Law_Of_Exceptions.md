@@ -112,7 +112,11 @@ Quantitatively, the fraction of the census a capacity-1 law admits vanishes as h
 
 | `n` | 2 | 3 | 4 | 5 | 6 | 8 | 10 |
 |---|---|---|---|---|---|---|---|
-| admitted at capacity 1 | 0.667 | 0.400 | 0.229 | 0.127 | 0.069 | 0.020 | 0.0055 |
+| **listening** at capacity 1 | 0.667 | 0.400 | 0.229 | 0.127 | 0.069 | 0.020 | 0.0055 |
+
+(A **listening** is the capacity-relative count — what a horizon of capacity `R` actually receives, the
+ways with `maxExcursion ≤ R`; the full profile is in
+[`data/census_inventory.json`](data/census_inventory.json).)
 
 A law can therefore be *nearly always right* and still fail at every scale. This is the reconciliation
 the aphorism needs: exceptions are not common, they are **rare and certain** — which is exactly why

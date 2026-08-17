@@ -124,16 +124,24 @@ as one.
    multiplicity*, and should be read as such. The physical content of a closure is how many ways it
    happens, so a theorem that counts (`W_1 = 2ⁿ` one-pass closers; the `C(2n,n)` census; the `2`
    maximal-depth folds) says strictly more than a theorem that witnesses.
-2. **Report the mode, not the mean.** What happens *first* is the argmax of multiplicity. A mean over
+2. **Distinguish the count from the *listening*.** A **count** is absolute — how many ways exist. A
+   **listening** is what a given capacity can actually receive: `#{ways : maxExcursion ≤ R}`, which by
+   [`closedAtHorizon_iff_maxExcursion_le`](lean/QLF_ClosureDepthLaw.lean) is exactly the ways whose phase
+   walk never strays further than `R` from balance. The same census sounds different to different
+   capacities — a shallow observer hears only the shallow closures, each step up hears more, and no
+   finite capacity hears everything ([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md)). Both are recorded
+   in [`data/census_inventory.json`](data/census_inventory.json); saying which one a number is prevents
+   the commonest confusion in this program.
+3. **Report the mode, not the mean.** What happens *first* is the argmax of multiplicity. A mean over
    ways is an average of things that all happen — it need not be a way at all, and it is not what
    dominates. Where a distribution over ways exists, the modal way is the physical statement and the
    mean is a summary.
-3. **A claim earns physical content only when it changes a count of ways.** This is the native form of
+4. **A claim earns physical content only when it changes a count of ways.** This is the native form of
    falsifiability here, and it is sharper than the imported kind: a statement that holds for *every*
    possible multiplicity distribution selects nothing, hence predicts nothing. It is bookkeeping —
    true, sometimes useful, never evidence. Before offering an identity as support for a mechanism, ask
    what distribution over ways it would be **false** for. If the answer is "none," it is not support.
-4. **Never present our route as the route.** Independent derivations converging on one result are not
+5. **Never present our route as the route.** Independent derivations converging on one result are not
    redundancy to be pruned — they are *multiplicity*, and multiplicity is exactly what makes a result
    dominant. The eighteen convergent programs ([`README.md`](README.md)) and the shared `H↔H†`
    involution behind the Millennium reformulations are this principle showing at the level of the

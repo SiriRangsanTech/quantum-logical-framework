@@ -13,6 +13,28 @@
    "central_binomial": 252,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.126984,
+     "ways_heard": 32
+    },
+    "2": {
+     "fraction": 0.642857,
+     "ways_heard": 162
+    },
+    "3": {
+     "fraction": 0.920635,
+     "ways_heard": 232
+    },
+    "4": {
+     "fraction": 0.992063,
+     "ways_heard": 250
+    },
+    "5": {
+     "fraction": 1.0,
+     "ways_heard": 252
+    }
+   },
    "modal_depth": 2,
    "one_pass_ways": 32,
    "strata": {
@@ -35,6 +57,32 @@
    "central_binomial": 924,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.069264,
+     "ways_heard": 64
+    },
+    "2": {
+     "fraction": 0.525974,
+     "ways_heard": 486
+    },
+    "3": {
+     "fraction": 0.857143,
+     "ways_heard": 792
+    },
+    "4": {
+     "fraction": 0.974026,
+     "ways_heard": 900
+    },
+    "5": {
+     "fraction": 0.997835,
+     "ways_heard": 922
+    },
+    "6": {
+     "fraction": 1.0,
+     "ways_heard": 924
+    }
+   },
    "modal_depth": 2,
    "one_pass_ways": 64,
    "strata": {
@@ -59,6 +107,36 @@
    "central_binomial": 3432,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.037296,
+     "ways_heard": 128
+    },
+    "2": {
+     "fraction": 0.424825,
+     "ways_heard": 1458
+    },
+    "3": {
+     "fraction": 0.787879,
+     "ways_heard": 2704
+    },
+    "4": {
+     "fraction": 0.94697,
+     "ways_heard": 3250
+    },
+    "5": {
+     "fraction": 0.991841,
+     "ways_heard": 3404
+    },
+    "6": {
+     "fraction": 0.999417,
+     "ways_heard": 3430
+    },
+    "7": {
+     "fraction": 1.0,
+     "ways_heard": 3432
+    }
+   },
    "modal_depth": 2,
    "one_pass_ways": 128,
    "strata": {
@@ -85,6 +163,40 @@
    "central_binomial": 12870,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.019891,
+     "ways_heard": 256
+    },
+    "2": {
+     "fraction": 0.33986,
+     "ways_heard": 4374
+    },
+    "3": {
+     "fraction": 0.717327,
+     "ways_heard": 9232
+    },
+    "4": {
+     "fraction": 0.912976,
+     "ways_heard": 11750
+    },
+    "5": {
+     "fraction": 0.981352,
+     "ways_heard": 12630
+    },
+    "6": {
+     "fraction": 0.997514,
+     "ways_heard": 12838
+    },
+    "7": {
+     "fraction": 0.999845,
+     "ways_heard": 12868
+    },
+    "8": {
+     "fraction": 1.0,
+     "ways_heard": 12870
+    }
+   },
    "modal_depth": 3,
    "one_pass_ways": 256,
    "strata": {
@@ -113,6 +225,12 @@
    "central_binomial": 2,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 1.0,
+     "ways_heard": 2
+    }
+   },
    "modal_depth": 1,
    "one_pass_ways": 2,
    "strata": {
@@ -127,6 +245,16 @@
    "central_binomial": 6,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.666667,
+     "ways_heard": 4
+    },
+    "2": {
+     "fraction": 1.0,
+     "ways_heard": 6
+    }
+   },
    "modal_depth": 1,
    "one_pass_ways": 4,
    "strata": {
@@ -143,6 +271,20 @@
    "central_binomial": 20,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.4,
+     "ways_heard": 8
+    },
+    "2": {
+     "fraction": 0.9,
+     "ways_heard": 18
+    },
+    "3": {
+     "fraction": 1.0,
+     "ways_heard": 20
+    }
+   },
    "modal_depth": 2,
    "one_pass_ways": 8,
    "strata": {
@@ -161,6 +303,24 @@
    "central_binomial": 70,
    "deepest_stratum": 2,
    "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.228571,
+     "ways_heard": 16
+    },
+    "2": {
+     "fraction": 0.771429,
+     "ways_heard": 54
+    },
+    "3": {
+     "fraction": 0.971429,
+     "ways_heard": 68
+    },
+    "4": {
+     "fraction": 1.0,
+     "ways_heard": 70
+    }
+   },
    "modal_depth": 2,
    "one_pass_ways": 16,
    "strata": {
