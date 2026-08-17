@@ -207,12 +207,14 @@ push; they are extended deliberately with `--twist-len` / `--phase-len` and comm
 | 4 | 168 | 144 | 24 | **0** | `+120` |
 | 6 | 5,120 | 1,488 | 3,632 | **0** | `−2,144` |
 | 8 | 190,120 | 116,008 | 74,112 | **0** | `+41,896` |
+| 10 | 7,939,008 | 3,535,200 | 4,403,808 | **0** | `−868,608` |
 
 The `±i` column is empty at every length — the content of
 [`balanced_phase_is_real`](lean/QLF_BalancedPhaseReal.lean), here as an implementation check that
 `twist_core.py` still matches the Lean model. The signed amplitude is what a *census-spanning* branch
-would carry: sign `(−1)^{L/2}`, magnitudes `8, 120, 2144, 41896` (ratios `≈15, 17.9, 19.5`). **Recorded,
-not explained** — the closed form, if there is one, is unidentified.
+would carry: sign `(−1)^{L/2}`, magnitudes `8, 120, 2144, 41896, 868608` — all divisible by 8, with
+ratios `≈15, 17.9, 19.5, 20.7` rising and their increments falling. **Recorded, not explained** — the
+closed form, if there is one, is unidentified, and four or five terms are not enough to guess from.
 
 **Listening profile** — the *capacity-relative* count: what fraction of the census a horizon of capacity
 `R` actually receives ([`Philosophy.md`](Philosophy.md) §3a rule 2; a **listening** is not a synonym for a
@@ -223,6 +225,7 @@ count):
 | 8 | 0.229 | 0.771 | 0.971 | 1.000 | 1.000 |
 | 12 | 0.069 | 0.526 | 0.857 | 0.974 | 0.998 |
 | 16 | 0.020 | 0.340 | 0.717 | 0.913 | 0.981 |
+| 20 | 0.005 | 0.213 | 0.583 | 0.832 | 0.948 |
 
 A shallow capacity hears only the shallow closures, each step up hears more
 ([`lines_mono`](lean/QLF_LineSpectra.lean)), and no finite capacity hears everything
@@ -233,8 +236,8 @@ A shallow capacity hears only the shallow closures, each step up hears more
 Kept separate so they cannot quietly harden into claims:
 
 * **The phase rule** `(−1)^{#neg twists} · sign(permutation sorting the axis word)` — **0 violations**,
-  now across all **190,120** balanced histories of length ≤ 8, up from 5,296 at length ≤ 6. A 36×
-  enlargement that could have falsified it and did not. Proven only for the pair sector
+  now across all **8,134,416** balanced histories of length ≤ 10, up from 5,296 at length ≤ 6. A
+  **1,500× enlargement** that could have falsified it at any point and did not. Proven only for the pair sector
   ([`QLF_PhaseAssignment`](lean/QLF_PhaseAssignment.lean)), where the axis word is constant.
 * **Which depth-stratum counts are Gaussian norms** — mostly they are *not* (`38, 14, 70, 422 …` are not
   sums of two squares), the concrete form of **counts are not weights**

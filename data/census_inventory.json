@@ -221,6 +221,74 @@
    },
    "total_ways": 12870
   },
+  "18": {
+   "central_binomial": 48620,
+   "deepest_stratum": 2,
+   "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.010531,
+     "ways_heard": 512
+    },
+    "2": {
+     "fraction": 0.269889,
+     "ways_heard": 13122
+    },
+    "3": {
+     "fraction": 0.648293,
+     "ways_heard": 31520
+    },
+    "4": {
+     "fraction": 0.874126,
+     "ways_heard": 42500
+    },
+    "5": {
+     "fraction": 0.966434,
+     "ways_heard": 46988
+    },
+    "6": {
+     "fraction": 0.993706,
+     "ways_heard": 48314
+    },
+    "7": {
+     "fraction": 0.99926,
+     "ways_heard": 48584
+    },
+    "8": {
+     "fraction": 0.999959,
+     "ways_heard": 48618
+    },
+    "9": {
+     "fraction": 1.0,
+     "ways_heard": 48620
+    }
+   },
+   "modal_depth": 3,
+   "one_pass_ways": 512,
+   "strata": {
+    "1": 512,
+    "2": 12610,
+    "3": 18398,
+    "4": 10980,
+    "5": 4488,
+    "6": 1326,
+    "7": 270,
+    "8": 34,
+    "9": 2
+   },
+   "strata_that_are_gaussian_norms": {
+    "1": true,
+    "2": true,
+    "3": false,
+    "4": true,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": true,
+    "9": true
+   },
+   "total_ways": 48620
+  },
   "2": {
    "central_binomial": 2,
    "deepest_stratum": 2,
@@ -240,6 +308,80 @@
     "1": true
    },
    "total_ways": 2
+  },
+  "20": {
+   "central_binomial": 184756,
+   "deepest_stratum": 2,
+   "depth_equals_max_excursion": true,
+   "listening_by_capacity": {
+    "1": {
+     "fraction": 0.005542,
+     "ways_heard": 1024
+    },
+    "10": {
+     "fraction": 1.0,
+     "ways_heard": 184756
+    },
+    "2": {
+     "fraction": 0.21307,
+     "ways_heard": 39366
+    },
+    "3": {
+     "fraction": 0.582476,
+     "ways_heard": 107616
+    },
+    "4": {
+     "fraction": 0.832179,
+     "ways_heard": 153750
+    },
+    "5": {
+     "fraction": 0.947552,
+     "ways_heard": 175066
+    },
+    "6": {
+     "fraction": 0.987659,
+     "ways_heard": 182476
+    },
+    "7": {
+     "fraction": 0.997943,
+     "ways_heard": 184376
+    },
+    "8": {
+     "fraction": 0.999783,
+     "ways_heard": 184716
+    },
+    "9": {
+     "fraction": 0.999989,
+     "ways_heard": 184754
+    }
+   },
+   "modal_depth": 3,
+   "one_pass_ways": 1024,
+   "strata": {
+    "1": 1024,
+    "10": 2,
+    "2": 38342,
+    "3": 68250,
+    "4": 46134,
+    "5": 21316,
+    "6": 7410,
+    "7": 1900,
+    "8": 340,
+    "9": 38
+   },
+   "strata_that_are_gaussian_norms": {
+    "1": true,
+    "10": true,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": true,
+    "6": false,
+    "7": false,
+    "8": true,
+    "9": false
+   },
+   "total_ways": 184756
   },
   "4": {
    "central_binomial": 6,
@@ -340,6 +482,39 @@
  },
  "folds": {
   "by_length": {
+   "10": {
+    "count": 7939008,
+    "histories_by_phase": {
+     "+1": [
+      ">/<\\+++---",
+      ">/<\\++-+--",
+      ">/<\\++--+-",
+      ">/<\\++---+",
+      ">/<\\+-++--",
+      ">/<\\+-+-+-",
+      ">/<\\+-+--+",
+      ">/<\\+--++-"
+     ],
+     "+i": [],
+     "-1": [
+      "+++++-----",
+      "++++-+----",
+      "++++--+---",
+      "++++---+--",
+      "++++----+-",
+      "++++-----+",
+      "+++-++----",
+      "+++-+-+---"
+     ],
+     "-i": []
+    },
+    "histories_listed_in_full": false,
+    "n_imaginary": 0,
+    "n_minus": 4403808,
+    "n_plus": 3535200,
+    "signed_amplitude": -868608,
+    "weight_of_signed_amplitude": 754479857664
+   },
    "2": {
     "count": 8,
     "histories_by_phase": {
@@ -5735,6 +5910,6 @@
    "<\\v"
   ]
  },
- "max_phase_length": 16,
- "max_twist_length": 8
+ "max_phase_length": 20,
+ "max_twist_length": 10
 }
