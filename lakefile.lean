@@ -196,5 +196,7 @@ lean_lib QLF where
     `QLF_MassGapDispersion,
     `QLF_SpinorInformation,
     `QLF_CensusCurvature,
-    `QLF_NullTensorReconstruction
+    `QLF_NullTensorReconstruction,
+    `QLF_BianchiClosure,
+    `QLF_ClosureDepth
   ]
