@@ -391,7 +391,7 @@ Four rounds attacked the *number*. This one asks what the number **does** in the
 
 The electron's phase is **`2.2676°` from the wall** — `ε = 0.039577` rad — and `√m_e/M = 0.040350` *is* that deficit, to first order: `1 + √2·cos(3π/4 − ε) = 1 − cos ε + sin ε ≈ ε`.
 
-**So the lepton hierarchy needs no large parameter.** The heaviest/lightest amplitude ratio is `58.970`; squared, `3477.5` against the measured `m_τ/m_e = 3477.2`. A `~3500×` hierarchy is the *square* of a `59×` amplitude ratio, and the `59×` is one phase sitting `2.3°` from a zero. **The lepton hierarchy is proximity to a wall, quadratically amplified — not a hierarchy of scales.** The target restates cleanly: derive `ε = 0.0396` rad.
+**So the lepton hierarchy needs no large parameter.** The heaviest/lightest amplitude ratio is `58.970`; squared, `3477.5` against the measured `m_τ/m_e = 3477.2`. A `~3500×` hierarchy is the *square* of a `59×` amplitude ratio, and the `59×` is one phase sitting `2.3°` from a zero. **The lepton hierarchy is proximity to a wall, quadratically amplified — not a hierarchy of scales.** (The target does *not* restate more cleanly as `ε` — §5c⁹ shows `ε = π/12 − 2/9` is a transcendental minus a rational, algebraically **worse** than `Δ`. `Δ` remains the coordinate.)
 
 **And the wall exists only because `A² = 2`.** `1 + A·cos θ` has a zero **iff** `A ≥ 1`; below that the spectrum is capped for *every* phase at `((1+A)/(1−A))²`:
 
@@ -406,6 +406,27 @@ The measured `3477` is **unreachable** without a zero unless `A² ≥ 0.934` —
 
 > **The `+9.83 ppm` residual is a coordinate artefact — retired.** The near-zero amplifies: `d ln(m_μ/m_e) / d ln Δ = 12.48`. §5c knows `Δ` only to `3.4 × 10⁻⁵` (the systematic between two legitimate extractions), and that propagates to **`±424 ppm`** on `m_μ/m_e`. The residual is `9.83 ppm` — **`2.3%` of the model's own uncertainty band**; in the phase coordinate the required correction is `7.9 × 10⁻⁷`, **`43×` smaller** than the systematic. §5c′'s `452σ` was computed against the *ratio's* experimental error (`2.2 × 10⁻⁸`) while ignoring that the model's own input precision covers `±424 ppm`. **Demanding an explanation for `9.83 ppm` demands a correction `43×` more precise than the framework being corrected** — so it is not evidence of missing structure. (This does not *verify* the ansatz to `424 ppm`; it says the discrepancy sits inside its own resolution.) Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §L.
 
+
+### 5c⁹. The attempt on `ε` — and why it was the wrong target
+
+Taking §5c⁸ at its word and going after `ε = 0.0396` **fails**, in a way that corrects §5c⁸'s own framing twice over.
+
+**`ε` is algebraically worse than `Δ`.** The wall is at `3π/4` and the generation offset is `2π/3`, so
+
+$$\varepsilon \;=\; \tfrac{3\pi}{4} - \left(\tfrac{\Delta}{3} + \tfrac{2\pi}{3}\right) \;=\; \tfrac{\pi}{12} - \tfrac{\Delta}{3} \;=\; 0.2617993878 - 0.2222222222 .$$
+
+A **transcendental minus a rational**. `Δ = 2/3` is a pure rational; `ε` inherits a `π` from the wall's location. So "derive `ε`" does not restate the target more cleanly — it restates it *worse*. `Δ` is the coordinate.
+
+**And there is no fine-tuning to derive.** The gap from the Z₃ cell edge to the wall is `π/12 = 0.2618`, and `ε` is **`15.1%`** of it; equivalently `Δ` is `84.9%` of `Δ_wall = π/4`. Both are `O(1)`. The `3477×` hierarchy comes from *squaring a near-wall slope* (§5c⁸), not from a small parameter — so "derive the small number" was the wrong question. **There is no small number.**
+
+**No symmetric functional of the spectrum can single `Δ` out.** With `A² = 2` the amplitudes have `e₁ = 3` and `e₂ = 3/2` **fixed**, so every symmetric functional is a function of `e₃` alone — i.e. of `cos Δ`. Stationarity in `Δ` therefore requires `dF/d(cos Δ) = 0` exactly at `cos(2/3) = 0.785887`, so the route must still *produce* `cos Δ` — which §5c⁗ showed is `0.54%` off the nearest 5-smooth (`e₃`, `0.27%`). The same negative in new clothes. Checked anyway on a pre-registered list of eight natural functionals (spectrum entropies, `Var[log m]`, `e₃`, geometric/arithmetic ratios, the gap ratio, `max/min`, `Σ log m`): **0 of 8** are stationary there. And §5c⁶'s criterion pre-empts the route regardless — choosing among `N` functionals costs `log₂N` bits, so only `N ≤ 8` could beat the `3` bits that *positing* `2/3` costs. A hit would have been worth nothing.
+
+**Two more families, closed by inspection.**
+
+- **Absolute-mass arguments** ("`m_e` is the smallest closure, one `log 2` quantum"): dead — `ε` is dimensionless and `M` is a free scale, so no statement about an absolute mass constrains it.
+- **Ratio-of-angles**: `Δ = (2π/3)/π = 2/3`, the Z₃ cell over a half-turn, *looks* like a derivation with the `π` cancelling. It is not — the `π` cancels **trivially**, so this is `2/3` rewritten at identical bit cost. Every rational is a ratio of commensurable angles; that is a fact about rationals, not about leptons.
+
+> **Verdict.** `ε` is **not derived**, and `Δ = 2/3` stays the single open item. What the attempt buys is a much tighter specification of what any derivation must be: it must produce an **`O(1)` rational in radians**, and it must be **forced rather than selected**. It cannot come from a division of the circle (§5c⁗), a census count-ratio (§5c⁶), any of the three curvature notions (§5c⁶–5c⁷), a symmetric functional of the spectrum, an absolute mass scale, or a ratio of commensurable angles. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §M.
 
 ---
 

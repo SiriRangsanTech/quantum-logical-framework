@@ -1636,6 +1636,96 @@ def wall_audit():
     print("      discrepancy is inside its own resolution.)")
 
 
+def epsilon_audit():
+    """An attempt to derive eps = 0.0396 -- the target part L restated.
+
+    It fails, and the failure corrects part L's own framing: eps is the WORSE
+    coordinate, and there is no small number here to derive in the first
+    place."""
+    print("\n=== M. THE ATTEMPT ON eps -- AND WHY IT IS THE WRONG TARGET ===\n")
+    D = 2.0 / 3.0
+    wall = 3 * math.pi / 4
+    eps = wall - (D / 3 + 2 * math.pi / 3)
+
+    print("M1. eps IS ALGEBRAICALLY WORSE THAN Delta.")
+    print("  eps = 3pi/4 - (Delta/3 + 2pi/3) = pi/12 - Delta/3, so at Delta=2/3")
+    print(f"    eps = pi/12 - 2/9 = {math.pi/12:.10f} - {2/9:.10f} = {eps:.10f}")
+    print("  A TRANSCENDENTAL MINUS A RATIONAL.  Delta = 2/3 is a pure rational;")
+    print("  eps inherits a pi from the wall's location.  So part L's 'target")
+    print("  restated: derive eps' is CORRECTED -- eps does not restate the")
+    print("  target more cleanly, it restates it worse.  Delta is the coordinate.\n")
+
+    print("M2. AND THERE IS NO FINE-TUNING TO DERIVE.")
+    gap = math.pi / 12
+    print(f"  available gap, Z3 cell edge to wall : pi/12 = {gap:.6f}")
+    print(f"  eps as a fraction of it            : {eps/gap*100:.1f}%")
+    print(f"  Delta as a fraction of Delta_wall  : {D/(math.pi/4)*100:.1f}%")
+    print("  Both are O(1).  The 3477x hierarchy comes from SQUARING a near-wall")
+    print("  slope (part L), not from a small parameter -- so 'derive the small")
+    print("  number' was the wrong question: there is no small number.\n")
+
+    print("M3. NO SYMMETRIC FUNCTIONAL CAN SINGLE Delta OUT.")
+    print("  With A^2 = 2 the amplitudes have e1 = 3 and e2 = 3/2 FIXED, so every")
+    print("  symmetric functional of the spectrum is a function of e3 ALONE, i.e.")
+    print("  of cos(Delta).  Stationarity in Delta therefore needs")
+    print("  dF/d(cos Delta) = 0 exactly at cos(2/3) = 0.785887 -- so the route")
+    print("  must still PRODUCE cos Delta, which part H showed is 0.54% off the")
+    print("  nearest 5-smooth (e3 0.27% off).  The same negative in new clothes.")
+    print("  Checked anyway, on a pre-registered list of eight natural ones:\n")
+
+    def amps(x):
+        return [1 + math.sqrt(2) * math.cos(x/3 + 2*math.pi*k/3) for k in range(3)]
+
+    def ent(w):
+        t = sum(w)
+        return -sum((x/t) * math.log(x/t) for x in w if x > 0)
+
+    funcs = {
+        "H[m / sum m]":      lambda s: ent([x*x for x in s]),
+        "H[sqrt m / sum]":   lambda s: ent(s),
+        "Var[log m]":        lambda s: (lambda L: sum((x - sum(L)/3)**2 for x in L)/3)(
+                                 [2*math.log(x) for x in s]),
+        "e3 = prod s":       lambda s: s[0]*s[1]*s[2],
+        "prod m/(sum m)^3":  lambda s: (s[0]*s[1]*s[2])**2 / sum(x*x for x in s)**3,
+        "gap ratio":         lambda s: (lambda m: (max(m) - sorted(m)[1])
+                                        / (sorted(m)[1] - min(m)))([x*x for x in s]),
+        "max/min m":         lambda s: max(x*x for x in s)/min(x*x for x in s),
+        "sum log m":         lambda s: sum(2*math.log(x) for x in s),
+    }
+    h = 1e-6
+    print(f"  {'functional':>18} {'value at 2/3':>14} {'dF/dDelta':>13}  stationary?")
+    hits = 0
+    for nm, f in funcs.items():
+        v = f(amps(D))
+        d = (f(amps(D + h)) - f(amps(D - h))) / (2 * h)
+        stat = abs(d) * D / max(abs(v), 1e-30) < 1e-3
+        hits += stat
+        print(f"  {nm:>18} {v:14.6f} {d:13.4f}  {'YES' if stat else 'no'}")
+    print(f"\n  {hits} of {len(funcs)} stationary at Delta = 2/3.  And the part J")
+    print(f"  criterion pre-empts the route anyway: choosing among N functionals")
+    print(f"  costs log2(N) bits, so only N <= 8 could even beat the 3 bits that")
+    print(f"  POSITING 2/3 costs.  A hit here would have been worth nothing.\n")
+
+    print("M4. TWO MORE FAMILIES, CLOSED BY INSPECTION.")
+    print("  (a) ABSOLUTE-MASS arguments -- 'm_e is the smallest closure, one")
+    print("      log 2 quantum'.  Dead: eps is dimensionless and M is a free")
+    print("      scale, so no statement about an absolute mass constrains it.")
+    print("  (b) RATIO-OF-ANGLES -- Delta = (2pi/3)/pi = 2/3, the Z3 cell over a")
+    print("      half-turn, looks like a derivation with the pi cancelling.  It")
+    print("      is not: the pi cancels TRIVIALLY, so this is 2/3 rewritten at")
+    print("      identical bit cost.  EVERY rational is a ratio of commensurable")
+    print("      angles; that is a fact about rationals, not about leptons.\n")
+
+    print("M5. VERDICT.  eps = 0.0396 is NOT DERIVED, and the attempt sharpens")
+    print("  what a derivation would have to look like.  It must produce an O(1)")
+    print("  RATIONAL IN RADIANS, and it must be FORCED rather than selected (the")
+    print("  bit criterion).  It cannot come from: a division of the circle")
+    print("  (part H), a census count-ratio (part J), any of the three curvatures")
+    print("  (parts J-K), a symmetric functional of the spectrum (M3), an")
+    print("  absolute mass scale (M4a), or a ratio of commensurable angles (M4b).")
+    print("  Delta = 2/3 remains the single open item of #140.")
+
+
 def third_curvature_deep_check(max_len: int = 12):
     """K6 -- the truncation test.  NOT run by main(): ~6 minutes.
 
@@ -1715,6 +1805,7 @@ def main():
     curvature_audit()
     third_curvature_audit()
     wall_audit()
+    epsilon_audit()
 
 
 if __name__ == "__main__":
