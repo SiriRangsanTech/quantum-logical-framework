@@ -68,16 +68,16 @@ open QLF.StateSpace QLF.BornProbability
     close, written explicitly so nothing hides in a definition. -/
 def pairCount (a : GaussianInt) : ℤ := a.re ^ 2 + a.im ^ 2
 
+/-- The pair count is precisely the `ℤ[i]` norm that `bornProb` already uses. -/
+theorem pairCount_eq_norm (a : GaussianInt) : pairCount a = Zsqrtd.norm a := by
+  simp [pairCount, Zsqrtd.norm]
+  ring
+
 /-- **The pair count IS ket × bra.** The product of the amplitude with its dagger (the bra leg) has
     real part exactly the pair count — the square is the Hermitian pair, not a postulated exponent. -/
 theorem pairCount_eq_leg_times_dagger (a : GaussianInt) :
     ((pairCount a : ℤ) : GaussianInt) = a * star a := by
   rw [pairCount_eq_norm, ← Zsqrtd.norm_eq_mul_conj]
-
-/-- The pair count is precisely the `ℤ[i]` norm that `bornProb` already uses. -/
-theorem pairCount_eq_norm (a : GaussianInt) : pairCount a = Zsqrtd.norm a := by
-  simp [pairCount, Zsqrtd.norm]
-  ring
 
 /-- **A count is non-negative**, as a count must be. -/
 theorem pairCount_nonneg (a : GaussianInt) : 0 ≤ pairCount a := by
