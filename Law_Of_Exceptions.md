@@ -209,6 +209,27 @@ invariant its proof uses*:
 
 <p align="center"><img src="diagrams/capacity_ladder.svg" alt="A log energy axis from 1 MeV to 10 TeV with three survival bars: the proton as a bound closure ends at T_c = 155 MeV (dissolves, quark-gluon plasma observed); baryon number as a winding invariant runs further and ends at T_EW = 160 GeV (violated by sphalerons, with a dashed exp(-E_sph/T) tail marking the exponentially rare exception below threshold); electric charge as an annihilation-odd signed count runs the full width and continues past the edge with no threshold at any scale" width="820"></p>
 
+**What sets each threshold — and why the exceptionless rung is light.** Each rung's threshold sits at
+**its sector's carrier-mass scale**:
+
+| Rung | Carrier | Mass scale | Threshold |
+|---|---|---|---|
+| proton binding | gluons / QCD | `Λ_QCD ≈ 200 MeV` | `T_c ≈ 155 MeV` |
+| baryon winding | `W`, `Z` / electroweak | `m_W = 80`, `m_Z = 91`, `v = 246 GeV` | `T_EW ≈ 160 GeV` |
+| electric charge | the **photon** | `m_γ = 0` | **none** |
+
+Same scale in each case, to an `O(1)` factor (`T_c/Λ_QCD ≈ 0.8`, `T_EW/v ≈ 0.65`) — those factors are *not*
+derived here, only the pattern. And the pattern explains the third rung: **the exceptionless invariant is
+the one whose carrier is massless.** In QLF that is close to a tautology in the right units, which is the
+point — **mass *is* constructing delay *is* fold depth *is* capacity** (`m = 1/R`; a massless excitation
+has no gauge fold, hence zero depth and zero entropy, [`Entropy.md`](Entropy.md) §2). A zero-depth carrier
+is a zero-capacity one, so there is no budget to exceed and no threshold to place. Standard physics says
+the same thing from the other side: exact `U(1)` ⟺ unbroken gauge symmetry ⟺ massless photon, while the
+broken electroweak sector has massive carriers and, exactly there, the violable invariant.
+
+So the unterminated bar in the diagram is **light**. That is not a coincidence of the drawing; it is what
+"no capacity" looks like when capacity is depth and depth is mass.
+
 Three decades of scale separate the first two (`160 / 0.155 ≈ 10³`); the third has no scale at all. And
 the rule is **falsifiable in both directions**: observing violation of a quantity whose QLF proof is a
 signed-count invariant would break it, and showing a winding quantity exactly conserved at all scales

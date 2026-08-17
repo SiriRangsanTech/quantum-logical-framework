@@ -357,6 +357,13 @@ capacity exists at all:
 
 <p align="center"><img src="diagrams/capacity_ladder.svg" alt="A log energy axis from 1 MeV to 10 TeV with three survival bars: the proton as a bound closure ends at T_c = 155 MeV (dissolves, quark-gluon plasma observed); baryon number as a winding invariant runs further and ends at T_EW = 160 GeV (violated by sphalerons, with a dashed exp(-E_sph/T) tail marking the exponentially rare exception below threshold); electric charge as an annihilation-odd signed count runs the full width and continues past the edge with no threshold at any scale" width="820"></p>
 
+Each threshold sits at its sector's **carrier-mass scale** (`Λ_QCD ≈ 200 MeV` → `T_c ≈ 155 MeV`;
+`v = 246 GeV` → `T_EW ≈ 160 GeV`; `m_γ = 0` → none), which is why the exceptionless rung is **light**:
+mass *is* constructing delay *is* fold depth *is* capacity, so a massless carrier is a zero-capacity one
+with no budget to exceed ([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4b). In information terms the
+photon carries no hidden depth — zero fold, zero entropy ([`Entropy.md`](Entropy.md) §2) — so there is
+nothing about it that a rising capacity can exhaust.
+
 So "information is physical" acquires a graded, measurable form: an information capacity exists exactly
 when the invariant maintaining a structure is capacity-relative, and the temperature at which it fails
 reads that capacity off. Below a threshold the exception is not absent but *exponentially rare* — the
