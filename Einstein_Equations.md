@@ -224,6 +224,58 @@ the full tensor `G_μν = 8πG T_μν` from the Benincasa–Dowker action and ge
 
 ---
 
+## §6b The algebraic rung: nine integer null probes, no continuum of directions
+
+Jacobson's derivation does not need the Benincasa–Dowker operator to manufacture all ten components of
+`G_μν`. It reaches a **pointwise null projection** — writing `S_ab := R_ab − κ T_ab`, the Clausius
+relation on every local Rindler horizon gives
+
+```
+S_ab k^a k^b = 0     for null k
+```
+
+— and then an **algebraic** step concludes `S_ab = f g_ab`, after which contracted Bianchi plus
+`∇^a T_ab = 0` fixes `f = −R/2 + Λ`. Three arrows:
+
+```
+horizon thermodynamics  →  S_ab k^a k^b = 0  →  S_ab = f g_ab  →  f = −R/2 + Λ
+                        (Rindler/Raychaudhuri)   (algebraic)      (contracted Bianchi)
+```
+
+The **middle arrow is closed** in [`QLF_NullTensorReconstruction`](lean/QLF_NullTensorReconstruction.lean),
+and closed *finitely*. The textbook version quantifies over the continuum of null directions; the
+substrate needs **nine**, all of them integer points of the discrete Hermitian lattice whose interval is
+integer-valued ([`QLF_Minkowski`](lean/QLF_Minkowski.lean), `det X ∈ ℤ`):
+
+```
+(1,±1,0,0)   (1,0,±1,0)   (1,0,0,±1)   (5,3,4,0)   (5,3,0,4)   (5,0,3,4)
+```
+
+null because `1² = 1²` and `5² = 3² + 4²` — nameable without a square root, hence without a completed
+continuum. A generic null direction `(1, cos θ, sin θ, 0)` is *not* a substrate point; these nine are.
+The mechanism ([`finite_null_probes_force_metric`](lean/QLF_NullTensorReconstruction.lean)): the six
+axis probes give `S.tt ± 2 S.tx + S.xx = 0`, whose difference kills `S.tx` and whose sum pins
+`S.xx = −S.tt` (likewise `y`, `z`); each Pythagorean probe then reads
+`25 S.tt + 9 S.xx + 16 S.yy + 24 S.xy = 0`, and `25 − 9 − 16 = 0` collapses it to `24 S.xy = 0`.
+
+With the converse direction ([`contract_metricMultiple`](lean/QLF_NullTensorReconstruction.lean): a
+metric multiple contracts to `f · interval`, so it annihilates the *whole* cone) this is a
+**characterization** — [`null_annihilator_iff_metric_multiple`](lean/QLF_NullTensorReconstruction.lean):
+the symmetric tensors vanishing on the null cone are **exactly** the multiples of `g`, a
+one-dimensional space, and nine lattice points decide membership. The nine are sharp: the six axis
+probes alone admit the pure-`xy` counterexample
+([`axis_probes_insufficient`](lean/QLF_NullTensorReconstruction.lean)), so the `3-4-5` triple — the
+smallest integer Pythagorean reach into the spatial off-diagonals — is load-bearing.
+
+This is the same *unneeded* strike as the census recovering `π` and `ζ(3)`
+([TheContinuum.md](TheContinuum.md) §2): a continuum quantifier in a standard derivation turns out to
+be replaceable by finitely many realizable points. It is **only** the algebraic rung — `SymTensor4` is
+ten reals, and nothing in that module ties them to a curvature tensor. The first arrow (local Rindler +
+Raychaudhuri focusing) and the third (contracted Bianchi) are unchanged in cost, and they are where the
+field-equation work now sits.
+
+---
+
 ## §7 Honest scope
 
 This anchors the **coefficient and the thermodynamic skeleton** — `8πG = 2π/η`, both inputs being QLF
@@ -231,8 +283,15 @@ substrate results, reproducing Jacobson's "Einstein equation of state," with `Λ
 integration constant = the local-clock tick. Status marker:
 [`einstein_equations_in_progress`](lean/QLF_EinsteinEquations.lean).
 
-It does **not** carry out the full **tensor** derivation. But that open step is *concrete and
-named*, not "differential geometry QLF lacks": it is the **causal-set order → metric** program
+It does **not** carry out the full **tensor** derivation — but that derivation now splits into three
+named arrows (§6b), of which the **algebraic middle one is closed with no axiom**: a symmetric tensor
+annihilating the null cone is a metric multiple, forced by **nine integer lattice probes** rather than a
+continuum of null directions ([`QLF_NullTensorReconstruction`](lean/QLF_NullTensorReconstruction.lean)).
+What is left is the arrow *into* it (local Rindler + Raychaudhuri focusing) and the arrow *out* of it
+(contracted Bianchi fixing `f = −R/2 + Λ`).
+
+The remaining open step is *concrete and named*, not "differential geometry QLF lacks": it is the
+**causal-set order → metric** program
 (Sorkin / Benincasa–Dowker, §6a) running on QLF's own causal set
 ([`QLF_ReachableEvent`](lean/QLF_ReachableEvent.lean)), of which the **number↔volume / proper-time
 rung is Lean-anchored** ([`QLF_CausalInterval`](lean/QLF_CausalInterval.lean)). What remains open
@@ -258,6 +317,10 @@ two meeting substrate legs — the equation of state (coefficient) and the causa
 | `einstein_coupling_from_thermodynamics` | `8πG = 2π/η` — the coefficient as Unruh `2π` over entropy density (Jacobson) |
 | `einstein_coupling_geometric` | `8πG = (4π·2)G = 2π·(4G)` — the same `8π = 4π·2` |
 | `einstein_equations_in_progress` | status: coefficient + thermodynamic skeleton anchored; full tensor derivation open |
+| `finite_null_probes_force_metric` | nine **integer** null probes force `S_ab = S.tt·diag(1,−1,−1,−1)` — Jacobson eqs. (5)→(6) without a continuum of null directions (§6b) |
+| `null_annihilator_iff_metric_multiple` | the null-cone annihilators are **exactly** the metric multiples (one-dimensional, spanned by `g`); nine lattice points decide membership |
+| `contract_metricMultiple` | `contract (f·g) v = f · interval v` — a metric multiple annihilates the whole null cone |
+| `axis_probes_insufficient` | sharpness: the six axis probes alone fail (pure-`xy` witness), so the `3-4-5` probes are load-bearing |
 
 ---
 
