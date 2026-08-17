@@ -157,6 +157,46 @@ def is_gaussian_norm(n: int) -> bool:
 
 
 # --------------------------------------------------------------------------- #
+# enumeration
+# --------------------------------------------------------------------------- #
+def balanced_histories(length: int):
+    """Generate every count-balanced history of the given length, directly.
+
+    Filtering 8^L is hopeless past length 6; generating the multiset permutations of
+    each balanced letter-multiset is ~90x cheaper at length 8 and ~135x at length 10
+    (190,120 and 7,939,008 histories respectively).
+    """
+    half = length // 2
+    letters = [c for pair in CONJ_PAIRS for c in pair]
+
+    def perms(counts, prefix):
+        if len(prefix) == length:
+            yield ''.join(prefix)
+            return
+        for ch in letters:
+            if counts[ch]:
+                counts[ch] -= 1
+                prefix.append(ch)
+                yield from perms(counts, prefix)
+                prefix.pop()
+                counts[ch] += 1
+
+    for a in range(half + 1):
+        for b in range(half + 1 - a):
+            for c in range(half + 1 - a - b):
+                d = half - a - b - c
+                counts = {}
+                for (x, y), k in zip(CONJ_PAIRS, (a, b, c, d)):
+                    counts[x] = k
+                    counts[y] = k
+                yield from perms(counts, [])
+
+
+# keep the full history lists only while they are small; beyond this store aggregates
+FULL_LISTING_MAX_LEN = 6
+
+
+# --------------------------------------------------------------------------- #
 # build
 # --------------------------------------------------------------------------- #
 def build_fold_inventory(max_len: int, keep: dict | None = None) -> dict:
@@ -170,25 +210,27 @@ def build_fold_inventory(max_len: int, keep: dict | None = None) -> dict:
     for L in range(2, max_len + 1, 2):
         if str(L) in out:
             continue
-        print(f"   computing fold census at length {L} (8^{L} histories)...", flush=True)
-        by_phase = {"+1": [], "-1": [], "+i": [], "-i": []}
-        for tup in product(TWISTS, repeat=L):
-            h = ''.join(tup)
-            if not is_count_balanced(h):
-                continue
+        print(f"   computing fold census at length {L}...", flush=True)
+        tally = {"+1": 0, "-1": 0, "+i": 0, "-i": 0}
+        samples = {"+1": [], "-1": [], "+i": [], "-i": []}
+        for h in balanced_histories(L):
             p = fold_phase(h)
             assert p is not None, f"count-balanced but not Pauli-closed: {h!r}"
-            by_phase[p].append(h)
+            tally[p] += 1
+            if L <= FULL_LISTING_MAX_LEN or len(samples[p]) < 8:
+                samples[p].append(h)
             if p != predicted_phase(h):
                 rule_violations.append(h)
-        n_plus, n_minus = len(by_phase["+1"]), len(by_phase["-1"])
+        by_phase = samples
+        n_plus, n_minus = tally["+1"], tally["-1"]
         out[str(L)] = {
-            "count": n_plus + n_minus + len(by_phase["+i"]) + len(by_phase["-i"]),
+            "count": sum(tally.values()),
             "n_plus": n_plus,
             "n_minus": n_minus,
-            "n_imaginary": len(by_phase["+i"]) + len(by_phase["-i"]),
+            "n_imaginary": tally["+i"] + tally["-i"],
             "signed_amplitude": n_plus - n_minus,
             "weight_of_signed_amplitude": (n_plus - n_minus) ** 2,
+            "histories_listed_in_full": L <= FULL_LISTING_MAX_LEN,
             "histories_by_phase": by_phase,
         }
     # the exception: unbalanced histories DO reach +-i

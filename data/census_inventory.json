@@ -5682,6 +5682,39 @@
     "n_plus": 1488,
     "signed_amplitude": -2144,
     "weight_of_signed_amplitude": 4596736
+   },
+   "8": {
+    "count": 190120,
+    "histories_by_phase": {
+     "+1": [
+      "++++----",
+      "+++-+---",
+      "+++--+--",
+      "+++---+-",
+      "+++----+",
+      "++-++---",
+      "++-+-+--",
+      "++-+--+-"
+     ],
+     "+i": [],
+     "-1": [
+      ">/<\\++--",
+      ">/<\\+-+-",
+      ">/<\\+--+",
+      ">/<\\-++-",
+      ">/<\\-+-+",
+      ">/<\\--++",
+      ">/<+\\+--",
+      ">/<+\\-+-"
+     ],
+     "-i": []
+    },
+    "histories_listed_in_full": false,
+    "n_imaginary": 0,
+    "n_minus": 74112,
+    "n_plus": 116008,
+    "signed_amplitude": 41896,
+    "weight_of_signed_amplitude": 1755274816
    }
   },
   "phase_rule": "(-1)^(#neg twists) * sign(permutation sorting the axis word)",
@@ -5703,5 +5736,5 @@
   ]
  },
  "max_phase_length": 16,
- "max_twist_length": 6
+ "max_twist_length": 8
 }
