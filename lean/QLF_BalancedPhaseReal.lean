@@ -82,7 +82,7 @@ theorem det_fold (ts : List Twist) :
       have hfold : twistMatrixFold (t :: rest) = t.toMatrix * twistMatrixFold rest := by
         simp [twistMatrixFold]
       rw [hfold, Matrix.det_mul, ih, det_toMatrix]
-      cases h : isAxis t <;> simp [axisLen, h, pow_succ] <;> ring
+      cases h : isAxis t <;> simp [axisLen, h] <;> ring
 
 /-- The axis length is the total count of the six axis twists. -/
 theorem axisLen_eq_counts (ts : List Twist) :
@@ -91,7 +91,7 @@ theorem axisLen_eq_counts (ts : List Twist) :
   induction ts with
   | nil => simp [axisLen]
   | cons t rest ih =>
-      cases t <;> simp [axisLen, isAxis, List.count_cons, ih] <;> omega
+      cases t <;> simp +decide [axisLen, isAxis, List.count_cons, ih] <;> omega
 
 /-- **Count balance makes the axis length even** — the three axis pairs contribute
     `2(#^ + #> + #/)`. -/
