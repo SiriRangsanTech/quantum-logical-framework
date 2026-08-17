@@ -103,10 +103,18 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
 
 - **Lean theorem — partly delivered.** [`QLF_BornCounting`](lean/QLF_BornCounting.lean) closes the
   *exponent* half (`pairCount_eq_leg_times_dagger`, `modulus_not_a_count`, `born_is_pair_count_ratio`)
-  and reduces the rest. **Still open:** the identification of the norm with the *census* count. Both are
-  multiplicative (`pairCount_mul`; `independent_join_multiplies`), so by `count_determined_by_generators`
-  what remains is **agreement on the primitive closures** — a finite check per generator rather than a
-  global assumption. That is the concrete next target.
+  and reduces the rest. **The generator check has now been run**
+  ([`born_generator_check.py`](born_generator_check.py)) and its result is mixed and informative: it
+  **agrees exactly on the pair generator** (`norm(1+i) = 2` = the two ways a pair closes; `norm((1+i)ⁿ)
+  = 2ⁿ` = the `2ⁿ` ways `n` pairs close), and **fails for arbitrary census partitions**, since a
+  `ℤ[i]` norm is always a sum of two squares (Fermat) while depth strata such as `38, 14, 70` and
+  sign-splits such as `3, 35, 126` are not. Sharpest consequence: **no two Gaussian integers stand in
+  norm ratio `3:1`** — `v₃(k)` and `v₃(3k)` differ by one, so exactly one has odd `3`-adic valuation —
+  yet `3:1` Born weights are routine (Clebsch–Gordan `3/4` vs `1/4`).
+  **The repair is forced, and it is the multiplicity reading itself:** a weight of `3` is *three
+  degenerate unit-norm branches*, never one amplitude of norm `3`. Weight is the **sum** of norms over
+  degenerate components. So the remaining question is no longer "is the count a norm" but **what fixes
+  the degeneracy decomposition** — `n = n·1` being otherwise unconstrained. Sharper, and smaller.
 - **Numerical demo**: extend `path_integral.py` to compute Born probabilities directly from QuCalc path enumeration; verify against standard QM for a battery of canonical cases (single spin, two-spin singlet, three-slit interference).
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.
 - **Quantum contextuality**: Bell-Kochen-Specker theorem is the constraint that probability assignments must be consistent across measurement contexts. QLF's per-context possibility trees should derive this consistency automatically.

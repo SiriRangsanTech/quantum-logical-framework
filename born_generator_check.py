@@ -81,3 +81,14 @@ print("\nC. partition by the sign of the first twist (two branches):")
 for n in range(1, 7):
     half = comb(2*n-1, n-1)
     print(f"   2n={2*n:>2}: each branch {half:>5}   Gaussian norm? {is_gaussian_norm(half)}")
+
+print("\nD. THE SHARPEST CONSEQUENCE — a 3:1 weight ratio from two single amplitudes:")
+hits = [(k, 3*k) for k in range(1, 5000) if is_gaussian_norm(k) and is_gaussian_norm(3*k)]
+print(f"   pairs (k, 3k) both Gaussian norms, k <= 5000: {hits if hits else 'NONE'}")
+print("   and none exist at all: v_3(k) and v_3(3k) differ by 1, so exactly one has")
+print("   ODD 3-adic valuation, and by Fermat's two-square theorem that one is not a norm.")
+print("   Yet 3:1 Born weight ratios are routine (Clebsch-Gordan 3/4 vs 1/4).")
+print("   => a weight of 3 CANNOT be one amplitude of norm 3; it must be THREE")
+print("      degenerate unit-norm branches.  Weight = SUM of norms over degenerate")
+print("      components, not the norm of a single component.  The residue is therefore")
+print("      not 'is the count a norm' but 'WHAT FIXES THE DEGENERACY DECOMPOSITION'.")

@@ -442,11 +442,18 @@ Two pillars:
   irrational (`modulus_not_a_count`) while the norm is `2`, so integrality alone forces the square. And
   since existence is all-or-nothing, a single realization gets `1` or `0` (`bornProb_eq_one_iff`,
   `bornProb_eq_zero_iff`) — **every intermediate value is a ratio of counts of binary events, never
-  partial existence**. Still **not** proven: that exhaustive physical multiplicity *is* the Gaussian
-  norm-square census — though now **reduced**, both counts being multiplicative so that
-  `count_determined_by_generators` localizes the gap to **agreement on the primitive closures** — and
-  uniqueness of the `\|a\|²` form against Gleason-type alternatives, untouched. So this remains the
-  Born **measure**, not a derivation of the Born **rule**.
+  partial existence**. **Uniqueness of the form is also settled, in a stated sense:** `unique_pair_form` shows `a·ā` is the
+  *only* form scaling linearly on the ket leg, conjugate-linearly on the bra leg, and normalized on the
+  trivial closure — uniqueness **given the pair structure**, not Gleason's theorem, which assumes no form
+  at all.
+  **The census identification has now been *checked*, and it half-fails** — the informative outcome
+  ([`born_generator_check.py`](born_generator_check.py)): exact agreement on the pair generator
+  (`norm(1+i) = 2` = two ways; `2ⁿ` for `n` pairs), but *no* Gaussian amplitude exists for branch counts
+  that are not sums of two squares (`3, 38, 70, 126 …`), and **no two Gaussian integers stand in norm
+  ratio `3:1`** though such Born weights are routine. The forced repair is the multiplicity reading:
+  a weight of `3` is **three degenerate unit-norm branches**, not one amplitude of norm `3` — weight is
+  the *sum* of norms over degenerate components. So the residue is now precisely **what fixes the
+  degeneracy decomposition**. This remains the Born **measure**, not a derivation of the Born **rule**.
 - **The `ħ/2` uncertainty quantum** ([`lean/QLF_Uncertainty.lean`](lean/QLF_Uncertainty.lean)):
   mapping a continuum value onto its nearest integer twist-count leaves an irreducible half-bin
   spread `= 1/2` (`binning_halfwidth_tight`, `uncertainty_quantum_eq_half`); the conjugate-pair

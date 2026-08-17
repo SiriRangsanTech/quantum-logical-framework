@@ -44,11 +44,25 @@ are **multiplicative counts**:
   (`independent_join_multiplies`, [`QLF_CensusShannon`](QLF_CensusShannon.lean)).
 
 Hence **`count_determined_by_generators`**: any multiplicative count agreeing with `pairCount` on the
-*primitive* closures agrees with it on every composite. So the open step is no longer a global
-identification of two functions — it is **agreement on generators**, a finite check per primitive.
-That is the same shape as the entropy-uniqueness situation in `Information_Physics.md` §2 (completely
-additive functions are free on the primes), and it cuts the same way: the structure fixes everything
-except the values on generators.
+*primitive* closures agrees with it on every composite. So the open step is a finite check per
+primitive — and [`born_generator_check.py`](../born_generator_check.py) **runs it**, with a mixed and
+informative result:
+
+* **On the pair generator it agrees exactly.** `norm(1+i) = 2` = the two ways a closure pair closes
+  (`+−` or `−+`), and by multiplicativity `norm((1+i)ⁿ) = 2ⁿ` = the `2ⁿ` ways `n` pairs close
+  (`QLF_ClosureDepth.onePass_ways_iff`). The binary sector matches on the nose.
+* **For arbitrary census partitions it fails.** A `ℤ[i]` norm is always a **sum of two squares**
+  (Fermat), so any branch count that is not one has *no* Gaussian amplitude whatever. Depth strata
+  `38, 14, 70, 422 …` and sign-splits `3, 35, 126, 462 …` are not sums of two squares.
+* **Sharpest consequence:** no two Gaussian integers stand in norm ratio `3:1` at all — `v₃(k)` and
+  `v₃(3k)` differ by one, so exactly one of them has odd `3`-adic valuation. Yet `3:1` Born weights are
+  routine (Clebsch–Gordan `3/4` vs `1/4`).
+
+The repair is forced and it is the multiplicity reading itself: a weight of `3` is **three degenerate
+unit-norm branches**, never one amplitude of norm `3`. Weight is the *sum* of norms over degenerate
+components, not the norm of a single component. So the residue is **not** "is the count a norm" — it is
+**what fixes the degeneracy decomposition**, since `n = n·1` is otherwise unconstrained. That is a
+sharper open question than the one this module started with, and a smaller one.
 
 ## Honest scope
 
