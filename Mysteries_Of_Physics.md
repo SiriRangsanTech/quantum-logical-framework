@@ -90,7 +90,6 @@ Both departures are on the *open, contested* questions (dark sector, Hubble tens
 | **Why 3 fermion generations** | = the 3 spatial axes — the same `3` behind Koide, colour SU(3), and `α (N=9=3²)` | ✅ | `QLF_Generations.lean` |
 | **The origin of mass / the Higgs** | Mass is the gauge-fold delay `m = 1/R`, not a Yukawa coupling; the Higgs is the fold's resonance; custodial `ρ=1` | ✅ structural / 🔵 VEV | `QLF_HiggsMechanism.lean`, [`Higgs.md`](Higgs.md) |
 | **Neutrino mass & nature** | The neutrino is **Majorana** (its own antiparticle; only the self-conjugate fermion can be); smallness = the seesaw | ✅ nature / 🔵 scale | `QLF_NeutrinoMass/Majorana.lean`, [`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) |
-| **The Mpemba effect (hot water freezing first)** | Relaxation *is* closure and its time *is* the maximum phase excursion, so: **no-go** — if distance means imbalance, relaxation is bounded below by it (effect impossible for that measure); **enabler** — no scalar determines relaxation (factor `n` at one length); **translation** — strong Mpemba is sector emptiness, not a vanishing eigenmode. **Instances proven and exhibited** (`mpemba_instance`: more energy closing faster by an arbitrary factor; uniform draws cross 13–17% of the time at 2× energy) — but the *ensemble* medians stay monotone, so it is an ontology + proven scaffolding + instances, *not* a derivation of the water effect | 🟡 | `QLF_Mpemba.lean`, [`Mpemba.md`](Mpemba.md) |
 | **Proton stability (why no proton decay)** | Baryon number = a conserved signed 3-axis winding invariant; a lone quark cannot close (confinement) | ✅ | `QLF_BaryonWinding.lean` |
 | **The strong CP problem (`θ̄ ≈ 0`)** | Every CP-odd winding is zero on every ZFA closure ⟹ `θ̄ = 0` with **no axion** (ZFA closure does the Peccei–Quinn job) | ✅ mechanism / 🟣 field-theoretic | `QLF_StrongCP.lean`, [`CP-Violation-and-Chirality.md`](CP-Violation-and-Chirality.md) §4a |
 | **Confinement & the Yang–Mills mass gap** | Lone colour can't close (singlet obstruction); the lightest non-vacuum gauge closure carries one `log 2` ⟹ a positive gap. [▶ a confined uud triple](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=proton_uud%20%40%200%2C0%2C0) (a free quark is confinement-rejected) | ✅ substrate / 🧱 continuum | `QLF_MassGap/Confinement.lean`, [`YangMills_MassGap_QLF.md`](YangMills_MassGap_QLF.md) |
@@ -99,6 +98,52 @@ Both departures are on the *open, contested* questions (dark sector, Hubble tens
 | **The hierarchy problem (why gravity is weak / the 10¹⁹)** | Dimensional transmutation: `ln R_p = 2π·b₀ = 14π ≈ 43.98` vs measured 44.01 (0.07%), from the single integer `b₀ = 7` (`N_c=3`, `n_f=6`) | 🔵 (the `α_s` posit + ~3% value) | `QLF_AlphaS/BetaFunction.lean`, [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) §3.3b |
 | **The muon `g−2` anomaly** | Leading `a_μ = α/2π = a_e` (universal); the discrepancy is the hadronic-vacuum-polarization sector (QLF's open hadronic frontier) — and experimentally unsettled | 🔵 | `QLF_MuonG2.lean`, [`g_minus_2.md`](g_minus_2.md) §4a |
 | **Unification of the forces** | One force, three projections — EM = the abelian limit, weak/strong = non-abelian projections; the gauge *force* = the holonomy of the closure connection | ✅ algebras + dynamics / 🔵 couplings | [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md), `QLF_GaugeUnification/GaugeHolonomy.lean` |
+
+## 4a. Thermal relaxation — the Mpemba effect, demystified
+
+Hot water sometimes freezes first. For decades the question was *which* mundane mechanism —
+evaporation, convection, dissolved gas, supercooling, container coupling — is **the** cause, and the
+effect kept its reputation as a paradox.
+
+**What dissolves the paradox.** It rests on a premise that is provably false here: that a scalar
+macrostate variable orders relaxation time. On the substrate, relaxation to equilibrium *is* closure and
+its time *is* the maximum excursion of the phase walk
+([`closedAtHorizon_iff_maxExcursion_le`](lean/QLF_ClosureDepthLaw.lean)) — and
+[`equal_length_unequal_relaxation`](lean/QLF_Mpemba.lean) proves that at one length, with identical
+imbalance, relaxation differs by a factor of `n`. Once relaxation is an *excursion* rather than a
+function of energy, "farther yet faster" stops being anomalous and becomes expected. The mystery was in
+the premise, not the phenomenon.
+
+Four results, all machine-verified, no axioms ([`Mpemba.md`](Mpemba.md),
+[`QLF_Mpemba`](lean/QLF_Mpemba.lean)):
+
+| | |
+|---|---|
+| **a no-go** | if "distance" means the **imbalance**, relaxation is bounded *below* by it — the effect is **impossible** for that measure (`relaxation_ge_distance`). Part of the old confusion was measuring distance with the wrong quantity |
+| **an enabler** | no scalar determines relaxation (factor `n` at one length) — the room the effect needs |
+| **a translation** | strong Mpemba is **sector emptiness** `W_H(deep) = 0`, not a vanishing eigenmode (`strong_mpemba`) |
+| **instances** | exhibited and unbounded — `2n` twists closing in **one** pass against `2d < 2n` needing **`d`** (`mpemba_instance`); and uniform draws cross **13–17%** of the time at a 2× energy ratio ([`mpemba_census.py`](mpemba_census.py)) |
+
+**The "which mechanism" question is dissolved too.** Heating changes convection, evaporation, dissolved
+gas, nucleation and correlations at once, and on the possibilist reading these are not competitors: they
+are **different ways of altering the same closure-depth census**. What should stay invariant across
+preparations is only that the hotter one carries more multiplicity in fast-closing sectors, or less in
+the slowest.
+
+**And a methodological confusion is made precise.** The literature's hardest problem is *what does
+"freezes first" mean*. The substrate answers sharply: an unbalanced history **never closes** — it stalls
+at an irreducible core — so a relaxation comparison is only meaningful between preparations that close to
+the *same* equilibrium. Comparing time-to-own-fixpoint across different imbalances manufactures a
+spurious crossing, which is exactly the artifact that appeared in the first version of our own test.
+
+**Honest scope — 🟡, not ✅.** The *ensemble* effect is not derived: median relaxation stays monotone in
+energy, so the crossing lives between individual preparations. Whether **energy** is an admissible
+distance measure is what thermomajorization asks of the ordinary effect. And **no quantitative claim
+about water** is made. What would make it a result: deriving the slow-mode amplitudes `a_n` from an
+actual census for a physically specified preparation — a laser-cooled ion ladder, whose transition
+multiplicities can be written down, rather than freezing water.
+
+---
 
 ## 5. Deep / meta-physical
 
