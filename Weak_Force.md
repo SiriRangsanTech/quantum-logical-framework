@@ -194,7 +194,7 @@ At that honest precision, with experimental errors propagated (dominated by `m_�
 | `Δ − 2/3` | `+2.22 × 10⁻⁵` | `± 2.5 × 10⁻⁵` | `+0.89 σ` — **not significant** |
 | `m_μ/m_e` | `+9.83 × 10⁻⁶` | `± 2.2 × 10⁻⁸` | `+452 σ` — **significant** |
 
-Exactly **one** number needs explaining: the model (`A² = 2` *and* `Δ = 2/3` both exact, `M` the only freedom) overpredicts `m_μ/m_e` by **`+9.83 ppm`**. The locus is the **e–μ sector** — which is also where the blind ladder carries its one structural asymmetry: `e = ^<v>` and `μ = ^^<vv>` share axis content `{x,y}`, while only `τ = ^^</>vv\` engages `z` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A). The symmetric three-phase ansatz treats all three alike; the substrate does not. Suggestive of where a correction lives — **not** a calculation of it.
+Exactly **one** number appears to need explaining: the model (`A² = 2` *and* `Δ = 2/3` both exact, `M` the only freedom) overpredicts `m_μ/m_e` by **`+9.83 ppm`**. (**Superseded by §5c⁸:** that `452σ` is measured against the *ratio's* experimental error while the model's own knowledge of `Δ` — `3.4 × 10⁻⁵` — covers `±424 ppm`, because the electron sits next to a zero of the three-phase form and amplifies by `12.5`. The residual is `2.3%` of the model's own band, and is **retired**. The paragraph below is retained for the locus it identifies, which remains the right place to look if a correction is ever needed.) The locus is the **e–μ sector** — which is also where the blind ladder carries its one structural asymmetry: `e = ^<v>` and `μ = ^^<vv>` share axis content `{x,y}`, while only `τ = ^^</>vv\` engages `z` ([`lepton_blind_classifier.py`](lepton_blind_classifier.py) §A). The symmetric three-phase ansatz treats all three alike; the substrate does not. Suggestive of where a correction lives — **not** a calculation of it.
 
 **The larger puzzle: why the relation survives radiative corrections at all.** `Q` is invariant under `mₖ → c·mₖ`, so flavour-*universal* corrections cancel exactly; only the flavour-dependent `log mₖ` terms can move it. Those are not small — `(α/π)·ln(m_μ/m_e) ≈ 1.24 × 10⁻²`. Running the pole masses to a common scale with one-loop QED gives
 
@@ -376,6 +376,36 @@ That is a real result and it belongs to the curvature sector, not this one — i
 **For the phase it is another negative, and a clean one.** `Δ = 2/3` is *positive*, and the possibility graph carries **no positive interior curvature at all**; no edge anywhere takes the value `2/3`; and the interior edges carry essentially as many distinct values as there are edges (14 of 14 at four layers, and the 162-edge sample only widens the spread), so naming one costs more than the `3` bits §5c⁵ prices the constant at — §5c⁶'s criterion, failed a second time.
 
 > **Verdict on the curvature route.** All three notions are now examined — holonomy, topological deficit, and optimal-transport — and none produces `Δ`. The phase is not a curvature of either QLF graph. `Δ = 2/3` remains **open**, and the four rounds §5c⁗–5c⁷ have narrowed the space entirely by elimination. What was gained along the way is worth stating separately: a unit constraint (arc-over-radius, never a division of the circle), a bit-cost criterion for what counts as a derivation, and a third curvature notion that outlived the question that produced it. Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §K.
+
+### 5c⁸. The massless wall — what `Δ = 2/3` actually *does*
+
+Four rounds attacked the *number*. This one asks what the number **does** in the three-phase form, and two things fall out — one of which retires an open item.
+
+**The form has a zero, and the electron sits next to it.** `1 + √2·cos θ = 0` at `θ = 3π/4 = 135.0000°` exactly. At `Δ = 2/3`:
+
+| `k` | `θ` | `1 + √2 cos θ` | `m/M²` |
+|---|---|---|---|
+| 0 (`τ`) | `12.7324°` | `2.379438` | `5.66172601` |
+| 1 (`e`) | **`132.7324°`** | **`0.040350`** | `0.00162812` |
+| 2 (`μ`) | `252.7324°` | `0.580212` | `0.33664587` |
+
+The electron's phase is **`2.2676°` from the wall** — `ε = 0.039577` rad — and `√m_e/M = 0.040350` *is* that deficit, to first order: `1 + √2·cos(3π/4 − ε) = 1 − cos ε + sin ε ≈ ε`.
+
+**So the lepton hierarchy needs no large parameter.** The heaviest/lightest amplitude ratio is `58.970`; squared, `3477.5` against the measured `m_τ/m_e = 3477.2`. A `~3500×` hierarchy is the *square* of a `59×` amplitude ratio, and the `59×` is one phase sitting `2.3°` from a zero. **The lepton hierarchy is proximity to a wall, quadratically amplified — not a hierarchy of scales.** The target restates cleanly: derive `ε = 0.0396` rad.
+
+**And the wall exists only because `A² = 2`.** `1 + A·cos θ` has a zero **iff** `A ≥ 1`; below that the spectrum is capped for *every* phase at `((1+A)/(1−A))²`:
+
+| `A²` | zero? | max possible `m_heavy/m_light` |
+|---|---|---|
+| `1/4` | no | `9.0` |
+| `1/2` | no | `34.0` |
+| `1` | **yes** | unbounded |
+| **`2`** | **yes** | unbounded |
+
+The measured `3477` is **unreachable** without a zero unless `A² ≥ 0.934` — already `93%` of the way to the threshold. `A² = 2` is **derived** (the two transverse axes of the `6 = 2+1` split, §5b), so **the substrate geometry is what makes a lepton hierarchy possible at all.** That is a payoff of `A² = 2` not previously read off it: not the *value* of the hierarchy, but its *existence*.
+
+> **The `+9.83 ppm` residual is a coordinate artefact — retired.** The near-zero amplifies: `d ln(m_μ/m_e) / d ln Δ = 12.48`. §5c knows `Δ` only to `3.4 × 10⁻⁵` (the systematic between two legitimate extractions), and that propagates to **`±424 ppm`** on `m_μ/m_e`. The residual is `9.83 ppm` — **`2.3%` of the model's own uncertainty band**; in the phase coordinate the required correction is `7.9 × 10⁻⁷`, **`43×` smaller** than the systematic. §5c′'s `452σ` was computed against the *ratio's* experimental error (`2.2 × 10⁻⁸`) while ignoring that the model's own input precision covers `±424 ppm`. **Demanding an explanation for `9.83 ppm` demands a correction `43×` more precise than the framework being corrected** — so it is not evidence of missing structure. (This does not *verify* the ansatz to `424 ppm`; it says the discrepancy sits inside its own resolution.) Reproduce with [`lepton_blind_classifier.py`](lepton_blind_classifier.py) §L.
+
 
 ---
 

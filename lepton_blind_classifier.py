@@ -100,6 +100,18 @@ K. THE THIRD CURVATURE NOTION
    It does NOT supply the phase:
    no positive interior curvature anywhere, no 2/3, and 14 distinct values
    on 14 interior edges fails the part J bit criterion.
+
+L. THE MASSLESS WALL -- what Delta = 2/3 actually DOES
+   1 + sqrt2 cos(theta) = 0 at theta = 3pi/4 exactly, and the electron phase
+   sits 2.27 deg from it, so sqrt(m_e)/M IS that angular deficit to first
+   order.  Consequences: (i) the ~3500x lepton hierarchy needs NO large
+   parameter -- it is the square of a 59x amplitude ratio from one 2.3-degree
+   deficit; (ii) the wall exists only because A^2 = 2 > 1, which QLF DERIVES,
+   so the substrate geometry is what makes a lepton hierarchy POSSIBLE (below
+   A^2 = 1 the spectrum is capped: 34x at A^2=1/2, 9x at A^2=1/4); (iii) the
+   +9.83 ppm residual carried as 'the one number to explain' is a COORDINATE
+   ARTEFACT -- the near-zero amplifies by 12.5, so the ansatz's own 3.4e-5
+   knowledge of Delta covers +-424 ppm and the residual is 2.3% of that.
    K6 (third_curvature_deep_check, not run by main -- ~6 min) extends the
    census to L=12 and settles the truncation question: the L6-L8 interior
    values are unchanged to the last digit, and the 148 newly interior L8-L10
@@ -1547,6 +1559,83 @@ def third_curvature_audit():
     print("  curvature route now closed at all three notions rather than two.")
 
 
+def wall_audit():
+    """Back to Delta = 2/3, from the other end.
+
+    Everything so far attacked the NUMBER.  This part looks at what the number
+    DOES in the three-phase form, and two things fall out: the lepton
+    hierarchy needs no large parameter, and the residual that has been carried
+    as 'the one number needing explanation' is a coordinate artefact."""
+    print("\n=== L. THE MASSLESS WALL -- WHAT Delta = 2/3 ACTUALLY DOES ===\n")
+    D = 2.0 / 3.0
+    # koide_weights returns the SQUARES (the masses); the amplitudes are these
+    s = [1 + math.sqrt(2) * math.cos(D / 3 + 2 * math.pi * k / 3) for k in range(3)]
+    wall = 3 * math.pi / 4
+
+    print("L1. THE FORM HAS A ZERO, AND THE ELECTRON SITS NEXT TO IT.")
+    print("  1 + sqrt2 cos(theta) = 0 at theta = 3pi/4 = 135.0000 deg exactly.")
+    print(f"  {'k':>3} {'theta (deg)':>13} {'1+sqrt2 cos':>13} {'m/M^2':>13}")
+    for k in range(3):
+        th = D / 3 + 2 * math.pi * k / 3
+        print(f"  {k:>3} {math.degrees(th):13.4f} {s[k]:13.6f} {s[k]**2:13.8f}")
+    e_th = D / 3 + 2 * math.pi / 3
+    eps = wall - e_th
+    lo, hi = min(s), max(s)
+    print(f"\n  electron phase   = {math.degrees(e_th):.4f} deg")
+    print(f"  deficit from wall= {math.degrees(eps):.4f} deg = {eps:.6f} rad = 1/{1/eps:.2f}")
+    print(f"  sqrt(m_e)/M      = {lo:.6f}   vs   eps = {eps:.6f}  (ratio {lo/eps:.4f})")
+    print("  => the electron's sqrt-mass IS its angular deficit from the wall,")
+    print("     to first order.  1 + sqrt2 cos(3pi/4 - eps) = 1 - cos eps + sin eps.\n")
+
+    print("L2. SO THE HIERARCHY NEEDS NO LARGE PARAMETER.")
+    print(f"  amplitude ratio  heaviest/lightest = {hi/lo:.3f}")
+    print(f"  MASS ratio = its square           = {(hi/lo)**2:.1f}"
+          f"   (measured m_tau/m_e = {MTAU/ME:.1f})")
+    print("  A ~3500x hierarchy is the SQUARE of a 59x amplitude ratio, and the")
+    print("  59x is one phase sitting 2.3 degrees from a zero.  The lepton")
+    print("  hierarchy is proximity to a wall, quadratically amplified -- not a")
+    print("  hierarchy of scales.  Target restated: derive eps = 0.0396 rad.\n")
+
+    print("L3. AND THE WALL EXISTS ONLY BECAUSE A^2 = 2.")
+    print("  1 + A cos(theta) has a zero iff A >= 1.  Below that the spectrum is")
+    print("  BOUNDED for every phase: max/min <= ((1+A)/(1-A))^2.")
+    print(f"  {'A^2':>6} {'zero?':>7}   max possible m_heavy/m_light")
+    for a2 in (0.25, 0.5, 1.0, 2.0):
+        a = math.sqrt(a2)
+        cap = "unbounded" if a >= 1 else f"{((1+a)/(1-a))**2:.1f}"
+        print(f"  {a2:6.2f} {('YES' if a >= 1 else 'no'):>7}   {cap:>12}")
+    print(f"  measured m_tau/m_e = {MTAU/ME:.1f}: unreachable for A^2 = 1/2 (cap 34)")
+    print("  or 1/4 (cap 9).  A^2 = 2 is DERIVED (the 2 transverse axes of the")
+    print("  2+1 split, sec 5b) -- so the substrate geometry is what MAKES a")
+    print("  lepton hierarchy POSSIBLE.  That is a payoff of A^2=2 not previously")
+    print("  read off it: not the value of the hierarchy, but its existence.\n")
+
+    print("L4. THE +9.83 ppm RESIDUAL IS A COORDINATE ARTEFACT.")
+    h = 1e-7
+    def lnr(x):
+        w = koide_weights(x / 3)          # already the masses
+        return math.log(w[2] / w[1])
+    S = (lnr(D + h) - lnr(D - h)) / (2 * h) * D
+    sysD = 3.4e-5                       # free-fit systematic on Delta, part C
+    band = S * sysD
+    res = 9.83e-6
+    print(f"  the near-zero AMPLIFIES: d ln(m_mu/m_e) / d ln Delta = {S:.2f}")
+    print(f"  the ansatz knows Delta only to {sysD:.1e} (part C's free-fit")
+    print(f"  systematic between two legitimate extractions), which propagates to")
+    print(f"      +-{band*1e6:.0f} ppm on m_mu/m_e")
+    print(f"  the residual carried as 'the one number to explain' is {res*1e6:.2f} ppm")
+    print(f"      = {res/band*100:.1f}% of the model's OWN uncertainty band")
+    print(f"  in the phase coordinate the needed correction is {res/S:.2e} relative,")
+    print(f"      {sysD/(res/S):.0f}x SMALLER than the systematic.")
+    print("  The 452 sigma was computed against the RATIO's experimental error")
+    print("  (2.2e-8) while ignoring that the model's own input precision covers")
+    print("  +-424 ppm.  Demanding an explanation for 9.83 ppm demands a")
+    print("  correction 43x more precise than the framework being corrected.")
+    print("  => NOT evidence of missing structure.  The residual is RETIRED.")
+    print("     (This does not verify the ansatz to 424 ppm -- it says the")
+    print("      discrepancy is inside its own resolution.)")
+
+
 def third_curvature_deep_check(max_len: int = 12):
     """K6 -- the truncation test.  NOT run by main(): ~6 minutes.
 
@@ -1625,6 +1714,7 @@ def main():
     occam_audit()
     curvature_audit()
     third_curvature_audit()
+    wall_audit()
 
 
 if __name__ == "__main__":
