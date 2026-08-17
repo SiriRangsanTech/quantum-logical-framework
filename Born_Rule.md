@@ -113,8 +113,15 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
   yet `3:1` Born weights are routine (Clebsch–Gordan `3/4` vs `1/4`).
   **The repair is forced, and it is the multiplicity reading itself:** a weight of `3` is *three
   degenerate unit-norm branches*, never one amplitude of norm `3`. Weight is the **sum** of norms over
-  degenerate components. So the remaining question is no longer "is the count a norm" but **what fixes
-  the degeneracy decomposition** — `n = n·1` being otherwise unconstrained. Sharper, and smaller.
+  degenerate components. **And that question is now answered** ([`QLF_Degeneracy`](lean/QLF_Degeneracy.lean)): the
+  decomposition is fixed by `μ₄`. Every closed history folds to a Pauli scalar in `{±1, ±i}`
+  (`QLF_Pauli`), so each way carries a *unit* amplitude with a `μ₄` phase and a branch amplitude is
+  their **sum** — whence `weight_is_always_a_norm`, and the obstruction disappears because **counts are
+  not weights**. `weight = |Σ phases|²`, and the gap from the count *is* interference: orthogonal
+  phases give weight = count (exactly why the pair generator matched — its two ways are the orderings
+  `+−` and `−+`), aligned phases give `n²`, opposed give `0`. **What remains open is different and more
+  concrete:** *which* phase a given way carries, i.e. the `pauli_fold` of the specific history — the
+  interference calculation itself.
 - **Numerical demo**: extend `path_integral.py` to compute Born probabilities directly from QuCalc path enumeration; verify against standard QM for a battery of canonical cases (single spin, two-spin singlet, three-slit interference).
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.
 - **Quantum contextuality**: Bell-Kochen-Specker theorem is the constraint that probability assignments must be consistent across measurement contexts. QLF's per-context possibility trees should derive this consistency automatically.

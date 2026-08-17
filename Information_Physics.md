@@ -452,8 +452,14 @@ Two pillars:
   that are not sums of two squares (`3, 38, 70, 126 …`), and **no two Gaussian integers stand in norm
   ratio `3:1`** though such Born weights are routine. The forced repair is the multiplicity reading:
   a weight of `3` is **three degenerate unit-norm branches**, not one amplitude of norm `3` — weight is
-  the *sum* of norms over degenerate components. So the residue is now precisely **what fixes the
-  degeneracy decomposition**. This remains the Born **measure**, not a derivation of the Born **rule**.
+  the *sum* of norms over degenerate components. **And that residue is now closed**
+  ([`QLF_Degeneracy`](lean/QLF_Degeneracy.lean)): the decomposition is fixed by `μ₄` — every closed
+  history folds to a Pauli scalar, so a branch is one unit-norm component per way and its amplitude is
+  their sum, making every weight a norm automatically. The earlier failures were the wrong comparison:
+  **counts are not weights**, `weight = |Σ phases|²`, and the difference *is* interference (orthogonal
+  phases ⟹ weight = count, aligned ⟹ `n²`, opposed ⟹ `0`). Still open, and now a sharper question:
+  *which* phase each way carries. This remains the Born **measure**, not a derivation of the Born
+  **rule**.
 - **The `ħ/2` uncertainty quantum** ([`lean/QLF_Uncertainty.lean`](lean/QLF_Uncertainty.lean)):
   mapping a continuum value onto its nearest integer twist-count leaves an irreducible half-bin
   spread `= 1/2` (`binning_halfwidth_tight`, `uncertainty_quantum_eq_half`); the conjugate-pair
