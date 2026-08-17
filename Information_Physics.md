@@ -1,9 +1,12 @@
 # Information Physics in QLF — what information *is*, and the notions it grounds
 
 > **"It from bit" made constructive.** Information is not a measure laid on top of physics; in
-> the [Quantum Logical Framework (QLF)](README.md) it **is** the physics. The universe is the
-> subset of logical possibility that achieves Zero Free Action (ZFA) closure, and each closure
-> *is* a resolved distinction — one realized bit. This document collects the many notions of
+> the [Quantum Logical Framework (QLF)](README.md) it **is** the physics. All computationally
+> generable histories exist a priori as *possibility*, and **nothing happens one way — everything
+> happens every way that closes**: Zero Free Action (ZFA) decides which possibilities become
+> events, and an event's **multiplicity is its frequency — what happens in the most ways happens
+> first** ([`Philosophy.md`](Philosophy.md) §3a). Each closure *is* a resolved distinction — one
+> realized bit, and the same event may close through many histories. This document collects the many notions of
 > information (Shannon, algorithmic, Fisher, von Neumann/quantum, Bekenstein/holographic,
 > Landauer, semantic) and shows, with machine-checked proofs where they exist, how each sits on
 > QLF's substrate: **inherited** (a measure QLF sits *on*), **derived** (falls out of counting
@@ -32,6 +35,26 @@ ontology**: Shannon *counts* distinctions, algorithmic information *prices* desc
 > distinction) is primary; a ZFA closure is its physical *realization*. The atom is the
 > **spin-½ closure**, carrying exactly one bit; every richer measure lives on top.
 
+**Three things, kept apart.** Writing `P` for the computationally generable histories, physical
+reality is not `P` but the closing subset, and multiplicity is the count over `P`:
+
+```
+P        = all generable histories                      — possibility
+E        = { h ∈ P : h achieves ZFA closure }            — events (physical reality)
+W(e)     = #{ h ∈ P : h closes to e }                    — multiplicity = frequency
+```
+
+Non-closing histories remain *pure possibility*, not realized alternatives
+([`Philosophy.md`](Philosophy.md) §3) — but the ways an event *does* close are all taken, and their
+count is the frequency. Probability is the normalized view of `W` under incomplete information.
+
+**The epistemic consequence, and it binds this whole document.** A finite census establishes a
+**lower bound** on multiplicity: exhibiting `N` ways proves *at least* `N` ways, and exactly `N` only
+where completeness of the enumerated sector is separately proved. **Construction proves possibility,
+not uniqueness** — a system with more states can always break a finite closure
+([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md)). Every "derived" below should be read as *a route
+that closes*, never as the only possible route.
+
 The priority runs **abstraction → physical** (Wheeler's *it from bit*): information *is* the
 distinction, and matter/spacetime is what realizing distinctions *looks like*. "Information is
 physical" (Landauer) is then the downstream **toll** — realizing a bit is finite and costs
@@ -46,9 +69,9 @@ physical" (Landauer) is then the downstream **toll** — realizing a bit is fini
 | Bit / ½-spin atom | **derived** | one bit = a two-valued ZFA closure |
 | Shannon | **inherited** | the census *is* the count |
 | Phase | **derived** | independent of the count |
-| Algorithmic (AIT) | **boundary** | `Ω` = the pruning horizon |
+| Algorithmic (AIT) | **stance** | `Ω` is the canonical uncomputable boundary the ontology excises (an analogy, §4 — not derived) |
 | Physical / finite | **derived** | no continuum in a finite region |
-| Quantum | **reading** | `ℤ[i]` skeleton + Born from counts |
+| Quantum | **reading** | `ℤ[i]` skeleton; a consistent count-measure (Born *rule* uniqueness open, §6) |
 | Fisher | **rendering** | emerges in the continuum limit |
 | Semantic | **contributes** | a contradiction carries zero |
 
@@ -56,13 +79,43 @@ physical" (Landauer) is then the downstream **toll** — realizing a bit is fini
 
 ---
 
+## 0a. Inventory: independent routes versus re-exports
+
+The method's rule 4 says converging derivations are **multiplicity**, and multiplicity is what makes a
+result dominant — but only *independent* routes count, so they have to be inventoried rather than
+tallied. [`Entropy.md`](Entropy.md) §1b does this for `log 2` (17 appearances → **four** independent
+routes plus thirteen re-exports). The same discipline applied to this document's own load-bearing
+claims:
+
+| Claim | Route | Independent? |
+|---|---|---|
+| one bit `= log 2` (the atom) | KL of a resolved binary distinction | **independent** — information-theoretic |
+| one bit `= log 2` | `2ⁿ` one-pass closures counted ([`onePass_ways_iff`](lean/QLF_ClosureDepth.lean)) | **independent** — pure combinatorics, nothing assumed binary |
+| one bit `= log 2` | von Neumann `S(I/2)` | **independent** — spectral |
+| one bit `= log 2` | MRE saturation (the per-step ceiling) | **independent** — extremal |
+| `ΔF = −log 2`, `Ω_Λ`, area law, Immirzi, mass gap, binding, Casimir… | the same atom re-exported into a physical setting | **re-export** — not further confirmations |
+| Shannon additivity | census multiplicity multiplies | independent (but see §2 — it does *not* force `log`) |
+| finite information | no injection of an infinite state space | independent — realizability |
+| finite information | capacity is an excursion budget ([depth law](lean/QLF_ClosureDepthLaw.lean)) | **independent** — dynamical, and quantitative |
+
+Reading the re-export column as evidence would be double-counting; the four independent routes to the
+atom are the actual strength of the claim. Note which route pays the most rent: the **combinatorial**
+one assumes nothing binary — it counts the histories that close in one pass, finds exactly `2ⁿ`, and
+`log 2` per closure falls out of the count.
+
+---
+
 ## 1. The atom of information — one bit is one half-spin closure
 
 <p align="center"><img src="diagrams/half_spin_bit.svg" alt="A Hermitian pair t·t† folds to −I (360°), two pairs to +I (720°). A single-valued alphabet {+I} carries 0 bits (binary_kl 1 1 = 0); the two-valued spinor alphabet {+I,−I} carries 1 bit = log 2 (binary_kl 1 (1/2) = log 2), the MRE maximum" width="720"></p>
 
-**Claim.** The minimal unit of information is the two-valued **spin-½ closure**. A *single-valued*
-object cannot express a distinction (carries zero information); a *two-valued* one — the spinor,
-whose `2π` turn reads `−I ≠ +I` — carries exactly one bit.
+**Claim.** QLF's minimal unit of information is the two-valued **spin-½ closure** — the substrate's
+*minimal rotationally covariant two-valued carrier*. A *single-valued* object cannot express a
+distinction (carries zero information); a *two-valued* one — the spinor, whose `2π` turn reads
+`−I ≠ +I` — carries exactly one bit. What is proven is that the implemented single-valued alphabet
+carries `0` and the two-valued spinor alphabet carries `log 2`, and that the increment enters exactly
+at the double-cover sign; **not** that spin-½ is the unique conceivable shape for a binary carrier
+(that would need a completeness theorem over all constructions — see §0).
 
 **Proof (machine-checked, [`lean/QLF_SpinorInformation.lean`](lean/QLF_SpinorInformation.lean)).**
 Write the binary Kullback–Leibler divergence of a recognition density `q` from a prior `p`,
@@ -123,24 +176,35 @@ has multiplicity `2` (`bit_multiplicity`), `n` independent bits multiplicity `2�
 per closure and the Landauer bridge `ΔF = −log 2` are the per-event quantum
 ([`lean/QLF_FreeEnergy.lean`](lean/QLF_FreeEnergy.lean)).
 
-**The measure is *forced*, not chosen — because frequency *is* the number of ways.** The quantum
-happens **every way possible**; a closure's **frequency is its multiplicity** — the census count `W`
-of ways it can occur — so the probabilities are not primitive but way-counts, `pᵢ = Wᵢ/ΣW` (Born from
-counts, §6). Once information *is* the count of ways, the logarithm is not an axiom one imposes; it is
-**forced by a single fact — independent sets of ways multiply.** If A can happen `W_A` ways and B
-`W_B` ways, together they happen `W_A·W_B` ways (`independent_join_multiplies`), so for the information
-of "A and B" to be the *sum* of the parts, the measure must turn multiplication into addition:
-`S(A·B) = S(A) + S(B)` with `W(A·B) = W(A)·W(B)` ⟹ `S = log W`. The **only** function doing that is the
-logarithm — Boltzmann's `S = log(number of ways)`. For uniform ways (`p = 1/W`), `−Σ pᵢ log pᵢ = log W`
-(Shannon **is** Boltzmann); for non-uniform way-counts it is the same, weighted by the frequencies.
+**Why a logarithm at all — because frequency *is* the number of ways.** The quantum happens **every
+way that closes**; a closure's **frequency is its multiplicity** — the census count `W` of ways it can
+occur — so probabilities are not primitive but way-counts, `pᵢ = Wᵢ/ΣW` (§6). Once information *is* the
+count of ways, the shape of the measure is constrained rather than chosen: if A can happen `W_A` ways
+and B `W_B` ways, together they happen `W_A·W_B` ways (`independent_join_multiplies`), so for the
+information of "A and B" to be the *sum* of the parts the measure must turn multiplication into
+addition — `S(A·B) = S(A) + S(B)` with `W(A·B) = W(A)·W(B)`. On the binary uniform census that gives
+`S = log W`, Boltzmann's `S = log(number of ways)`, and for uniform ways (`p = 1/W`),
+`−Σ pᵢ log pᵢ = log W` (Shannon **is** Boltzmann).
 
-So the uniqueness is a *consequence* of "frequency = ways" + "ways multiply," not a separate postulate.
-Any additive functional is pinned uniquely (`additive_unique`,
-[`lean/QLF_EntropyUniqueness.lean`](lean/QLF_EntropyUniqueness.lean); on a length-`|s|` uniform census
-it must equal `|s|·c`, `c` fixed by one generator) — the finite/counting wing of the
-**Baez–Fritz–Leinster** category-theoretic uniqueness and of **Knuth**'s "structure forces the
-measure." Only the **Lean formalization of the general distributional `−Σ p log p` case is open**; its
-*necessity* is already settled by multiplicity-multiplies (which the substrate proves).
+**Where that argument actually stops — a correction worth making precisely.** Additivity over
+multiplication does **not** by itself force the logarithm. A function on the positive integers with
+`f(mn) = f(m) + f(n)` is a *completely additive arithmetic function*, and such functions are **free on
+the primes**: fixing `f(2) = log 2` pins every power of two and says nothing whatever about `f(3)`.
+The prime-omega function `Ω(n)` (counting prime factors with multiplicity) is completely additive and
+is not a logarithm. So "ways multiply, information adds" forces `S = log W` only on the multiplicative
+sub-semigroup generated by the anchor.
+
+That is exactly — and only — what the substrate proves, which is why the honest claim is *stronger*
+where it matters and silent where it should be:
+
+- **Proven.** On QLF's own census, which is binary and uniform (`W = 2ⁿ`,
+  [`onePass_ways_iff`](lean/QLF_ClosureDepth.lean)), additivity plus the one-bit anchor `c = log 2`
+  gives `H = n·log 2 = log W` (`additive_uniform_eq_length_mul`, `additive_unique`,
+  [`lean/QLF_EntropyUniqueness.lean`](lean/QLF_EntropyUniqueness.lean)). **The logarithm is forced on
+  the census QLF actually has.**
+- **Open.** Arbitrary multiplicities and non-uniform distributions need a grouping/regularity axiom
+  (Faddeev 1956; Baez–Fritz–Leinster; Knuth's "structure forces the measure"). Neither the theorem nor
+  its necessity is established here — `QLF_CensusShannon` says as much.
 
 ---
 
@@ -173,9 +237,17 @@ QLF's "fantasy tier" **quantitative**. The non-identifiable tail of the overfit 
 **infinite Kolmogorov complexity**; **Chaitin's `Ω`** (the halting probability) sits on the
 boundary — *definable yet uncomputable*, the canonical fantasy object with a name. QLF's response
 is not a dodge but the correct discipline: the core lives strictly within **`RCA₀`**, below the
-Busy-Beaver / `Ω` horizon ([`ReverseMathematics.md`](ReverseMathematics.md)), and `full_zeno_prune`
-*is* the physical realization of the pruning boundary — non-terminating computations never achieve
-ZFA closure. **AIT prices descriptions; ZFA says which descriptions get receipted.**
+Busy-Beaver / `Ω` horizon ([`ReverseMathematics.md`](ReverseMathematics.md)), and non-terminating
+computations never achieve ZFA closure. **AIT prices descriptions; ZFA says which descriptions get
+receipted.**
+
+**Status — stance, not theorem (a correction).** `full_zeno_prune` is a *terminating* function on
+finite `TopoString`s — Lean proves its termination by a decreasing-length measure — so it neither
+solves nor instantiates the halting problem, and it is not a realization of `Ω`. Identifying the
+pruning boundary with Chaitin's `Ω` is an **ontological stance**: `Ω` is the canonical *example* of
+a definable-yet-uncomputable object that a receipt-based ontology excises, and the correspondence is
+a reading of that discipline. What is proven is narrower and still substantive: the core sits in
+`RCA₀`, and only terminating constructions produce closure receipts.
 
 ---
 
@@ -194,13 +266,34 @@ distinction is a whole bit* — the atomic ½-spin closure of §1 — not an inf
 as premise (a region's distinguishable states form a *finite* type) and a faithful realization
 modeled as an injection, there is **no injection from an infinite state space into a finite one**
 (`no_continuum_in_finite_region`); hence a real-valued state space is consistent but physically
-unrealizable (`real_continuum_not_realizable`, `continuum_consistent_but_unrealizable`). Capacity
+unrealizable (`real_continuum_not_realizable`, `continuum_consistent_but_unrealizable`). **Finite capacity has a second, sharper consequence: it can always be broken.** `no_continuum_in_finite_region`
+says an infinite state space cannot be *injected* into a finite region. The **dynamical** companion says
+what a finite capacity *misses*: for every capacity `R` there is a genuine closure it cannot see —
+`[+^{R+1} −^{R+1}]`, which fails at `R` yet closes at `R+1`
+([`law_of_exceptions`](lean/QLF_LawOfExceptions.lean)) — so no finite closure is final
+(`closure_hierarchy_strict`). **A system with more states can always break a finite closure**; this is
+the [Law of Exceptions](Law_Of_Exceptions.md) as information physics, and it is why every finite
+description has a real exception.
+
+With the depth law it is **exact**: a capacity-`R` horizon closes precisely the histories whose phase
+walk never strays further than `R` from balance
+([`closedAtHorizon_iff_maxExcursion_le`](lean/QLF_ClosureDepthLaw.lean)). So an information capacity is
+an **excursion budget, not a length budget** — capacity `R` admits histories of length `~R²`, since a
+balanced walk's mean maximum is `√(πn/2)`. Bekenstein bounds *how much*; the depth law says *which*:
+distinguishability is bounded by how far from balance a history is allowed to stray.
+
+Capacity
 bounds distinguishability (`capacity_bound`, [`lean/QLF_Identifiability.lean`](lean/QLF_Identifiability.lean));
 the continuum of "consistent" parameters is unidentifiable
 (`consistent_set_continuum`) — the non-identifiability of [`Shannon_Overfit.md`](Shannon_Overfit.md).
 The claim is the careful one: **consistency ≠ realizability**, never "`ℝ` is inconsistent."
 
-**Landauer, exactly.** QLF's per-event `ΔF = −log 2` (`zfa_closure_minimizes_free_energy`) *is*
+**Landauer — the dimensionless quantum, with the thermodynamic bridge named.**
+`zfa_closure_minimizes_free_energy` proves an *information* identity,
+`−D_KL(δ‖uniform₂) = −log 2`; it is not Landauer's thermodynamic erasure theorem. The claim is that
+QLF's per-event quantum **is the `ln 2` factor** in `k_B T ln 2` — and that identification requires
+the `k_B T` bridge (a temperature and a coupling to a bath), which the KL identity does not supply.
+With that bridge, QLF's per-event `ΔF = −log 2` (`zfa_closure_minimizes_free_energy`) *is*
 Landauer's `k_B T ln 2` — the cost of fixing one bit. The identification becomes dimensional once
 the free-energy unit is fixed by the **local temperature of the observer's Markov blanket**: the
 abstract `−log 2` (nats) is then the Landauer cost `k_B T ln 2` in those units — so QLF does not
@@ -228,14 +321,30 @@ formalism; resource theories (entanglement as an unspeakable currency).
 **QLF relation — the substrate *is* the integer skeleton of quantum information.** The
 stabilizer/Clifford fragment is *exactly integer arithmetic on the `ℤ[i]` lattice*
 (`QLF_StateSpace`, [`The_QLF_State_Space.md`](The_QLF_State_Space.md)); resource theories are ledger
-accounting; the Gottesman–Knill boundary (Clifford vs. the `T`-gate / `ζ₈`) **is** the
-substrate↔continuum boundary. Two derived pillars:
+accounting. The Gottesman–Knill boundary (Clifford vs. the `T`-gate / `ζ₈`) is the boundary of the
+**Gaussian-integer / stabilizer fragment** and the onset of **universal** quantum computation — *not*
+a continuum boundary (a correction): `ζ₈ = e^{iπ/4}` is an **algebraic** number, and no single gate
+introduces a continuum. The true statement is subtler and more useful: Clifford + `T` generates a
+**dense** subgroup of `SU(2)`, so the continuum appears only as the **closure** of a discrete generated
+group — never inside a finite circuit. That is the continuum-as-rendering thesis in its exact form.
 
-- **Born probability from counts** ([`lean/QLF_BornProbability.lean`](lean/QLF_BornProbability.lean)):
-  count-ratio probabilities satisfy the Kolmogorov axioms — non-negativity (`bornProb_nonneg`),
-  normalization (`bornProb_sum_eq_one`), finite additivity on disjoint events
-  (`eventProb_disjoint_union`). Probability is *derived from integer path-counts*, with no
-  primitive real ([`Born_Rule.md`](Born_Rule.md)).
+Two pillars:
+
+- **A consistent count-measure — and the bridge it still needs** ([`lean/QLF_BornProbability.lean`](lean/QLF_BornProbability.lean)).
+  Three things must be kept apart:
+
+  | Layer | Object | Status |
+  |---|---|---|
+  | ontology | the multiplicity `Wᵢ` — the count of ways | the substrate's own quantity |
+  | reporting | `Wᵢ / Σⱼ Wⱼ` | normalization under incomplete information |
+  | proven measure | `\|aᵢ\|² / Σⱼ \|aⱼ\|²` over `ℤ[i]`-norms | **machine-checked** Kolmogorov axioms |
+
+  What is proven: the Gaussian-integer norm-square ratios are non-negative (`bornProb_nonneg`), sum to
+  one (`bornProb_sum_eq_one`), and are finitely additive on disjoint events (`eventProb_disjoint_union`)
+  — exact `ℚ` arithmetic, no primitive real ([`Born_Rule.md`](Born_Rule.md)). What is **not** proven:
+  that exhaustive physical multiplicity *is* the Gaussian norm-square census, and the uniqueness of the
+  `\|a\|²` form — the module names both as separate targets. So this is the Born **measure** shown
+  consistent and integer-generated, not a derivation of the Born **rule**.
 - **The `ħ/2` uncertainty quantum** ([`lean/QLF_Uncertainty.lean`](lean/QLF_Uncertainty.lean)):
   mapping a continuum value onto its nearest integer twist-count leaves an irreducible half-bin
   spread `= 1/2` (`binning_halfwidth_tight`, `uncertainty_quantum_eq_half`); the conjugate-pair
@@ -269,15 +378,17 @@ step. At the **balanced / MRE prior `θ = ½`** (the critical-line prior): the *
 the balanced point. The census **walk** accumulates it linearly: `N` steps carry Fisher information
 `N·g(θ)` (exact binomial), and the Gaussian continuum limit preserves the leading metric.
 
-**And it is the *full* dually-flat geometry, not just the metric.** The census's Bernoulli/multinomial
-family is a dually-flat exponential family, and the demo verifies the signature structure with the
+**The dually-flat structure comes with the family, and that is the honest framing.** The census's
+Bernoulli/multinomial family **is** an exponential family, so it **inherits** the standard dually-flat
+geometry — a property of exponential families, not a fresh derivation, and not "Amari's information
+geometry derived." The demo verifies the signature structure with the
 census KL as the **canonical divergence**: the KL equals the **Bregman divergence** of the
 negative-entropy potential `φ = −H` (dual coordinates `θ` natural ↔ `η` expectation, `g = ψ''(θ) =
 1/φ''(η)`), and the **generalized Pythagorean theorem** holds — `D(P‖R) = D(P‖Q) + D(Q‖R)` when `Q` is
 the information projection of `R` onto a linear family containing `P` (m-geodesic ⊥ e-geodesic). So the
 whole of Amari's information geometry — metric, two flat connections, the Pythagorean theorem — is the
 census's own, built on the KL the substrate already machine-checks. **Still open (#142):** the
-**continuum** (`n→∞`) rendering of this manifold, and the distributional `−Σ p log p` entropy-uniqueness
+**continuum** (`n→∞`) rendering of this manifold, and the general distributional entropy-uniqueness
 beyond the finite-counting wing (`QLF_EntropyUniqueness`).
 
 ---
@@ -310,11 +421,11 @@ information.
 | Notion | Reference | QLF status | Proof | Anchor |
 |---|---|---|---|---|
 | The bit (it from bit) | Wheeler; Zeilinger–Brukner | **derived** — one bit = the two-valued ½-spin closure; single-valued = 0 | ✅ machine-checked | `QLF_SpinorInformation`, `QLF_FreeEnergy` |
-| Shannon entropy (count) | Shannon 1948 | **inherited** — the census IS Shannon counting; the measure is *forced* | ✅ machine-checked (finite wing); distributional uniqueness open | `QLF_CensusShannon`, `QLF_EntropyUniqueness` |
+| Shannon entropy (count) | Shannon 1948 | **inherited** — the census IS Shannon counting; `log` forced on the *binary uniform* census only | ✅ machine-checked (uniform wing); general uniqueness open, and its **necessity** unproven (§2) | `QLF_CensusShannon`, `QLF_EntropyUniqueness` |
 | Phase (beyond count) | — | **derived** — count ≠ phase; order is independent information | ✅ machine-checked | `QLF_PhaseInformation` |
 | Algorithmic (AIT) | Kolmogorov; Chaitin | **boundary** — `Ω` = the pruning boundary; RCA₀ floor | 🧱 principled boundary (Ω uncomputable) | `QLF_ShannonOverfit`, `full_zeno_prune` |
 | Physical/finite | Landauer; Bekenstein; Gisin | **derived** — no continuum in a finite region; `ΔF = −log 2` | ✅ machine-checked | `QLF_Realizability`, `QLF_FreeEnergy` |
-| Quantum (von Neumann) | von Neumann; Gottesman | **reading** — `ℤ[i]` skeleton; Born from counts; `ħ/2` | ✅ machine-checked | `QLF_BornProbability`, `QLF_Uncertainty` |
+| Quantum (von Neumann) | von Neumann; Gottesman | **reading** — `ℤ[i]` skeleton; a consistent integer count-measure; `ħ/2` | ✅ measure machine-checked; Born-*rule* uniqueness + the multiplicity↔norm² bridge open (§6) | `QLF_BornProbability`, `QLF_Uncertainty` |
 | Fisher / geometry | Fisher; Amari | **rendering** — the census carries the dually-flat geometry (KL = canonical divergence); metric = census-KL curvature | 🟡 metric + dually-flat structure shown ([`fisher_from_census.py`](fisher_from_census.py)); continuum `n→∞` manifold open (#142) | `QLF_CensusBrownian`, `QLF_FreeEnergy` |
 | Semantic | Carnap–Bar-Hillel; Floridi | **contributes** — closure-as-receipt; contradiction carries 0 | ✅ machine-checked | `QLF_ContradictionReceipt`, `QLF_InfoSynthesis` |
 | *information = realized distinction* | (the ontology) | the bottom layer itself | ⬛ ontological stance | — |
@@ -331,10 +442,13 @@ mathematics so effective in physics?" dissolves: effective math = realizable mat
 ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) §4, Wigner).
 
 **The empirical case that reality actually *is* "it from bit."** The claim is not only that
-information *could* be fundamental — it is that the physical constants come *out* of the bit census
-with zero free parameters: `α⁻¹`, `Ω_Λ = log 2`, `a₀ = cH₀/2π`, Koide `Q = 2/3`, `π` itself, and
-more, each an *it* read from *bits*. That parameter-free **overdetermination** is QLF's strongest
-evidence, laid out (with its misses at full weight) in
+information *could* be fundamental — it is that the census yields parameter-free **relations, bounds
+and structural numbers**, with residuals and open scales recorded rather than absorbed: the forced
+`α⁻¹ > 137` bound, `Ω_Λ = log 2`, `a₀ = cH₀/2π`, Koide `Q = 2/3`, `π` and `ζ(3)` from the finite
+census — each an *it* read from *bits*. What is **not** claimed is a parameter-free derivation of all
+physical constants: `α` carries an undischarged `+0.036` residual, Koide takes an input mass scale, RG
+running is open, and the absolute mass sector is incomplete. Their collective **overdetermination** is
+the evidence for an informational substrate, laid out (with its misses at full weight) in
 [`Completeness_Evidence.md`](Completeness_Evidence.md) §3.
 
 And it is not only numbers: **the physics that emerges** is *it from bit* too. Spacetime is
@@ -354,7 +468,8 @@ made constructive end-to-end.
 ## 10. Honest scope
 
 - The **atom** (`single_valued_zero_information`, `two_valued_one_bit`, `spin_half_is_information_atom`,
-  `spinor_double_valued_vector_blind`), **Shannon additivity + uniqueness**, **phase-not-count**,
+  `spinor_double_valued_vector_blind`), **Shannon additivity + the uniform-census uniqueness**,
+  **phase-not-count**,
   **no-continuum-in-finite-region**, **Born-from-counts**, **`ħ/2`**, and **contradiction-carries-zero**
   are all machine-checked in Lean 4 with zero `sorry`. Cartan's *general* classification of
   orthogonal-group representations is cited settled math, not reproven.
@@ -363,13 +478,28 @@ made constructive end-to-end.
   is the *quantitative* content on the realization side. See
   [`Related_Frameworks.md`](Related_Frameworks.md) Part II and this repo's discussion of the
   distinction.
-- **Fisher-from-census:** the metric and the full dually-flat structure (KL = canonical divergence,
-  the Pythagorean theorem) are shown ([`fisher_from_census.py`](fisher_from_census.py)); the
-  continuum `n→∞` *manifold* is forward work (#142). **Distributional entropy-uniqueness:** its
-  *necessity* is settled — frequency = number of ways, and independent ways multiply, so `S = log W`
-  is forced (a *discrete* route, not the classical continuum smoothness axioms; §2); only the **Lean
-  formalization of the general (non-uniform) case** is open, beyond the finite-counting wing
-  already machine-checked (`QLF_EntropyUniqueness`).
+- **Fisher-from-census:** the metric is computed and the dually-flat structure verified numerically
+  ([`fisher_from_census.py`](fisher_from_census.py)) — but the census family is an exponential family,
+  so that structure is **inherited**, not newly derived; the continuum `n→∞` *manifold* is forward
+  work (#142).
+- **Entropy uniqueness — necessity is *not* settled** (corrected §2). "Ways multiply, information
+  adds" does not force the logarithm: completely additive arithmetic functions are free on the primes
+  (`Ω(n)` is additive and is not a log). What is proven is the uniform binary case — `W = 2ⁿ` with the
+  one-bit anchor gives `H = log W` (`QLF_EntropyUniqueness`) — i.e. **the logarithm is forced on the
+  census QLF has**. The general (non-uniform, arbitrary-multiplicity) theorem needs a
+  grouping/regularity axiom and is open.
+- **Born:** what is machine-checked is that `ℤ[i]`-norm ratios form a consistent finite probability
+  measure. The identification of exhaustive physical multiplicity with the Gaussian norm-square census,
+  and the uniqueness of the `|a|²` form, are **separate open targets** (§6) — the Born *measure*, not
+  the Born *rule*.
+- **Chaitin's `Ω`:** identifying the pruning boundary with `Ω` is an **ontological stance**, not a
+  theorem — `full_zeno_prune` terminates on finite strings by a decreasing-length measure and decides
+  no halting question (§4).
+- **Clifford ↔ `T`** is the stabilizer-fragment / universality boundary, **not** a continuum boundary:
+  `ζ₈` is algebraic; the continuum enters only as the *closure* of the dense group Clifford + `T`
+  generates (§6).
+- **The atom** is QLF's *minimal rotationally covariant two-valued carrier*; that no other conceivable
+  binary carrier could serve would need a completeness theorem (§0, §1).
 - "Information is physical" is used in the precise sense: the *toll of realizing* a distinction
   (`ΔF = −log 2`, finite realizability), never a reduction of the abstraction to matter.
 
