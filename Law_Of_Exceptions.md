@@ -145,7 +145,7 @@ appears, as nature already exhibits:
 | Capacity raised to | What happens | Status |
 |---|---|---|
 | `T ≳ T_c ≈ 155 MeV` (`≈ 1.8 × 10¹² K`) | **deconfinement** — the proton is not a closure at all; quarks and gluons roam free | **observed** (RHIC, LHC quark–gluon plasma) |
-| above the electroweak scale (`~100 GeV`) | **baryon number itself violated** — sphaleron transitions | standard, and already admitted here ([`Conservation.md`](Conservation.md) §7: QLF carries *no* exact global symmetry beyond the gauge charges, matching Banks–Seiberg / swampland) |
+| above the electroweak crossover (`≈ 160 GeV`) | **baryon number itself violated** — sphaleron transitions (§4b) | standard, and already admitted here ([`Conservation.md`](Conservation.md) §7: QLF carries *no* exact global symmetry beyond the gauge charges, matching Banks–Seiberg / swampland) |
 
 Note the exception's shape: the proton does not *decay*, it **dissolves**. That distinction matters and
 must be kept — the Law of Exceptions locates the *capacity* of the stability claim; it does not overturn
@@ -165,6 +165,58 @@ are the same variable, and §4's multiplicity reading applies directly: at every
 overwhelming majority of ways that close keep the proton bound, so it looks exceptionless; raise `T` and
 the deconfined ways come to dominate. What happens in the most ways happens first — and *which* ways are
 most is temperature-dependent.
+
+---
+
+## §4b The sphaleron scale, as a capacity — and where the ladder stops
+
+The deconfinement capacity breaks a **composite** closure: above `T_c` the proton is not a closure, but
+baryon number survives — the quarks still carry the winding. The sphaleron capacity is a *different and
+deeper* kind, and worth separating for that reason: what fails there is **the invariant itself**.
+
+**The scale.** Thermal sphaleron transitions are unsuppressed above the electroweak crossover,
+`T_EW ≈ 160 GeV` (lattice: `159.5 ± 1.5 GeV`, D'Onofrio–Rummukainen–Tranberg 2014), where the
+zero-temperature sphaleron energy is `E_sph ≈ 9 TeV` (Klinkhamer–Manton). Below the crossover the rate
+carries the Boltzmann suppression `~exp(−E_sph/T)`.
+
+**What fails.** Baryon number — which in QLF *is* a signed 3-axis linking (winding) number,
+[`baryonNumber`](lean/QLF_BaryonWinding.lean) (proton `+1`, antiproton `−1`, leptons and mesons `0`,
+conjugation-odd for all histories) — **changes**. The winding is not protected.
+
+**Why QLF expects this instead of being embarrassed by it.** QLF *proves* that baryon number cannot be a
+conserved signed count: [`wcount_zero_on_ZFA`](lean/QLF_BMinusL.lean) shows every annihilation-odd signed
+count is **zero on every closure**, yet the proton carries `B = +1`. So `B` is at most a *winding*
+quantity — and a winding quantity's conservation is capacity-relative from the start. The sphaleron scale
+is simply where that capacity is exceeded. Prediction and observation agree because the **proof was
+capacity-relative all along**, which is exactly what §2 says to look for.
+
+**Where the ladder stops.** Electric charge **is** an annihilation-odd signed count, and
+[`signed_count_conserved`](lean/QLF_BMinusL.lean) proves it invariant under the ZFA dynamics for *every*
+history — no depth, no excursion budget, no capacity anywhere in the proof. So charge has **no** exception,
+matching [`Conservation.md`](Conservation.md) §8's "only the gauge charge is exact" (Banks–Seiberg,
+swampland). Charge is to the conservation ladder what ZFA is to the law ladder (§3): the unbounded case
+the mechanism cannot bite.
+
+**The organizing rule — the payoff.** A conservation law's exception scale is set by *what kind of
+invariant its proof uses*:
+
+| Invariant type | Example | Capacity? | Exception |
+|---|---|---|---|
+| composite binding | the proton as a bound closure | yes | **dissolves** at `T_c ≈ 155 MeV` — observed (RHIC/LHC) |
+| winding / topological | baryon number ([`baryonNumber`](lean/QLF_BaryonWinding.lean)) | yes | **violated** above `T_EW ≈ 160 GeV` — sphalerons |
+| annihilation-odd signed count | electric charge ([`signed_count_conserved`](lean/QLF_BMinusL.lean)) | **no** | **none** — exact at every scale |
+
+Three decades of scale separate the first two (`160 / 0.155 ≈ 10³`); the third has no scale at all. And
+the rule is **falsifiable in both directions**: observing violation of a quantity whose QLF proof is a
+signed-count invariant would break it, and showing a winding quantity exactly conserved at all scales
+would break it too.
+
+**The suppression factor is literally a ratio of ways.** This makes the sphaleron a *better* illustration
+of §4 than deconfinement. Below `T_EW` the rate goes as `exp(−E_sph/T)` — the exception's multiplicity,
+relative to the closure-preserving ways, is exponentially small but **nonzero**. "Rare and certain" is not
+a slogan here; it is the Boltzmann factor. What happens in the most ways happens first, so the sphaleron
+happens exponentially rarely — and it *does* happen: that is baryogenesis
+([`Conservation.md`](Conservation.md) §7).
 
 ---
 

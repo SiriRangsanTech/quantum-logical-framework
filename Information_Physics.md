@@ -344,6 +344,22 @@ this section is not only a bound one derives (`no_continuum_in_finite_region`) b
 that capacity read off. Full treatment, including why this does not conflict with the no-proton-decay
 prediction, in [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.
 
+**Two capacity levels, and one unbounded case.** Read as information capacities, the physics stratifies by
+*what kind of invariant* is being maintained — and the strength of the invariant's proof predicts whether a
+capacity exists at all:
+
+| Maintained by | Capacity | Fails at |
+|---|---|---|
+| a **composite binding** (the proton as a bound closure) | finite | `T_c ≈ 155 MeV` — dissolution, observed |
+| a **winding** invariant (baryon number, [`baryonNumber`](lean/QLF_BaryonWinding.lean)) | finite | `T_EW ≈ 160 GeV` — sphalerons; QLF *proves* `B` cannot be a conserved signed count ([`wcount_zero_on_ZFA`](lean/QLF_BMinusL.lean)), so its conservation was capacity-relative from the start |
+| an **annihilation-odd signed count** (electric charge, [`signed_count_conserved`](lean/QLF_BMinusL.lean)) | **none** — the proof quantifies over *all* histories, with no depth or excursion budget | never; exact at every scale |
+
+So "information is physical" acquires a graded, measurable form: an information capacity exists exactly
+when the invariant maintaining a structure is capacity-relative, and the temperature at which it fails
+reads that capacity off. Below a threshold the exception is not absent but *exponentially rare* — the
+sphaleron rate `~exp(−E_sph/T)` is literally the exception's multiplicity relative to the
+closure-preserving ways ([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4b).
+
 Capacity
 bounds distinguishability (`capacity_bound`, [`lean/QLF_Identifiability.lean`](lean/QLF_Identifiability.lean));
 the continuum of "consistent" parameters is unidentifiable
