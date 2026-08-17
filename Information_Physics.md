@@ -70,7 +70,7 @@ physical" (Landauer) is then the downstream **toll** — realizing a bit is fini
 | Shannon | **inherited** | the census *is* the count |
 | Phase | **derived** | independent of the count |
 | Algorithmic (AIT) | **stance** | `Ω` is the canonical uncomputable boundary the ontology excises (an analogy, §4 — not derived) |
-| Physical / finite | **derived** | no continuum in a finite region |
+| Physical / finite | **derived** | no continuum in a finite region; capacity is an **excursion budget**, and the proton's dissolution at `T_c` is the *observed* instance |
 | Quantum | **reading** | `ℤ[i]` skeleton; a consistent count-measure (Born *rule* uniqueness open, §6) |
 | Fisher | **rendering** | emerges in the continuum limit |
 | Semantic | **contributes** | a contradiction carries zero |
@@ -97,6 +97,10 @@ claims:
 | Shannon additivity | census multiplicity multiplies | independent (but see §2 — it does *not* force `log`) |
 | finite information | no injection of an infinite state space | independent — realizability |
 | finite information | capacity is an excursion budget ([depth law](lean/QLF_ClosureDepthLaw.lean)) | **independent** — dynamical, and quantitative |
+| finite information | the proton dissolves at `T_c ≈ 155 MeV` (quark–gluon plasma) | **observed** — not a derivation; an empirical instance of a capacity being exceeded (§5) |
+
+Note the third status: an **observed** instance is neither a derivation nor a re-export — it is the
+place where the picture can be checked against nature rather than against itself.
 
 Reading the re-export column as evidence would be double-counting; the four independent routes to the
 atom are the actual strength of the claim. Note which route pays the most rent: the **combinatorial**
@@ -302,6 +306,27 @@ with no geometry assumed. What is *not* claimed: that the excursion capacity `R`
 That identification is the open bridge; only the scaling coincidence is exhibited (contrast the anchored
 area law `S = 4πR² log 2`, [`QLF_GravityFromDelay`](lean/QLF_GravityFromDelay.lean), where `R` is a
 radius by construction).
+
+**The observed instance — the proton.** "Information is physical" here has a *measured* consequence, not
+only a thermodynamic toll. The proton's stability is **derived** structurally in QLF three times over —
+baryon number as a signed 3-axis winding invariant ([`baryonNumber`,
+`baryon_dagger_odd`](lean/QLF_BaryonWinding.lean)), only the singlet closes
+([`singlet_closure`](lean/QLF_Confinement.lean)), and the prime-3 irreducibility lock
+([`prime_freq_irreducible`](lean/QLF_PrimeResonance.lean)) — and QLF predicts the absence of cold proton
+decay ([`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) §5a), which stands. But a structural lock
+is a **finite closure**, hence a finite capacity, hence it has a real exception
+([`law_of_exceptions`](lean/QLF_LawOfExceptions.lean)) — and nature exhibits it: above
+`T_c ≈ 155 MeV` (`≈ 1.8 × 10¹² K`) the proton is not a closure at all, the quark–gluon plasma observed at
+RHIC and the LHC. **The proton does not decay; it dissolves.**
+
+Read informationally: raising the temperature raises the **excursion capacity** available to the
+constituent history past what the bound closure can absorb, so the receipt stops closing. Temperature
+*is* the capacity knob — in the freeze-out model it literally is the pruning budget
+([`census_congestion_freezeout.py`](census_congestion_freezeout.py)). So the finite-information claim of
+this section is not only a bound one derives (`no_continuum_in_finite_region`) but a threshold one can
+**measure**: every bound state has a finite information capacity, and the temperature at which it fails is
+that capacity read off. Full treatment, including why this does not conflict with the no-proton-decay
+prediction, in [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.
 
 Capacity
 bounds distinguishability (`capacity_bound`, [`lean/QLF_Identifiability.lean`](lean/QLF_Identifiability.lean));
