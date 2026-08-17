@@ -84,6 +84,84 @@ instance : SMul ℝ SymTensor4 where
                  xx := c * A.xx, xy := c * A.xy, xz := c * A.xz,
                  yy := c * A.yy, yz := c * A.yz, zz := c * A.zz }
 
+/-! Componentwise projections of the algebra as `rfl` simp lemmas — these keep every later proof
+at the level of ordinary real arithmetic instead of instance unfolding. -/
+
+@[simp] theorem add_tt (A B : SymTensor4) : (A + B).tt = A.tt + B.tt := rfl
+@[simp] theorem add_tx (A B : SymTensor4) : (A + B).tx = A.tx + B.tx := rfl
+@[simp] theorem add_ty (A B : SymTensor4) : (A + B).ty = A.ty + B.ty := rfl
+@[simp] theorem add_tz (A B : SymTensor4) : (A + B).tz = A.tz + B.tz := rfl
+@[simp] theorem add_xx (A B : SymTensor4) : (A + B).xx = A.xx + B.xx := rfl
+@[simp] theorem add_xy (A B : SymTensor4) : (A + B).xy = A.xy + B.xy := rfl
+@[simp] theorem add_xz (A B : SymTensor4) : (A + B).xz = A.xz + B.xz := rfl
+@[simp] theorem add_yy (A B : SymTensor4) : (A + B).yy = A.yy + B.yy := rfl
+@[simp] theorem add_yz (A B : SymTensor4) : (A + B).yz = A.yz + B.yz := rfl
+@[simp] theorem add_zz (A B : SymTensor4) : (A + B).zz = A.zz + B.zz := rfl
+
+@[simp] theorem neg_tt (A : SymTensor4) : (-A).tt = -A.tt := rfl
+@[simp] theorem neg_tx (A : SymTensor4) : (-A).tx = -A.tx := rfl
+@[simp] theorem neg_ty (A : SymTensor4) : (-A).ty = -A.ty := rfl
+@[simp] theorem neg_tz (A : SymTensor4) : (-A).tz = -A.tz := rfl
+@[simp] theorem neg_xx (A : SymTensor4) : (-A).xx = -A.xx := rfl
+@[simp] theorem neg_xy (A : SymTensor4) : (-A).xy = -A.xy := rfl
+@[simp] theorem neg_xz (A : SymTensor4) : (-A).xz = -A.xz := rfl
+@[simp] theorem neg_yy (A : SymTensor4) : (-A).yy = -A.yy := rfl
+@[simp] theorem neg_yz (A : SymTensor4) : (-A).yz = -A.yz := rfl
+@[simp] theorem neg_zz (A : SymTensor4) : (-A).zz = -A.zz := rfl
+
+@[simp] theorem smul_tt (c : ℝ) (A : SymTensor4) : (c • A).tt = c * A.tt := rfl
+@[simp] theorem smul_tx (c : ℝ) (A : SymTensor4) : (c • A).tx = c * A.tx := rfl
+@[simp] theorem smul_ty (c : ℝ) (A : SymTensor4) : (c • A).ty = c * A.ty := rfl
+@[simp] theorem smul_tz (c : ℝ) (A : SymTensor4) : (c • A).tz = c * A.tz := rfl
+@[simp] theorem smul_xx (c : ℝ) (A : SymTensor4) : (c • A).xx = c * A.xx := rfl
+@[simp] theorem smul_xy (c : ℝ) (A : SymTensor4) : (c • A).xy = c * A.xy := rfl
+@[simp] theorem smul_xz (c : ℝ) (A : SymTensor4) : (c • A).xz = c * A.xz := rfl
+@[simp] theorem smul_yy (c : ℝ) (A : SymTensor4) : (c • A).yy = c * A.yy := rfl
+@[simp] theorem smul_yz (c : ℝ) (A : SymTensor4) : (c • A).yz = c * A.yz := rfl
+@[simp] theorem smul_zz (c : ℝ) (A : SymTensor4) : (c • A).zz = c * A.zz := rfl
+
+@[simp] theorem sub_tt (A B : SymTensor4) : (A - B).tt = A.tt - B.tt := by
+  show A.tt + -B.tt = A.tt - B.tt
+  ring
+@[simp] theorem sub_tx (A B : SymTensor4) : (A - B).tx = A.tx - B.tx := by
+  show A.tx + -B.tx = A.tx - B.tx
+  ring
+@[simp] theorem sub_ty (A B : SymTensor4) : (A - B).ty = A.ty - B.ty := by
+  show A.ty + -B.ty = A.ty - B.ty
+  ring
+@[simp] theorem sub_tz (A B : SymTensor4) : (A - B).tz = A.tz - B.tz := by
+  show A.tz + -B.tz = A.tz - B.tz
+  ring
+@[simp] theorem sub_xx (A B : SymTensor4) : (A - B).xx = A.xx - B.xx := by
+  show A.xx + -B.xx = A.xx - B.xx
+  ring
+@[simp] theorem sub_xy (A B : SymTensor4) : (A - B).xy = A.xy - B.xy := by
+  show A.xy + -B.xy = A.xy - B.xy
+  ring
+@[simp] theorem sub_xz (A B : SymTensor4) : (A - B).xz = A.xz - B.xz := by
+  show A.xz + -B.xz = A.xz - B.xz
+  ring
+@[simp] theorem sub_yy (A B : SymTensor4) : (A - B).yy = A.yy - B.yy := by
+  show A.yy + -B.yy = A.yy - B.yy
+  ring
+@[simp] theorem sub_yz (A B : SymTensor4) : (A - B).yz = A.yz - B.yz := by
+  show A.yz + -B.yz = A.yz - B.yz
+  ring
+@[simp] theorem sub_zz (A B : SymTensor4) : (A - B).zz = A.zz - B.zz := by
+  show A.zz + -B.zz = A.zz - B.zz
+  ring
+
+@[simp] theorem mm_tt (c : ℝ) : (metricMultiple c).tt = c := rfl
+@[simp] theorem mm_tx (c : ℝ) : (metricMultiple c).tx = 0 := rfl
+@[simp] theorem mm_ty (c : ℝ) : (metricMultiple c).ty = 0 := rfl
+@[simp] theorem mm_tz (c : ℝ) : (metricMultiple c).tz = 0 := rfl
+@[simp] theorem mm_xx (c : ℝ) : (metricMultiple c).xx = -c := rfl
+@[simp] theorem mm_xy (c : ℝ) : (metricMultiple c).xy = 0 := rfl
+@[simp] theorem mm_xz (c : ℝ) : (metricMultiple c).xz = 0 := rfl
+@[simp] theorem mm_yy (c : ℝ) : (metricMultiple c).yy = -c := rfl
+@[simp] theorem mm_yz (c : ℝ) : (metricMultiple c).yz = 0 := rfl
+@[simp] theorem mm_zz (c : ℝ) : (metricMultiple c).zz = -c := rfl
+
 /-- Componentwise extensionality for `SymTensor4`. -/
 theorem SymTensor4.ext' {A B : SymTensor4}
     (htt : A.tt = B.tt) (htx : A.tx = B.tx) (hty : A.ty = B.ty) (htz : A.tz = B.tz)
@@ -96,16 +174,16 @@ def trace (S : SymTensor4) : ℝ := S.tt - S.xx - S.yy - S.zz
 
 /-- `g^ab (f g_ab) = 4f` — the trace of a metric multiple is `4f` (dimension four). -/
 theorem trace_metricMultiple (f : ℝ) : trace (metricMultiple f) = 4 * f := by
-  simp [trace, metricMultiple]; ring
+  simp [trace]; ring
 
 /-- Metric multiples are additive in the scalar: `(f₁ + f₂) g = f₁ g + f₂ g`. -/
 theorem metricMultiple_add (f g : ℝ) :
     metricMultiple (f + g) = metricMultiple f + metricMultiple g := by
-  apply SymTensor4.ext' <;> simp [metricMultiple, HAdd.hAdd, Add.add] <;> ring
+  apply SymTensor4.ext' <;> simp <;> ring
 
 /-- Metric multiples respect negation. -/
 theorem metricMultiple_neg (f : ℝ) : metricMultiple (-f) = -metricMultiple f := by
-  apply SymTensor4.ext' <;> simp [metricMultiple, Neg.neg]
+  apply SymTensor4.ext' <;> simp
 
 /-! ### Fields and the calculus interface -/
 
@@ -145,7 +223,7 @@ variable {M : Type*}
 def scalarCurv (Ric : TensorField M) : ScalarField M := fun p => trace (Ric p)
 
 /-- The **Einstein tensor** `G_ab = R_ab − ½ R g_ab`. -/
-def einsteinTensor (Ric : TensorField M) : TensorField M :=
+noncomputable def einsteinTensor (Ric : TensorField M) : TensorField M :=
   fun p => Ric p - metricMultiple (scalarCurv Ric p / 2)
 
 /-- **The integration step.** Given the metric form `R_ab = κ T_ab + f g_ab`, the contracted Bianchi
@@ -160,7 +238,7 @@ theorem scalar_multiple_is_curvature
     (hbianchi : C.div Ric = fun p => (1 / 2 : ℝ) • C.grad (scalarCurv Ric) p)
     (hcons : C.div T = 0) :
     ∃ Λ : ℝ, ∀ p, f p = scalarCurv Ric p / 2 - Λ := by
-  -- `div Ric = grad f`, using additivity, homogeneity, conservation and metric compatibility.
+  -- `div Ric = grad f`: additivity, homogeneity, conservation, metric compatibility.
   have hdiv : C.div Ric = C.grad f := by
     have hRic : Ric = fun p => (fun q => κ • T q) p + (fun q => metricMultiple (f q)) p := by
       funext p; exact hform p
@@ -172,24 +250,21 @@ theorem scalar_multiple_is_curvature
       _ = C.grad f := by
           rw [C.div_smul κ T, C.div_metricMultiple f, hcons]
           funext p; simp
-  -- Hence `grad f = ½ grad R`, i.e. `grad (f − R/2) = 0`.
-  have hhalf : C.grad f = C.grad (fun p => (1 / 2 : ℝ) * scalarCurv Ric p) := by
-    rw [C.grad_smul]; rw [← hdiv]; exact hbianchi
+  -- Contracted Bianchi then reads `grad f = ½ grad R`.
+  have hgf : C.grad f = fun p => (1 / 2 : ℝ) • C.grad (scalarCurv Ric) p := by
+    rw [← hdiv]; exact hbianchi
+  -- So `f − R/2` has vanishing gradient, hence is constant.
   have hzero : C.grad (fun p => f p + (-(1 / 2 : ℝ)) * scalarCurv Ric p) = 0 := by
-    rw [C.grad_add, C.grad_smul]
+    rw [C.grad_add f (fun p => (-(1 / 2 : ℝ)) * scalarCurv Ric p),
+        C.grad_smul (-(1 / 2 : ℝ)) (scalarCurv Ric), hgf]
     funext p
-    have := congrFun hhalf p
-    rw [C.grad_smul] at this
-    simp only [Pi.zero_apply]
     funext i
-    have h2 : C.grad f p i = ((1 / 2 : ℝ) • C.grad (scalarCurv Ric) p) i := by
-      rw [this]
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at *
-    rw [h2]; ring
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]
+    ring
   obtain ⟨c, hc⟩ := C.const_of_grad_eq_zero _ hzero
   refine ⟨-c, fun p => ?_⟩
-  have := hc p
-  have : f p - (1 / 2 : ℝ) * scalarCurv Ric p = c := by linarith [this]
+  have hp := hc p
+  have : f p - (1 / 2 : ℝ) * scalarCurv Ric p = c := by linarith [hp]
   linarith [this]
 
 /-- **The Einstein field equations.** Assembling the second and third arrows: if the null-projection
@@ -213,12 +288,7 @@ theorem einstein_field_equations
     rw [hform p, hΛ p]
   unfold einsteinTensor
   rw [h1]
-  have hsplit : metricMultiple (scalarCurv Ric p / 2 - Λ)
-      = metricMultiple (scalarCurv Ric p / 2) + metricMultiple (-Λ) := by
-    rw [← metricMultiple_add]; ring_nf
-  rw [hsplit, metricMultiple_neg]
-  apply SymTensor4.ext' <;>
-    simp [HAdd.hAdd, Add.add, HSub.hSub, Sub.sub, Neg.neg, SMul.smul, metricMultiple] <;> ring
+  apply SymTensor4.ext' <;> simp [scalarCurv, trace] <;> ring
 
 /-- **The two arrows composed.** The hypothesis of `einstein_field_equations` that the residual is a
     metric multiple is exactly what nine integer null probes deliver: if
@@ -231,14 +301,13 @@ theorem metric_form_from_null_probes
     ∀ p, Ric p = κ • T p + metricMultiple ((Ric p - κ • T p).tt) := by
   intro p
   have h := all_null_projections_force_metric (Ric p - κ • T p) (hnull p)
-  have : Ric p - κ • T p + κ • T p = metricMultiple ((Ric p - κ • T p).tt) + κ • T p := by
+  have hsum : (Ric p - κ • T p) + κ • T p = metricMultiple ((Ric p - κ • T p).tt) + κ • T p := by
     rw [h]
-  calc Ric p = Ric p - κ • T p + κ • T p := by
-        apply SymTensor4.ext' <;>
-          simp [HAdd.hAdd, Add.add, HSub.hSub, Sub.sub, Neg.neg, SMul.smul]
-    _ = metricMultiple ((Ric p - κ • T p).tt) + κ • T p := this
-    _ = κ • T p + metricMultiple ((Ric p - κ • T p).tt) := by
-        apply SymTensor4.ext' <;> simp [HAdd.hAdd, Add.add] <;> ring
+  have hlhs : (Ric p - κ • T p) + κ • T p = Ric p := by
+    apply SymTensor4.ext' <;> simp <;> ring
+  rw [hlhs] at hsum
+  rw [hsum]
+  apply SymTensor4.ext' <;> simp <;> ring
 
 /-- **Established constructively:** arrows two and three of Jacobson's derivation, with **zero new
     axioms** — the metric form from nine integer null probes

@@ -189,46 +189,93 @@ theorem ways_card (n : ℕ) : Fintype.card (Fin n → Bool) = 2 ^ n := by simp
 theorem onePass_entropy (n : ℕ) : Real.log ((2 : ℝ) ^ n) = n * Real.log 2 := by
   rw [Real.log_pow]
 
-/-- Every pair matching has maximum excess `1`: the phase walk never leaves `{0, ±1}`. The `d = 1`
-    case of the depth law. -/
+/-- One closure pair lifts the walk to `1` and returns it to `0`, so the running maximum over
+    `pairOf b ++ rest` is `max 1` of the rest. -/
+private theorem exc_pairOf (b : Bool) (rest : TopoString) :
+    exc 0 (pairOf b ++ rest) = max 1 (exc 0 rest) := by
+  cases b <;> simp [pairOf, exc, imb]
+
+/-- A pair matching never lets the walk exceed `1`. -/
+private theorem exc_pairMatching_le_one (bs : List Bool) : exc 0 (pairMatching bs) ≤ 1 := by
+  induction bs with
+  | nil => simp [pairMatching, exc]
+  | cons b bs ih =>
+      have e : pairMatching (b :: bs) = pairOf b ++ pairMatching bs := rfl
+      rw [e, exc_pairOf]
+      omega
+
+/-- Every non-empty pair matching has maximum excess exactly `1`: the phase walk never leaves
+    `{0, ±1}`. The `d = 1` case of the depth law. -/
 theorem maxExcursion_pairMatching (bs : List Bool) (hbs : bs ≠ []) :
     maxExcursion (pairMatching bs) = 1 := by
-  unfold maxExcursion
-  induction bs with
+  cases bs with
   | nil => exact absurd rfl hbs
-  | cons b bs ih =>
-      cases bs with
-      | nil => cases b <;> simp [pairMatching, pairOf, exc, imb]
-      | cons c cs =>
-          have hne : (c :: cs) ≠ [] := by simp
-          cases b <;> simp [pairMatching, pairOf, exc, imb, ih hne]
+  | cons b bs =>
+      have e : pairMatching (b :: bs) = pairOf b ++ pairMatching bs := rfl
+      unfold maxExcursion
+      rw [e, exc_pairOf]
+      have h := exc_pairMatching_le_one bs
+      omega
 
 /-! ### The deepest stratum: exactly two ways -/
 
-/-- The **depth-`d` nested singlet** `[+^d −^d]` — `QLF_HorizonClosure.nestedSinglet` is `d = 2`. -/
-def nested (d : ℕ) : TopoString :=
-  List.replicate d (TopoElement.phase LogicPhase.pos) ++
-  List.replicate d (TopoElement.phase LogicPhase.neg)
+/-- A block of `n` positive phases. -/
+def poss (n : ℕ) : TopoString := List.replicate n (TopoElement.phase LogicPhase.pos)
 
-/-- **One pass peels exactly one shell.** `zeno_prune [+^{d+1} −^{d+1}] = [+^d −^d]`: the innermost
-    pair (at the sign boundary) cancels and nothing else does. -/
-theorem zeno_prune_nested (d : ℕ) : zeno_prune (nested (d + 1)) = nested d := by
-  induction d with
-  | zero => simp [nested, zeno_prune]
-  | succ k ih =>
-      have h : nested (k + 1 + 1) =
-          TopoElement.phase LogicPhase.pos :: TopoElement.phase LogicPhase.pos ::
-            (List.replicate k (TopoElement.phase LogicPhase.pos) ++
-             List.replicate (k + 1 + 1) (TopoElement.phase LogicPhase.neg)) := by
-        simp [nested, List.replicate_succ]
-      rw [h]
-      have h2 : TopoElement.phase LogicPhase.pos ::
-            (List.replicate k (TopoElement.phase LogicPhase.pos) ++
-             List.replicate (k + 1 + 1) (TopoElement.phase LogicPhase.neg)) = nested (k + 1 + 1) := by
-        simp [nested, List.replicate_succ]
+/-- A block of `n` negative phases. -/
+def negs (n : ℕ) : TopoString := List.replicate n (TopoElement.phase LogicPhase.neg)
+
+/-- The **depth-`d` nested singlet** `[+^d −^d]` — `QLF_HorizonClosure.nestedSinglet` is `d = 2`. -/
+def nested (d : ℕ) : TopoString := poss d ++ negs d
+
+/-- A block of like phases has nothing to cancel: the prune fixes it. -/
+private theorem prune_negs : ∀ n : ℕ, zeno_prune (negs n) = negs n := by
+  intro n
+  induction n with
+  | zero => simp [negs, zeno_prune]
+  | succ m ih =>
+      cases m with
+      | zero => simp [negs, zeno_prune]
+      | succ j =>
+          have h2 : negs (j + 1 + 1) = TopoElement.phase LogicPhase.neg :: negs (j + 1) := by
+            simp [negs, List.replicate_succ]
+          have h1 : negs (j + 1) = TopoElement.phase LogicPhase.neg :: negs j := by
+            simp [negs, List.replicate_succ]
+          rw [h2, h1]
+          simp only [zeno_prune]
+          rw [← h1, ih]
+
+/-- **One pass peels exactly one shell off a wedge.** `zeno_prune [+^{a+1} −^{b+1}] = [+^a −^b]`: only
+    the single adjacent opposite pair at the sign boundary cancels — the like-phase runs on either
+    side have nothing to cancel against. -/
+private theorem prune_wedge : ∀ a b : ℕ, zeno_prune (poss (a + 1) ++ negs (b + 1)) = poss a ++ negs b := by
+  intro a b
+  induction a with
+  | zero =>
+      have e : poss 1 ++ negs (b + 1)
+          = TopoElement.phase LogicPhase.pos :: TopoElement.phase LogicPhase.neg :: negs b := by
+        simp [poss, negs, List.replicate_succ]
+      rw [e]
       simp only [zeno_prune]
-      rw [h2, ih]
-      simp [nested, List.replicate_succ]
+      rw [prune_negs]
+      simp [poss]
+  | succ a ih =>
+      have e : poss (a + 1 + 1) ++ negs (b + 1)
+          = TopoElement.phase LogicPhase.pos :: TopoElement.phase LogicPhase.pos ::
+              (poss a ++ negs (b + 1)) := by
+        simp [poss, negs, List.replicate_succ]
+      have e2 : TopoElement.phase LogicPhase.pos :: (poss a ++ negs (b + 1))
+          = poss (a + 1) ++ negs (b + 1) := by
+        simp [poss, List.replicate_succ]
+      rw [e]
+      simp only [zeno_prune]
+      rw [e2, ih]
+      simp [poss, List.replicate_succ]
+
+/-- **One pass peels exactly one shell.** `zeno_prune [+^{d+1} −^{d+1}] = [+^d −^d]`. -/
+theorem zeno_prune_nested (d : ℕ) : zeno_prune (nested (d + 1)) = nested d := by
+  unfold nested
+  exact prune_wedge d d
 
 /-- **Bounded pruning peels shells one per pass**: `boundedPrune k [+^d −^d] = [+^{d−k} −^{d−k}]`
     (truncated subtraction — once empty it stays empty). -/
@@ -242,28 +289,27 @@ theorem boundedPrune_nested (d k : ℕ) : boundedPrune k (nested d) = nested (d 
       | inl h0 =>
           have h1 : d - (m + 1) = 0 := by omega
           rw [h0, h1]
-          simp [nested, zeno_prune]
+          simp [nested, poss, negs, zeno_prune]
       | inr hpos =>
           obtain ⟨j, hj⟩ : ∃ j, d - m = j + 1 := ⟨d - m - 1, by omega⟩
           rw [hj, zeno_prune_nested]
-          have : d - (m + 1) = j := by omega
-          rw [this]
+          have hd : d - (m + 1) = j := by omega
+          rw [hd]
 
 /-- The depth-`d` fold **is** closed at horizon `d`. -/
 theorem nested_closed_at_d (d : ℕ) : closedAtHorizon d (nested d) := by
   unfold closedAtHorizon
   rw [boundedPrune_nested]
-  simp [nested]
+  simp [nested, poss, negs]
 
 /-- The depth-`d` fold is **not** closed at any shallower horizon: `d` passes are exactly needed.
     (`d = 2` is `QLF_HorizonClosure.horizon_relative`.) -/
 theorem nested_not_closed_before (d k : ℕ) (hk : k < d) : ¬ closedAtHorizon k (nested d) := by
   unfold closedAtHorizon
   rw [boundedPrune_nested]
-  have hpos : 0 < d - k := by omega
   obtain ⟨j, hj⟩ : ∃ j, d - k = j + 1 := ⟨d - k - 1, by omega⟩
   rw [hj]
-  simp [nested, List.replicate_succ]
+  simp [nested, poss, negs, List.replicate_succ]
 
 /-- **Status — the depth law.** Proven here with no axiom: the depth-1 stratum is exactly the pair
     matchings, counted at `2ⁿ` (`onePass_ways_iff`, `pairMatching_injective`), giving **`log 2` per
