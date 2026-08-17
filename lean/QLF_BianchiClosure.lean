@@ -301,12 +301,9 @@ theorem metric_form_from_null_probes
     ∀ p, Ric p = κ • T p + metricMultiple ((Ric p - κ • T p).tt) := by
   intro p
   have h := all_null_projections_force_metric (Ric p - κ • T p) (hnull p)
-  have hsum : (Ric p - κ • T p) + κ • T p = metricMultiple ((Ric p - κ • T p).tt) + κ • T p := by
-    rw [h]
-  have hlhs : (Ric p - κ • T p) + κ • T p = Ric p := by
-    apply SymTensor4.ext' <;> simp <;> ring
-  rw [hlhs] at hsum
-  rw [hsum]
+  -- Fold the metric multiple back into the residual, then it is pure componentwise algebra:
+  -- `Ric p = κ T p + (Ric p − κ T p)`.
+  rw [← h]
   apply SymTensor4.ext' <;> simp <;> ring
 
 /-- **Established constructively:** arrows two and three of Jacobson's derivation, with **zero new
