@@ -307,6 +307,22 @@ That identification is the open bridge; only the scaling coincidence is exhibite
 area law `S = 4πR² log 2`, [`QLF_GravityFromDelay`](lean/QLF_GravityFromDelay.lean), where `R` is a
 radius by construction).
 
+**Why a hadron is admissible here at all — the warrant.** Not by analogy, and the licensing chain should
+be stated rather than assumed:
+
+1. **ZFA closure *is* information** — a closure is a resolved distinction, one realized bit (§0, §1).
+2. **Information is physical** — realizing a distinction is finite and costs `ΔF = −log 2`.
+3. Therefore a physical bound state that *is* a ZFA closure is an information object **by identity**, and
+   its capacity is an **information** capacity — so measuring the temperature at which it fails measures
+   that capacity.
+
+The proton qualifies on **proven** grounds at step 3: it is a closure of the substrate, with baryon number
+a signed 3-axis winding invariant of its history, only the singlet closing, and its prime-3 period
+irreducible. So its stability threshold is not *analogous to* an information bound — it **is** one. The
+admission is exactly as strong as step 1, which this document marks as an ontological stance (§10), plus
+step 3, which is machine-checked; it does not need step 2 to be more than the precise toll-claim used
+throughout.
+
 **The observed instance — the proton.** "Information is physical" here has a *measured* consequence, not
 only a thermodynamic toll. The proton's stability is **derived** structurally in QLF three times over —
 baryon number as a signed 3-axis winding invariant ([`baryonNumber`,
@@ -548,6 +564,12 @@ made constructive end-to-end.
   binary carrier could serve would need a completeness theorem (§0, §1).
 - "Information is physical" is used in the precise sense: the *toll of realizing* a distinction
   (`ΔF = −log 2`, finite realizability), never a reduction of the abstraction to matter.
+- **The proton's admission** (§5) inherits the strength of the *identification* "ZFA closure = realized
+  distinction" — an ontological stance, per the item above — together with the machine-checked fact that
+  the proton **is** a substrate closure (baryon winding, singlet-only closure, prime-3 irreducibility).
+  Given the stance, the dissolution temperature *is* an information-capacity measurement; without it, it
+  is a structural analogy. That is the honest dependency, and it is the same stance the whole document
+  rests on rather than an extra assumption smuggled in for the proton.
 
 **What would falsify the picture.** A physical **information capacity below the one-bit scale** — a
 sub-`log 2` distinguishable degree of freedom that is *not* a whole ½-spin closure — would break the
