@@ -5,7 +5,7 @@ set_option linter.unusedVariables false
 /-!
 # QLF_ClosureDepthLaw — the depth law, closed: closure depth IS the maximum phase excess
 
-`QLF_ClosureDepth` left one step open (`closure_depth_law_in_progress`): the closed form for how many
+`QLF_ClosureDepth` left one step open (now `closure_depth_law_proven`, pointing here): the closed form for how many
 pruning passes a history needs. This module proves it, and with it the sharp characterization of what a
 finite-capacity horizon can close:
 
@@ -512,7 +512,7 @@ theorem maxExcursion_nested (d : ℕ) : maxExcursion (nested d) = d := by
     re-derives the nested-fold witnesses of `QLF_ClosureDepth` / `QLF_LawOfExceptions`. Both
     hypotheses are necessary: gauge-freeness because `[+, gauge, −]` is prune-fixed, balance because
     the boundary term survives otherwise. This closes
-    `QLF_ClosureDepth.closure_depth_law_in_progress`. -/
+    `QLF_ClosureDepth`'s open depth-law step (its marker is now `closure_depth_law_proven`). -/
 theorem closure_depth_law_complete : True := trivial
 
 end QLF.ClosureDepthLaw
