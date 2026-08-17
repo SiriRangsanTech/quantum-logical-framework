@@ -25,9 +25,23 @@ just `|1+i|² = 2`. What was wrong was the *identification* of the census pair's
 phases. The corrected statement:
 
 * both orderings of a pair carry phase `−1` (`pair_orderings_aligned`);
-* so a branch of `k` such ways has amplitude `±k` and weight `k²`, **not** `k`
-  (`aligned_ways_weigh_square`);
-* the depth-1 stratum's `2ⁿ` ways therefore weigh `4ⁿ`, not `2ⁿ` (`stratum_weight`).
+* so a branch of `k` **such** ways has amplitude `±k` and weight `k²`, not `k`
+  (`aligned_ways_weigh_square`), and the gauge-pair stratum's `2ⁿ` ways weigh `4ⁿ` (`stratum_weight`).
+
+**A second correction, on the same principle — do not generalize from hand-picked ways.** "The two
+orderings" are not "the ways": a branch's ways are *all* the histories that close, and across the full
+8-twist census **both phases occur**. Counting every balanced history and its fold:
+
+| length | ways | phase `+1` | phase `−1` | amplitude `Σζ` | weight `\|Σζ\|²` | `count²` |
+|---|---|---|---|---|---|---|
+| 2 | 8 | 0 | 8 | `−8` | 64 | 64 |
+| 4 | 168 | 144 | 24 | `+120` | 14 400 | 28 224 |
+| 6 | 5 120 | 1 488 | 3 632 | `−2 144` | 4 596 736 | 26 214 400 |
+
+So **alignment is a *sector* property, not a census property**: within a conjugate-pair sector every way
+carries `−1` (proven below), while a branch spanning the whole balanced census is **mixed**, its
+amplitude is the *signed* sum, and its weight falls far below `count²`. That signed sum is where
+interference actually lives — cancellation between ways, not a global coherent enhancement.
 
 **And that dissolves the "agreement" reported by `born_generator_check.py`.** The check found
 `count = 2ⁿ` matching `norm((1+i)ⁿ) = 2ⁿ`. Both are `2ⁿ`, but they are not the same quantity: the count
@@ -58,8 +72,11 @@ next target.
 
 ## Honest scope
 
-Proven here: pair orderings are aligned, and the weight consequences. Verified but not proven: the
-two-factor phase rule, and the `{±1}` restriction on balanced closures. No axioms.
+Proven here: pair orderings are aligned, and the weight consequences **within that sector**. Verified
+but not proven: the two-factor phase rule, the `{±1}` restriction on balanced closures, and the mixed
+phase census above. **The methodological point is load-bearing and was learned the hard way, twice:**
+things happen *every* way, so a branch's amplitude is a signed sum over **all** its ways — never an
+extrapolation from two of them. No axioms.
 -/
 
 namespace QLF.PhaseAssignment
@@ -104,10 +121,15 @@ theorem stratum_weight (n : ℕ) : pairCount (⟨(2 : ℤ) ^ n, 0⟩ : GaussianI
     `−I` (`pair_orderings_aligned`, `pair_reversed_folds_to_negI`, on top of the pre-existing
     `hermitian_pair_folds_to_negI`), so the ways of a pair are **aligned**; hence a branch of `k` such
     ways weighs `k²` (`aligned_ways_weigh_square`) and the depth-1 stratum weighs `4ⁿ`, not `2ⁿ`
-    (`stratum_weight`). *Corrected:* `QLF_Degeneracy`'s gloss that those two ways are *orthogonal* —
-    its arithmetic theorems stand, the physical identification does not; and consequently the
-    "agreement on the pair generator" reported by `born_generator_check.py` is a coincidence between a
-    count and a norm, not evidence about the amplitude. *Verified but not proven:* the two-factor phase
+    (`stratum_weight`). *Corrected twice:* first, `QLF_Degeneracy`'s gloss that those two ways are
+    *orthogonal* — its arithmetic theorems stand, the physical identification does not, so the
+    "agreement on the pair generator" from `born_generator_check.py` is a coincidence between a count
+    and a norm rather than evidence about the amplitude. Second, and on the principle that things
+    happen *every* way: alignment is a **sector** property, not a census property — counting all
+    balanced histories with their folds shows **both** phases occurring (at length 6: `1 488` carry
+    `+1` and `3 632` carry `−1`), so a branch spanning the census has the **signed** sum as its
+    amplitude and a weight far below `count²`. Reasoning from two hand-picked ways was the error in
+    both directions. *Verified but not proven:* the two-factor phase
     rule `(−1)^{#neg} · sign(axis permutation)` (0 counterexamples over all 5,296 balanced histories of
     length ≤ 6), and that balanced closures never fold to `±i` — which, if general, makes branch
     amplitudes **integers** rather than Gaussian integers. That is the next target. No axioms. -/
