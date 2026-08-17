@@ -37,15 +37,22 @@ preparation has no histories in the deep-excursion sector. If every history of `
 **fully** closed and the cold one has not — by `closedAtHorizon_iff_maxExcursion_le`, with no appeal to
 eigenmodes.
 
-## Honest scope — what this is not
+## 4. An instance — the effect exhibited, not merely permitted — **`mpemba_instance`**
 
-**This does not derive the Mpemba effect, in water or anywhere.** The blind test
-([`mpemba_census.py`](../mpemba_census.py)) is explicit: with *uniform* balanced preparations, relaxation
-is **monotone** in length and **no** crossing occurs. The anomalous ordering requires a preparation
-biased toward the shallow tail — which is the substrate translation of "suppressed slow mode," not an
-independent prediction of it. What is proven here is the surrounding structure: one distance measure
-provably admits no effect, a scalar provably cannot determine relaxation, and the strong effect is
-provably a sector-emptiness condition. No axioms.
+With **energy** (the number of twists) as the distance, instances exist and are unbounded: for every
+`d > 1` and `n > d`, the pair matching of `n` pairs has length `2n` and closes in **one** pass, while the
+nested fold `[+^d −^d]` has length `2d < 2n` and needs **`d`**. More energy, strictly faster, by an
+arbitrary factor. And it is not confined to constructed extremes — between *uniform* draws a
+higher-energy history closes strictly faster **13–17%** of the time at a 2× energy ratio.
+
+## Honest scope
+
+**What is not shown:** the *ensemble* effect. Median relaxation is monotone in energy
+([`mpemba_census.py`](../mpemba_census.py)), so the crossing is between **individual preparations**, not
+a property of the uniform ensemble — and whether energy is an admissible distance measure is exactly the
+question thermomajorization asks of the ordinary effect (§1 shows the imbalance measure admits no
+instance at all). Nor is this a derivation of the *water* effect: no quantitative prediction about water
+is made. No axioms.
 -/
 
 namespace QLF.Mpemba

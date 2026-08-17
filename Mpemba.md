@@ -118,9 +118,41 @@ scalar energy with uniform preparations. Stated plainly because it is the honest
 
 What the same test does show is that the room is real: at length 32 the depth ranges **1 … 13** over
 20,000 uniform draws, and the constructible extremes are **1** (pair matching) and **16** (nested
-singlet). A preparation biased toward the shallow tail relaxes anomalously — but *biasing it is the
-input*, and that bias is the substrate translation of "suppressed slow mode" rather than an independent
-prediction of it.
+singlet).
+
+### §4a And instances *do* occur — including from unbiased draws
+
+The monotone medians say the *ensemble* shows no effect. Individual preparations are a different
+question, and there the answer is yes.
+
+**Proven, and unbounded** (`mpemba_instance`, `mpemba_ordering`): for every `d > 1` and `n > d`, two
+balanced preparations closing to the *same* equilibrium, where the one with **more energy** closes
+**faster** —
+
+| | preparation | energy (length) | relaxation |
+|---|---|---|---|
+| hot | pair matching of `n` pairs | `2n` | **1** pass |
+| cold | nested fold `[+^d −^d]` | `2d < 2n` | **`d`** passes |
+
+so e.g. 10× the energy closing 10× faster, with the ratio arbitrary.
+
+**And not only for constructed extremes.** Drawing both preparations *uniformly*, a higher-energy history
+closes strictly faster with substantial probability:
+
+| energy ratio | 2× (32 vs 16) | 2× (64 vs 32) | 2× (128 vs 64) | 4× (64 vs 16) | 4× (128 vs 32) |
+|---|---|---|---|---|---|
+| P(hot closes strictly faster) | 0.131 | 0.146 | 0.165 | 0.027 | 0.030 |
+
+A witness found by unbiased search — four times the energy, closing two passes sooner:
+
+```
+hot  (length 64, depth 3): +--+--+++----+++---+-+-++-+++---++-+-++-++---+-++++-+-----++++--
+cold (length 16, depth 5): ---+-+---+++-+++
+```
+
+So the honest position is finer than "no effect": **the crossing is a property of individual preparations,
+not of the uniform ensemble.** Which is also how the laboratory effect is reported — Mpemba experiments
+compare specific preparations, never ensemble medians.
 
 ---
 
@@ -196,9 +228,16 @@ explanatory of it, and it makes no quantitative prediction about water.
 underdetermination that makes anomalous ordering possible at all
 (`equal_length_unequal_relaxation`), and the sector translation of the strong effect (`strong_mpemba`).
 
-**What is not:** the effect itself. The blind test finds **no** crossing from uniform preparations, so
-QLF here supplies an **ontology plus proven scaffolding**, not a derivation. Calling it a solved mystery
-would be exactly the overclaim this repository's method forbids.
+**Also proven:** an *instance*, and an unbounded family of them, with energy as the distance
+(`mpemba_instance`) — plus the measured fact that uniform draws cross 13–17% of the time at a 2× energy
+ratio (§4a). So the effect is exhibited on the substrate, not merely permitted.
+
+**What is not:** the *ensemble* effect, and the water effect. Median relaxation is monotone in energy, so
+the crossing lives between individual preparations; whether energy is an admissible distance measure is
+what thermomajorization asks of the ordinary effect; and no quantitative claim about water is made.
+QLF here supplies an **ontology, proven scaffolding, and exhibited instances** — not a derivation of the
+laboratory phenomenon. Calling it a solved mystery would be exactly the overclaim this repository's
+method forbids.
 
 **What would make it a result** — a concrete, falsifiable target:
 
