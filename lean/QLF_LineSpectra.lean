@@ -102,7 +102,7 @@ theorem lineFreq_pos {p : ℕ × ℕ} (h1 : 0 < p.1) (hlt : p.1 < p.2) : 0 < lin
 /-! ### 2. Level weights are genuine counts -/
 
 /-- The **orientation states** of a level `ℓ` — the `m` values `−ℓ … ℓ`. -/
-def orientations (l : ℕ) : Finset ℤ := Finset.Icc (-(l : ℤ)) (l : ℤ)
+noncomputable def orientations (l : ℕ) : Finset ℤ := Finset.Icc (-(l : ℤ)) (l : ℤ)
 
 /-- **The statistical weight of a level IS a multiplicity**: the number of orientation states at level
     `ℓ` is exactly `orbitalDim ℓ = 2ℓ+1`. So the weights that appear in spectra are *counts*, not merely
