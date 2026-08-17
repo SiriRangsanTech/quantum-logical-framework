@@ -109,6 +109,9 @@ theorem level_cons (x : TopoElement) (t : TopoString) : level (x :: t) = imb x +
 @[simp] theorem level_cons_neg (t : TopoString) : level (TopoElement.phase LogicPhase.neg :: t) = level t - 1 := by
   rw [level_cons]; simp [imb]; ring
 
+@[simp] theorem level_cons_gauge (t : TopoString) : level (TopoElement.gauge :: t) = level t := by
+  rw [level_cons]; simp [imb]
+
 @[simp] theorem level_nil : level [] = 0 := rfl
 
 @[simp] theorem hmax_nil (c : Int) : hmax c [] = c := rfl
@@ -251,15 +254,11 @@ theorem zeno_prune_flip : ∀ s : TopoString, zeno_prune (flip s) = flip (zeno_p
           simp only [flip_cons, flipEl_neg, zeno_prune]
           rw [ih]
       | TopoElement.phase LogicPhase.pos, TopoElement.gauge =>
-          have ih := zeno_prune_flip (TopoElement.gauge :: t)
-          rw [flip_cons, flipEl_gauge] at ih
           simp only [flip_cons, flipEl_pos, flipEl_gauge, zeno_prune]
-          rw [ih]
+          rw [zeno_prune_flip t]
       | TopoElement.phase LogicPhase.neg, TopoElement.gauge =>
-          have ih := zeno_prune_flip (TopoElement.gauge :: t)
-          rw [flip_cons, flipEl_gauge] at ih
           simp only [flip_cons, flipEl_neg, flipEl_gauge, zeno_prune]
-          rw [ih]
+          rw [zeno_prune_flip t]
       | TopoElement.gauge, b =>
           have ih := zeno_prune_flip (b :: t)
           rw [flip_cons] at ih
@@ -282,8 +281,11 @@ theorem exc_eq_hmax : ∀ (c : Int) (s : TopoString),
       rw [flip_cons, hmax_cons, hmax_cons, harg]
       have h1 := hmax_ge (c + imb x) t
       have h2 := hmax_ge (-(c + imb x)) (flip t)
-      push_cast
-      rw [ih]
+      have hcast : ((max c.natAbs (exc (c + imb x) t) : ℕ) : Int)
+          = max ((c.natAbs : ℕ) : Int) ((exc (c + imb x) t : ℕ) : Int) := by
+        exact Nat.cast_max ..
+      have habs : ((c.natAbs : ℕ) : Int) = max c (-c) := by omega
+      rw [hcast, habs, ih]
       omega
 
 /-- The maximum excess is the larger of the two signed heights. -/
@@ -297,7 +299,10 @@ theorem maxExcursion_eq_hmax (s : TopoString) :
 
 theorem level_zeno_prune : ∀ s : TopoString, level (zeno_prune s) = level s
   | [] => rfl
-  | [x] => rfl
+  | [x] => by
+      cases x with
+      | gauge => simp only [zeno_prune]
+      | phase p => cases p <;> simp only [zeno_prune]
   | a :: b :: t => by
       match a, b with
       | TopoElement.phase LogicPhase.pos, TopoElement.phase LogicPhase.neg =>
@@ -311,9 +316,9 @@ theorem level_zeno_prune : ∀ s : TopoString, level (zeno_prune s) = level s
       | TopoElement.phase LogicPhase.neg, TopoElement.phase LogicPhase.neg =>
           simp only [zeno_prune, level_cons_neg, level_zeno_prune (TopoElement.phase LogicPhase.neg :: t), level_cons_neg]
       | TopoElement.phase LogicPhase.pos, TopoElement.gauge =>
-          simp only [zeno_prune, level_cons_pos, level_zeno_prune (TopoElement.gauge :: t)]
+          simp only [zeno_prune, level_cons_pos, level_cons_gauge, level_zeno_prune t]
       | TopoElement.phase LogicPhase.neg, TopoElement.gauge =>
-          simp only [zeno_prune, level_cons_neg, level_zeno_prune (TopoElement.gauge :: t)]
+          simp only [zeno_prune, level_cons_neg, level_cons_gauge, level_zeno_prune t]
       | TopoElement.gauge, b =>
           simp only [zeno_prune, level_cons, level_zeno_prune (b :: t)]
 
@@ -395,7 +400,7 @@ theorem per_pass {s : TopoString} (hng : NoGauge s) (hbal : level s = 0) (hs : s
   have hfl : level (flip s) = 0 := by rw [level_flip, hbal]; ring
   rw [hbal] at hp
   rw [hfl] at hf
-  rw [← zeno_prune_flip s] at hf
+  rw [zeno_prune_flip s] at hf
   have hpr := maxExcursion_eq_hmax (zeno_prune s)
   have hs' := maxExcursion_eq_hmax s
   have h0a := hmax_ge 0 s
