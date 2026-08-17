@@ -157,6 +157,38 @@ once:
 | one-pass closures number `2ⁿ` | [`onePass_ways_iff`](lean/QLF_ClosureDepth.lean) |
 | the deepest stratum holds exactly `2` | [`nested_closed_at_d`](lean/QLF_ClosureDepth.lean) |
 
+### The schema
+
+`data/census_inventory.json` is the canonical record; this section is its documentation. Two top-level
+sections, `folds` and `depths`, both keyed by history length:
+
+```
+folds.by_length["8"]
+  count                      total count-balanced twist histories of that length
+  n_plus, n_minus            how many carry Pauli phase +1 / -1
+  n_imaginary                how many carry +-i  (0 at every length — balanced_phase_is_real)
+  signed_amplitude           n_plus - n_minus: the amplitude a census-spanning branch would carry
+  weight_of_signed_amplitude its square — the Born weight of that branch, NOT the count
+  histories_listed_in_full   true only to length 6; beyond that the lists below are 8 samples per phase
+  histories_by_phase         the histories themselves, grouped by phase
+folds.phase_rule             the verified-not-proven rule, as a string
+folds.phase_rule_violations  histories where the rule fails — MUST stay empty
+folds.unbalanced_imaginary_* witnesses that unbalanced histories DO reach +-i (the scope is sharp)
+
+depths["16"]
+  total_ways                 balanced +/- histories of that length ( = central_binomial)
+  strata                     {closure depth: how many ways close at exactly that depth}
+  listening_by_capacity      {R: {ways_heard, fraction}} — the capacity-relative count, cumulative
+  one_pass_ways              the depth-1 stratum ( = 2^n, onePass_ways_iff)
+  deepest_stratum            the maximal-depth stratum ( = 2, nested_closed_at_d)
+  modal_depth                the depth reached in the most ways — what happens first
+  depth_equals_max_excursion the depth law, checked ( = true, closedAtHorizon_iff_maxExcursion_le)
+  strata_that_are_gaussian_norms  which stratum counts are sums of two squares (mostly not)
+```
+
+Counts are absolute; **listenings are capacity-relative**. `_invariants_asserted` lists what every run
+re-checks, and a run that breaks one exits non-zero.
+
 ### The data
 
 **Fold census** — every count-balanced twist history, with the Pauli phase it carries:
