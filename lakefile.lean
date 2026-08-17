@@ -204,5 +204,6 @@ lean_lib QLF where
     `QLF_LineSpectra,
     `QLF_BornCounting,
     `QLF_Degeneracy,
-    `QLF_PhaseAssignment
+    `QLF_PhaseAssignment,
+    `QLF_BalancedPhaseReal
   ]
