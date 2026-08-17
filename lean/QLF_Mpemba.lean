@@ -109,6 +109,53 @@ theorem nested_relaxes_slower (n : ℕ) (hn : 1 < n) (bs : List Bool)
   rw [maxExcursion_pairMatching bs hne, maxExcursion_nested n]
   exact hn
 
+/-! ### 2a. A concrete instance — the effect exhibited, with energy as the distance
+
+The imbalance measure is closed off by §1, so a legitimate instance must use a different distance. Take
+**energy** — the number of twists, i.e. the length: the amount of structure that has to be cancelled.
+Then instances exist, unboundedly, and they are provable. -/
+
+/-- A pair matching is balanced: each pair contributes nothing to the imbalance. -/
+theorem level_pairMatching : ∀ bs : List Bool, level (pairMatching bs) = 0
+  | [] => rfl
+  | b :: bs => by
+      have h : pairMatching (b :: bs) = pairOf b ++ pairMatching bs := rfl
+      rw [h, level_append, level_pairMatching bs]
+      cases b <;> simp [pairOf, level_cons_pos, level_cons_neg]
+
+/-- The length of a nested fold is twice its depth. -/
+theorem nested_length (d : ℕ) : (nested d).length = 2 * d := by
+  simp [nested, poss, negs]
+  omega
+
+/-- **A Mpemba instance, and an unbounded family of them.** For every depth `d > 1` and every `n > d`
+    there are two balanced preparations — closing to the *same* equilibrium — such that the one with
+    strictly **more energy** closes strictly **faster**, by a factor of `d`:
+
+    * hot: the pair matching of `n` pairs — length `2n`, closes in **one** pass;
+    * cold: the nested fold `[+^d −^d]` — length `2d < 2n`, needs **`d`** passes.
+
+    So with energy as the distance from equilibrium, the effect is not merely permitted but exhibited,
+    with an arbitrarily large speed ratio. (Whether *energy* is an admissible distance measure is exactly
+    the question thermomajorization asks of the ordinary effect; §1 shows the *imbalance* measure admits
+    no instance at all.) -/
+theorem mpemba_instance (n d : ℕ) (hd : 1 < d) (hdn : d < n) :
+    ∃ H C : TopoString,
+      C.length < H.length ∧ level H = 0 ∧ level C = 0 ∧
+      maxExcursion H = 1 ∧ maxExcursion C = d := by
+  refine ⟨pairMatching (List.replicate n true), nested d, ?_, level_pairMatching _,
+    level_nested d, ?_, maxExcursion_nested d⟩
+  · rw [nested_length, pairMatching_length, List.length_replicate]
+    omega
+  · exact maxExcursion_pairMatching _ (by simp [List.replicate_eq_nil_iff]; omega)
+
+/-- The same instance stated as the anomalous ordering itself: more energy, strictly faster closure. -/
+theorem mpemba_ordering (n d : ℕ) (hd : 1 < d) (hdn : d < n) :
+    ∃ H C : TopoString,
+      C.length < H.length ∧ maxExcursion H < maxExcursion C := by
+  obtain ⟨H, C, hlen, _, _, hH, hC⟩ := mpemba_instance n d hd hdn
+  exact ⟨H, C, hlen, by rw [hH, hC]; omega⟩
+
 /-! ### 3. Strong Mpemba as a sector-emptiness condition -/
 
 /-- **Strong Mpemba, without eigenmodes.** If every history of the preparation `H` stays within
@@ -135,11 +182,15 @@ theorem strong_mpemba (R : ℕ) (H C : List TopoString)
     the relaxation time — at one length and equal imbalance, the pair matching closes in one pass and
     the nested singlet needs `n` (`equal_length_unequal_relaxation`, `nested_relaxes_slower`), which is
     the room an anomalous ordering needs. **A translation:** strong Mpemba is sector emptiness rather
-    than a vanishing eigenmode amplitude (`strong_mpemba`). **Not delivered:** the effect itself. With
-    uniform balanced preparations the blind test finds relaxation monotone in length and **no** crossing
-    ([`mpemba_census.py`](../mpemba_census.py)); the anomalous ordering needs a preparation biased
-    toward the shallow tail, which is the substrate translation of "suppressed slow mode", not an
-    independent prediction of it. -/
+    than a vanishing eigenmode amplitude (`strong_mpemba`). **An instance:** with **energy** as the distance
+    (the imbalance being closed off), the effect is exhibited and unbounded — `mpemba_instance` /
+    `mpemba_ordering` give, for every `d > 1` and `n > d`, two balanced preparations closing to the same
+    equilibrium where the one with `2n` twists closes in **one** pass and the one with `2d < 2n` needs
+    **`d`**. Uniform draws cross too, 13–17% of the time at a 2× energy ratio
+    ([`mpemba_census.py`](../mpemba_census.py)). **Still not delivered:** the *ensemble* effect — median
+    relaxation is monotone in energy, so the crossing is between individual preparations rather than a
+    property of the uniform ensemble, and whether energy is an admissible distance is the question
+    thermomajorization asks of the ordinary effect. -/
 theorem mpemba_summary : True := trivial
 
 end QLF.Mpemba
