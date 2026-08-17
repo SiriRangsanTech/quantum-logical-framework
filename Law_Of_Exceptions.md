@@ -244,6 +244,46 @@ happens exponentially rarely — and it *does* happen: that is baryogenesis
 
 ---
 
+## §4c Two ways a bar can end — and light ends the other way
+
+The unterminated bar needs one qualification, because light plainly *does* terminate: it terminates at a
+**resonant atom**. That is a different mechanism from the two thresholds above, and the distinction is the
+substance rather than a caveat.
+
+| Termination | Mechanism | Direction | Examples |
+|---|---|---|---|
+| **capacity exhausted** | the invariant maintaining a structure fails once the available excursion exceeds its budget | from **below** — insufficiency | proton dissolves at `T_c`; baryon winding violated at `T_EW` |
+| **resonance matched** | the carrier finds a partner it closes with; the frequency matches | by **completion** — sufficiency | a photon absorbed by a resonant atom |
+
+The ladder's energy axis measures the first kind only. Charge — the *invariant* — has no threshold on that
+axis. A photon — the *carrier* — always terminates, but by matching, never by exhaustion. Two different
+axes, so the two statements do not compete.
+
+**In QLF the termination is constitutive, not the carrier's demise.** A photon is not a projectile that
+travels and then stops: it **is** the joint emitter–absorber ZFA closure, existing in the ledger only when
+that joint closure completes ([`Photon_Energy_Bits.md`](Photon_Energy_Bits.md) §1,
+[`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) §2). So "light terminates at a resonant
+atom" is the photon's **existence condition**. The absorber is not what ends it; the absorber is half of
+what it is.
+
+**And the reason light must end this way follows from the rung it sits on.** Its capacity is zero — no
+gauge fold, no constructing delay, no depth ([`Entropy.md`](Entropy.md) §2) — so there is nothing internal
+to exhaust:
+
+> **A zero-capacity carrier can only be terminated by a match, never by exhaustion.**
+
+That is why the massless rung looks unterminated on a capacity axis and is nevertheless always terminated
+in fact. The two facts are the same fact seen along two axes.
+
+**The matching is itself a ways-count.** Resonance is not a separate principle here: the atom is a resonant
+closure at particular frequencies (`freq R = 1/R`, with prime periods irreducible and higher frequencies
+dominant — [`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean),
+[`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean)), and the joint closure completes in **many** ways on
+resonance and few off it. By §4's principle — what happens in the most ways happens first — that ratio *is*
+the absorption strength. Line spectra are multiplicity spectra.
+
+---
+
 ## §5 The kill condition
 
 The law is not protected by wordplay. Exhibit any **other** exceptionless law and it is false: by the

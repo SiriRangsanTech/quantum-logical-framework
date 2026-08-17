@@ -362,7 +362,12 @@ Each threshold sits at its sector's **carrier-mass scale** (`Λ_QCD ≈ 200 MeV`
 mass *is* constructing delay *is* fold depth *is* capacity, so a massless carrier is a zero-capacity one
 with no budget to exceed ([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4b). In information terms the
 photon carries no hidden depth — zero fold, zero entropy ([`Entropy.md`](Entropy.md) §2) — so there is
-nothing about it that a rising capacity can exhaust.
+nothing about it that a rising capacity can exhaust. Which is *why* light terminates the other way: at a
+**resonant atom**, by matching rather than exhaustion — and in QLF that termination is constitutive, since
+a photon **is** the joint emitter–absorber closure and exists in the ledger only when that closure
+completes ([`Photon_Energy_Bits.md`](Photon_Energy_Bits.md) §1). A zero-capacity carrier can only be ended
+by a match, never by a budget; the resonance selection is itself a ways-count, so line spectra are
+multiplicity spectra ([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4c).
 
 So "information is physical" acquires a graded, measurable form: an information capacity exists exactly
 when the invariant maintaining a structure is capacity-relative, and the temperature at which it fails
