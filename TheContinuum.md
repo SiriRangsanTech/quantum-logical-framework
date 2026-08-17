@@ -249,6 +249,11 @@ The continuum does not give a *wrong* answer on the six Clay Millennium problems
 
 ---
 
+The same capacity reading applies to *laws*, not just to state spaces: a system with more states can
+always break a finite closure, so every restrictive law has a real exception and no finite closure is
+final — [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md), machine-verified in
+[`lean/QLF_LawOfExceptions.lean`](lean/QLF_LawOfExceptions.lean).
+
 ## Summary
 
 | Classical assumption | QLF replacement |

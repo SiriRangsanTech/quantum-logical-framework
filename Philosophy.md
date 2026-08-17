@@ -148,6 +148,9 @@ concession.
 
 > **There is an exception to every restrictive law except this law.**
 
+*Full write-up, with the tautology diagnosis, the census numbers, the Gödel contrast and the
+methodological corollary: [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md).*
+
 The aphorism is old — *"there is an exception to every rule"* is recorded in English from the late 16th
 century, after the Latin `exceptio probat regulam`, and the self-referential twist is folklore. What is
 new is the **proof**, and self-reference does not provide one. "Every law but me has an exception" is

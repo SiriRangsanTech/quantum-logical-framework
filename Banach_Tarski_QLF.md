@@ -287,3 +287,14 @@ biology happened to inherit; it is the same fact that keeps the universe consist
 - [`Conservation.md`](Conservation.md) · [`Reversibility.md`](Reversibility.md) — the `−log 2` ledger,
   Landauer, synthesized time.
 - [`QuantumOS.md`](QuantumOS.md) — no-cloning as linear-logic / capability security.
+
+---
+
+## The capacity reading
+
+Banach–Tarski is consistency without realizability. The companion statement about *laws* rather than
+objects is the **Law of Exceptions**: a system with more states can always break a finite closure, so
+every restrictive law has a real exception and no finite closure is final —
+[`Law_Of_Exceptions.md`](Law_Of_Exceptions.md), machine-verified in
+[`lean/QLF_LawOfExceptions.lean`](lean/QLF_LawOfExceptions.lean). Both are the same discipline applied at
+different altitudes: what a finite capacity can instantiate, versus what a finite capacity can legislate.
