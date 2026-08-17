@@ -56,10 +56,19 @@ invariant over the *whole* stored file. So a regression in `twist_core.py` is ca
 by the recomputation, and a corrupted or hand-edited database by the assertions,
 without paying for the deep lengths on every push.
 
-Cost, so the next step is a known quantity: the fold census is exhaustive over 8^L
-histories — length 6 is instant, 8 takes a few minutes, and 10 (10^9) is out of
-reach exhaustively. The depth census is 2^L — length 16 is instant, 20 is a minute,
-24 is the practical ceiling. Beyond those, sample rather than enumerate.
+Cost, measured rather than guessed (~48,000 histories/sec on one core, and the
+script prints the count and a progress line before spending it):
+
+    fold census   length  8         190,120 histories     seconds
+                  length 10       7,939,008 histories     ~3 minutes
+                  length 12     357,713,664 histories     ~2 hours
+                  length 14  16,993,726,464 histories     ~4 days  — sample instead
+    depth census  length 20       1,048,576 to sift       ~1 minute
+                  length 24      16,777,216 to sift       the practical ceiling
+
+Currently stored: fold census to 10, depth census to 20. Anything past those is a
+deliberate decision, not something a plain run will wander into — a plain run
+recomputes nothing that is already stored.
 """
 from __future__ import annotations
 
@@ -71,7 +80,10 @@ from math import comb
 
 from twist_core import pauli_fold
 
-DB_PATH = os.path.join("data", "census_inventory.json")
+# Resolve relative to this file, not the working directory: running from elsewhere
+# used to silently miss the stored database and rebuild everything from scratch.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(_HERE, "data", "census_inventory.json")
 
 TWISTS = ['^', 'v', '>', '<', '/', '\\', '+', '-']
 CONJ_PAIRS = [('^', 'v'), ('>', '<'), ('/', '\\'), ('+', '-')]
@@ -166,6 +178,19 @@ def is_gaussian_norm(n: int) -> bool:
 # --------------------------------------------------------------------------- #
 # enumeration
 # --------------------------------------------------------------------------- #
+def balanced_history_count(length: int) -> int:
+    """How many count-balanced histories a length has — exactly, without enumerating."""
+    from math import factorial
+    half, total = length // 2, 0
+    for a in range(half + 1):
+        for b in range(half + 1 - a):
+            for c in range(half + 1 - a - b):
+                d = half - a - b - c
+                total += factorial(length) // (
+                    factorial(a) ** 2 * factorial(b) ** 2 * factorial(c) ** 2 * factorial(d) ** 2)
+    return total
+
+
 def balanced_histories(length: int):
     """Generate every count-balanced history of the given length, directly.
 
@@ -217,10 +242,16 @@ def build_fold_inventory(max_len: int, keep: dict | None = None) -> dict:
     for L in range(2, max_len + 1, 2):
         if str(L) in out:
             continue
-        print(f"   computing fold census at length {L}...", flush=True)
+        expected = balanced_history_count(L)
+        print(f"   computing fold census at length {L}: {expected:,} balanced histories"
+              f"{' — this takes a while' if expected > 1_000_000 else ''}...", flush=True)
+        done = 0
         tally = {"+1": 0, "-1": 0, "+i": 0, "-i": 0}
         samples = {"+1": [], "-1": [], "+i": [], "-i": []}
         for h in balanced_histories(L):
+            done += 1
+            if expected > 1_000_000 and done % 500_000 == 0:
+                print(f"      {done:,} / {expected:,} ({100*done/expected:.0f}%)", flush=True)
             p = fold_phase(h)
             assert p is not None, f"count-balanced but not Pauli-closed: {h!r}"
             tally[p] += 1
@@ -264,7 +295,8 @@ def build_depth_inventory(max_len: int, keep: dict | None = None) -> dict:
         if str(2 * n) in out:
             continue
         if 2 * n >= 18:
-            print(f"   computing depth census at length {2*n} (2^{2*n} histories)...", flush=True)
+            print(f"   computing depth census at length {2*n}: 2^{2*n} = {2**(2*n):,} "
+                  f"histories to sift...", flush=True)
         dist, law_ok = {}, True
         for tup in product((1, -1), repeat=2 * n):
             if sum(tup) != 0:
