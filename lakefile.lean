@@ -201,5 +201,6 @@ lean_lib QLF where
     `QLF_ClosureDepth,
     `QLF_LawOfExceptions,
     `QLF_ClosureDepthLaw,
-    `QLF_LineSpectra
+    `QLF_LineSpectra,
+    `QLF_BornCounting
   ]

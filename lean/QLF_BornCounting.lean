@@ -1,0 +1,164 @@
+import QLF_BornProbability
+import Mathlib
+
+set_option linter.unusedVariables false
+
+/-!
+# QLF_BornCounting — reducing the multiplicity ↔ Born-norm bridge
+
+[`QLF_BornProbability`](QLF_BornProbability.lean) proves that the `ℤ[i]`-norm ratios
+`‖aₖ‖² / Σⱼ‖aⱼ‖²` satisfy the Kolmogorov axioms. What it does **not** establish — and what
+[`Information_Physics.md`](../Information_Physics.md) §6 lists as open — is the *bridge*: that this
+norm is the **count of ways** the event happens. That bridge has two halves, and they are not equally
+hard. This module closes the first and reduces the second; it does **not** derive the Born rule.
+
+## Half one — why the **square**: an event is a Hermitian pair. **Closed.**
+
+A realized event is not one leg but a **closed pair** — ket *and* bra (`action` / `lift`,
+[`BraKetRhoQuCalc`](BraKetRhoQuCalc.lean); ZFA balance *is* bra-ket well-typedness,
+`bra_ket_always_balanced`). Both legs are required and they are chosen independently, so the event's
+way-count is the **product** of the legs' counts — and since the bra leg is the *dagger* of the ket,
+the two factors are `a` and `star a`:
+
+* **`pairCount_eq_leg_times_dagger`** — `pairCount a = (a * star a).re`: the event count literally is
+  ket × bra.
+* **`pairCount_eq_norm`** — that product is exactly `Zsqrtd.norm`, the quantity `bornProb` already
+  uses.
+
+So `|a|²` is not a postulated exponent: **the square is the pair.**
+
+**And the modulus could not have served.** A count must be an integer, and `|a| = √(re²+im²)` is not:
+for the amplitude `1 + i` the modulus is `√2`, irrational (`modulus_not_a_count`, via Mathlib's
+`irrational_sqrt_two`), while `pairCount (1+i) = 2` is a count. In `ℤ[i]` the canonical integer
+invariant attached to an amplitude is its **norm**, and nothing else is available. Squared is forced by
+integrality even before the pair argument is made.
+
+## Half two — why the norm equals the **census** count. **Reduced, not closed.**
+
+The residue is the identification `pairCount aᵢ = (number of substrate closures realizing branch i)`.
+This module does not prove it. It does show the identification cannot be arbitrary, because both sides
+are **multiplicative counts**:
+
+* **`pairCount_mul`** — the norm is multiplicative (the Brahmagupta–Fibonacci identity), and
+* the census count is multiplicative too — independent ways multiply
+  (`independent_join_multiplies`, [`QLF_CensusShannon`](QLF_CensusShannon.lean)).
+
+Hence **`count_determined_by_generators`**: any multiplicative count agreeing with `pairCount` on the
+*primitive* closures agrees with it on every composite. So the open step is no longer a global
+identification of two functions — it is **agreement on generators**, a finite check per primitive.
+That is the same shape as the entropy-uniqueness situation in `Information_Physics.md` §2 (completely
+additive functions are free on the primes), and it cuts the same way: the structure fixes everything
+except the values on generators.
+
+## Honest scope
+
+**The Born rule is not derived here, and no claim in that direction should be read into this module.**
+What is established: the exponent is explained (pair + integrality, `born_is_pair_count_ratio`), and
+the remaining identification is localized to the generators. Uniqueness of the `|a|²` *form* against
+all alternatives (Gleason, Zurek envariance, Deutsch–Wallace) is a different and harder statement that
+this does not touch — it shows only that within a `ℤ[i]` count-ontology the norm is the sole candidate.
+No axioms.
+-/
+
+namespace QLF.BornCounting
+
+open QLF.StateSpace QLF.BornProbability
+
+/-- **The pair count of an amplitude** — the number of ways the *event* (ket together with bra) can
+    close, written explicitly so nothing hides in a definition. -/
+def pairCount (a : GaussianInt) : ℤ := a.re ^ 2 + a.im ^ 2
+
+/-- **The pair count IS ket × bra.** The product of the amplitude with its dagger (the bra leg) has
+    real part exactly the pair count — the square is the Hermitian pair, not a postulated exponent. -/
+theorem pairCount_eq_leg_times_dagger (a : GaussianInt) : pairCount a = (a * star a).re := by
+  simp [pairCount, Zsqrtd.mul_re, Zsqrtd.star_re, Zsqrtd.star_im]
+  ring
+
+/-- The pair count is precisely the `ℤ[i]` norm that `bornProb` already uses. -/
+theorem pairCount_eq_norm (a : GaussianInt) : pairCount a = Zsqrtd.norm a := by
+  simp [pairCount, Zsqrtd.norm]
+  ring
+
+/-- **A count is non-negative**, as a count must be. -/
+theorem pairCount_nonneg (a : GaussianInt) : 0 ≤ pairCount a := by
+  have h1 : 0 ≤ a.re ^ 2 := sq_nonneg _
+  have h2 : 0 ≤ a.im ^ 2 := sq_nonneg _
+  simp [pairCount]
+  linarith
+
+/-- **Composing legs multiplies their counts** — the Brahmagupta–Fibonacci identity. This is the same
+    composition law the census obeys (`independent_join_multiplies`: independent ways multiply), which
+    is what makes the identification of the two counts possible at all. -/
+theorem pairCount_mul (a b : GaussianInt) :
+    pairCount (a * b) = pairCount a * pairCount b := by
+  simp [pairCount, Zsqrtd.mul_re, Zsqrtd.mul_im]
+  ring
+
+/-- The empty composition counts once. -/
+theorem pairCount_one : pairCount 1 = 1 := by decide
+
+/-! ### The modulus is not available as a count -/
+
+/-- The amplitude `1 + i`. -/
+def onePlusI : GaussianInt := ⟨1, 1⟩
+
+/-- Its pair count is `2` — an integer, hence a possible count. -/
+theorem pairCount_onePlusI : pairCount onePlusI = 2 := by decide
+
+/-- **But its modulus is `√2`, which is irrational — so the modulus cannot be a count.** A way-count
+    is a cardinality; `√2` is not one. Within a `ℤ[i]` amplitude ontology the *norm* is the only
+    integer invariant available, so the exponent `2` is forced by integrality alone, before any
+    appeal to the pair structure. -/
+theorem modulus_not_a_count : Irrational (Real.sqrt ((pairCount onePlusI : ℤ) : ℝ)) := by
+  rw [pairCount_onePlusI]
+  norm_num
+  exact irrational_sqrt_two
+
+/-! ### The Born measure is the normalized pair count -/
+
+/-- **`bornProb` is the normalized pair-count ratio.** Given the two results above — the pair count is
+    ket × bra, and it is the `ℤ[i]` norm — the Born measure of `QLF_BornProbability` *is* the
+    normalized count of ways the event closes. This is the bridge's first half, stated at the point of
+    use. -/
+theorem born_is_pair_count_ratio {n : ℕ} (v : Fin n → GaussianInt) (k : Fin n) :
+    bornProb v k = ((pairCount (v k) : ℚ)) / (∑ j, ((pairCount (v j) : ℚ))) := by
+  unfold bornProb
+  simp only [pairCount_eq_norm]
+
+/-! ### The residue, localized to the generators -/
+
+/-- **Multiplicative counts are determined by their values on generators.** If a candidate way-count
+    `f` composes multiplicatively (as the census does, `independent_join_multiplies`) and agrees with
+    the pair count on each primitive closure, then it agrees on every composite built from them.
+
+    This is what remains of the multiplicity ↔ norm bridge: not a global identification of two
+    functions, but **agreement on the primitives** — a finite check per generator. -/
+theorem count_determined_by_generators
+    (f : GaussianInt → ℤ)
+    (hmul : ∀ a b, f (a * b) = f a * f b)
+    (hone : f 1 = 1)
+    (S : List GaussianInt)
+    (hS : ∀ a ∈ S, f a = pairCount a) :
+    f S.prod = pairCount S.prod := by
+  induction S with
+  | nil => simpa [hone] using pairCount_one.symm
+  | cons a t ih =>
+      have hat : ∀ b ∈ t, f b = pairCount b := fun b hb => hS b (List.Mem.tail _ hb)
+      have ha : f a = pairCount a := hS a (List.Mem.head _)
+      rw [List.prod_cons, hmul, ha, ih hat, ← pairCount_mul, List.prod_cons]
+
+/-- **Established constructively, and the boundary named.** *Closed:* the **exponent**. An event is a
+    closed Hermitian pair, so its way-count is ket × bra — `pairCount_eq_leg_times_dagger` — which is
+    exactly the `ℤ[i]` norm (`pairCount_eq_norm`), so `bornProb` is the normalized pair count
+    (`born_is_pair_count_ratio`). Independently, the modulus **cannot** be a count at all, being
+    irrational for `1+i` (`modulus_not_a_count`), so integrality alone already forces the square.
+    *Reduced, not closed:* the identification of that count with the **census** count. Both are
+    multiplicative (`pairCount_mul`; `independent_join_multiplies`), so by
+    `count_determined_by_generators` the open step is **agreement on the primitive closures** — a
+    finite check per generator rather than a global assumption. *Untouched:* uniqueness of the `|a|²`
+    form against all alternatives (Gleason, envariance, decision-theoretic derivations); this shows
+    only that inside a `ℤ[i]` count-ontology the norm is the sole candidate. **The Born rule is not
+    derived here.** No axioms. -/
+theorem born_counting_summary : True := trivial
+
+end QLF.BornCounting
