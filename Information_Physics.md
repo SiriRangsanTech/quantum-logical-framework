@@ -282,6 +282,27 @@ an **excursion budget, not a length budget** — capacity `R` admits histories o
 balanced walk's mean maximum is `√(πn/2)`. Bekenstein bounds *how much*; the depth law says *which*:
 distinguishability is bounded by how far from balance a history is allowed to stray.
 
+**Inventory and capacity are two different quantities.** `log₂ W` is an **inventory** — the number of
+bits needed to index `W` ways (`onePass_entropy`: the depth-1 stratum's `2ⁿ` ways are exactly `n` bits;
+all balanced length-`2n` histories carry `log₂ C(2n,n) ≈ 2n` bits). `maxExcursion` is a **capacity** —
+how far from balance the walk is allowed to stray, and by `closureDepth_eq_maxExcursion` exactly how many
+passes closing costs. Conflating them is what produced the earlier `log₂ n` reading of the mean-depth
+data; both quantities are real, and the relation between them is the interesting part:
+
+```
+inventory (bits) ∝ capacity²          measured  bits / R² = 1.45 → 1.37   for 2n = 16 … 2048
+```
+
+drifting toward the `4/π ≈ 1.273` implied by `log₂ C(2n,n) ~ 2n` together with the balanced walk's mean
+maximum `E[max] ~ √(πn/2)` (same slow finite-size drift as `E[max]/√(πn/2) = 0.92 → 0.97`). So a
+capacity-`R` closure holds `~R²` bits.
+
+That is the **scaling shape of the Bekenstein area law** — `S ∝ R²` — arising here from pure counting,
+with no geometry assumed. What is *not* claimed: that the excursion capacity `R` **is** a spatial radius.
+That identification is the open bridge; only the scaling coincidence is exhibited (contrast the anchored
+area law `S = 4πR² log 2`, [`QLF_GravityFromDelay`](lean/QLF_GravityFromDelay.lean), where `R` is a
+radius by construction).
+
 Capacity
 bounds distinguishability (`capacity_bound`, [`lean/QLF_Identifiability.lean`](lean/QLF_Identifiability.lean));
 the continuum of "consistent" parameters is unidentifiable

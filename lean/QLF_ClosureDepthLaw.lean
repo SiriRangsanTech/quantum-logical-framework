@@ -17,6 +17,16 @@ balance**. Capacity is a bound on *excursion*, not on length — which is why `Q
 always break a finite closure with one more shell, and why capacity `R` buys length `~R²` (a balanced
 walk's mean maximum is `√(πn/2)`) rather than `~2^R`.
 
+## Inventory versus capacity — two quantities, related by a square
+
+`log₂ W` is an **inventory** (bits indexing the `W` ways: the depth-1 stratum's `2ⁿ` ways are `n` bits,
+`QLF_ClosureDepth.onePass_entropy`); `maxExcursion` is a **capacity** (how far from balance the walk may
+stray, and by `closureDepth_eq_maxExcursion` exactly the pass count). They are not the same quantity, and
+the relation is `inventory ∝ capacity²` — measured `bits/R² = 1.45 → 1.37` for `2n = 16 … 2048`, drifting
+toward the `4/π` implied by `log₂ C(2n,n) ~ 2n` and `E[max] ~ √(πn/2)`. A capacity-`R` closure holds
+`~R²` bits: the **scaling shape** of the Bekenstein area law out of pure counting. Whether `R` *is* a
+spatial radius is the open bridge, not a claim.
+
 ## Why the obvious statement had to be generalized
 
 The per-pass claim `maxExcursion (zeno_prune s) + 1 = maxExcursion s` does **not** generalize over an

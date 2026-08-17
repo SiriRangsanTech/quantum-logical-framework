@@ -120,6 +120,54 @@ laws feel exceptionless right up until they are applied outside the capacity tha
 
 ---
 
+## §4a Case in point: the proton
+
+The proton is the sharpest physical instance, because its stability is not folklore — it is
+**structurally derived** in this repo, three times over:
+
+* **baryon number is a signed 3-axis winding invariant** — proton `+1`, antiproton `−1`, leptons and
+  mesons `0`, with conjugation-oddness proven for *all* histories
+  ([`baryonNumber`, `baryon_dagger_odd`](lean/QLF_BaryonWinding.lean));
+* **a lone quark cannot close** — only the singlet closes
+  ([`charged_not_closed`, `singlet_closure`](lean/QLF_Confinement.lean));
+* **the prime-3 lock** — a closure of prime period has no nontrivial sub-closure repeat, so the vacuum
+  cannot factor it into a repeat of something shorter
+  ([`prime_freq_irreducible`](lean/QLF_PrimeResonance.lean)).
+
+Empirically the proton looks indestructible (lifetime `> 10³⁴` years, Super-Kamiokande), and QLF
+**predicts** that: it reproduces minimal `SU(5)`'s good numbers while dropping its fatal fast-proton-decay
+prediction ([`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) §5a). That prediction stands.
+
+**And yet the proton breaks — because structural is not absolute.** Each lock above is a *finite
+closure*, and by §2 a finite closure has a capacity. Raise the available excursion and the exception
+appears, as nature already exhibits:
+
+| Capacity raised to | What happens | Status |
+|---|---|---|
+| `T ≳ T_c ≈ 155 MeV` (`≈ 1.8 × 10¹² K`) | **deconfinement** — the proton is not a closure at all; quarks and gluons roam free | **observed** (RHIC, LHC quark–gluon plasma) |
+| above the electroweak scale (`~100 GeV`) | **baryon number itself violated** — sphaleron transitions | standard, and already admitted here ([`Conservation.md`](Conservation.md) §7: QLF carries *no* exact global symmetry beyond the gauge charges, matching Banks–Seiberg / swampland) |
+
+Note the exception's shape: the proton does not *decay*, it **dissolves**. That distinction matters and
+must be kept — the Law of Exceptions locates the *capacity* of the stability claim; it does not overturn
+the low-energy prediction. Cold proton decay remains unobserved and QLF still predicts its absence.
+
+**This is also the reconciliation of two things the repo asserts.**
+[`Mysteries_Of_Physics.md`](Mysteries_Of_Physics.md) lists proton stability as structurally settled (✅);
+[`Conservation.md`](Conservation.md) admits `B`-violation at the sphaleron scale. Those are not in
+tension once stability is read as a **capacity** claim: the prime lock says nothing can factor the proton
+*within its capacity*, and says nothing whatever about capacities that supply more excursion than the
+closure can absorb. Every "✅ structurally stable" in this repository should be read that way.
+
+**Why the temperature knob is the capacity knob.** In the freeze-out model, temperature *is* the pruning
+budget — `R ~ Poisson(λ(T))`, more heat meaning more passes the local causal diamond affords
+([`census_congestion_freezeout.py`](census_congestion_freezeout.py)). So "hotter" and "larger capacity"
+are the same variable, and §4's multiplicity reading applies directly: at everyday temperature the
+overwhelming majority of ways that close keep the proton bound, so it looks exceptionless; raise `T` and
+the deconfined ways come to dominate. What happens in the most ways happens first — and *which* ways are
+most is temperature-dependent.
+
+---
+
 ## §5 The kill condition
 
 The law is not protected by wordplay. Exhibit any **other** exceptionless law and it is false: by the

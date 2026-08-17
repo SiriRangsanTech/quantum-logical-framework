@@ -62,11 +62,14 @@ the histories whose phase walk never strays further than `R` from balance, so ca
 accumulator (`hmax_zeno_prune`), valid for *unbalanced* histories — which is what the emit step needs.
 No axiom; the exhaustive check is now a theorem.
 
-Consequence if it holds, and worth stating because it is *falsifiable*: the depth of a random
-balanced history is the maximum of a `±1` bridge, whose expectation is `√(πn/2)` — so a horizon of
-capacity `R` closes histories of length `~R²`. **Polynomial, not exponential** (an earlier `log₂ n`
-reading of small-`n` data was wrong; sampling to `n = 1024` gives the `√n` law, ratio to `√(πn/2)`
+Consequence, and worth stating because it is *falsifiable*: the depth of a random balanced history is the
+maximum of a `±1` bridge, expectation `√(πn/2)`, so a horizon of capacity `R` closes histories of length
+`~R²` — **polynomial, not exponential** (sampling to `n = 1024` gives the `√n` law, ratio to `√(πn/2)`
 rising `0.92 → 0.97`).
+
+Keep two quantities apart here: `log₂ W` is an **inventory** (bits indexing the ways — the `2ⁿ` stratum
+is `n` bits, `onePass_entropy`), while `maxExcursion` is a **capacity** (the pass count). Both are real;
+`inventory ∝ capacity²`, so a capacity-`R` closure holds `~R²` bits (`QLF_ClosureDepthLaw`).
 -/
 
 namespace QLF.ClosureDepth
