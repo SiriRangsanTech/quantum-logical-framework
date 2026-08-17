@@ -81,7 +81,7 @@ extrapolation from two of them. No axioms.
 
 namespace QLF.PhaseAssignment
 
-open QLF QLF.Degeneracy
+open QLF QLF.BornCounting QLF.Degeneracy
 
 /-- Conjugation is an involution on the 8-twist alphabet. -/
 theorem conj_conj (t : Twist) : t.conj.conj = t := by
@@ -111,11 +111,8 @@ theorem aligned_ways_weigh_square (k : ℤ) : pairCount (⟨k, 0⟩ : GaussianIn
     all carry the same phase, so the branch amplitude is `±2ⁿ` and the weight is `(2ⁿ)² = 4ⁿ`. The
     coincidence that `norm((1+i)ⁿ)` is also `2ⁿ` compares a norm with a *count*, not with this weight. -/
 theorem stratum_weight (n : ℕ) : pairCount (⟨(2 : ℤ) ^ n, 0⟩ : GaussianInt) = 4 ^ n := by
-  rw [aligned_weight]
-  rw [← pow_mul, ← pow_mul]
-  ring_nf
-  rw [show (4 : ℤ) = 2 ^ 2 from by norm_num, ← pow_mul]
-  ring_nf
+  rw [aligned_weight, ← pow_mul, mul_comm, pow_mul]
+  norm_num
 
 /-- **Established, and a correction recorded.** *Proven:* both orderings of a Hermitian pair fold to
     `−I` (`pair_orderings_aligned`, `pair_reversed_folds_to_negI`, on top of the pre-existing
