@@ -119,9 +119,16 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
   their **sum** — whence `weight_is_always_a_norm`, and the obstruction disappears because **counts are
   not weights**. `weight = |Σ phases|²`, and the gap from the count *is* interference: orthogonal
   phases give weight = count (exactly why the pair generator matched — its two ways are the orderings
-  `+−` and `−+`), aligned phases give `n²`, opposed give `0`. **What remains open is different and more
-  concrete:** *which* phase a given way carries, i.e. the `pauli_fold` of the specific history — the
-  interference calculation itself.
+  `+−` and `−+`), aligned phases give `n²`, opposed give `0`. **And the phase question is now partly settled too**
+  ([`QLF_PhaseAssignment`](lean/QLF_PhaseAssignment.lean),
+  [`QLF_BalancedPhaseReal`](lean/QLF_BalancedPhaseReal.lean)): the phase *is* the history's `pauli_fold`,
+  proven for the pair sector — both orderings fold to `−I`, so those ways are **aligned** — and balance is
+  proven to force a **real** phase, `μ₂` rather than `μ₄`, so branch amplitudes over the balanced census
+  are signed **integers**. The general rule `(−1)^{#neg}·sign(axis permutation)` is verified but not
+  proven. Two corrections were recorded in the process: the census pair's ways are *not* orthogonal, and
+  alignment is a **sector** property rather than a census one (both phases occur, so a census-spanning
+  branch has the *signed* sum as its amplitude). **What remains open** is the census↔amplitude
+  identification itself — and it is known **false** in the naive form, since counts are not weights.
 - **Numerical demo**: extend `path_integral.py` to compute Born probabilities directly from QuCalc path enumeration; verify against standard QM for a battery of canonical cases (single spin, two-spin singlet, three-slit interference).
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.
 - **Quantum contextuality**: Bell-Kochen-Specker theorem is the constraint that probability assignments must be consistent across measurement contexts. QLF's per-context possibility trees should derive this consistency automatically.

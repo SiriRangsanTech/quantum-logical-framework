@@ -457,8 +457,11 @@ Two pillars:
   history folds to a Pauli scalar, so a branch is one unit-norm component per way and its amplitude is
   their sum, making every weight a norm automatically. The earlier failures were the wrong comparison:
   **counts are not weights**, `weight = |Σ phases|²`, and the difference *is* interference (orthogonal
-  phases ⟹ weight = count, aligned ⟹ `n²`, opposed ⟹ `0`). Still open, and now a sharper question:
-  *which* phase each way carries. This remains the Born **measure**, not a derivation of the Born
+  phases ⟹ weight = count, aligned ⟹ `n²`, opposed ⟹ `0`). The phase question is now partly settled as well: it *is* the
+  `pauli_fold`, proven for the pair sector, and **balance forces a real phase** — `μ₂`, never `±i`
+  ([`QLF_BalancedPhaseReal`](lean/QLF_BalancedPhaseReal.lean)) — so branch amplitudes over the balanced
+  census are signed **integers**, not Gaussian integers. Still open: the census↔amplitude identification,
+  known false in its naive form. This remains the Born **measure**, not a derivation of the Born
   **rule**.
 - **The `ħ/2` uncertainty quantum** ([`lean/QLF_Uncertainty.lean`](lean/QLF_Uncertainty.lean)):
   mapping a continuum value onto its nearest integer twist-count leaves an irreducible half-bin
@@ -605,9 +608,12 @@ made constructive end-to-end.
   grouping/regularity axiom and is open.
 - **Born:** the `ℤ[i]`-norm ratios form a consistent finite probability measure, and the **exponent** is
   now explained rather than posited — the square is the ket–bra pair, and integrality rules the modulus
-  out independently (`QLF_BornCounting`). **Still open:** the identification of physical multiplicity
-  with the norm census — *reduced* to agreement on the primitive closures — and uniqueness of the `|a|²`
-  form against Gleason-type derivations, untouched. Still the Born *measure*, not the Born *rule*.
+  out independently (`QLF_BornCounting`). The **degeneracy decomposition** is fixed by `μ₄`
+  (one unit component per way), and **balance narrows that to `μ₂`** — proven — so amplitudes over
+  closures are signed integers. **Still open:** the identification of physical multiplicity with the norm
+  census, which the generator check showed is **false naively** (counts are not weights) and which is now
+  a question about the signed sum over ways; and uniqueness of the `|a|²` form against Gleason-type
+  derivations, untouched. Still the Born *measure*, not the Born *rule*.
 - **Chaitin's `Ω`:** identifying the pruning boundary with `Ω` is an **ontological stance**, not a
   theorem — `full_zeno_prune` terminates on finite strings by a decreasing-length measure and decides
   no halting question (§4).

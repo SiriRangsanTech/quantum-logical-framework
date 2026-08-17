@@ -21,7 +21,16 @@ The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7
 **Open:** [`README.md`](README.md)
 
 Root reading: **everything derives from the 8-twist substrate under Zero Free Action** —
-[`Philosophy.md`](Philosophy.md) (possibilist ontology), [`WHITE_PAPER.md`](WHITE_PAPER.md).
+[`Philosophy.md`](Philosophy.md) (possibilist ontology, and §3a the *working method*: things happen every
+way that closes, and what happens in the most ways happens first), [`WHITE_PAPER.md`](WHITE_PAPER.md).
+
+**The method's limit, proven:** [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) — *a system with more
+states can always break a finite closure*, so every restrictive law has a real, constructed exception and
+no finite closure is final ([`QLF_LawOfExceptions`](lean/QLF_LawOfExceptions.lean)). Capacity turns out to
+be an **excursion** budget ([`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean)), which is why the
+proton dissolves at `T_c` and baryon number at `T_EW` while electric charge — whose proof carries no
+capacity — has no exception at any scale. Corollary for everything below: **construction proves
+possibility, not uniqueness.**
 
 **Foundational logic & mathematics:** the substrate's *logic* is **quantum logic** — argued as the correct
 foundation of mathematics (bottom-up, sound vs. exploding) in [`Quantum_Logic_Foundations.md`](Quantum_Logic_Foundations.md),
