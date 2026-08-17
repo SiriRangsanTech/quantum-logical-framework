@@ -52,6 +52,13 @@ except the values on generators.
 
 ## Honest scope
 
+**Uniqueness, and what kind it is.** `unique_pair_form` establishes that `a · ā` is the *only* form
+scaling linearly on the ket leg, conjugate-linearly on the bra leg, and normalized on the trivial
+closure — the precise content of "`|A|²` is the unique bilinear form". This is uniqueness **given the
+pair structure**; it is emphatically *not* Gleason's theorem, which derives the form from non-contextual
+probability assignments on a Hilbert lattice of dimension ≥ 3 while assuming no form at all. The two
+should not be confused, and this module does not attempt the latter.
+
 **The Born rule is not derived here, and no claim in that direction should be read into this module.**
 What is established: the exponent is explained (pair + integrality, `born_is_pair_count_ratio`), and
 the remaining identification is localized to the generators. Uniqueness of the `|a|²` *form* against
@@ -158,6 +165,33 @@ theorem pairCount_is_a_whole_count (a : GaussianInt) : 0 ≤ pairCount a ∧ ∃
   refine ⟨pairCount_nonneg a, ⟨(pairCount a).toNat, ?_⟩⟩
   have := pairCount_nonneg a
   omega
+
+/-! ### Uniqueness of the pair form
+
+"`|A|²` is the unique bilinear form" — made precise. The hypotheses are not decoration: they *are* the
+pair structure. A form takes one leg from each side (ket and bra); scaling a leg scales the count; the
+bra leg carries the dagger; and the trivial closure counts once. Those four facts alone pin the form. -/
+
+/-- **Uniqueness on the amplitude line (`ℂ`).** Any form that scales linearly on the ket leg,
+    conjugate-linearly on the bra leg, and counts the trivial closure once **is** `a ↦ a · ā`, whose
+    diagonal is `|a|²`. Nothing else survives those three requirements. -/
+theorem unique_pair_form (B : ℂ → ℂ → ℂ)
+    (hket : ∀ a b, B a b = a * B 1 b)
+    (hbra : ∀ a b, B a b = star b * B a 1)
+    (hone : B 1 1 = 1) :
+    ∀ a : ℂ, B a a = a * star a := by
+  intro a
+  rw [hket a a, hbra 1 a, hone, mul_one]
+
+/-- **The same uniqueness over the substrate ring**, tied to the count: the unique such form on `ℤ[i]`
+    is exactly the **pair count**. So within the pair structure the Born weight is not a choice. -/
+theorem unique_pair_form_is_pairCount (B : GaussianInt → GaussianInt → GaussianInt)
+    (hket : ∀ a b, B a b = a * B 1 b)
+    (hbra : ∀ a b, B a b = star b * B a 1)
+    (hone : B 1 1 = 1) :
+    ∀ a : GaussianInt, B a a = ((pairCount a : ℤ) : GaussianInt) := by
+  intro a
+  rw [hket a a, hbra 1 a, hone, mul_one, pairCount_eq_leg_times_dagger]
 
 /-! ### The residue, localized to the generators -/
 
