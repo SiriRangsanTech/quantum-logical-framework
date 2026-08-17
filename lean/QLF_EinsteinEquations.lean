@@ -32,6 +32,12 @@ Jacobson's derivation is the cosmological constant `Λ` — which QLF fixes inde
 `Ω_Λ = log 2` (`QLF_CosmologicalConstant`). So the Einstein equations are the equation of state of
 the substrate, with every coefficient assembled from QLF's own thermodynamics.
 
+The **algebraic** rung of the tensor derivation is separately closed in
+`QLF_NullTensorReconstruction`: a symmetric tensor annihilating the null cone is a multiple of the
+metric (Jacobson eqs. (5)→(6)), and QLF needs only **nine integer null probes** of the substrate
+Hermitian lattice to force it — no continuum of null directions. What remains is the arrow into that
+step (local Rindler + Raychaudhuri focusing) and out of it (contracted Bianchi).
+
 ## Honest scope
 
 This anchors the **coefficient and the thermodynamic skeleton** — `8πG = 2π/η`, both inputs being

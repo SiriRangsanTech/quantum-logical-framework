@@ -195,5 +195,6 @@ lean_lib QLF where
     `QLF_FractalDiagram,
     `QLF_MassGapDispersion,
     `QLF_SpinorInformation,
-    `QLF_CensusCurvature
+    `QLF_CensusCurvature,
+    `QLF_NullTensorReconstruction
   ]
