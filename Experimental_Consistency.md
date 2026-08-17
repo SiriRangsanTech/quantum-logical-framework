@@ -157,11 +157,48 @@ once:
 | one-pass closures number `2ⁿ` | [`onePass_ways_iff`](lean/QLF_ClosureDepth.lean) |
 | the deepest stratum holds exactly `2` | [`nested_closed_at_d`](lean/QLF_ClosureDepth.lean) |
 
-It also carries the two findings that are **verified but not proven**, so they cannot quietly harden into
-claims: the phase rule `(−1)^{#neg twists} · sign(permutation sorting the axis word)` (0 violations over
-all 5,296 balanced histories of length ≤ 6), and which depth-stratum counts are Gaussian norms — mostly
-they are not, which is the concrete form of **counts are not weights**
-([`born_generator_check.py`](born_generator_check.py)).
+### The data
+
+**Fold census** — every count-balanced twist history, with the Pauli phase it carries:
+
+| length | ways | phase `+1` | phase `−1` | phase `±i` | signed amplitude `Σζ` |
+|---|---|---|---|---|---|
+| 2 | 8 | 0 | 8 | **0** | `−8` |
+| 4 | 168 | 144 | 24 | **0** | `+120` |
+| 6 | 5,120 | 1,488 | 3,632 | **0** | `−2,144` |
+| 8 | 190,120 | 116,008 | 74,112 | **0** | `+41,896` |
+
+The `±i` column is empty at every length — the content of
+[`balanced_phase_is_real`](lean/QLF_BalancedPhaseReal.lean), here as an implementation check that
+`twist_core.py` still matches the Lean model. The signed amplitude is what a *census-spanning* branch
+would carry: sign `(−1)^{L/2}`, magnitudes `8, 120, 2144, 41896` (ratios `≈15, 17.9, 19.5`). **Recorded,
+not explained** — the closed form, if there is one, is unidentified.
+
+**Listening profile** — the *capacity-relative* count: what fraction of the census a horizon of capacity
+`R` actually receives ([`Philosophy.md`](Philosophy.md) §3a rule 2; a **listening** is not a synonym for a
+count):
+
+| length | `R=1` | `R=2` | `R=3` | `R=4` | `R=5` |
+|---|---|---|---|---|---|
+| 8 | 0.229 | 0.771 | 0.971 | 1.000 | 1.000 |
+| 12 | 0.069 | 0.526 | 0.857 | 0.974 | 0.998 |
+| 16 | 0.020 | 0.340 | 0.717 | 0.913 | 0.981 |
+
+A shallow capacity hears only the shallow closures, each step up hears more
+([`lines_mono`](lean/QLF_LineSpectra.lean)), and no finite capacity hears everything
+([`law_of_exceptions`](lean/QLF_LawOfExceptions.lean)).
+
+### The findings that are verified but **not** proven
+
+Kept separate so they cannot quietly harden into claims:
+
+* **The phase rule** `(−1)^{#neg twists} · sign(permutation sorting the axis word)` — **0 violations**,
+  now across all **190,120** balanced histories of length ≤ 8, up from 5,296 at length ≤ 6. A 36×
+  enlargement that could have falsified it and did not. Proven only for the pair sector
+  ([`QLF_PhaseAssignment`](lean/QLF_PhaseAssignment.lean)), where the axis word is constant.
+* **Which depth-stratum counts are Gaussian norms** — mostly they are *not* (`38, 14, 70, 422 …` are not
+  sums of two squares), the concrete form of **counts are not weights**
+  ([`born_generator_check.py`](born_generator_check.py)).
 
 ---
 
