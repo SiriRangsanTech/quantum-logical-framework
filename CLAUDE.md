@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **196 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **197 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,9 +14,9 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## Modules — 196, machine-verified, zero `sorry`
+## Modules — 197, machine-verified, zero `sorry`
 
-Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 196 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 197 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
@@ -326,7 +326,7 @@ Avoid framings that contradict the above:
 | Path | Purpose |
 |---|---|
 | `lean/` | All Lean source files |
-| `lakefile.lean` | Build config; `roots` array lists all 196 modules |
+| `lakefile.lean` | Build config; `roots` array lists all 197 modules |
 | `lean/README.md` | Module table and proof chain documentation |
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |
@@ -339,6 +339,7 @@ Avoid framings that contradict the above:
 | `BraKetRhoQuCalc.md` | Reference doc for bra-ket ↔ RhoQuCalc correspondence |
 | `Lagrangian_Formulation.md` | Variational formulation: ℒ=0 as origin, Σ₈ algebra, Zeno stationarity, decoherence impossibility; Lean theorem anchors for all claims |
 | `Philosophy.md` | Possibilist ontology; ZFA as sole fundamental axiom |
+| `Mpemba.md` | **Anomalous relaxation as a closure census** — relaxation to equilibrium *is* closure, and its time *is* the maximum excursion (`closedAtHorizon_iff_maxExcursion_le`), so three things become decidable: a **no-go** (`relaxation_ge_distance` — if distance means the imbalance, relaxation is bounded below by it, so the effect is *impossible* for that measure), an **enabler** (`equal_length_unequal_relaxation` — at one length and equal imbalance, relaxation differs by a factor of `n`, so no scalar determines it), and a **translation** (`strong_mpemba` — the spectral `a_slow = 0` becomes sector emptiness `W_H(deep) = 0`). **The blind test finds NO crossing from uniform preparations** ([`mpemba_census.py`](mpemba_census.py)), so this is an ontology plus proven scaffolding, **not** a derivation. Records the destination trap (unbalanced histories never close, so comparing time-to-fixpoint across imbalances compares different destinations — the substrate form of "what does *freezes first* mean"), laser cooling as engineered multiplicity bias with a trapped-ion ladder as the tractable test, and what would make it a result |
 | `Law_Of_Exceptions.md` | **The Law of Exceptions, proven** — *there is an exception to every restrictive law except this law*. The aphorism is folklore (late-16th-c. base form) and self-reference proves nothing; the set version `A_L ⊊ H ⟹ ∃h∉A_L` is a tautology (bookkeeping by the method's rule 3). **Capacity earns the premise:** a restrictive law IS a finite closure (`closedAtHorizon R`), and *a system with more states can always break a finite closure* — for every `R` the fold `[+^{R+1}−^{R+1}]` is unadmitted at `R` yet **genuinely closes at `R+1`** (`law_of_exceptions`), the hierarchy is strictly increasing so no finite closure is final, and every exception is admitted at *some* capacity — so unbounded ZFA, which restricts nothing, is the unique exceptionless law. Laws look exceptionless because exceptions are the **least-multiplicity** histories (2 ways at max depth vs `2ⁿ` at depth 1). Not Gödel — the witnesses are *decidable terminating* closures, the ladder is capacity not consistency. Corollary: **construction proves possibility, not uniqueness** ([`lean/QLF_LawOfExceptions.lean`](lean/QLF_LawOfExceptions.lean)) |
 | `Banach_Tarski_QLF.md` | Banach–Tarski (1924) as QLF's touchstone: impossible mathematics (AC's free duplication, excluded by the realizability filter); the precise *ex falso* reading (**ontological/model** explosion, **consistency ≠ realizability**, never "ZFC inconsistent"); and its *possible* twin **mitosis** — one cell pays (DNA copy + ATP + `ΔF=−log2`) for what Banach–Tarski steals. The "no free duplication" principle at four scales (no-cloning ↔ no-diproton ↔ no-free-mitosis ↔ no-Banach–Tarski), Lean-anchored in `QLF_NoFreeDuplication` |
 | `Navier_Stokes_Geometry.md` | The geometry of Navier–Stokes — angular momentum = circulation (`baryonNumber` = Σ `signTriple`, the discrete curl; the `su(2)` Noether charge, a pseudovector under T); vorticity = the local discrete curl, **quantized to `±1`/cell** so it cannot diverge; **where QLF avoids the blow-up** (Beale–Kato–Majda vorticity-blow-up is unsatisfiable on the discrete geometry) and **the correction** (quantization/discreteness, the same cutoff as the UV/vacuum catastrophes). Lean: [`lean/QLF_AngularMomentum.lean`](lean/QLF_AngularMomentum.lean); the continuum-PDE limit stays the `QLF_NavierStokes` boundary |
