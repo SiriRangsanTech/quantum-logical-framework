@@ -70,9 +70,9 @@ def pairCount (a : GaussianInt) : ℤ := a.re ^ 2 + a.im ^ 2
 
 /-- **The pair count IS ket × bra.** The product of the amplitude with its dagger (the bra leg) has
     real part exactly the pair count — the square is the Hermitian pair, not a postulated exponent. -/
-theorem pairCount_eq_leg_times_dagger (a : GaussianInt) : pairCount a = (a * star a).re := by
-  simp [pairCount, Zsqrtd.mul_re, Zsqrtd.star_re, Zsqrtd.star_im]
-  ring
+theorem pairCount_eq_leg_times_dagger (a : GaussianInt) :
+    ((pairCount a : ℤ) : GaussianInt) = a * star a := by
+  rw [pairCount_eq_norm, ← Zsqrtd.norm_eq_mul_conj]
 
 /-- The pair count is precisely the `ℤ[i]` norm that `bornProb` already uses. -/
 theorem pairCount_eq_norm (a : GaussianInt) : pairCount a = Zsqrtd.norm a := by
@@ -91,8 +91,7 @@ theorem pairCount_nonneg (a : GaussianInt) : 0 ≤ pairCount a := by
     is what makes the identification of the two counts possible at all. -/
 theorem pairCount_mul (a b : GaussianInt) :
     pairCount (a * b) = pairCount a * pairCount b := by
-  simp [pairCount, Zsqrtd.mul_re, Zsqrtd.mul_im]
-  ring
+  rw [pairCount_eq_norm, pairCount_eq_norm, pairCount_eq_norm, Zsqrtd.norm_mul]
 
 /-- The empty composition counts once. -/
 theorem pairCount_one : pairCount 1 = 1 := by decide
@@ -112,7 +111,6 @@ theorem pairCount_onePlusI : pairCount onePlusI = 2 := by decide
 theorem modulus_not_a_count : Irrational (Real.sqrt ((pairCount onePlusI : ℤ) : ℝ)) := by
   rw [pairCount_onePlusI]
   norm_num
-  exact irrational_sqrt_two
 
 /-! ### The Born measure is the normalized pair count -/
 
@@ -124,6 +122,42 @@ theorem born_is_pair_count_ratio {n : ℕ} (v : Fin n → GaussianInt) (k : Fin 
     bornProb v k = ((pairCount (v k) : ℚ)) / (∑ j, ((pairCount (v j) : ℚ))) := by
   unfold bornProb
   simp only [pairCount_eq_norm]
+
+/-! ### Existence is all-or-nothing — the graded numbers are ratios, not partial being
+
+A way either closes or it does not; there is no partial closure, and `pairCount` is a **whole number of
+ways**. So at the level of an individual realization the Born rule is trivial — `1` if the branch takes
+all the ways, `0` if it takes none — and every intermediate value is a *ratio of counts of binary
+events*, never a partially-existing one. -/
+
+/-- **Probability zero means no ways at all.** -/
+theorem bornProb_eq_zero_iff {n : ℕ} (v : Fin n → GaussianInt) (k : Fin n)
+    (hne : (∑ j, (Zsqrtd.norm (v j) : ℚ)) ≠ 0) :
+    bornProb v k = 0 ↔ pairCount (v k) = 0 := by
+  unfold bornProb
+  rw [div_eq_zero_iff]
+  constructor
+  · rintro (h | h)
+    · rw [pairCount_eq_norm]; exact_mod_cast h
+    · exact absurd h hne
+  · intro h
+    left
+    rw [pairCount_eq_norm] at h
+    exact_mod_cast h
+
+/-- **Probability one means every way.** The branch takes all of them; no other branch has any. -/
+theorem bornProb_eq_one_iff {n : ℕ} (v : Fin n → GaussianInt) (k : Fin n)
+    (hne : (∑ j, (Zsqrtd.norm (v j) : ℚ)) ≠ 0) :
+    bornProb v k = 1 ↔ ((Zsqrtd.norm (v k) : ℚ)) = (∑ j, (Zsqrtd.norm (v j) : ℚ)) := by
+  unfold bornProb
+  rw [div_eq_one_iff_eq hne]
+
+/-- **Every branch count is a whole number of ways** — there are no fractional ways, so all the
+    structure in a Born probability lives in the *ratio*, not in any single branch's existence. -/
+theorem pairCount_is_a_whole_count (a : GaussianInt) : 0 ≤ pairCount a ∧ ∃ m : ℕ, pairCount a = m := by
+  refine ⟨pairCount_nonneg a, ⟨(pairCount a).toNat, ?_⟩⟩
+  have := pairCount_nonneg a
+  omega
 
 /-! ### The residue, localized to the generators -/
 
@@ -145,7 +179,7 @@ theorem count_determined_by_generators
   | cons a t ih =>
       have hat : ∀ b ∈ t, f b = pairCount b := fun b hb => hS b (List.Mem.tail _ hb)
       have ha : f a = pairCount a := hS a (List.Mem.head _)
-      rw [List.prod_cons, hmul, ha, ih hat, ← pairCount_mul, List.prod_cons]
+      rw [List.prod_cons, hmul, ha, ih hat, ← pairCount_mul]
 
 /-- **Established constructively, and the boundary named.** *Closed:* the **exponent**. An event is a
     closed Hermitian pair, so its way-count is ket × bra — `pairCount_eq_leg_times_dagger` — which is
