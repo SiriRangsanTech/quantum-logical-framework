@@ -144,6 +144,63 @@ close — each one a realized way, each one a lower bound on how many ways there
 repo's answer to "is this the only way?" is always no, and why that is a strength rather than a
 concession.
 
+## 3b. The Law of Exceptions
+
+> **There is an exception to every restrictive law except this law.**
+
+The aphorism is old — *"there is an exception to every rule"* is recorded in English from the late 16th
+century, after the Latin `exceptio probat regulam`, and the self-referential twist is folklore. What is
+new is the **proof**, and self-reference does not provide one. "Every law but me has an exception" is
+perfectly consistent, but consistency entails nothing about whether any *particular* law actually has an
+exception. The universal premise has to be earned.
+
+Nor is it earned by the set-theoretic argument. Writing `H` for the generable histories and `A_L` for
+those a law admits, one can say: if `A_L ⊊ H` then some `h ∈ H \ A_L` exists, and since every generable
+history is real, `h` is a real exception. That is valid, and it is also a **tautology** — it holds for
+every conceivable law and every conceivable distribution over histories, so by §3a rule 3 it is
+bookkeeping, not evidence. It restates "restrictive laws are restrictive."
+
+**The premise is earned by capacity.** A restrictive law, on the substrate, is a **finite closure**: a
+finite-capacity horizon admitting what closes within its budget (`closedAtHorizon R`,
+[`QLF_HorizonClosure`](lean/QLF_HorizonClosure.lean); the observer as a finite-information region,
+[`QLF_Realizability`](lean/QLF_Realizability.lean)). And then:
+
+> **A system with more states can always break a finite closure.**
+
+That is a theorem, machine-verified with no axiom in
+[`QLF_LawOfExceptions`](lean/QLF_LawOfExceptions.lean):
+
+* [`law_of_exceptions`](lean/QLF_LawOfExceptions.lean) — for **every** capacity `R`, the history
+  `[+^{R+1} −^{R+1}]` is not admitted at `R` yet **genuinely closes at `R+1`**. The exception is
+  *constructed*, and it is *real* — not a non-history, just one shell deeper than the law can see.
+* [`closure_hierarchy_strict`](lean/QLF_LawOfExceptions.lean) — more capacity admits strictly more, so
+  the hierarchy never saturates: **no finite closure is final.**
+* [`no_exception_to_unbounded_closure`](lean/QLF_LawOfExceptions.lean) — every one of these exceptions
+  is admitted at *some* capacity. So nothing is an exception to ZFA itself. ZFA bounds no capacity — it
+  is a selection principle, not a restriction (§4) — which is exactly why it is the one law the
+  mechanism cannot bite, and why the exception clause is not special pleading.
+
+The kill condition is sharp: exhibit any *other* exceptionless law and the Law of Exceptions is false.
+
+**Why laws look exceptionless anyway.** Because exceptions are the **least-multiplicity** histories.
+The depth-1 stratum of the census holds `2ⁿ` ways while the maximal depth holds only the nested singlet
+and its mirror ([`QLF_ClosureDepth`](lean/QLF_ClosureDepth.lean)). By §3a, the most ways happen first —
+so the exception happens *last*, and a law can be nearly always right while still failing at every
+scale. A capacity-1 law admits a vanishing fraction of the census as histories lengthen (measured
+`0.667, 0.400, 0.229, 0.127, 0.069, …, 0.0055` at `n = 10`; `census_congestion_freezeout.py` part E).
+
+**The methodological corollary**, which is the reason this belongs in a philosophy document rather than
+a curiosity file:
+
+> **Construction proves possibility, not uniqueness.**
+
+Finding a mechanism — for gravity, for a lepton, for `log 2`, for closure itself — establishes *a way it
+happens*. Claiming it is *the* way requires an independent completeness theorem, and by the Law of
+Exceptions no finite closure supplies one. This is §3a rule 4 with a proof underneath it.
+
+*Attribution: the aphorism is folklore; the capacity formulation — "a system with more states can always
+break a finite closure" — and its QLF formalization are Jim's and Amy's.*
+
 ## 4. Zero Free Action as the Sole Fundamental Axiom
 
 We replace every traditional postulate with one imperative:
