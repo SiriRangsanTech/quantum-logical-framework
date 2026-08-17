@@ -34,14 +34,36 @@ $$P(\varphi | \psi) = |\langle \varphi | \psi \rangle|^2.$$
 
 ## 4. Why the squared modulus, not the modulus
 
-A naive reader might ask: why $|A|^2$ rather than $|A|$? Two QLF arguments:
+A naive reader might ask: why $|A|^2$ rather than $|A|$? **Two of the answers are now machine-verified**
+([`lean/QLF_BornCounting.lean`](lean/QLF_BornCounting.lean)), and they are independent of each other:
+
+**(a) The square is the Hermitian pair.** A realized event is not one leg but a *closed pair* — ket and
+bra — both required and independently chosen, so the event's way-count is the **product** of the legs'
+counts; and since the bra leg is the dagger of the ket, the two factors are $a$ and $\bar a$. Verified as
+`pairCount_eq_leg_times_dagger`: $\text{pairCount}(a) = a \cdot a^{\star}$, which is exactly the
+$\mathbb{Z}[i]$ norm `bornProb` already uses (`pairCount_eq_norm`). The exponent is not postulated — it
+counts the two legs.
+
+**(b) The modulus could not have served, on integrality alone.** A way-count is a cardinality, and
+$|a| = \sqrt{re^2+im^2}$ is generally not one: for $a = 1+i$ the modulus is $\sqrt2$, irrational
+(`modulus_not_a_count`), while $\text{pairCount}(1+i) = 2$ is a count. Inside a $\mathbb{Z}[i]$
+amplitude ontology the norm is the **only** integer invariant available — so the square is forced before
+any appeal to (a).
+
+**What individual realizations look like.** Existence is all-or-nothing: a way either closes or it does
+not, and `pairCount` is a whole number of ways (`pairCount_is_a_whole_count`). So for a single
+realization the rule is trivial — probability $1$ when the branch takes every way
+(`bornProb_eq_one_iff`), $0$ when it takes none (`bornProb_eq_zero_iff`). **Every intermediate value is a
+ratio of counts of binary events, never partial existence.**
+
+The two older prose arguments, retained as readings rather than proofs:
 
 **Information-theoretic** (from MRE.md). Each ZFA closure is a binary partition of the local possibility tree, with information gain $\leq \log 2$ saturated at the 50/50 split (the per-event maximum of MRE.md §2.1). The probability assignment that saturates this bound at the leaf level is the one for which $-\sum P(\varphi) \log P(\varphi)$ is maximized subject to the path-integral amplitude constraint $\sum P(\varphi) = 1$ and $P(\varphi) \propto |\langle \varphi | \psi \rangle|^2$. The $|A|^2$ form is the unique probability assignment that:
 - Reduces to the path-count when phases align (no interference)
 - Maximizes the per-event information gain at each closure
 - Preserves the unitary norm of the underlying state vector across all measurement contexts
 
-**Algebraic** (from the Pauli structure). The Pauli matrices satisfy $\sigma_i^2 = I$ and $\{\sigma_i, \sigma_j\} = 2\delta_{ij} I$. The squared modulus $|A|^2 = A^* A$ is the unique bilinear form that recovers the standard probability structure ($P \geq 0$, $\sum P = 1$) when the underlying amplitudes are complex. Anything else (e.g. $|A|^p$ for $p \neq 2$) breaks the Hermitian-conjugate symmetry that QLF inherits from [Hermitian_Conjugacy_Proof.md](Hermitian_Conjugacy_Proof.md)'s $E + E^\dagger \equiv \text{ZFA}$.
+**Algebraic** (from the Pauli structure). The Pauli matrices satisfy $\sigma_i^2 = I$ and $\{\sigma_i, \sigma_j\} = 2\delta_{ij} I$. The squared modulus $|A|^2 = A^* A$ recovers the standard probability structure ($P \geq 0$, $\sum P = 1$) when the underlying amplitudes are complex. Anything else (e.g. $|A|^p$ for $p \neq 2$) breaks the Hermitian-conjugate symmetry that QLF inherits from [Hermitian_Conjugacy_Proof.md](Hermitian_Conjugacy_Proof.md)'s $E + E^\dagger \equiv \text{ZFA}$.
 
 ## 5. Why probability appears at all (the role of the Markov blanket)
 
@@ -79,7 +101,12 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
 
 ## 8. Open work
 
-- **Lean theorem**: `born_rule_from_uniform_prior` formalizing the path-counting → $|A|^2$ derivation in §3–4.
+- **Lean theorem — partly delivered.** [`QLF_BornCounting`](lean/QLF_BornCounting.lean) closes the
+  *exponent* half (`pairCount_eq_leg_times_dagger`, `modulus_not_a_count`, `born_is_pair_count_ratio`)
+  and reduces the rest. **Still open:** the identification of the norm with the *census* count. Both are
+  multiplicative (`pairCount_mul`; `independent_join_multiplies`), so by `count_determined_by_generators`
+  what remains is **agreement on the primitive closures** — a finite check per generator rather than a
+  global assumption. That is the concrete next target.
 - **Numerical demo**: extend `path_integral.py` to compute Born probabilities directly from QuCalc path enumeration; verify against standard QM for a battery of canonical cases (single spin, two-spin singlet, three-slit interference).
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.
 - **Quantum contextuality**: Bell-Kochen-Specker theorem is the constraint that probability assignments must be consistent across measurement contexts. QLF's per-context possibility trees should derive this consistency automatically.
