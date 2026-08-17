@@ -434,10 +434,19 @@ Two pillars:
 
   What is proven: the Gaussian-integer norm-square ratios are non-negative (`bornProb_nonneg`), sum to
   one (`bornProb_sum_eq_one`), and are finitely additive on disjoint events (`eventProb_disjoint_union`)
-  — exact `ℚ` arithmetic, no primitive real ([`Born_Rule.md`](Born_Rule.md)). What is **not** proven:
-  that exhaustive physical multiplicity *is* the Gaussian norm-square census, and the uniqueness of the
-  `\|a\|²` form — the module names both as separate targets. So this is the Born **measure** shown
-  consistent and integer-generated, not a derivation of the Born **rule**.
+  — exact `ℚ` arithmetic, no primitive real ([`Born_Rule.md`](Born_Rule.md)). **The exponent half of the bridge is now closed**
+  ([`QLF_BornCounting`](lean/QLF_BornCounting.lean)): a realized event is a *closed Hermitian pair*, so
+  its way-count is the product of the two legs, and the bra leg being the dagger of the ket makes those
+  factors `a` and `star a` (`pairCount_eq_leg_times_dagger`) — exactly the `ℤ[i]` norm
+  (`pairCount_eq_norm`). Independently the **modulus cannot be a count at all**: `|1+i| = √2` is
+  irrational (`modulus_not_a_count`) while the norm is `2`, so integrality alone forces the square. And
+  since existence is all-or-nothing, a single realization gets `1` or `0` (`bornProb_eq_one_iff`,
+  `bornProb_eq_zero_iff`) — **every intermediate value is a ratio of counts of binary events, never
+  partial existence**. Still **not** proven: that exhaustive physical multiplicity *is* the Gaussian
+  norm-square census — though now **reduced**, both counts being multiplicative so that
+  `count_determined_by_generators` localizes the gap to **agreement on the primitive closures** — and
+  uniqueness of the `\|a\|²` form against Gleason-type alternatives, untouched. So this remains the
+  Born **measure**, not a derivation of the Born **rule**.
 - **The `ħ/2` uncertainty quantum** ([`lean/QLF_Uncertainty.lean`](lean/QLF_Uncertainty.lean)):
   mapping a continuum value onto its nearest integer twist-count leaves an irreducible half-bin
   spread `= 1/2` (`binning_halfwidth_tight`, `uncertainty_quantum_eq_half`); the conjugate-pair
@@ -581,10 +590,11 @@ made constructive end-to-end.
   one-bit anchor gives `H = log W` (`QLF_EntropyUniqueness`) — i.e. **the logarithm is forced on the
   census QLF has**. The general (non-uniform, arbitrary-multiplicity) theorem needs a
   grouping/regularity axiom and is open.
-- **Born:** what is machine-checked is that `ℤ[i]`-norm ratios form a consistent finite probability
-  measure. The identification of exhaustive physical multiplicity with the Gaussian norm-square census,
-  and the uniqueness of the `|a|²` form, are **separate open targets** (§6) — the Born *measure*, not
-  the Born *rule*.
+- **Born:** the `ℤ[i]`-norm ratios form a consistent finite probability measure, and the **exponent** is
+  now explained rather than posited — the square is the ket–bra pair, and integrality rules the modulus
+  out independently (`QLF_BornCounting`). **Still open:** the identification of physical multiplicity
+  with the norm census — *reduced* to agreement on the primitive closures — and uniqueness of the `|a|²`
+  form against Gleason-type derivations, untouched. Still the Born *measure*, not the Born *rule*.
 - **Chaitin's `Ω`:** identifying the pruning boundary with `Ω` is an **ontological stance**, not a
   theorem — `full_zeno_prune` terminates on finite strings by a decreasing-length measure and decides
   no halting question (§4).
