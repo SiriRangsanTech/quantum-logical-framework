@@ -43,7 +43,7 @@ Since only `[+^d −^d]` and its mirror reach depth `d` at length `2d`, the deep
 ways — versus `2ⁿ` at depth 1. **The shallow closures overwhelmingly dominate**, and by
 [`Philosophy.md`](../Philosophy.md) §3a rule 2 the modal depth, not the mean, is what happens first.
 
-## The depth law (verified exhaustively, one step from proof)
+## The depth law — **now proven** (`QLF_ClosureDepthLaw`)
 
 Empirically the pruning depth has a closed form: **the closure depth of a history is the maximum
 excess of its phase walk**,
@@ -53,12 +53,14 @@ excess of its phase walk**,
 verified with **0 counterexamples across all 66,196 count-balanced histories of length ≤ 18** (and
 the finer per-pass form: one pass drops `maxExcursion` by exactly `1`, same exhaustive range). It is
 consistent with both strata proven here: `maxExcursion = 1` is exactly the pair matchings
-(`maxExcursion_pairMatching`, proven), and `maxExcursion (nested d) = d`.
+(`maxExcursion_pairMatching`, proven), and `maxExcursion (nested d) = d` (`maxExcursion_nested`).
 
-The single missing step is the per-pass lemma `maxExcursion (zeno_prune s) + 1 = maxExcursion s` for
-non-empty balanced `s` — a finitary combinatorial fact about prefix maxima under the skip-2 fold, the
-same shape as the `count_balanced_pauli_closed` keystone before it was proven. It is **not**
-axiomatized here (`closure_depth_law_in_progress`): a finitary fact should be proven, not posited.
+The per-pass lemma is **proven** in [`QLF_ClosureDepthLaw`](QLF_ClosureDepthLaw.lean) (`per_pass`), and
+with it the full law: **`closedAtHorizon_iff_maxExcursion_le`** — a capacity-`R` horizon closes exactly
+the histories whose phase walk never strays further than `R` from balance, so capacity bounds
+*excursion*, not length. It went through by generalizing to the **signed** height with an arbitrary
+accumulator (`hmax_zeno_prune`), valid for *unbalanced* histories — which is what the emit step needs.
+No axiom; the exhaustive check is now a theorem.
 
 Consequence if it holds, and worth stating because it is *falsifiable*: the depth of a random
 balanced history is the maximum of a `±1` bridge, whose expectation is `√(πn/2)` — so a horizon of
@@ -315,12 +317,11 @@ theorem nested_not_closed_before (d k : ℕ) (hk : k < d) : ¬ closedAtHorizon k
     matchings, counted at `2ⁿ` (`onePass_ways_iff`, `pairMatching_injective`), giving **`log 2` per
     closure** (`onePass_entropy`); and the nested singlet needs exactly `d` passes
     (`boundedPrune_nested`, `nested_closed_at_d`, `nested_not_closed_before`), generalizing
-    `horizon_relative` from `d = 2` to all `d`. **Open (not axiomatized):** the closed form
-    `closureDepth = maxExcursion` — the maximum excess of the phase walk — verified with 0
-    counterexamples over all 66,196 balanced histories of length ≤ 18, its `d = 1` case proven
-    (`maxExcursion_pairMatching`). The single missing step is the per-pass lemma
-    `maxExcursion (zeno_prune s) + 1 = maxExcursion s` for non-empty balanced `s`; a finitary fact,
-    so it should be proven rather than posited. -/
-theorem closure_depth_law_in_progress : True := trivial
+    `horizon_relative` from `d = 2` to all `d`. **Now closed** in
+    [`QLF_ClosureDepthLaw`](QLF_ClosureDepthLaw.lean): the per-pass lemma is proven (`per_pass`), hence
+    `closedAtHorizon_iff_maxExcursion_le` — a capacity-`R` horizon closes exactly the histories whose
+    phase walk stays within `R` of balance — and `maxExcursion_nested` re-derives the witnesses above.
+    No axiom. -/
+theorem closure_depth_law_proven : True := trivial
 
 end QLF.ClosureDepth

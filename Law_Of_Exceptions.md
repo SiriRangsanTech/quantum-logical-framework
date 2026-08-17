@@ -73,6 +73,14 @@ has no exception worth the name; the exception here is a **real closure** — th
 what fails to close, it is *blind to a closure deeper than its budget*. And the witness is exhibited with
 its depth, so nothing rests on an existence claim.
 
+**What capacity turns out to mean — now exact.** With the depth law
+([`closedAtHorizon_iff_maxExcursion_le`](lean/QLF_ClosureDepthLaw.lean), proven, no axiom) the model is
+sharp: a capacity-`R` closure admits **exactly** the histories whose phase walk never strays further than
+`R` from balance. A finite closure is an **excursion budget**, not a length budget — it can admit
+arbitrarily long histories (length `~R²` typically, a balanced walk's mean maximum being `√(πn/2)`) and
+still be broken by one short history that strays a single step too far. The exception
+`[+^{R+1} −^{R+1}]` is precisely the *shortest* such history.
+
 ---
 
 ## §3 Why the exception clause is not special pleading
