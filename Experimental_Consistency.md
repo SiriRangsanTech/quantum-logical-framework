@@ -139,6 +139,32 @@ The detailed enumeration is in §11. The high-priority open work is in §6.3 (co
 
 ---
 
+## §1.2 The inventory database — counts and folds, accumulated and rechecked
+
+The enumerations this document cites (the `count_balanced_pauli_closed` sweep, the closure-depth census,
+the fold phases) are kept in [`data/census_inventory.json`](data/census_inventory.json), rebuilt and
+**verified** by [`census_inventory.py`](census_inventory.py). It accumulates — each run keeps what is
+already stored and computes only what is missing, so the record grows as compute allows — and it asserts
+every proven invariant against freshly enumerated data, so a regression in `twist_core.py` surfaces at
+once:
+
+| Invariant | Lean anchor |
+|---|---|
+| count balance ⟹ Pauli closure | [`count_balanced_pauli_closed`](lean/QLF_TwistAlphabet.lean) |
+| count balance ⟹ the fold is `±I`, never `±iI` | [`balanced_phase_is_real`](lean/QLF_BalancedPhaseReal.lean) |
+| unbalanced histories **do** reach `±iI` (the scope is sharp) | [`unbalanced_can_be_imaginary`](lean/QLF_BalancedPhaseReal.lean) |
+| closure depth = maximum phase excursion | [`closedAtHorizon_iff_maxExcursion_le`](lean/QLF_ClosureDepthLaw.lean) |
+| one-pass closures number `2ⁿ` | [`onePass_ways_iff`](lean/QLF_ClosureDepth.lean) |
+| the deepest stratum holds exactly `2` | [`nested_closed_at_d`](lean/QLF_ClosureDepth.lean) |
+
+It also carries the two findings that are **verified but not proven**, so they cannot quietly harden into
+claims: the phase rule `(−1)^{#neg twists} · sign(permutation sorting the axis word)` (0 violations over
+all 5,296 balanced histories of length ≤ 6), and which depth-stratum counts are Gaussian norms — mostly
+they are not, which is the concrete form of **counts are not weights**
+([`born_generator_check.py`](born_generator_check.py)).
+
+---
+
 ## §2 The Spectral Gap as Unifying Frame
 
 The deepest single result behind everything that follows is the spectral-gap identity ([SpectralGap.md](SpectralGap.md)):
