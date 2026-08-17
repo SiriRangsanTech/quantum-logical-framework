@@ -149,7 +149,7 @@ theorem unbalanced_can_be_imaginary :
     not a counterexample to the law. -/
 theorem unbalanced_witness_not_balanced :
     ¬ countBalanced [Twist.up, Twist.right, Twist.slash] := by
-  simp [countBalanced]
+  decide
 
 /-- **Established constructively, no axioms.** A count-balanced history folds to `±I`, never `±iI`
     (`balanced_phase_is_real`), so the phase group on closures is `μ₂` rather than the `μ₄` that
