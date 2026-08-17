@@ -161,3 +161,20 @@ So the per-event `log 2` quantum and the per-bit `ℏω` photon-energy quantum a
 - Planck, M. (1900). *Über das Gesetz der Energieverteilung im Normalspectrum*. Ann. Phys. 4, 553–563 — `E = ℏω`.
 - Einstein, A. (1905). *Ist die Trägheit eines Körpers von seinem Energieinhalt abhängig?* Ann. Phys. 18, 639–641 — `E = mc²`.
 - Bethe, H. A., & Heitler, W. (1934). *On the stopping of fast particles and on the creation of positive electrons*. Proc. Roy. Soc. A 146, 83–112 — pair production from photons.
+
+---
+
+## §7 The spectrum as a capacity reading
+
+A photon exists only as a completed emitter–absorber joint closure (§1), so absorption is a **resonance
+match**, not the exhaustion of anything the photon carries — it has no fold depth to exhaust. That makes the
+spectrum a reading of the *atom's* capacity: [`QLF_LineSpectra`](lean/QLF_LineSpectra.lean) proves that a
+finite capacity yields a **finite line list** (`lines_card_le`, `≤ R²`) which **grows with capacity**
+(`lines_mono`) — so discreteness is a capacity effect rather than a consequence of integrality, since the
+differences `1/a − 1/b` over an unbounded census accumulate arbitrarily finely. It also proves that a level's
+statistical weight **is** a multiplicity (`orientations_card = 2ℓ+1`), and — over the cited
+Burger–Dorgelo–Ornstein sum rules, carried as an interface rather than an axiom — that *summed* intensities
+from a common level stand in the ratio of those counts. **Not** proven: that an individual line's strength is
+a way-count; that needs the multiplicity ↔ Born-norm bridge
+([`Information_Physics.md`](Information_Physics.md) §6). Full scope table in
+[`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4c.

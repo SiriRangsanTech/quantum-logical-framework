@@ -279,8 +279,23 @@ in fact. The two facts are the same fact seen along two axes.
 closure at particular frequencies (`freq R = 1/R`, with prime periods irreducible and higher frequencies
 dominant — [`QLF_HarmonicClosure`](lean/QLF_HarmonicClosure.lean),
 [`QLF_PrimeResonance`](lean/QLF_PrimeResonance.lean)), and the joint closure completes in **many** ways on
-resonance and few off it. By §4's principle — what happens in the most ways happens first — that ratio *is*
-the absorption strength. Line spectra are multiplicity spectra.
+resonance and few off it.
+
+**"Line spectra are multiplicity spectra" — what that survives as.** I asserted it above as a reading; it is
+now [`QLF_LineSpectra`](lean/QLF_LineSpectra.lean), which proves the parts that are provable and refuses the
+rest. Three separable claims:
+
+| Claim | Status |
+|---|---|
+| **positions** — a spectrum is a *finite list of lines* | **proven**, and it is **capacity** that does it (`lines_card_le`, `≤ R²`; `lines_mono` — the list grows with capacity). Integrality alone would *not* suffice: over an unbounded census the differences `1/a − 1/b` accumulate arbitrarily finely, so discreteness is a consequence of the finite budget, not of integers |
+| **weights** — a level's statistical weight *is* a multiplicity | **proven** — it is the **cardinality** of the orientation set, `orientations_card = orbitalDim ℓ = 2ℓ+1`, not an arithmetic formula that merely matches a count |
+| **summed intensities** — lines from a common level stand in the ratio of those counts | **theorem over a cited empirical law** — the **Burger–Dorgelo–Ornstein sum rules** (1924–25; Condon & Shortley), taken as an `IntensityModel` *interface* rather than an axiom, from which `intensity_ratio_is_multiplicity_ratio` follows with the constant cancelling |
+| **individual line strengths** are way-counts | **not proven, and withdrawn as stated.** Oscillator strengths and dipole matrix elements are not derived here, and the sum rules constrain only *sums* over a common level. The stronger reading needs the multiplicity ↔ Born-norm bridge that [`Information_Physics.md`](Information_Physics.md) §6 lists as open |
+
+So the defensible statement is the first three rows, and my unqualified phrasing above was broader than
+what holds. The interesting half is nevertheless the first row: **discreteness is a capacity effect** — the
+same finite budget that gives every rung of the ladder its exception is what makes a spectrum a *spectrum*
+rather than a smear.
 
 ---
 
