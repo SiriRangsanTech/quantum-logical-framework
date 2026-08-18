@@ -156,10 +156,34 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     probabilities at every horizon, because a strand's axis parity is determined by its imbalance, so
     the difference is a constant sign per branch and cannot survive `|A|²`. And it is not the phase
     model, which is proven.
-  * **The live candidate is capacity.** Closure is horizon-relative
-    (`closedAtHorizon_iff_maxExcursion_le`), and the count/**listening** distinction says what a horizon
-    of capacity `R` receives. Reading the weight at the observer's listening horizon rather than at
-    `k→∞` is the next experiment.
+  * **Capacity was the live candidate; it has been run, and it does not rescue the partition.**
+    Closure is horizon-relative (`closedAtHorizon_iff_maxExcursion_le`), so the weight was read at a
+    finite listening capacity `R` — keeping only runs whose free action never exceeds `R` at any
+    prefix (`contextual_census.py --listening 2,3,4`, exact integers). **Capacity sets the rate of
+    forgetting, never the limit.** The aligned weight still decays to exactly `½` at every capacity,
+    with `|P(+) − ½|` falling by `0.666, 0.868, 0.906` per twist at `R = 2, 3, 4`, so a preparation
+    stays readable for `τ = 2.5, 7.1, 10.1` twists. And what a long run *does* keep of the
+    preparation is **not its direction**: against an asymmetric branch pair — one no relabeling can
+    exchange, so nothing is symmetry-forced — the limit depends only on the preparation's axis class,
+    and a preparation and its reversal land on the same limit exactly (`/` with `\`, `/>` with `/<`,
+    `/^` with `/v`). Direction is precisely what a Born weight must depend on. The mechanism is
+    spectral: at fixed capacity the walk is a finite signed transfer operator whose leading eigenvalue
+    is a degenerate `±iλ(R)` pair (`λ = 3.991, 4.383, 4.638`, 16-fold top modulus), so every
+    preparation collapses onto one dominant subspace and the direction-carrying part decays no slower
+    than the spectral gap `λ₂/λ₁ = 0.752, 0.951, 0.979`. **This closes the whole family of long-horizon
+    readings**, not just this one: a larger listening horizon remembers longer and forgets just as
+    completely. Whatever carries a Born weight is in the **transient** — horizons comparable to the
+    preparation itself — which is the regime the depth scan already showed to be depth-to-horizon
+    dependent. Physically the substrate is saying something reasonable (free evolution inside a
+    bounded capacity thermalises, and a measurement is a *prompt* joint closure, not an infinite free
+    run; the coherence numbers are collected in [`Decoherence.md`](Decoherence.md) §4a), but it is not
+    yet a Born rule.
+  * **A method note, recorded because it produced a wrong answer first.** The same scan in floating
+    point is contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` — about 730 twists at `R = 3` — where the
+    subdominant, preparation-dependent part sinks under the roundoff floor and the arithmetic noise,
+    which overlaps the dominant subspace, is what the ratio reports: every preparation then *appears*
+    to converge to one universal limit, and does not. Signed transfer-matrix censuses get exact
+    integers.
 - **Remaining canonical cases** — two-spin singlet, Mach–Zehnder, three-path interference — still to be
   run, and to be run **blind**, with the symmetry-lock check above applied to every agreement.
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.

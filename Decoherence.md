@@ -49,6 +49,46 @@ Standard decoherence theory faces the **information paradox** of how a unitary u
 
 This is the same answer QLF gives for **black-hole information**: Hawking radiation carries the gauge-fold information bit-for-bit ([Entropy.md §1a](Entropy.md), [Annihilation.md §4.4](Annihilation.md)). The "information paradox" of black holes and the "decoherence paradox" of measurement are two faces of the same algebraic fact.
 
+## 4a. A measured coherence length: the blanket's capacity sets how long a preparation stays readable
+
+§2–§4 say decoherence is the blanket's resolution limit rather than a physical process. That claim now
+carries a **number**, produced as a byproduct of the Born-rule census work
+([`Born_Rule.md`](Born_Rule.md) §8, [`contextual_census.py`](contextual_census.py) `--listening`).
+
+Closure is capacity-relative: a horizon of capacity $R$ closes exactly the histories whose excursion
+never exceeds $R$ (`closedAtHorizon_iff_maxExcursion_le`,
+[`lean/QLF_ClosureDepthLaw.lean`](lean/QLF_ClosureDepthLaw.lean)). Take that literally as the blanket's
+listening capacity, prepare an open strand, let it evolve freely inside the capacity, and ask what a
+capacity-$R$ listening can still read of the preparation after $k$ twists. Exactly, in integers:
+
+| capacity $R$ | decay of $\lvert P(+) - \tfrac12\rvert$ per twist | coherence length $\tau$ |
+|---|---|---|
+| 2 | 0.666 | 2.5 twists |
+| 3 | 0.868 | 7.1 twists |
+| 4 | 0.906 | 10.1 twists |
+
+Three things follow, and they are the quantitative form of this document's thesis:
+
+1. **Coherence is capacity.** A bigger blanket holds a preparation readable for longer — $\tau$ rises
+   with $R$ at every capacity measured. This is the substrate version of "isolate the qubit better" (§5): isolation
+   *is* capacity, and there is no other knob.
+2. **Nothing is destroyed; the reading degrades.** The history is the same exact object at every $k$;
+   what decays is what a bounded listening can *distinguish*. The mechanism is spectral — at fixed
+   capacity the walk is a finite signed transfer operator with a degenerate $\pm i\lambda(R)$ leading
+   pair, and the preparation-carrying part lives in subdominant modes, which decay no slower than
+   the global spectral gap $\lambda_2/\lambda_1$ ($0.752, 0.951, 0.979$ at $R = 2, 3, 4$; the aligned
+   geometry above decays faster still). Coarse-graining, not collapse,
+   exactly as `decoherence_impossibility` requires.
+3. **What is forgotten first is direction.** After many twists the surviving limit depends only on the
+   preparation's axis class: a preparation and its reversal become indistinguishable to that listening
+   (`/` with `\`, `/>` with `/<`, `/^` with `/v`). The pointer *basis* survives the blanket long after
+   the pointer *value* does — a substrate reading of einselection (Zurek 1981), with the selected
+   observable being the axis and the erased one being its sense.
+
+The honest scope: this is a measurement on the twist census, not a derivation of a Lindblad rate, and
+the same numbers are why the long-horizon route to the Born rule is closed ([`Born_Rule.md`](Born_Rule.md)
+§8) — a measurement is a *prompt* joint closure, not an infinite free run.
+
 ## 5. Why quantum computing works
 
 In a fully decoherent universe, quantum coherence would be impossible to maintain — every interaction would collapse superpositions. In QLF, coherence is the **default**, and what we colloquially call "decoherence" is just the blanket-resolution limit at which the coherent state becomes intractable to track *for that observer*.

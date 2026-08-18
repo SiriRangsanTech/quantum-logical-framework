@@ -138,11 +138,31 @@ but **given that everything happens every way, exactly how do those ways add?**
      survive `|A|²`. **So the flat/indexed distinction is invisible to Born weights here** — the
      coupled/product split governs *which* histories close, not the weights of a single-coupling
      context, and the wash-out is a property of the partition itself.
-   * **The candidate principle is already in the repo and is not a free parameter:** closure is
-     **capacity-relative** (`closedAtHorizon_iff_maxExcursion_le`, [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean)),
-     and the count/**listening** distinction says what a horizon of capacity `R` receives. Read the
-     contextual weight at the observer's listening horizon rather than at `k→∞`. **That is the next
-     experiment**, not a conclusion.
+   * **The listening horizon was the candidate, and it is now run — it does not rescue the
+     partition.** Closure is **capacity-relative** (`closedAtHorizon_iff_maxExcursion_le`,
+     [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean)), so the weight was read at a finite
+     listening capacity `R`: keep only runs whose free action (the repo's own
+     `spatial_free_action + local_free_action`, maximised over prefixes — the multi-pair form of
+     `maxExcursion`) never exceeds `R` (`contextual_census.py --listening 2,3,4`, exact integers).
+     Result, and it is sharper than the wash-out it was meant to cure: **capacity sets the rate of
+     forgetting, never the limit.** `|P(+) − ½|` decays by `0.666, 0.868, 0.906` per twist at
+     `R = 2, 3, 4` — a preparation stays readable for `τ = 2.5, 7.1, 10.1` twists — and against an
+     *asymmetric* branch pair (nothing symmetry-forced) the surviving limit depends on the
+     preparation's **axis class only**: a preparation and its **reversal** land on the same limit
+     exactly (`/` with `\`, `/>` with `/<`, `/^` with `/v`). **The sense of the prepared strand —
+     precisely what a Born weight must depend on — is erased.** Mechanism, not coincidence: at
+     fixed capacity the walk is a finite signed transfer operator with a degenerate `±iλ(R)`
+     leading pair (`λ = 3.991, 4.383, 4.638`, 16-fold top modulus), so every preparation collapses
+     onto one dominant subspace and the direction-carrying part decays no slower than the spectral
+     gap `λ₂/λ₁ = 0.752, 0.951, 0.979`. **So the whole family of long-horizon readings is closed** —
+     a larger listening horizon remembers longer and forgets just as completely — and whatever
+     carries a Born weight lives in the **transient**, at horizons comparable to the preparation
+     itself. That the substrate thermalises under long free evolution is not itself wrong physics
+     (a measurement is a prompt joint closure, not an infinite free run), but it is not a Born rule.
+   * **Method note, recorded because it produced a wrong answer first:** the float scan is
+     contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` (≈ 730 twists at `R = 3`), where roundoff — which
+     overlaps the dominant subspace — makes every preparation *appear* to share one universal limit.
+     Signed transfer-matrix censuses must be run in exact integers.
    * Then test **blind** against known answers: single-spin rotation, Mach–Zehnder, the two-spin
      singlet / Bell correlations, three-path interference. **Watch for symmetry-locked results** — a
      `½` forced by a proven invariance is multiplicity-invariant bookkeeping, not evidence.
