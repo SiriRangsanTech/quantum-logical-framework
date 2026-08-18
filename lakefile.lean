@@ -210,5 +210,6 @@ lean_lib QLF where
     `QLF_BasisIndependence,
     `QLF_IndexedFactors,
     `QLF_Mpemba,
-    `QLF_LatticeCalculus
+    `QLF_LatticeCalculus,
+    `QLF_KraftMeasure
   ]
