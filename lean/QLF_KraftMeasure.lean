@@ -268,11 +268,23 @@ The substrate's signed census cannot presently be both summable and interference
 measure its own tree defines.
 -/
 
+/-- The exact gap between the merged weight and the split one: a perfect square over a positive
+denominator. Everything below is a corollary of this identity. -/
+theorem merge_gap {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
+    a ^ 2 / p + b ^ 2 / q - (a + b) ^ 2 / (p + q)
+      = (a * q - b * p) ^ 2 / (p * q * (p + q)) := by
+  have hp' : p ≠ 0 := ne_of_gt hp
+  have hq' : q ≠ 0 := ne_of_gt hq
+  have hpq : p + q ≠ 0 := by positivity
+  field_simp
+  ring
+
 /-- Cauchy–Schwarz in Engel form, two terms. -/
 theorem sq_div_add_sq_div {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
     (a + b) ^ 2 / (p + q) ≤ a ^ 2 / p + b ^ 2 / q := by
-  rw [div_add_div _ _ (ne_of_gt hp) (ne_of_gt hq), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (a * q - b * p), hp.le, hq.le, mul_pos hp hq]
+  have h := merge_gap hp hq
+  have hnn : 0 ≤ (a * q - b * p) ^ 2 / (p * q * (p + q)) := by positivity
+  linarith
 
 /-- **Merging ways into one event can only lower its weight.** -/
 theorem merge_le_sum {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
@@ -289,20 +301,32 @@ theorem no_constructive_interference {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
 agree, `a/p = b/q`. -/
 theorem merge_eq_sum_iff {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
     (a + b) ^ 2 / (p + q) = a ^ 2 / p + b ^ 2 / q ↔ a * q = b * p := by
-  rw [div_add_div _ _ (ne_of_gt hp) (ne_of_gt hq), div_eq_div_iff (by positivity) (by positivity)]
+  have h := merge_gap hp hq
+  have hden : (0 : ℚ) < p * q * (p + q) := by positivity
   constructor
-  · intro h
-    nlinarith [sq_nonneg (a * q - b * p), mul_pos hp hq, hp, hq]
-  · intro h
-    nlinarith [h, mul_pos hp hq]
+  · intro heq
+    have h0 : (a * q - b * p) ^ 2 / (p * q * (p + q)) = 0 := by rw [← h, heq]; ring
+    rcases div_eq_zero_iff.mp h0 with hnum | hzero
+    · have hx : a * q - b * p = 0 := by
+        have := sq_eq_zero_iff.mp hnum
+        exact this
+      linarith
+    · exact absurd hzero (ne_of_gt hden)
+  · intro hab
+    have hx : a * q - b * p = 0 := by linarith
+    rw [hx] at h
+    simp at h
+    linarith
 
 /-- A single event class weighs no more than its multiplicity mass, since `|A| ≤ W`. -/
 theorem normalized_le_mass {a w : ℚ} (hw : 0 < w) (ha : |a| ≤ w) : a ^ 2 / w ≤ w := by
-  have hsq : a ^ 2 ≤ w ^ 2 := by
-    rw [← sq_abs]
-    exact pow_le_pow_left (abs_nonneg _) ha 2
-  rw [div_le_iff hw]
-  nlinarith [hsq]
+  have h1 : a ≤ w := (abs_le.mp ha).2
+  have h2 : -w ≤ a := (abs_le.mp ha).1
+  have hsq : a ^ 2 ≤ w ^ 2 := by nlinarith
+  have hgap : w - a ^ 2 / w = (w ^ 2 - a ^ 2) / w := by
+    field_simp
+  have hnn : 0 ≤ (w ^ 2 - a ^ 2) / w := div_nonneg (by linarith) hw.le
+  linarith [hgap ▸ hnn]
 
 /-- **The normalized-event mass is bounded by the Kraft mass.** Whatever the phases do, the total
 weight of a prefix-free family of events stays under `1`. -/
