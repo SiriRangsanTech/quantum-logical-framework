@@ -33,6 +33,25 @@ breaks one shows up immediately:
   * one-pass closures number 2^n          (QLF_ClosureDepth.onePass_ways_iff)
   * the deepest stratum holds exactly 2   (QLF_ClosureDepth.nested_closed_at_d)
   * phase = (-1)^(#neg) x sign(axis perm)  (QLF_PhaseRule.phase_rule)
+  * first closures are prefix-free, so sum W/8^d <= 1  (QLF_KraftMeasure.twist_kraft)
+  * the normalized-event weight stays under that mass  (QLF_KraftMeasure.normalized_event_mass_le_one)
+
+The last two belong to the **closure layer**, which is new here and is the one contextual
+section of an otherwise universal file. The generic census above is substrate data — it knows
+nothing about any experiment. A preparation-and-apparatus is an experiment, and there are
+indefinitely many, so what is stored is only the reusable part: for a small fixed set of
+canonical geometries, the first-closure event classes with the pair
+
+    (W, A)   how many ways close as that outcome first at that depth, and their signed total
+
+from which every derived quantity follows without re-enumerating — the **multiplicity mass**
+`sum W/8^d`, the **normalized-event weight** `sum A^2/(W.8^d)` = mass times squared mean phase,
+and the split each induces. Those two splits are not two guesses; they **bracket every possible
+notion of "same event"**, since refining an event quotient raises the weight by Cauchy-Schwarz
+(`QLF_KraftMeasure.merge_le_sum`) and the finest quotient is exactly the multiplicity mass.
+That same inequality is why the normalized weight cannot be the Born rule: merging two paths
+into one event can only *lower* it, so constructive interference is unavailable — measured in
+`contextual_census.py --two-path`, and proven in `QLF_KraftMeasure.no_constructive_interference`.
 
 That last one used to live in the verified-not-proven list below; it is now a
 theorem for every balanced history at every length (and, without the balance
@@ -80,6 +99,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+from fractions import Fraction
 from itertools import product
 from math import comb
 
@@ -433,6 +453,78 @@ def build_depth_inventory(max_len: int, keep: dict | None = None) -> dict:
     return out
 
 
+# --------------------------------------------------------------------------- #
+# first closures: the contextual layer, and the cylinder measure it lives on
+# --------------------------------------------------------------------------- #
+# Deliberately a *small fixed* set of contexts. The generic census above is universal substrate
+# data; a preparation-and-apparatus is an experiment, and there are indefinitely many of those.
+# What is stored here is the reusable part -- per event class the pair (W, A) that every derived
+# quantity is computed from -- for the canonical geometries the Born work keeps returning to.
+CLOSURE_CONTEXTS = [
+    ("aligned",    "/",  ["\\", "/"]),
+    ("transverse", "/",  [">\\", "<\\"]),
+    ("mix-ZX",     "/",  ["\\>", "/<"]),
+]
+CLOSURE_CAPACITIES = (3, 4)
+
+
+def build_closure_inventory(depth: int, keep: dict | None = None) -> dict:
+    """First-closure event classes per context, with the cylinder-measure quantities.
+
+    A closure **is** an event, so a run that has closed is not continued and the first closures of
+    one experiment are prefix-free. That gives the depth weighting for free -- the cylinder measure
+    `8^-d` on the Sigma_8 tree, with Kraft's inequality capping the total at 1
+    (`QLF_KraftMeasure.twist_kraft`). Stored per event class `(branch, depth)`:
+
+        W   how many ways close as that outcome, first, at that depth
+        A   their signed total, from the proven phase rule
+
+    and the two quantities built from them: the **multiplicity mass** `sum W/8^d` (a probability
+    once conditioned on closing at all) and the **normalized-event weight**
+    `sum A^2/(W . 8^d)` = multiplicity mass times squared mean phase.
+    """
+    from contextual_census import first_closure_census                      # the experiment layer
+
+    out = dict(keep or {})
+    for name, prep, branches in CLOSURE_CONTEXTS:
+        for R in CLOSURE_CAPACITIES:
+            key = f"{name}|R={R}"
+            if key in out and out[key].get("depth", 0) >= depth:
+                continue
+            A, _ = first_closure_census(prep, branches, R, depth)
+            W, _ = first_closure_census(prep, branches, R, depth, signed=False)
+            classes, kraft, weight, amp_le_ways = {}, Fraction(0), Fraction(0), True
+            for i in range(len(branches)):
+                per = {}
+                for d in range(depth + 1):
+                    if W[i][d]:
+                        per[str(d)] = {"ways": W[i][d], "signed": A[i][d]}
+                        kraft += Fraction(W[i][d], 8 ** d)
+                        weight += Fraction(A[i][d] ** 2, W[i][d] * 8 ** d)
+                        if abs(A[i][d]) > W[i][d]:
+                            amp_le_ways = False
+                classes[branches[i]] = per
+            mass = [sum(Fraction(W[i][d], 8 ** d) for d in range(depth + 1) if W[i][d])
+                    for i in range(len(branches))]
+            norm = [sum(Fraction(A[i][d] ** 2, W[i][d] * 8 ** d)
+                        for d in range(depth + 1) if W[i][d]) for i in range(len(branches))]
+            out[key] = {
+                "preparation": prep,
+                "branches": branches,
+                "capacity": R,
+                "depth": depth,
+                "event_classes": classes,
+                "kraft_mass": round(float(kraft), 12),
+                "normalized_event_mass": round(float(weight), 12),
+                "multiplicity_split": (round(float(mass[0] / sum(mass)), 12) if sum(mass) else None),
+                "normalized_split": (round(float(norm[0] / sum(norm)), 12) if sum(norm) else None),
+                "amplitude_le_ways": amp_le_ways,
+                "kraft_bound_holds": kraft <= 1,
+                "normalized_under_kraft": weight <= kraft,
+            }
+    return out
+
+
 def build(twist_len: int, phase_len: int, keep: dict | None = None) -> dict:
     keep = keep or {}
     return {
@@ -447,12 +539,18 @@ def build(twist_len: int, phase_len: int, keep: dict | None = None) -> dict:
             "phase factorizes over independent factors (QLF_IndexedFactors.phase_factorizes)",
             "a joint closure of independent factors needs each factor closed (kron is scalar "
             "iff both are)",
+            "first closures are prefix-free, so their cylinder mass sum W/8^d is at most 1 "
+            "(QLF_KraftMeasure.twist_kraft)",
+            "a signed class total never exceeds its way count, |A| <= W",
+            "the normalized-event weight sum A^2/(W.8^d) stays under the Kraft mass "
+            "(QLF_KraftMeasure.normalized_event_mass_le_one)",
         ],
         "max_twist_length": max(twist_len, keep.get("max_twist_length", 0)),
         "max_phase_length": max(phase_len, keep.get("max_phase_length", 0)),
         "folds": build_fold_inventory(twist_len, keep.get("folds")),
         "depths": build_depth_inventory(phase_len, keep.get("depths")),
         "factors": build_factor_inventory(min(twist_len, 8), keep.get("factors")),
+        "closures": build_closure_inventory(CLOSURE_DEPTH, keep.get("closures")),
     }
 
 
@@ -484,6 +582,18 @@ def check(db: dict) -> list[str]:
             fail.append(f"no coupled-sector closures at length {L} "
                         f"(entanglement would be impossible)")
 
+    for key, rec in db.get("closures", {}).items():
+        if not rec["kraft_bound_holds"]:
+            fail.append(f"closure context {key}: cylinder mass {rec['kraft_mass']} exceeds 1 "
+                        f"(contradicts QLF_KraftMeasure.twist_kraft -- the first-closure set "
+                        f"cannot be prefix-free, or a run was counted twice)")
+        if not rec["amplitude_le_ways"]:
+            fail.append(f"closure context {key}: a signed class total exceeded its way count")
+        if not rec["normalized_under_kraft"]:
+            fail.append(f"closure context {key}: normalized-event mass "
+                        f"{rec['normalized_event_mass']} exceeds the Kraft mass "
+                        f"{rec['kraft_mass']} (contradicts normalized_event_mass_le_one)")
+
     if folds["unbalanced_imaginary_count_len3"] == 0:
         fail.append("no unbalanced imaginary witness found "
                     "(contradicts unbalanced_can_be_imaginary)")
@@ -503,6 +613,7 @@ def check(db: dict) -> list[str]:
     return fail
 
 
+CLOSURE_DEPTH = 14
 QUICK_TWIST_LEN = 6
 QUICK_PHASE_LEN = 12
 
@@ -610,6 +721,25 @@ def main() -> int:
         print(f"   {L:>3} {rec['total_ways']:>6} {rec['one_pass_ways']:>10}"
               f" {rec['deepest_stratum']:>9} {rec['modal_depth']:>13}"
               f"   {'yes' if rec['depth_equals_max_excursion'] else 'NO'}")
+
+    cl = fresh.get("closures", {})
+    if cl:
+        print("\nCLOSURE INVENTORY (first joint closures: the contextual layer)")
+        print("   a closure IS an event, so first closures are prefix-free and their cylinder mass")
+        print("   sum W/8^d cannot exceed 1 (QLF_KraftMeasure.twist_kraft) — the shortfall is the")
+        print("   runs that never close here, which capacity removes rather than reweighs.")
+        print(f"   {'context':<16}{'kraft mass':>12}{'normalized':>12}{'P(+) ways':>12}"
+              f"{'P(+) weight':>13}")
+        for key in sorted(cl):
+            rec = cl[key]
+            ms = rec["multiplicity_split"]
+            ns = rec["normalized_split"]
+            print(f"   {key:<16}{rec['kraft_mass']:>12.6f}{rec['normalized_event_mass']:>12.6f}"
+                  f"{(f'{ms:.6f}' if ms is not None else '-'):>12}"
+                  f"{(f'{ns:.6f}' if ns is not None else '-'):>13}")
+        print("   the two splits bracket every possible notion of \"same event\": refining a")
+        print("   quotient raises the weight (Cauchy-Schwarz), so the normalized split is the")
+        print("   coarsest reading and the multiplicity split the finest.")
 
     print("\nLISTENING — what a capacity-R horizon receives (fraction of the census)")
     caps = [1, 2, 3, 4, 5]

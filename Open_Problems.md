@@ -211,6 +211,23 @@ but **given that everything happens every way, exactly how do those ways add?**
      the unforced content is the part that fails. **The measure question is settled; the amplitude
      question is not** — the decisive test is now a geometry with a known *and unforced* QM answer
      (two-path interference, the singlet), which needs multi-history closure, not another weighting.
+   * **Two-path interference fails, and provably — the decisive test.** Two paths reaching the
+     same detector merge into one event, so amplitudes add before normalisation. Four runs, one
+     fixed weight (`--two-path`): a matched pair gives `B(A+B) = B(A)+B(B)` **exactly** where QM
+     needs a factor `2`; an unequal pair `0.999288`; the destructive configuration `0`. Destructive
+     interference works, constructive interference cannot — **by theorem**: merging can only lower
+     the weight, `(A₁+A₂)²/(W₁+W₂) ≤ A₁²/W₁ + A₂²/W₂`, equality exactly at equal mean phase
+     ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean): `merge_le_sum`,
+     `no_constructive_interference`, `merge_eq_sum_iff`). The inequality that bought summability
+     forbids the enhancement.
+   * **The dichotomy this leaves is the open problem, stated sharply:** *normalise per event* →
+     summable (Kraft) but sub-additive, no interference; *do not normalise* → interference-capable
+     but divergent (`3.9^d`–`4.6^d` against `√8^d`). **The substrate's signed census cannot
+     presently be both summable and interference-capable under the measure its own tree defines.**
+     Not implicated: the measure, the phase rule, the depth law, and event identity — the last is
+     *bracketed*, since every quotient lies between the two splits now recorded in
+     [`data/census_inventory.json`](data/census_inventory.json), and quotienting by Pauli fold
+     collapses onto the finest, removing interference outright.
    * **Next Lean anchor (tractable):** the Kraft bound itself — for a prefix-free set of twist words
      `Σ 8^{−|h|} ≤ 1` — is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
      it can be proven outright rather than measured, making the depth measure a theorem.

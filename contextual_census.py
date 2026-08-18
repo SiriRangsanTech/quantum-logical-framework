@@ -620,6 +620,117 @@ def cylinder_readings(prep: str, branches: list[str], R: int, dmax: int) -> dict
             "amplitude_growth": growth, "threshold": math.sqrt(8)}
 
 
+# --------------------------------------------------------------------------- #
+# event identity: which distinct words are ways of the *same* closure
+# --------------------------------------------------------------------------- #
+def event_classes(prep: str, branches: list[str], R: int, dmax: int,
+                  signature) -> dict:
+    """Enumerate first-closure runs one by one and group them by `signature`.
+
+    `normalized_event_weights` takes the event to be `(branch, depth)`: every word closing the
+    same branch at the same depth is one event. That is a *choice*, and by Cauchy-Schwarz in Engel
+    form it is the extreme one -- `(ΣA)²/ΣW ≤ Σ A²/W` -- so **refining the quotient can only raise
+    the weight**, with the finest quotient (each word its own event) giving exactly the multiplicity
+    mass `W/8^d`. Every possible notion of "same event" therefore lies between those two, which is
+    why this function exists to *test* derived candidates rather than to search for a fitting one.
+
+    `signature(branch_index, depth, strand, run) -> hashable` names the event. Returns
+    `{key: (W, A, depth, branch)}`.
+    """
+    targets = [tuple(-v for v in imbalance(app)) for app in branches]
+    out: dict = {}
+    prep_imb = imbalance(prep)
+    if free_action(prep_imb) > R:
+        return out
+
+    def walk(strand: str, imb: tuple, depth: int) -> None:
+        for i, (app, t) in enumerate(zip(branches, targets)):
+            if imb == t:                                   # first joint closure: the event
+                run = prep + strand + app
+                ok, cur = True, [0, 0, 0, 0]
+                for c in run:
+                    for idx, (a, b) in enumerate(CONJ_PAIRS):
+                        if c == a: cur[idx] += 1
+                        elif c == b: cur[idx] -= 1
+                    if free_action(tuple(cur)) > R:
+                        ok = False
+                        break
+                if ok and all(v == 0 for v in cur):
+                    key = signature(i, depth, strand, run)
+                    W, A, _, _ = out.get(key, (0, 0, depth, i))
+                    out[key] = (W + 1, A + phase(run), depth, i)
+                return                                     # absorbed either way
+        if depth >= dmax:
+            return
+        for c in ALPHABET:
+            d = [0, 0, 0, 0]
+            for idx, (a, b) in enumerate(CONJ_PAIRS):
+                if c == a: d[idx] = 1
+                elif c == b: d[idx] = -1
+            nimb = tuple(imb[j] + d[j] for j in range(4))
+            if free_action(nimb) > R:
+                continue
+            walk(strand + c, nimb, depth + 1)
+
+    walk("", prep_imb, 0)
+    return out
+
+
+def prefixed_first_closure(prep: str, branches: list[str], R: int, dmax: int,
+                           path: str, signed: bool = True) -> list:
+    """First-closure census restricted to strands that begin with `path`.
+
+    A **path** is a family of system histories sharing an opening segment -- the substrate's
+    version of "which arm did it take". Depth counts strand twists including the opening segment,
+    so two paths of equal opening length land in the same `(branch, depth)` event class and their
+    amplitudes add there.
+    """
+    targets = [tuple(-v for v in imbalance(app)) for app in branches]
+    st = _feed(START, prep, R, signed=signed)
+    A = [[0] * (dmax + 1) for _ in branches]
+    depth = 0
+    for step in range(dmax + 1):
+        for i, t in enumerate(targets):
+            hit = {s: v for s, v in st.items() if s[0] == t}
+            closed = _feed(hit, branches[i], R, signed=signed)
+            A[i][step] = sum(v for (imb, _), v in closed.items() if imb == (0, 0, 0, 0))
+        st = {s: v for s, v in st.items() if s[0] not in targets}
+        if step == dmax:
+            break
+        st = (_step(st, R, letters=path[step], signed=signed) if step < len(path)
+              else _step(st, R, signed=signed))
+    return A
+
+
+def quotient_probability(classes: dict, branch: int = 0) -> float:
+    """P(branch | closure) under a given event quotient: Σ_E A_E²/(W_E·8^{d_E}), conditioned."""
+    tot = [Fraction(0), Fraction(0)]
+    for W, A, d, i in classes.values():
+        if W:
+            tot[i] += Fraction(A * A, W * 8 ** d)
+    s = tot[0] + tot[1]
+    return float(tot[branch] / s) if s else float('nan')
+
+
+def axis_counts(word: str) -> tuple:
+    """How many twists on each axis (order forgotten) -- a candidate physical invariant."""
+    x = sum(1 for c in word if ORDV[c] == 1)
+    y = sum(1 for c in word if ORDV[c] == 2)
+    z = sum(1 for c in word if ORDV[c] == 3)
+    return (x, y, z, len(word) - x - y - z)
+
+
+def max_free_action(word: str) -> int:
+    """The capacity the run demands: max prefix free action (the multi-pair `maxExcursion`)."""
+    imb, m = [0, 0, 0, 0], 0
+    for c in word:
+        for idx, (a, b) in enumerate(CONJ_PAIRS):
+            if c == a: imb[idx] += 1
+            elif c == b: imb[idx] -= 1
+        m = max(m, free_action(tuple(imb)))
+    return m
+
+
 def normalized_event_weights(prep: str, branches: list[str], R: int, dmax: int) -> list:
     """The **normalized-event** weight: multiplicity times squared mean phase.
 
@@ -645,6 +756,56 @@ def normalized_event_weights(prep: str, branches: list[str], R: int, dmax: int) 
     return [sum(Fraction(A[i][d] ** 2, W[i][d] * 8 ** d)
                 for d in range(dmax + 1) if W[i][d])
             for i in range(len(branches))]
+
+
+def two_path_report(R: int, dmax: int) -> list[str]:
+    """The four-run interference test: A alone, B alone, both, and both with one path reversed.
+
+    A **path** is a family of histories sharing an opening segment. Opening both merges them into
+    one detector event, so their amplitudes add *before* the event normalisation. The weight is the
+    fixed one -- nothing new is introduced for this test:
+
+        B(E) = sum_d A_E(d)^2 / (W_E(d) . 8^d).
+
+    The prediction being tested is quantum mechanics' interference identity: two coherent paths of
+    equal amplitude should give |A+A|^2 = 4|A|^2 against |A|^2 + |A|^2, a factor of **two**.
+    """
+    failures: list[str] = []
+    prep, branches = "/", ["\\>", "/<"]
+
+    def census(path: str):
+        return (prefixed_first_closure(prep, branches, R, dmax, path),
+                prefixed_first_closure(prep, branches, R, dmax, path, signed=False))
+
+    def mass(A, W, i=0):
+        return sum(Fraction(A[i][d] ** 2, W[i][d] * 8 ** d)
+                   for d in range(len(A[i])) if W[i][d])
+
+    print(f"\n===== two-path interference at capacity R = {R}   prep={prep!r} "
+          f"branches={branches}")
+    for pa, pb, label in [("+", "-", "matched pair (equal amplitudes)"),
+                          ("+", ">", "unequal pair")]:
+        Aa, Wa = census(pa)
+        Ab, Wb = census(pb)
+        ba, bb = mass(Aa, Wa), mass(Ab, Wb)
+        merged = [[Aa[i][d] + Ab[i][d] for d in range(dmax + 1)] for i in (0, 1)]
+        opposed = [[Aa[i][d] - Ab[i][d] for d in range(dmax + 1)] for i in (0, 1)]
+        Wm = [[Wa[i][d] + Wb[i][d] for d in range(dmax + 1)] for i in (0, 1)]
+        bm, bn = mass(merged, Wm), mass(opposed, Wm)
+        s = ba + bb
+        print(f"  {label}: paths {pa!r} and {pb!r}")
+        print(f"     B(A) = {float(ba):.6e}    B(B) = {float(bb):.6e}    sum = {float(s):.6e}")
+        print(f"     B(A+B) = {float(bm):.6e}   ratio to sum = {float(bm / s):.6f}"
+              f"   {'(quantum mechanics needs 2.0 here)' if pa == '+' and pb == '-' else ''}")
+        print(f"     B(A-B) = {float(bn):.6e}   ratio to sum = {float(bn / s):.6f}"
+              f"   destructive interference does work")
+        if bm > s:
+            failures.append(f"R={R} {label}: B(A+B) exceeded B(A)+B(B), contradicting "
+                            f"QLF_KraftMeasure.merge_le_sum")
+    print("  -- merging ways into one event can only lower the weight (merge_le_sum), so no path "
+          "pair\n     can ever enhance a detection: constructive interference is unavailable to "
+          "this weight.")
+    return failures
 
 
 def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
@@ -826,6 +987,9 @@ def main() -> None:
     ap.add_argument("--first-closure", type=str, default="", metavar="R1,R2,...",
                     help="absorbing census: the history ends at its first joint closure, so the run "
                          "chooses its own stopping depth")
+    ap.add_argument("--two-path", type=str, default="", metavar="R",
+                    help="four-run interference test at capacity R: A alone, B alone, both, and "
+                         "both with one path reversed")
     ap.add_argument("--closure-depth", type=int, default=24,
                     help="deepest first-closure depth to enumerate")
     ap.add_argument("--spectrum", type=str, default="", metavar="R1,R2,...",
@@ -846,6 +1010,16 @@ def main() -> None:
             gap = l2 / l1
             print(f"   {R:>3}  {n:>8}  {l1:>10.6f}  {top:>9}  {l2:>10.6f}  {gap:>8.6f}  "
                   f"{-1 / math.log(gap):>8.1f}")
+        return
+
+    if args.two_path:
+        failures = two_path_report(int(args.two_path), args.closure_depth)
+        print("\n== invariants")
+        if failures:
+            for f in failures:
+                print(f"     - {f}")
+            raise SystemExit(1)
+        print("   all asserted invariants hold (no path pair beat the sub-additivity bound)")
         return
 
     if args.first_closure:

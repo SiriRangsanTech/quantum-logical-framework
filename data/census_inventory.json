@@ -8,8 +8,367 @@
   "one-pass closures number 2^n (onePass_ways_iff)",
   "the deepest stratum holds exactly 2 (nested_closed_at_d)",
   "phase factorizes over independent factors (QLF_IndexedFactors.phase_factorizes)",
-  "a joint closure of independent factors needs each factor closed (kron is scalar iff both are)"
+  "a joint closure of independent factors needs each factor closed (kron is scalar iff both are)",
+  "first closures are prefix-free, so their cylinder mass sum W/8^d is at most 1 (QLF_KraftMeasure.twist_kraft)",
+  "a signed class total never exceeds its way count, |A| <= W",
+  "the normalized-event weight sum A^2/(W.8^d) stays under the Kraft mass (QLF_KraftMeasure.normalized_event_mass_le_one)"
  ],
+ "closures": {
+  "aligned|R=3": {
+   "amplitude_le_ways": true,
+   "branches": [
+    "\\",
+    "/"
+   ],
+   "capacity": 3,
+   "depth": 14,
+   "event_classes": {
+    "/": {},
+    "\\": {
+     "0": {
+      "signed": -1,
+      "ways": 1
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 1.0,
+   "multiplicity_split": 1.0,
+   "normalized_event_mass": 1.0,
+   "normalized_split": 1.0,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  },
+  "aligned|R=4": {
+   "amplitude_le_ways": true,
+   "branches": [
+    "\\",
+    "/"
+   ],
+   "capacity": 4,
+   "depth": 14,
+   "event_classes": {
+    "/": {},
+    "\\": {
+     "0": {
+      "signed": -1,
+      "ways": 1
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 1.0,
+   "multiplicity_split": 1.0,
+   "normalized_event_mass": 1.0,
+   "normalized_split": 1.0,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  },
+  "mix-ZX|R=3": {
+   "amplitude_le_ways": true,
+   "branches": [
+    "\\>",
+    "/<"
+   ],
+   "capacity": 3,
+   "depth": 14,
+   "event_classes": {
+    "/<": {
+     "11": {
+      "signed": 146112,
+      "ways": 5505344
+     },
+     "13": {
+      "signed": -2486656,
+      "ways": 173280448
+     },
+     "3": {
+      "signed": 1,
+      "ways": 3
+     },
+     "5": {
+      "signed": -24,
+      "ways": 140
+     },
+     "7": {
+      "signed": 464,
+      "ways": 5136
+     },
+     "9": {
+      "signed": -8384,
+      "ways": 171624
+     }
+    },
+    "\\>": {
+     "1": {
+      "signed": -1,
+      "ways": 1
+     },
+     "11": {
+      "signed": 269248,
+      "ways": 5940544
+     },
+     "13": {
+      "signed": -4075392,
+      "ways": 179578048
+     },
+     "3": {
+      "signed": 5,
+      "ways": 13
+     },
+     "5": {
+      "signed": -80,
+      "ways": 284
+     },
+     "7": {
+      "signed": 1200,
+      "ways": 7216
+     },
+     "9": {
+      "signed": -17920,
+      "ways": 201704
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 0.179835178657,
+   "multiplicity_split": 0.917615275113,
+   "normalized_event_mass": 0.130352492475,
+   "normalized_split": 0.99386159726,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  },
+  "mix-ZX|R=4": {
+   "amplitude_le_ways": true,
+   "branches": [
+    "\\>",
+    "/<"
+   ],
+   "capacity": 4,
+   "depth": 14,
+   "event_classes": {
+    "/<": {
+     "11": {
+      "signed": 234352,
+      "ways": 12304436
+     },
+     "13": {
+      "signed": -4708168,
+      "ways": 508680024
+     },
+     "3": {
+      "signed": 1,
+      "ways": 3
+     },
+     "5": {
+      "signed": -24,
+      "ways": 140
+     },
+     "7": {
+      "signed": 539,
+      "ways": 6533
+     },
+     "9": {
+      "signed": -11435,
+      "ways": 289631
+     }
+    },
+    "\\>": {
+     "1": {
+      "signed": -1,
+      "ways": 1
+     },
+     "11": {
+      "signed": 368348,
+      "ways": 15930018
+     },
+     "13": {
+      "signed": -6921801,
+      "ways": 599697865
+     },
+     "3": {
+      "signed": 5,
+      "ways": 13
+     },
+     "5": {
+      "signed": -64,
+      "ways": 368
+     },
+     "7": {
+      "signed": 1080,
+      "ways": 12272
+     },
+     "9": {
+      "signed": -19733,
+      "ways": 434025
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 0.191414560484,
+   "multiplicity_split": 0.90720329422,
+   "normalized_event_mass": 0.129950593197,
+   "normalized_split": 0.993830215712,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  },
+  "transverse|R=3": {
+   "amplitude_le_ways": true,
+   "branches": [
+    ">\\",
+    "<\\"
+   ],
+   "capacity": 3,
+   "depth": 14,
+   "event_classes": {
+    "<\\": {
+     "1": {
+      "signed": 1,
+      "ways": 1
+     },
+     "11": {
+      "signed": -170548,
+      "ways": 4457116
+     },
+     "13": {
+      "signed": 2441908,
+      "ways": 133280556
+     },
+     "3": {
+      "signed": -4,
+      "ways": 12
+     },
+     "5": {
+      "signed": 60,
+      "ways": 240
+     },
+     "7": {
+      "signed": -852,
+      "ways": 5740
+     },
+     "9": {
+      "signed": 12020,
+      "ways": 154572
+     }
+    },
+    ">\\": {
+     "1": {
+      "signed": 1,
+      "ways": 1
+     },
+     "11": {
+      "signed": -170548,
+      "ways": 4457116
+     },
+     "13": {
+      "signed": 2441908,
+      "ways": 133280556
+     },
+     "3": {
+      "signed": -4,
+      "ways": 12
+     },
+     "5": {
+      "signed": 60,
+      "ways": 240
+     },
+     "7": {
+      "signed": -852,
+      "ways": 5740
+     },
+     "9": {
+      "signed": 12020,
+      "ways": 154572
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 0.320823455389,
+   "multiplicity_split": 0.5,
+   "normalized_event_mass": 0.256260076743,
+   "normalized_split": 0.5,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  },
+  "transverse|R=4": {
+   "amplitude_le_ways": true,
+   "branches": [
+    ">\\",
+    "<\\"
+   ],
+   "capacity": 4,
+   "depth": 14,
+   "event_classes": {
+    "<\\": {
+     "1": {
+      "signed": 1,
+      "ways": 1
+     },
+     "11": {
+      "signed": -192635,
+      "ways": 12349741
+     },
+     "13": {
+      "signed": 3512368,
+      "ways": 453077034
+     },
+     "3": {
+      "signed": -4,
+      "ways": 12
+     },
+     "5": {
+      "signed": 44,
+      "ways": 324
+     },
+     "7": {
+      "signed": -649,
+      "ways": 10281
+     },
+     "9": {
+      "signed": 10871,
+      "ways": 348215
+     }
+    },
+    ">\\": {
+     "1": {
+      "signed": 1,
+      "ways": 1
+     },
+     "11": {
+      "signed": -192635,
+      "ways": 12349741
+     },
+     "13": {
+      "signed": 3512368,
+      "ways": 453077034
+     },
+     "3": {
+      "signed": -4,
+      "ways": 12
+     },
+     "5": {
+      "signed": 44,
+      "ways": 324
+     },
+     "7": {
+      "signed": -649,
+      "ways": 10281
+     },
+     "9": {
+      "signed": 10871,
+      "ways": 348215
+     }
+    }
+   },
+   "kraft_bound_holds": true,
+   "kraft_mass": 0.336167606911,
+   "multiplicity_split": 0.5,
+   "normalized_event_mass": 0.255617964073,
+   "normalized_split": 0.5,
+   "normalized_under_kraft": true,
+   "preparation": "/"
+  }
+ },
  "depths": {
   "10": {
    "central_binomial": 252,

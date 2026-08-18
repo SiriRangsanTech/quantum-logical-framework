@@ -228,6 +228,32 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     (`0.99386152` at `R = 3` vs `0.99383011` at `R = 4`, a fifth-digit difference where every
     earlier reading moved in the first or second), gives aligned `1.000000` and transverse
     `0.500000`, and is exactly complementary under preparation reversal.
+  * **Two-path interference — the decisive test — fails, and now provably.** Two paths (families
+    of histories sharing an opening segment) that reach the same detector merge into one event, so
+    their amplitudes add before the event normalisation. Four runs, one weight, nothing new
+    introduced (`contextual_census.py --two-path`): a **matched pair** gives
+    `B(A+B) = B(A) + B(B)` exactly — ratio `1.000000`, where quantum mechanics needs `2` for two
+    coherent equal-amplitude paths — an unequal pair gives `0.999288`, and the destructive
+    configuration gives `0.000000`. **Destructive interference works; constructive interference is
+    unavailable.** And it is unavailable *by theorem*, not by accident: merging can only lower the
+    weight, `(A₁+A₂)²/(W₁+W₂) ≤ A₁²/W₁ + A₂²/W₂` (Cauchy–Schwarz in Engel form), with equality
+    exactly when the two families carry the same mean phase —
+    [`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean) `merge_le_sum`,
+    `no_constructive_interference`, `merge_eq_sum_iff`. The very inequality that made the weight
+    summable is what forbids the enhancement.
+  * **So the Born question is now a sharp dichotomy**, with a theorem on one side and a measurement
+    on the other:
+    - **normalise per event** → summable by Kraft, but sub-additive, so no constructive
+      interference;
+    - **do not normalise** → interference-capable, but the signed census grows `3.9^d`–`4.6^d`
+      against the `√8^d` the cylinder measure allows, so nothing sums.
+    **The substrate's signed census cannot presently be both summable and interference-capable
+    under the measure its own tree defines.** That is the sharpest form the obstruction has taken,
+    and it is where the amplitude question sits. Note what is *not* implicated: the measure
+    (proven), the phase rule (proven), the depth law (proven), and event identity (bracketed —
+    every quotient lies between the two splits recorded in
+    [`data/census_inventory.json`](data/census_inventory.json), and partitioning by Pauli fold
+    collapses onto the finest, killing interference outright).
   * **But it does not render an angle, and that is the test that matters.** Sweeping the apparatus
     does not sweep the weight: adding transverse letters one at a time gives
     `2·arccos√P = 0°, 8.99°, 13.04°, 10.37°, 12.89°, 11.13°` for `a = 0…5` — wobbling, never
