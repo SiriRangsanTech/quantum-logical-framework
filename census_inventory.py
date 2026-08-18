@@ -229,6 +229,103 @@ def balanced_histories(length: int):
                 yield from perms(counts, [])
 
 
+# --------------------------------------------------------------------------- #
+# indexed factors: what changes when twists carry a subsystem label
+# --------------------------------------------------------------------------- #
+# QuCalc does not need new primitive twists for many-body systems -- it needs INDEXED
+# copies of the same eight, `(factor, twist)`, so that an operation on factor 1 and one
+# on factor 2 are independent uses of the same alphabet. The physics that indexing
+# changes is not the alphabet but the ALGEBRA: independent factors act as sigma (x) I and
+# I (x) sigma, which COMMUTE, where a flat concatenation puts both in one Pauli algebra
+# where distinct axes anticommute.
+#
+# The consequence that matters is about closure, not phase. A Kronecker product is a
+# scalar exactly when each factor is, so in the indexed (product) model a joint closure
+# requires EACH factor to close on its own. In the flat model a factor may be left open
+# and balanced by the other -- which is precisely SharedClosure, QLF's entanglement.
+#
+# So the two models are not competitors and neither is a correction of the other; they
+# are two sectors, and the split is what this section counts:
+#
+#   product sector  -- both factors close alone: independent subsystems, tensor-valid
+#   coupled sector  -- neither closes alone but the pair does: entanglement, flat-only
+#
+# The gauge pair `('+','-')` survives into the product sector; the axis pair `('^','v')`
+# -- the primordial entanglement witness of ER_EPR_QLF -- does not. Indexing therefore
+# cannot simply replace concatenation: an interaction that binds two factors is a genuine
+# Pauli STRING (sigma (x) sigma), not a product of single-factor operators.
+
+
+MU4 = {"+1": 1, "-1": -1, "+i": 1j, "-i": -1j}
+
+
+def axis_multiset_parities(history: str) -> tuple[int, int, int]:
+    """Parities of the X, Y and Z letter multiplicities."""
+    return tuple(sum(1 for ch in history if AXIS[ch] == k) % 2 for k in "XYZ")
+
+
+def folds_to_scalar(history: str) -> bool:
+    """Does this history fold to a Pauli scalar on its own?
+
+    `axisProd = I` in QLF_TwistAlphabet's `(ZMod 2)^2` embedding (`Z = X + Y`), which is
+    all three axis multiplicities sharing a parity -- weaker than count balance, and
+    weaker than each multiplicity being even.
+    """
+    a, b, c = axis_multiset_parities(history)
+    return a == b == c
+
+
+def build_factor_inventory(max_len: int, keep: dict | None = None) -> dict:
+    """Split every balanced history at every cut point and classify the two factors.
+
+    Each cut of a balanced history is one way of reading it as two indexed subsystems, so
+    this reuses the same enumeration as the fold census and costs no more.
+    """
+    out = dict(keep or {})
+    phase_factorization_violations = list((keep or {}).get("_violations", []))
+    for L in range(2, max_len + 1, 2):
+        if str(L) in out:
+            continue
+        product_sector = coupled_sector = independent = 0
+        witnesses = {"product": [], "coupled": []}
+        for h in balanced_histories(L):
+            for i in range(1, L):
+                a, b = h[:i], h[i:]
+                a_closes, b_closes = is_count_balanced(a), is_count_balanced(b)
+                if a_closes and b_closes:
+                    independent += 1                      # two separate closures, not one event
+                    continue
+                if folds_to_scalar(a) and folds_to_scalar(b):
+                    product_sector += 1
+                    if len(witnesses["product"]) < 6:
+                        witnesses["product"].append([a, b])
+                else:
+                    coupled_sector += 1
+                    if len(witnesses["coupled"]) < 6:
+                        witnesses["coupled"].append([a, b])
+                # The phase must factorize wherever both factors fold to scalars -- but in
+                # `mu_4`, not `mu_2`. An open factor is not count-balanced, so
+                # `balanced_phase_is_real` does not apply to it and its scalar may be
+                # `+-i`; `predicted_phase` cannot represent that, and using it here was an
+                # error the checker caught. The `mu_2` rule is for closures; a FACTOR of a
+                # closure needs the full group.
+                if folds_to_scalar(a) and folds_to_scalar(b):
+                    pa, pb, pj = fold_phase(a), fold_phase(b), fold_phase(h)
+                    if None in (pa, pb, pj) or MU4[pj] != MU4[pa] * MU4[pb]:
+                        phase_factorization_violations.append([a, b])
+        shared = product_sector + coupled_sector
+        out[str(L)] = {
+            "independent_pairs": independent,
+            "shared_closures": shared,
+            "product_sector": product_sector,
+            "coupled_sector": coupled_sector,
+            "coupled_fraction": round(coupled_sector / shared, 6) if shared else None,
+            "witnesses": witnesses,
+        }
+    out["_violations"] = phase_factorization_violations
+    return out
+
+
 # keep the full history lists only while they are small; beyond this store aggregates
 FULL_LISTING_MAX_LEN = 6
 
@@ -347,11 +444,15 @@ def build(twist_len: int, phase_len: int, keep: dict | None = None) -> dict:
             "closure depth = max phase excursion (closedAtHorizon_iff_maxExcursion_le)",
             "one-pass closures number 2^n (onePass_ways_iff)",
             "the deepest stratum holds exactly 2 (nested_closed_at_d)",
+            "phase factorizes over independent factors (QLF_IndexedFactors.phase_factorizes)",
+            "a joint closure of independent factors needs each factor closed (kron is scalar "
+            "iff both are)",
         ],
         "max_twist_length": max(twist_len, keep.get("max_twist_length", 0)),
         "max_phase_length": max(phase_len, keep.get("max_phase_length", 0)),
         "folds": build_fold_inventory(twist_len, keep.get("folds")),
         "depths": build_depth_inventory(phase_len, keep.get("depths")),
+        "factors": build_factor_inventory(min(twist_len, 8), keep.get("factors")),
     }
 
 
@@ -369,6 +470,20 @@ def check(db: dict) -> list[str]:
                         f"(contradicts balanced_phase_is_real)")
     if folds["phase_rule_violations"]:
         fail.append(f"phase rule violated by {len(folds['phase_rule_violations'])} histories")
+    factors = db.get("factors", {})
+    if factors.get("_violations"):
+        fail.append(f"phase failed to factorize over independent factors for "
+                    f"{len(factors['_violations'])} pairs")
+    for L, rec in factors.items():
+        if L.startswith("_"):
+            continue
+        if rec["shared_closures"] and rec["product_sector"] == 0:
+            fail.append(f"no product-sector shared closures at length {L} "
+                        f"(the indexed model would be empty)")
+        if rec["coupled_sector"] == 0 and rec["shared_closures"]:
+            fail.append(f"no coupled-sector closures at length {L} "
+                        f"(entanglement would be impossible)")
+
     if folds["unbalanced_imaginary_count_len3"] == 0:
         fail.append("no unbalanced imaginary witness found "
                     "(contradicts unbalanced_can_be_imaginary)")
@@ -476,6 +591,18 @@ def main() -> int:
     print(f"   violations: {len(f['phase_rule_violations'])}")
     print(f"   unbalanced witnesses reaching +-i (length 3): "
           f"{f['unbalanced_imaginary_count_len3']}, e.g. {f['unbalanced_imaginary_witnesses'][:4]}")
+
+    fa = fresh.get("factors", {})
+    if fa:
+        print("\nFACTOR INVENTORY (each cut of a balanced history read as two indexed subsystems)")
+        print("   len   shared   product sector   coupled sector   coupled fraction")
+        for L, rec in sorted(((k, v) for k, v in fa.items() if not k.startswith("_")),
+                             key=lambda kv: int(kv[0])):
+            print(f"   {L:>3} {rec['shared_closures']:>8} {rec['product_sector']:>16}"
+                  f" {rec['coupled_sector']:>16} {rec['coupled_fraction']:>18}")
+        print("   product sector = both factors close alone (tensor-valid, indexing keeps it)")
+        print("   coupled sector = neither closes alone but the pair does = entanglement,")
+        print("   which exists only under flat concatenation -- so indexing cannot replace it.")
 
     print("\nDEPTH INVENTORY (+/- phase census)")
     print("   len   ways   one-pass   deepest   modal depth   depth = max excursion")

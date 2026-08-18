@@ -6,7 +6,9 @@
   "unbalanced histories do reach +-iI (unbalanced_can_be_imaginary)",
   "closure depth = max phase excursion (closedAtHorizon_iff_maxExcursion_le)",
   "one-pass closures number 2^n (onePass_ways_iff)",
-  "the deepest stratum holds exactly 2 (nested_closed_at_d)"
+  "the deepest stratum holds exactly 2 (nested_closed_at_d)",
+  "phase factorizes over independent factors (QLF_IndexedFactors.phase_factorizes)",
+  "a joint closure of independent factors needs each factor closed (kron is scalar iff both are)"
  ],
  "depths": {
   "10": {
@@ -479,6 +481,237 @@
    },
    "total_ways": 70
   }
+ },
+ "factors": {
+  "2": {
+   "coupled_fraction": 0.75,
+   "coupled_sector": 6,
+   "independent_pairs": 0,
+   "product_sector": 2,
+   "shared_closures": 8,
+   "witnesses": {
+    "coupled": [
+     [
+      "/",
+      "\\"
+     ],
+     [
+      "\\",
+      "/"
+     ],
+     [
+      ">",
+      "<"
+     ],
+     [
+      "<",
+      ">"
+     ],
+     [
+      "^",
+      "v"
+     ],
+     [
+      "v",
+      "^"
+     ]
+    ],
+    "product": [
+     [
+      "+",
+      "-"
+     ],
+     [
+      "-",
+      "+"
+     ]
+    ]
+   }
+  },
+  "4": {
+   "coupled_fraction": 0.790909,
+   "coupled_sector": 348,
+   "independent_pairs": 64,
+   "product_sector": 92,
+   "shared_closures": 440,
+   "witnesses": {
+    "coupled": [
+     [
+      "/",
+      "\\+-"
+     ],
+     [
+      "/",
+      "\\-+"
+     ],
+     [
+      "/",
+      "+\\-"
+     ],
+     [
+      "/+",
+      "\\-"
+     ],
+     [
+      "/",
+      "+-\\"
+     ],
+     [
+      "/+",
+      "-\\"
+     ]
+    ],
+    "product": [
+     [
+      "+",
+      "+--"
+     ],
+     [
+      "++",
+      "--"
+     ],
+     [
+      "++-",
+      "-"
+     ],
+     [
+      "+",
+      "-+-"
+     ],
+     [
+      "+-+",
+      "-"
+     ],
+     [
+      "+",
+      "--+"
+     ]
+    ]
+   }
+  },
+  "6": {
+   "coupled_fraction": 0.804469,
+   "coupled_sector": 18432,
+   "independent_pairs": 2688,
+   "product_sector": 4480,
+   "shared_closures": 22912,
+   "witnesses": {
+    "coupled": [
+     [
+      "/",
+      "\\++--"
+     ],
+     [
+      "/",
+      "\\+-+-"
+     ],
+     [
+      "/",
+      "\\+--+"
+     ],
+     [
+      "/",
+      "\\-++-"
+     ],
+     [
+      "/",
+      "\\-+-+"
+     ],
+     [
+      "/",
+      "\\--++"
+     ]
+    ],
+    "product": [
+     [
+      "+",
+      "++---"
+     ],
+     [
+      "++",
+      "+---"
+     ],
+     [
+      "+++",
+      "---"
+     ],
+     [
+      "+++-",
+      "--"
+     ],
+     [
+      "+++--",
+      "-"
+     ],
+     [
+      "+",
+      "+-+--"
+     ]
+    ]
+   }
+  },
+  "8": {
+   "coupled_fraction": 0.802893,
+   "coupled_sector": 980088,
+   "independent_pairs": 110144,
+   "product_sector": 240608,
+   "shared_closures": 1220696,
+   "witnesses": {
+    "coupled": [
+     [
+      "/",
+      "\\+++---"
+     ],
+     [
+      "/",
+      "\\++-+--"
+     ],
+     [
+      "/",
+      "\\++--+-"
+     ],
+     [
+      "/",
+      "\\++---+"
+     ],
+     [
+      "/",
+      "\\+-++--"
+     ],
+     [
+      "/",
+      "\\+-+-+-"
+     ]
+    ],
+    "product": [
+     [
+      "+",
+      "+++----"
+     ],
+     [
+      "++",
+      "++----"
+     ],
+     [
+      "+++",
+      "+----"
+     ],
+     [
+      "++++",
+      "----"
+     ],
+     [
+      "++++-",
+      "---"
+     ],
+     [
+      "++++--",
+      "--"
+     ]
+    ]
+   }
+  },
+  "_violations": []
  },
  "folds": {
   "by_length": {
