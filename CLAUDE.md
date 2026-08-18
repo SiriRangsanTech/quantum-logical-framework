@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **197 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **198 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,9 +14,9 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## Modules — 197, machine-verified, zero `sorry`
+## Modules — 198, machine-verified, zero `sorry`
 
-Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 197 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 198 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
@@ -326,7 +326,7 @@ Avoid framings that contradict the above:
 | Path | Purpose |
 |---|---|
 | `lean/` | All Lean source files |
-| `lakefile.lean` | Build config; `roots` array lists all 197 modules |
+| `lakefile.lean` | Build config; `roots` array lists all 198 modules |
 | `lean/README.md` | Module table and proof chain documentation |
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |
@@ -348,7 +348,7 @@ Avoid framings that contradict the above:
 | `Mathematics_From_QLF.md` | How mathematics emerges from the substrate — the emergence ladder (ℕ from counting closures; `+`/`×` = parallel/sequence composition; the unit group `μ₄=(ℤ[i])ˣ`; su(2)/su(3); the continuum as completion), the bootstrapping resolution (substrate generates, Mathlib renders, conservativity ⟹ not circular), how QLF is distinct from reverse mathematics (generative + active-inference selection + ontological commitment, vs RM's descriptive/neutral stratification), whether the resolution applies to the metalanguage (reflexively yes — verification is itself a ZFA closure — with the Gödel-II residue relocated to the finite-computation floor), and **why mathematics is so effective in physics (Wigner dissolved: effective math = realizable math = the substrate; effectiveness tracks realizability, which also explains where it fails)** |
 | `Reversibility.md` | Time-reversal = the Hermitian conjugate (`eval_dagger`); a balanced closure is `H=H†` (self-time-reverse, no per-event arrow); the arrow is forward *sequencing* in synthesized time (`f=1/t`), reversal = "go back in time" with no meta-axis; the `H↔H†` involution = the critical line (Hilbert–Pólya). Reversible *logic*, irreversible *process* |
 | `Open_Problems.md` | Gap registry: closed / principled-boundary / open items, each with its owning doc. Update here + owning doc when a status changes |
-| `census_inventory.py` / `data/census_inventory.json` | **The inventory database — counts, listenings and QuCalc folds, accumulated.** What enumeration actually discovers: how many ways close (graded by length and closure depth) and which Pauli phase each way carries. **It accumulates** — each run keeps what is stored and computes only what is missing, so the record is fleshed out over time by pushing one length deeper (`--twist-len 8`, `--phase-len 20`; the fold census is `8^L`, the depth census `2^L`, so those set the practical ceilings). And it is a **checker**: every proven invariant is asserted against freshly enumerated data, so a change to `twist_core.py` that breaks one is caught — count balance ⟹ Pauli closure; count balance ⟹ the fold is `±I` never `±iI`; unbalanced histories *do* reach `±iI`; closure depth = max phase excursion; one-pass closures number `2ⁿ`; the deepest stratum holds exactly `2`. Also records the two verified-not-proven findings (the phase rule `(−1)^{#neg}·sign(axis permutation)`, and which strata counts are Gaussian norms — mostly not: **counts are not weights**) |
+| `census_inventory.py` / `data/census_inventory.json` | **The inventory database — counts, listenings and QuCalc folds, accumulated.** What enumeration actually discovers: how many ways close (graded by length and closure depth) and which Pauli phase each way carries. **It accumulates** — each run keeps what is stored and computes only what is missing, so the record is fleshed out over time by pushing one length deeper (`--twist-len 8`, `--phase-len 20`; the fold census is `8^L`, the depth census `2^L`, so those set the practical ceilings). And it is a **checker**: every proven invariant is asserted against freshly enumerated data, so a change to `twist_core.py` that breaks one is caught — count balance ⟹ Pauli closure; count balance ⟹ the fold is `±I` never `±iI`; unbalanced histories *do* reach `±iI`; closure depth = max phase excursion; one-pass closures number `2ⁿ`; the deepest stratum holds exactly `2`. Also records which strata counts are Gaussian norms — mostly not: **counts are not weights**. Its other verified-not-proven finding, the phase rule `(−1)^{#neg}·sign(axis permutation)`, is now **proven** (`QLF_PhaseRule`), so the enumeration is its discovery record and a regression check, not its warrant |
 | `Mysteries_Of_Physics.md` | Physics-facing survey of the canonical open questions (quantum foundations, spacetime/gravity, cosmology, the Standard Model, the deep/meta questions) and what QLF says about each — addressed/structural, value-open, principled boundary, predicted-absent (falsifiable nulls), or genuinely open. The reader's-eye companion to `Open_Problems.md` (which is status-organized) |
 | `QuantumOS.md` | QLF as capability-secure OS kernel for QPUs |
 | `.github/workflows/` | CI configuration |

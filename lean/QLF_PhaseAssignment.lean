@@ -61,20 +61,26 @@ phase(h) = (−1)^(#negative twists) · sign(permutation sorting the axis word)
 the first factor from the `v, <, \, −` mappings to negative Pauli matrices, the second from
 anticommutation `σᵢσⱼ = −σⱼσᵢ` accumulated as an inversion count. Proven here for the pair sector, where
 the axis word is constant so the permutation sign is `+1` and the rule reduces to `(−1)^{#pairs}`
-(`concat_pairs_eq_neg_one_pow`). The general two-factor rule is **not** proven — it is the empirical
-finding, stated as such.
+(`concat_pairs_eq_neg_one_pow`). **The general two-factor rule is now proven** — `phase_rule` in
+[`QLF_PhaseRule`](QLF_PhaseRule.lean), for every balanced history at every length, and in the stronger
+form `twist_fold_phase_normal_form` that needs no balance hypothesis. What was the empirical finding
+here is a theorem there; this module keeps the pair-sector case it was written for.
 
 **A second empirical finding, worth flagging because it narrows `μ₄`:** no count-balanced history was
 ever observed to fold to `±i` — exhaustively for length ≤ 6, and in 80,000 sampled histories of length
 8–14. Balance appears to restrict the phase group from `μ₄` to `{±1}`. If that holds in general, branch
-amplitudes over the balanced census are **integers**, not Gaussian integers. Not proven; recorded as the
-next target.
+amplitudes over the balanced census are **integers**, not Gaussian integers. **Since proven, twice
+over:** `balanced_phase_is_real` ([`QLF_BalancedPhaseReal`](QLF_BalancedPhaseReal.lean), by
+determinant) and again as `phase_rule_real` ([`QLF_PhaseRule`](QLF_PhaseRule.lean), as a corollary of
+the phase rule) — converging derivations, which is multiplicity, not redundancy.
 
 ## Honest scope
 
-Proven here: pair orderings are aligned, and the weight consequences **within that sector**. Verified
-but not proven: the two-factor phase rule, the `{±1}` restriction on balanced closures, and the mixed
-phase census above. **The methodological point is load-bearing and was learned the hard way, twice:**
+Proven here: pair orderings are aligned, and the weight consequences **within that sector**. The two
+findings this module recorded as verified-but-not-proven have both since been proven elsewhere — the
+two-factor phase rule ([`QLF_PhaseRule`](QLF_PhaseRule.lean)) and the `{±1}` restriction on balanced
+closures ([`QLF_BalancedPhaseReal`](QLF_BalancedPhaseReal.lean)); what remains empirical here is the
+mixed phase census above. **The methodological point is load-bearing and was learned the hard way, twice:**
 things happen *every* way, so a branch's amplitude is a signed sum over **all** its ways — never an
 extrapolation from two of them. No axioms.
 -/

@@ -32,10 +32,15 @@ breaks one shows up immediately:
   * closure depth = max phase excursion   (QLF_ClosureDepthLaw.closedAtHorizon_iff_maxExcursion_le)
   * one-pass closures number 2^n          (QLF_ClosureDepth.onePass_ways_iff)
   * the deepest stratum holds exactly 2   (QLF_ClosureDepth.nested_closed_at_d)
+  * phase = (-1)^(#neg) x sign(axis perm)  (QLF_PhaseRule.phase_rule)
 
-and two findings that are verified-not-proven, recorded so they stay honest:
+That last one used to live in the verified-not-proven list below; it is now a
+theorem for every balanced history at every length (and, without the balance
+hypothesis, QLF_PhaseRule.twist_fold_phase_normal_form), so the enumeration here
+is its discovery record and a regression check rather than its warrant.
 
-  * phase = (-1)^(#neg twists) x sign(permutation sorting the axis word)
+and one finding that is verified-not-proven, recorded so it stays honest:
+
   * which depth-stratum counts are Gaussian norms (they mostly are not — see
     born_generator_check.py; counts are not weights)
 
@@ -282,7 +287,8 @@ def build_fold_inventory(max_len: int, keep: dict | None = None) -> dict:
         prior_len3 = len(unbalanced_imaginary)
     return {
         "by_length": out,
-        "phase_rule": "(-1)^(#neg twists) * sign(permutation sorting the axis word)",
+        "phase_rule": "(-1)^(#neg twists) * sign(permutation sorting the axis word)"  # proven: QLF_PhaseRule.phase_rule
+        ,
         "phase_rule_violations": rule_violations,
         "unbalanced_imaginary_witnesses": sorted(unbalanced_imaginary)[:12],
         "unbalanced_imaginary_count_len3": prior_len3 or len(unbalanced_imaginary),

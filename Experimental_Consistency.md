@@ -171,7 +171,7 @@ folds.by_length["8"]
   weight_of_signed_amplitude its square — the Born weight of that branch, NOT the count
   histories_listed_in_full   true only to length 6; beyond that the lists below are 8 samples per phase
   histories_by_phase         the histories themselves, grouped by phase
-folds.phase_rule             the verified-not-proven rule, as a string
+folds.phase_rule             the rule, as a string (now proven: QLF_PhaseRule)
 folds.phase_rule_violations  histories where the rule fails — MUST stay empty
 folds.unbalanced_imaginary_* witnesses that unbalanced histories DO reach +-i (the scope is sharp)
 
@@ -231,14 +231,27 @@ A shallow capacity hears only the shallow closures, each step up hears more
 ([`lines_mono`](lean/QLF_LineSpectra.lean)), and no finite capacity hears everything
 ([`law_of_exceptions`](lean/QLF_LawOfExceptions.lean)).
 
+### One of them has since been proven
+
+**The phase rule** `(−1)^{#neg twists} · sign(permutation sorting the axis word)` was this document's
+flagship verified-not-proven finding — **0 violations** across all **8,134,416** balanced histories of
+length ≤ 10, up from 5,296 at length ≤ 6, a **1,500× enlargement** that could have falsified it at any
+point and did not, but proven only for the pair sector where the axis word is constant. It is now a
+theorem for every balanced history at every length — **`phase_rule`**
+([`QLF_PhaseRule`](lean/QLF_PhaseRule.lean)) — and in the stronger form
+**`twist_fold_phase_normal_form`**, which drops the balance hypothesis and holds for *every* history,
+returning the sorted product `σx^{#X}σy^{#Y}σz^{#Z}` where balance leaves the identity. The two factors
+separate because signs pull out of a product regardless of order while distinct Pauli matrices
+anticommute, so sorting the axis word costs exactly one `−1` per inversion.
+
+So the enumeration above is now the finding's **discovery record and regression check**, not its
+warrant — and the phase of any way is computable from the word alone, without multiplying a single
+matrix.
+
 ### The findings that are verified but **not** proven
 
 Kept separate so they cannot quietly harden into claims:
 
-* **The phase rule** `(−1)^{#neg twists} · sign(permutation sorting the axis word)` — **0 violations**,
-  now across all **8,134,416** balanced histories of length ≤ 10, up from 5,296 at length ≤ 6. A
-  **1,500× enlargement** that could have falsified it at any point and did not. Proven only for the pair sector
-  ([`QLF_PhaseAssignment`](lean/QLF_PhaseAssignment.lean)), where the axis word is constant.
 * **Which depth-stratum counts are Gaussian norms** — mostly they are *not* (`38, 14, 70, 422 …` are not
   sums of two squares), the concrete form of **counts are not weights**
   ([`born_generator_check.py`](born_generator_check.py)).
