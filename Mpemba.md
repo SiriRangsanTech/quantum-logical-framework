@@ -45,7 +45,7 @@ interpretive.
 Following the mode picture, define for a preparation `X` the **closure-depth census**
 
 $$
-W_X(d) \;=\; \#\{\text{real histories from } X \text{ that first close at depth } d\},
+W_X(d) \;=\; \bigl|\lbrace \text{real histories from } X \text{ that first close at depth } d \rbrace\bigr|,
 $$
 
 the cumulative fraction closed by capacity `R`,
