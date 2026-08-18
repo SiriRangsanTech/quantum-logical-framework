@@ -47,14 +47,29 @@ relabeling that fixes the preparation. A number forced by a proven symmetry is b
 The aligned geometries are the informative ones, and they say something the framework has to
 answer for: **for any fixed preparation, the contextual weight washes out toward 1/2 as the
 horizon grows.** The branch ratio A(-)/A(+) climbs monotonically at every horizon computed --
-at depth 1: 0, .125, .200, .267, .327, .381, .429, .472, .511, .546 through k = 18 -- and a
-deeper preparation only delays it (depth 3 is still .9994 at k = 18, but its ratio is rising
-too). Conversely, letting the depth grow with the horizon drives the weight to 1.
+at depth 1: 0, .125, .200, .267, .327, .381, .429, .472, .511, .546 through k = 18, reaching
+.677 at k = 28 where P(+) has fallen to .686 -- and a deeper preparation only delays it (depth 2
+is still .936 at k = 28, but its ratio is rising too). Conversely, letting the depth grow with
+the horizon drives the weight to 1. Two independent code paths (recomputing the census per
+horizon, and reusing one incrementally) agree exactly at every overlapping horizon.
 
 So this partition does **not** define a horizon-independent contextual probability: the number
 is set by the ratio of preparation depth to horizon, and both limits are degenerate (1/2 one
 way, 1 the other). The limit itself is not proven -- monotone data through k = 18 is not a
 theorem -- but it is enough to say a further principle is needed to fix the regime.
+
+**Indexing does not rescue it, and that is now checked rather than assumed.** The obvious suspicion
+is that the flat `P ++ s ++ M_c` is at fault: it puts system and apparatus in one Pauli algebra, where
+distinct axes anticommute, whereas independent factors commute (QLF_IndexedFactors). Recomputing with
+the system on factor 1 and the apparatus on factor 2 -- which deletes exactly the cross-inversion term
+between `s` and `M_c` -- gives **identical probabilities at every horizon**, for aligned, transverse and
+mixed geometries alike.
+
+The reason is structural, not a coincidence: a strand's **axis parity is determined by its imbalance**
+(`n_X = #> + #<` and `imbalance_X = #> - #<` agree mod 2, and likewise for Y and Z), so within the one
+imbalance class that a branch selects, the cross term is a *constant sign*. A global sign per branch
+cannot survive `|A|^2`. So the flat/indexed distinction is **invisible to Born weights here**, and the
+wash-out is a property of the partition itself.
 
 QLF already has the candidate, and it is not a free parameter: closure is **capacity-relative**
 (`closedAtHorizon_iff_maxExcursion_le`, lean/QLF_ClosureDepthLaw.lean), and the count/listening

@@ -53,6 +53,44 @@ The QLF is **constructive possibilist**: spacetime itself is not a pre-existing 
 
 This is why RhoQuCalc simulates 100-particle systems on a laptop while traditional QM hits memory walls at ~20 qubits: higher dimensions are *not stored explicitly*; they are *counted implicitly* via ZFA catalog reuse.
 
+## 3a. Indexing: the same eight twists, labelled — and the sector it does *not* cover
+
+Machine-verified in [`lean/QLF_IndexedFactors.lean`](lean/QLF_IndexedFactors.lean).
+
+The parallel-composition claim above is right, and it has a precise form: a many-body token is
+`(factor, twist) ∈ ℕ × Σ₈` — an indexed **use** of the same eight primitives, never a new kind of `^`.
+`IndexedTwist` is that type, and `twistOf_mem_alphabet` says the alphabet does not grow. **N bodies
+need N labels, not `2ᴺ` primitives.**
+
+What indexing changes is the **algebra**. Independent bodies act as `A ⊗ I` and `I ⊗ B`, which
+**commute** (`indexed_factors_commute`). A flat concatenation puts both in one Pauli algebra where
+distinct axes **anticommute** — `not_all_flat_pairs_commute` exhibits the failure with `^` and `>`. So
+concatenation is not a faithful record of two *independent* bodies.
+
+**But the flat model is not thereby wrong — the two are different sectors.** A Kronecker product is a
+scalar exactly when both factors are, so a joint closure of independent factors requires *each* factor
+to close on its own. In the flat model a factor may stay **open** and be balanced by the other, which
+is precisely `SharedClosure` ([`ER_EPR_QLF`](lean/ER_EPR_QLF.lean)) — entanglement.
+
+| sector | condition | model | example |
+|---|---|---|---|
+| **product** | both factors close alone | tensor-valid; phases multiply in `μ₄` | `+ \| −` |
+| **coupled** | neither closes alone, the pair does | concatenation only | `^ \| v` |
+
+`shared_closure_not_factorizable` proves the coupled sector is real in the sharpest way: the primordial
+pair `^ \| v` is jointly balanced while **neither** side folds to a scalar, so no assignment to
+independent indexed bodies reproduces it. The gauge pair falls on the other side
+(`gauge_pair_is_product_sector`), so the boundary is sharp from both directions.
+
+Measured in [`census_inventory.py`](census_inventory.py)'s factor census (every cut of a balanced
+history read as two subsystems): the coupled sector is the **majority**, settling near four fifths
+rather than growing to everything — `0.750`, `0.791`, `0.804`, `0.803` of shared closures at lengths
+2, 4, 6, 8.
+
+**So: index the inventory, but do not let indexing replace concatenation.** Binding two bodies takes a
+genuine Pauli **string** `σ ⊗ σ`, not a product of single-factor operations — which is exactly the
+coupling that the contextual-partition problem ([`Open_Problems.md`](Open_Problems.md)) needs.
+
 ## 4. Proof of Completeness in the Framework
 
 1. **Orthogonality & Hermitian closure**: `hermitian.py` verifies that every admissible history string can be closed using only the 8 twists. Exhaustive search shows no missing directions are required.
