@@ -115,14 +115,23 @@ but **given that everything happens every way, exactly how do those ways add?**
      cannot come from relabeling — a permutation of ways never sums two amplitude classes into one.
      **The asymmetry is therefore relational — `K = K(P,M)`, neither `K(P)` nor `K(M)`.** Neither side
      determines the event; their joint closure does, which is why the same prepared state must behave
-     differently against an aligned and a transverse apparatus. The transverse case is already
-     *forced correct*: when the two branches are exchanged by a relabeling that fixes the preparation,
-     `A₊ = A₋` exactly, so a `z`-prepared spin measured along `x` is `½`/`½` by theorem. The aligned
-     case is the open one: a prefix-prepared ensemble gives unequal amplitudes (`(+1,+8)`, then
-     `(−24,−120)`), but over the two horizons reached the ratio moves away from sharpness rather than
-     toward it. **Two horizons establish no limit** — this is a reason to build the finite-size scaling
-     study, not a refutation, and it does say prefix-as-preparation is suspect as the physical
-     identification.
+     differently against an aligned and a transverse apparatus.
+   * **Measured, exactly, in [`contextual_census.py`](contextual_census.py)** — the phase rule turns
+     the `8^k` enumeration into a polynomial dynamic program (appending a letter costs a sign fixed by
+     axis-count *parities* alone), cross-checked against brute force. Two results:
+     the **transverse** geometries sit at exactly `½` at every horizon — but that is *forced* by
+     basis-independence and so is bookkeeping, not evidence; the **aligned** geometries wash out:
+     for any fixed preparation the branch ratio climbs monotonically toward `1` (depth 1:
+     `0, .125, .200, .267, .327, .381, .429, .472, .511, .546` through `k=18`), while letting the
+     preparation depth grow with the horizon drives the weight to `1` instead. **So this partition does
+     not define a horizon-independent probability** — the number is set by the depth-to-horizon ratio
+     and both limits are degenerate. The limit is not *proven* (monotone data to `k=18` is not a
+     theorem), but a further principle is plainly needed to fix the regime.
+   * **The candidate principle is already in the repo and is not a free parameter:** closure is
+     **capacity-relative** (`closedAtHorizon_iff_maxExcursion_le`, [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean)),
+     and the count/**listening** distinction says what a horizon of capacity `R` receives. Read the
+     contextual weight at the observer's listening horizon rather than at `k→∞`. **That is the next
+     experiment**, not a conclusion.
    * Then test **blind** against known answers: single-spin rotation, Mach–Zehnder, the two-spin
      singlet / Bell correlations, three-path interference. **Watch for symmetry-locked results** — a
      `½` forced by a proven invariance is multiplicity-invariant bookkeeping, not evidence.

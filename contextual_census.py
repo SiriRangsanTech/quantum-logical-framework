@@ -37,7 +37,32 @@ It is also a checker. Two consequences of the Lean theorems are asserted against
 symmetric branch pairs must give exactly equal amplitudes (QLF_BasisIndependence), and the
 DP must agree with brute-force enumeration wherever brute force is affordable.
 
-Usage:  python3 contextual_census.py [--max-k 12] [--brute-check 4]
+What it found (reproduce with --depth-scan 3 --max-k 18)
+--------------------------------------------------------
+The transverse geometries are pinned to exactly 1/2 at every horizon, which is not evidence
+about anything: QLF_BasisIndependence *forces* it, since the two branches are exchanged by a
+relabeling that fixes the preparation. A number forced by a proven symmetry is bookkeeping
+(Philosophy.md 3a rule 4), and the script prints it only as a regression check.
+
+The aligned geometries are the informative ones, and they say something the framework has to
+answer for: **for any fixed preparation, the contextual weight washes out toward 1/2 as the
+horizon grows.** The branch ratio A(-)/A(+) climbs monotonically at every horizon computed --
+at depth 1: 0, .125, .200, .267, .327, .381, .429, .472, .511, .546 through k = 18 -- and a
+deeper preparation only delays it (depth 3 is still .9994 at k = 18, but its ratio is rising
+too). Conversely, letting the depth grow with the horizon drives the weight to 1.
+
+So this partition does **not** define a horizon-independent contextual probability: the number
+is set by the ratio of preparation depth to horizon, and both limits are degenerate (1/2 one
+way, 1 the other). The limit itself is not proven -- monotone data through k = 18 is not a
+theorem -- but it is enough to say a further principle is needed to fix the regime.
+
+QLF already has the candidate, and it is not a free parameter: closure is **capacity-relative**
+(`closedAtHorizon_iff_maxExcursion_le`, lean/QLF_ClosureDepthLaw.lean), and the count/listening
+distinction says what a horizon of capacity R actually receives. The contextual weight should
+plausibly be read at the observer's listening horizon rather than at k -> infinity. That is the
+next experiment, not a conclusion.
+
+Usage:  python3 contextual_census.py [--max-k 12] [--brute-check 4] [--depth-scan 3]
 """
 from __future__ import annotations
 import argparse
@@ -113,25 +138,32 @@ def strand_census(k: int) -> dict:
     """
     states = {((0, 0, 0, 0), (0, 0, 0)): 1}
     for _ in range(k):
-        nxt = defaultdict(int)
-        for (imb, par), amp in states.items():
-            for c in ALPHABET:
-                o = ORDV[c]
-                # new inversions: earlier letters strictly greater than c (both non-gauge)
-                if o == 1:      new_inv = (par[1] + par[2]) % 2
-                elif o == 2:    new_inv = par[2] % 2
-                else:           new_inv = 0
-                sign = -1 if (c in NEG_TWISTS) != (new_inv == 1) else 1
-                d = [0, 0, 0, 0]
-                for idx, (a, b) in enumerate(CONJ_PAIRS):
-                    if c == a: d[idx] = 1
-                    elif c == b: d[idx] = -1
-                nimb = tuple(imb[i] + d[i] for i in range(4))
-                npar = list(par)
-                if o: npar[AXIS_INDEX[o]] ^= 1
-                nxt[(nimb, tuple(npar))] += sign * amp
-        states = dict(nxt)
+        states = _step(states)
     return states
+
+
+def _step(states: dict) -> dict:
+    """Extend every strand by one letter. The sign it costs is fixed by axis-count parities
+    alone -- which is exactly why the phase rule turns an 8^k enumeration into a polynomial
+    dynamic program."""
+    nxt = defaultdict(int)
+    for (imb, par), amp in states.items():
+        for c in ALPHABET:
+            o = ORDV[c]
+            # new inversions: earlier letters strictly greater than c (both non-gauge)
+            if o == 1:      new_inv = (par[1] + par[2]) % 2
+            elif o == 2:    new_inv = par[2] % 2
+            else:           new_inv = 0
+            sign = -1 if (c in NEG_TWISTS) != (new_inv == 1) else 1
+            d = [0, 0, 0, 0]
+            for idx, (a, b) in enumerate(CONJ_PAIRS):
+                if c == a: d[idx] = 1
+                elif c == b: d[idx] = -1
+            nimb = tuple(imb[i] + d[i] for i in range(4))
+            npar = list(par)
+            if o: npar[AXIS_INDEX[o]] ^= 1
+            nxt[(nimb, tuple(npar))] += sign * amp
+    return dict(nxt)
 
 
 def amplitude(prep: str, app: str, k: int, census: dict) -> int:
@@ -181,13 +213,44 @@ def geometries() -> list[tuple[str, str, str, str, str]]:
     ]
 
 
+def depth_scan(dmax: int, kmax: int) -> None:
+    """How the aligned contextual weight moves as the horizon grows, per preparation depth.
+
+    Reuses one dynamic program across all horizons, so this reaches k ~ 20 in under a minute.
+    """
+    geos = [(f"depth d={d} (aligned)", "/" * d, "\\" * d, "/" * d) for d in range(1, dmax + 1)]
+    states = {((0, 0, 0, 0), (0, 0, 0)): 1}
+    rows: dict[str, list] = {label: [] for label, _, _, _ in geos}
+    for k in range(0, kmax + 1):
+        for label, prep, bp, bm in geos:
+            Ap = amplitude(prep, bp, k, states)
+            Am = amplitude(prep, bm, k, states)
+            if Ap or Am:
+                rows[label].append((k, Ap * Ap / (Ap * Ap + Am * Am), (Am / Ap) if Ap else None))
+        if k == kmax:
+            break
+        states = _step(states)
+    for label, rs in rows.items():
+        print(f"\n== {label}")
+        print(f"   {'k':>3}  {'P(+)':>10}  {'A(-)/A(+)':>10}")
+        for k, p, r in rs:
+            print(f"   {k:>3}  {p:>10.6f}  {r:>10.6f}" if r is not None
+                  else f"   {k:>3}  {p:>10.6f}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--max-k", type=int, default=12, help="largest system-strand horizon")
     ap.add_argument("--brute-check", type=int, default=4,
                     help="verify the DP against enumeration up to this horizon (8^k words; 6 is slow)")
+    ap.add_argument("--depth-scan", type=int, default=0, metavar="DMAX",
+                    help="instead of the battery, scan preparation depths 1..DMAX over horizons")
     args = ap.parse_args()
+
+    if args.depth_scan:
+        depth_scan(args.depth_scan, args.max_k)
+        return
 
     failures: list[str] = []
 
