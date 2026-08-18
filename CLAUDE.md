@@ -123,6 +123,17 @@ The Lagrangian formulation uses a Σ₈ = {τ¹…τ⁸} algebra with **τᵢτ�
 
 13. **`simp_all [is_gauge]` doesn't close False**: Use `cases head <;> simp [is_gauge] at h`.
 
+14. **`first | tac1 | tac2` short-circuits on partial success**: `first` takes the first branch that
+    *succeeds*, and `simp at h` counts as success when it merely **rewrites** `h` without closing the
+    goal — so the fallback never runs and you get `unsolved goals` with the hypothesis sitting in the
+    contradictory form you wanted. Don't use `first` for "close this goal somehow"; write the
+    deterministic chain (e.g. `congrArg Complex.im h` → `rw [Complex.neg_im, Complex.I_im] at h` →
+    `linarith`).
+
+15. **Pick a matrix entry where the matrix is non-zero**: contradicting `-(c • σz) = c • σz` at entry
+    `(0,1)` proves nothing — `σz 0 1 = 0`, so both sides are `0` and the "contradiction" is vacuous.
+    Read `(0,0)`.
+
 ---
 
 ## Proof patterns
