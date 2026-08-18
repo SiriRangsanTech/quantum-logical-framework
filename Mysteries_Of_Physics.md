@@ -136,6 +136,14 @@ at an irreducible core — so a relaxation comparison is only meaningful between
 the *same* equilibrium. Comparing time-to-own-fixpoint across different imbalances manufactures a
 spurious crossing, which is exactly the artifact that appeared in the first version of our own test.
 
+**Why it is hard to duplicate — a prediction, not an excuse.** The effect is real and it belongs to
+*particular preparations*, not to hot water as a class. Uniform ensembles show **no crossing at all**
+while individual draws cross 13–17% of the time, because a scalar macro variable sits on top of a census
+whose depths span an order of magnitude. An experiment that fixes the temperature and lets the preparation
+vary is averaging exactly that away, so **irreproducibility is the signature rather than the refutation** —
+and the tractable decisive test is a trapped-ion ladder, where the multiplicities can be written down
+instead of guessed ([`Mpemba.md`](Mpemba.md) §7).
+
 **Honest scope — 🟡, not ✅.** The *ensemble* effect is not derived: median relaxation stays monotone in
 energy, so the crossing lives between individual preparations. Whether **energy** is an admissible
 distance measure is what thermomajorization asks of the ordinary effect. And **no quantitative claim

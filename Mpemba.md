@@ -1,46 +1,95 @@
 # The Mpemba effect — anomalous relaxation as a closure census
 
+> **In one sentence.** Hot water can freeze before cold because *how* a system is prepared matters more
+> than *how far* it is from the finish. The [Quantum Logical Framework](README.md) makes that precise:
+> two preparations carrying the same energy can need wildly different amounts of room to finish, and a
+> high-energy preparation that never uses the slow routes gets there first.
+>
+> **And it explains the century of contradictory experiments.** The effect is real and it belongs to
+> *particular preparations*, not to hot water as a class — so an experiment that controls the temperature
+> and lets the preparation vary is sampling a distribution in which most draws show nothing. Averaged over
+> preparations the crossing disappears; that is a **prediction here, not an embarrassment**.
+
+**What is on this page.** A machine-verified account of the effect's structure — a no-go telling you which
+comparisons can never show it, a theorem making room for it, an exhibited and unbounded family of
+instances, and a blind test showing why the ensemble average hides what individual preparations do.
+Not a quantitative derivation for water; see [§9](#9-honest-scope--and-what-would-make-this-a-result).
+
 **Module:** [`lean/QLF_Mpemba.lean`](lean/QLF_Mpemba.lean) — machine-verified, no axioms
 **Blind test:** [`mpemba_census.py`](mpemba_census.py)
 **Companions:** [`lean/QLF_ClosureDepthLaw.lean`](lean/QLF_ClosureDepthLaw.lean) (relaxation time *is* the maximum excursion) · [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) (capacity) · [`Philosophy.md`](Philosophy.md) §3a (the method) · [`Entropy.md`](Entropy.md) · [`Mysteries_Of_Physics.md`](Mysteries_Of_Physics.md)
 
 ---
 
-## §1 The effect, and what it is now understood to be
+## 1. The everyday effect
 
-Hot water, under some conditions, freezes before cold. The naïve reading — that a state farther from
-equilibrium relaxes faster — sounds paradoxical, and for a long time the discussion was about which
-mundane mechanism (evaporation, convection, dissolved gas, supercooling, container coupling) was *the*
-cause.
+Hot water, under some conditions, freezes before cold. Read naïvely — a state farther from equilibrium
+arriving sooner — it sounds paradoxical, and for decades the argument was about which mundane mechanism
+(evaporation, convection, dissolved gas, supercooling, container coupling) was *the* cause.
 
-Modern work reframed it as **relaxation-mode geometry** rather than thermal bookkeeping. Write the
-approach to equilibrium as a sum over modes,
+Modern work changed the question. The approach to equilibrium is not one race down one track; it is a
+sum over **relaxation modes**, some fast and some slow, and what governs the finish is how much of your
+starting state sits on the *slow* ones. A hotter preparation can arrive first simply by having less
+weight there. In the **strong Mpemba effect** that weight is zero: the slow channel is not merely small,
+it is absent, and the speed-up is exponential.
+
+**So the lesson is not about heat.** It is that *distance from equilibrium does not determine relaxation
+time.* Something finer does — and that finer thing is what this page makes countable.
+
+<details>
+<summary><b>The mode-sum, formally</b></summary>
+
+Write the approach to equilibrium as
 
 $$
 \delta p(t) \;=\; \sum_n a_n(X_0)\, e^{-\lambda_n t}\, v_n ,
 $$
 
-and the late-time behaviour is governed by the slowest surviving mode. A hotter preparation can arrive
-first if its amplitude `a_slow` on that mode is smaller — and in the **strong Mpemba effect** that
-amplitude vanishes outright, removing the slow channel and giving exponential speed-up (Lu–Raz;
-Klich–Raz–Hirschberg–Vucelja). The effect has been realised in controlled systems, including colloidal
-and trapped-ion experiments, precisely by engineering the initial state's overlap with the slow mode.
+and the late-time behaviour is governed by the slowest surviving mode. A hotter preparation arrives first
+if its amplitude `a_slow` on that mode is smaller; the strong effect is `a_slow = 0` outright (Lu–Raz;
+Klich–Raz–Hirschberg–Vucelja). It has been realised in controlled systems — colloidal and trapped-ion —
+precisely by engineering the initial state's overlap with the slow mode.
 
-**The lesson is not about heat.** It is that *distance from equilibrium does not determine relaxation
-time*. Something finer does.
+</details>
 
 ---
 
-## §2 The substrate translation
+## 2. The picture, in one analogy
 
-On the substrate, relaxation to equilibrium is not modelled — it *is* closure. And its time is not a
-free parameter: [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean) proves
+> Two people leave a large building.
+> One starts **farther** from the exit but stands in an open corridor.
+> The other starts **closer** but is in a maze of locked side rooms.
+> The farther one can still get out first.
+
+Distance to the exit is the macroscopic variable — temperature, energy, "how far from equilibrium".
+Corridors and mazes are the **pathways**. The Mpemba effect is what happens when the pathway structure
+outweighs the distance, and the whole content of the sections below is: on this substrate, the pathways
+are *countable*, so which preparations can outrun which stops being a matter of interpretation.
+
+---
+
+## 3. What the substrate says
+
+Three plain statements come first; the formal versions follow.
+
+1. **Reaching equilibrium is not modelled here — it *is* closure.** A history settles when its open
+   possibilities have all been matched off. Nothing needs to be added to make "relaxation" meaningful.
+2. **The time it takes is the deepest excursion the history ever makes.** Not an average, not a fitted
+   rate: the furthest the walk ever strays from balance is exactly the capacity needed to finish, and
+   exactly how many passes it costs. That is a theorem, not a modelling choice.
+3. **Some preparations never use the deep routes at all.** Those finish early regardless of how much
+   energy they carry — which is the whole effect, stated without heat, water, or eigenvalues.
+
+The theorem behind point 2, from [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean):
 
 > `closedAtHorizon R s ↔ maxExcursion s ≤ R`
 
-so **relaxation time = closure depth = the maximum excursion of the phase walk**. Every question about
+**relaxation time = closure depth = the maximum excursion of the phase walk.** Every question about
 anomalous relaxation therefore becomes a question about a *census of excursions* — decidable, not
 interpretive.
+
+<details>
+<summary><b>The technical translation: the closure-depth census</b></summary>
 
 Following the mode picture, define for a preparation `X` the **closure-depth census**
 
@@ -60,38 +109,48 @@ horizon of capacity `R` actually receives. A **QLF Mpemba effect** is then `τ_H
 farther preparation by some macro measure. A useful companion quantity is the discrete **closure hazard**
 `Γ_X(R) = W_X(R)/∑_{d≥R} W_X(d)` — of the histories still unresolved at `R`, what fraction close now.
 
+</details>
+
 ---
 
-## §3 What is proven
+## 4. What is proven
 
-Three statements, machine-verified in [`QLF_Mpemba`](lean/QLF_Mpemba.lean). They do **not** all point the
-same way, which is why they are worth having.
+Three machine-verified statements ([`QLF_Mpemba`](lean/QLF_Mpemba.lean), no axioms). They do **not** all
+point the same way, which is why they are worth having.
 
-### (a) A no-go — no Mpemba for the imbalance measure
+### (a) Measure the distance wrong and the effect is impossible
 
-**`relaxation_ge_distance`**: `|level s| ≤ maxExcursion s`. If "distance from equilibrium" means the
-history's own imbalance, then relaxation is bounded **below** by the distance — the walk must reach its
-final level, and the excursion is a maximum over prefixes (`level_le_hmax`). A farther state can never
-relax faster by that measure: the effect is **impossible**, not merely unobserved.
+**In words.** If "farther from equilibrium" means the history's own imbalance, then a farther state can
+*never* finish first — not rarely, never. The walk has to travel at least as far as its own imbalance,
+so relaxation is bounded below by the distance.
 
-That is a real constraint, and it disciplines the rest: *any* Mpemba claim on the substrate must name a
-distance measure that is not the imbalance.
+**Formally** — `relaxation_ge_distance`: `|level s| ≤ maxExcursion s`, via `level_le_hmax` (the excursion
+is a maximum over prefixes).
 
-### (b) The enabler — no scalar determines the relaxation time
+**Why it earns its place.** It disciplines everything after it: *any* Mpemba claim on the substrate must
+name a distance measure that is not the imbalance. A no-go is what tells you where to stop looking.
 
-**`equal_length_unequal_relaxation`**: at one length `2n`, with identical (zero) imbalance, the pair
-matching `[+−][+−]…` closes in **one** pass while the nested singlet `[+ⁿ −ⁿ]` needs **`n`**
-(`nested_relaxes_slower`). Same energy, same distance-from-balance, relaxation differing by a factor of
-`n`.
+### (b) No single number decides how long relaxation takes
 
-So the macrostate scalar provably underdetermines the relaxation time. **That is the room an anomalous
-ordering needs** — and it is a theorem about the substrate, not a story about water.
+**In words.** Two preparations can carry the same energy and sit the same distance from balance, and
+still finish at completely different times — one in a single pass, the other needing `n`. So the
+macrostate scalar you would naturally reach for provably does not determine the answer. **That is the
+room an anomalous ordering needs.**
 
-### (c) Strong Mpemba, translated — sector emptiness, not a vanishing eigenmode
+**Formally** — `equal_length_unequal_relaxation`: at one length `2n` with identical (zero) imbalance, the
+pair matching `[+−][+−]…` closes in **one** pass while the nested singlet `[+ⁿ −ⁿ]` needs **`n`**
+(`nested_relaxes_slower`).
 
-**`strong_mpemba`**: if every history of preparation `H` satisfies `maxExcursion ≤ R` while some history
-of `C` exceeds `R`, then at capacity `R` the `H` preparation has **fully closed** and `C` has not. The
-spectral condition `a_slow = 0` becomes the census condition
+### (c) The strong effect, translated: an empty sector, not a vanishing eigenmode
+
+**In words.** Arrange a preparation so that *every* one of its histories stays shallow, while a rival
+still has some deep ones. Then at that capacity the first is completely finished and the second is not.
+The spectral condition "the slow mode has zero amplitude" becomes a plain counting condition: **the deep
+sector is empty.**
+
+**Formally** — `strong_mpemba`: if every history of `H` satisfies `maxExcursion ≤ R` while some history of
+`C` exceeds `R`, then at capacity `R` the `H` preparation has fully closed and `C` has not, so
+`a_slow = 0` becomes
 
 $$
 W_H(\text{deep sector}) \;=\; 0 ,
@@ -102,10 +161,10 @@ identifies.
 
 ---
 
-## §4 The blind test — and it does **not** produce the effect
+## 5. The blind test — why the effect is hard to duplicate
 
-The criterion is sharp: if an anomalous ordering appears only after the multiplicities are arranged to
-produce one, this is an interpretation of Mpemba, not a derivation. So
+The criterion is sharp: if an anomalous ordering appears only after the multiplicities have been arranged
+to produce one, this is an interpretation of Mpemba, not a derivation. So
 [`mpemba_census.py`](mpemba_census.py) draws preparations **uniformly** at a fixed macro parameter, with
 nothing tuned about their depth distribution:
 
@@ -113,17 +172,22 @@ nothing tuned about their depth distribution:
 |---|---|---|---|---|---|---|
 | median relaxation | 2 | 3 | 4 | 4 | 5 | 6 |
 
-**No crossings.** Relaxation is monotone in the macro parameter, so the effect does *not* fall out of a
-scalar energy with uniform preparations. Stated plainly because it is the honest result.
+**No crossings in the median.** Relaxation is monotone in the macro parameter, so the effect does *not*
+fall out of a scalar energy averaged over preparations. Stated plainly because it is the honest result —
+and because it is the informative one: **this is the substrate's account of why the effect is so hard to
+duplicate.** An experiment that fixes the temperature and lets everything else vary is averaging over
+exactly this distribution, and the average is flat.
 
-What the same test does show is that the room is real: at length 32 the depth ranges **1 … 13** over
-20,000 uniform draws, and the constructible extremes are **1** (pair matching) and **16** (nested
-singlet).
+The spread underneath that flat median is enormous, which is the other half of the story: at length 32 the
+depth ranges **1 … 13** over 20,000 uniform draws, and the constructible extremes are **1** (pair
+matching) and **16** (nested singlet). A scalar macro variable is sitting on top of a census whose values
+differ by an order of magnitude — so *individual* comparisons swing wildly while the mean says nothing.
 
-### §4a And instances *do* occur — including from unbiased draws
+### 5a. The effect is real: individual preparations cross, and often
 
-The monotone medians say the *ensemble* shows no effect. Individual preparations are a different
-question, and there the answer is yes.
+The monotone medians are a statement about the *ensemble*. The effect is not an ensemble property, and at
+the level where it actually lives — particular preparations against particular preparations — it is
+there, provably and measurably.
 
 **Proven, and unbounded** (`mpemba_instance`, `mpemba_ordering`): for every `d > 1` and `n > d`, two
 balanced preparations closing to the *same* equilibrium, where the one with **more energy** closes
@@ -150,16 +214,22 @@ hot  (length 64, depth 3): +--+--+++----+++---+-+-++-+++---++-+-++-++---+-++++-+
 cold (length 16, depth 5): ---+-+---+++-+++
 ```
 
-So the honest position is finer than "no effect": **the crossing is a property of individual preparations,
-not of the uniform ensemble.** Which is also how the laboratory effect is reported — Mpemba experiments
-compare specific preparations, never ensemble medians.
+So the position is sharper than either "no effect" or "hot freezes faster": **the crossing is a real
+property of individual preparations and not of the uniform ensemble.** One draw in six or seven at a 2×
+energy ratio, and any ratio you like if you are allowed to choose the preparations — but wash the
+preparations out and the signal goes with them.
+
+That is precisely how the laboratory effect behaves. Mpemba experiments compare specific preparations, and
+their results are famously sensitive to preparation, container, observable, and cooling history; a
+consistent effect at fixed temperature is exactly what this census says **should not** be expected.
+**Irreproducibility is the signature, not the refutation.**
 
 ---
 
-## §5 A methodological trap the substrate makes explicit
+## 6. A trap the substrate makes explicit: comparing different destinations
 
-An earlier version of the test compared time-to-fixpoint across preparations of *differing* imbalance,
-and produced a striking crossing: median relaxation fell from 4 to 1 as the imbalance rose. It was an
+An earlier version of the test compared time-to-fixpoint across preparations of *differing* imbalance and
+produced a striking crossing: median relaxation fell from 4 to 1 as the imbalance rose. It was an
 **artifact**, and the substrate says exactly why.
 
 An unbalanced history **never closes**. It stalls at an irreducible core of `|imbalance|` same-sign
@@ -170,15 +240,15 @@ were reaching their own dead ends sooner.
 This is the substrate form of the experimental literature's hardest methodological problem: **what does
 "freezes first" mean?** Results there depend heavily on the chosen observable and on preparation, and a
 2024 experiment attributed much of the apparent variation to differing cooling rates from uncontrolled
-convection. QLF's contribution here is not a new mechanism but a sharp statement of the trap: *a
-relaxation comparison is only meaningful between preparations that close to the same equilibrium* — on
-the substrate, between balanced histories.
+convection. The contribution here is not a new mechanism but a sharp statement of the trap: *a relaxation
+comparison is only meaningful between preparations that close to the same equilibrium* — on the
+substrate, between balanced histories.
 
 ---
 
-## §6 Laser cooling — engineered multiplicity bias
+## 7. Laser cooling — the same census, engineered on purpose
 
-Laser cooling is the clean counterpart, and it is not the same mechanism as Mpemba: it *engineers* the
+Laser cooling is the clean counterpart, and it is *not* the same mechanism as Mpemba: it **engineers** the
 relaxation pathways rather than exploiting an accident of preparation. Red-detuned light makes an ion
 preferentially scatter in ways that remove motional energy; in sideband cooling the cycle
 `|g,n⟩ → |e,n−1⟩ → |g,n−1⟩` walks the vibrational ladder down. The rate depends on which states the field
@@ -197,13 +267,14 @@ resonance and few off it.
 
 **And it suggests the better experiment.** A trapped-ion ladder is an explicitly controllable transition
 network, so its multiplicities can be *written down* rather than guessed — unlike freezing water, where
-convection, evaporation, dissolved gas and nucleation are all in play at once. The decisive test of §3(c)
-would be a laser-cooled ladder prepared so that the slowest closure class has multiplicity **zero**, and
-checking whether the strong-Mpemba point sits where the census says it must.
+convection, evaporation, dissolved gas and nucleation are all in play at once. The decisive test of
+[§4(c)](#c-the-strong-effect-translated-an-empty-sector-not-a-vanishing-eigenmode) would be a laser-cooled
+ladder prepared so that the slowest closure class has multiplicity **zero**, and checking whether the
+strong-Mpemba point sits where the census says it must.
 
 ---
 
-## §7 Why water may have no single cause
+## 8. Why water may have no single cause
 
 Heating changes convection, evaporation and hence mass, dissolved-gas content, nucleation structure,
 molecular correlations, and boundary coupling — all at once. The long search for *the* mechanism assumes
@@ -222,35 +293,59 @@ explanatory of it, and it makes no quantitative prediction about water.
 
 ---
 
-## §8 Honest scope — and what would make this a result
+## 9. Honest scope — and what would make this a result
 
-**What is proven** (no axioms): the imbalance no-go (`relaxation_ge_distance`), the scalar
-underdetermination that makes anomalous ordering possible at all
-(`equal_length_unequal_relaxation`), and the sector translation of the strong effect (`strong_mpemba`).
+**Proven** (no axioms): the imbalance no-go (`relaxation_ge_distance`); the scalar underdetermination that
+makes anomalous ordering possible at all (`equal_length_unequal_relaxation`); the sector translation of the
+strong effect (`strong_mpemba`); and an *instance* with an unbounded family behind it, energy as the
+distance (`mpemba_instance`) — plus the measured fact that uniform draws cross 13–17% of the time at a 2×
+energy ratio ([§5a](#5a-the-effect-is-real-individual-preparations-cross-and-often)). **So the effect is
+exhibited on the substrate, not merely permitted.**
 
-**Also proven:** an *instance*, and an unbounded family of them, with energy as the distance
-(`mpemba_instance`) — plus the measured fact that uniform draws cross 13–17% of the time at a 2× energy
-ratio (§4a). So the effect is exhibited on the substrate, not merely permitted.
+**The stance this supports.** The Mpemba effect is real, it is a property of preparations rather than of
+temperatures, and its reputation for irreproducibility follows from that rather than counting against it.
+An experiment that controls only the macro variable is averaging over a census whose depths span an order
+of magnitude, and the average is flat by construction.
 
-**What is not:** the *ensemble* effect, and the water effect. Median relaxation is monotone in energy, so
-the crossing lives between individual preparations; whether energy is an admissible distance measure is
-what thermomajorization asks of the ordinary effect; and no quantitative claim about water is made.
-QLF here supplies an **ontology, proven scaffolding, and exhibited instances** — not a derivation of the
-laboratory phenomenon. Calling it a solved mystery would be exactly the overclaim this repository's
-method forbids.
+**Not proven, and not claimed:** an *ensemble* effect, and any quantitative statement about water. Median relaxation is monotone
+in energy, so the crossing lives between individual preparations; whether energy is an admissible distance
+measure is exactly what thermomajorization asks of the ordinary effect; and no quantitative claim about
+water is made here. What this page supplies is an **ontology, proven scaffolding, and exhibited instances**
+— not a derivation of the laboratory phenomenon. Calling it a solved mystery would be the overclaim this
+repository's method forbids.
 
 **What would make it a result** — a concrete, falsifiable target:
 
 1. Compute an actual `W_X(d)` census for a *physically specified* preparation (the trapped-ion ladder of
-   §6 is the tractable candidate) and show the conventional slow-mode amplitudes **emerge** from it —
-   ideally `a_n ∝ Σ_{h ∈ mode n} W(h)·φ(h)`, with `φ` the `μ₂` phase that
-   [`QLF_BalancedPhaseReal`](lean/QLF_BalancedPhaseReal.lean) proves closures carry.
+   [§7](#7-laser-cooling--the-same-census-engineered-on-purpose) is the tractable candidate) and show the
+   conventional slow-mode amplitudes **emerge** from it — ideally `a_n ∝ Σ_{h ∈ mode n} W(h)·φ(h)`, with
+   `φ` the `μ₂` phase that [`QLF_BalancedPhaseReal`](lean/QLF_BalancedPhaseReal.lean) proves closures
+   carry.
 2. Show that a preparation with suppressed deep-closure multiplicity is *precisely* the one with a
    suppressed slow eigenmode — not merely analogous to it.
 
 If that works, the claim becomes strong and specific: **relaxation eigenmodes are the continuum rendering
-of multiplicity classes of real histories.** If it does not, QLF has supplied an ontology for anomalous
-relaxation and a proven no-go, which is worth having and is less than a solution.
+of multiplicity classes of real histories.** If it does not, this remains an ontology for anomalous
+relaxation plus a proven no-go — worth having, and less than a solution.
+
+---
+
+## Take-away
+
+> - Relaxation speed is set by **pathway structure**, not by distance from equilibrium — the corridor
+>   beats the maze.
+> - On this substrate the pathways are **countable**, so the question becomes decidable: relaxation time
+>   *is* the deepest excursion a history makes.
+> - Measure "distance" as imbalance and the effect is **impossible** — a proven no-go that tells you which
+>   comparisons are worth running.
+> - Same energy, same imbalance, relaxation differing by a factor of `n` — **no scalar decides it**, which
+>   is exactly the room the effect needs.
+> - The effect is **real but preparation-specific**: individual preparations cross often (13–17% at 2×
+>   energy) and constructed ones by any ratio you like, while uniform ensembles show **no crossing at
+>   all** — which is why it is so hard to duplicate. Irreproducibility is the signature, not the
+>   refutation.
+> - Freezing water is **not** derived here. The tractable decisive test is a trapped-ion ladder, where the
+>   multiplicities can be written down instead of guessed.
 
 ---
 
