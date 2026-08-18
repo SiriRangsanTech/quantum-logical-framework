@@ -102,13 +102,13 @@ theorem latticeGrad_smul (c : ℝ) (f : ScalarField ℤ) :
 theorem const_of_forward_diff_zero (f : ℤ → ℝ) (h : ∀ p, f (p + 1) = f p) : ∀ p, f p = f 0 := by
   intro p
   induction p using Int.induction_on with
-  | hz => rfl
-  | hp k ih => rw [h k]; exact ih
-  | hn k ih =>
-      have := h (-(k : ℤ) - 1)
-      have hk : -(k : ℤ) - 1 + 1 = -(k : ℤ) := by ring
-      rw [hk] at this
-      rw [← this] at ih
+  | zero => rfl
+  | succ k ih => rw [h (k : ℤ)]; exact ih
+  | pred k ih =>
+      have hstep := h (-(k : ℤ) - 1)
+      have harg : -(k : ℤ) - 1 + 1 = -(k : ℤ) := by ring
+      rw [harg] at hstep
+      rw [← hstep]
       exact ih
 
 theorem latticeGrad_eq_zero_const (f : ScalarField ℤ) (h : latticeGrad f = 0) :
