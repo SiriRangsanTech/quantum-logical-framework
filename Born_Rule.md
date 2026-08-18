@@ -214,6 +214,31 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     the script. *Correction recorded:* the earlier "not a measure" verdict came from dividing depth
     by depth by the surviving **capacity-limited** population, which sums past `1` (`1.02`, `1.11`).
     That was the error, not the measure.
+  * **The normalized-event weight — multiplicity × squared mean phase — fixes the divergence and
+    is the best-behaved construction so far.** The divergence is a normalisation, not a verdict: the
+    raw signed sum treats each closing word as its own outcome, but if the `W` words closing as the
+    same event at the same depth are `W` *ways of one event*, the weight carries the many-to-one
+    normalisation,
+    `B(c) = Σ_d A_c(d)²/(W_c(d)·8^d) = Σ_d (W_c(d)/8^d)·(A_c(d)/W_c(d))²` — **frequency from how
+    many ways the event happens, interference from how coherently those ways add.** Nothing is
+    fitted (the depth factor is the cylinder measure, the divisor is the event class), and
+    **summability is automatic**: `|A| ≤ W` gives `A²/W ≤ W`, so Kraft bounds the total
+    ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)) whatever the phases do. Measured exactly: it
+    **converges absolutely by depth ~16 with no cutoff**, is **nearly capacity-independent**
+    (`0.99386152` at `R = 3` vs `0.99383011` at `R = 4`, a fifth-digit difference where every
+    earlier reading moved in the first or second), gives aligned `1.000000` and transverse
+    `0.500000`, and is exactly complementary under preparation reversal.
+  * **But it does not render an angle, and that is the test that matters.** Sweeping the apparatus
+    does not sweep the weight: adding transverse letters one at a time gives
+    `2·arccos√P = 0°, 8.99°, 13.04°, 10.37°, 12.89°, 11.13°` for `a = 0…5` — wobbling, never
+    accumulating, where a rotation would step. A grid of `m` Z-letters against `n` X-letters sits at
+    `0.97–0.99` almost everywhere regardless of `n/m`, with one inversion to `0.075` at `(2,1)`. And
+    *order* dominates composition: the same two letters give exactly `½` as X-then-Z and `0.994` as
+    Z-then-X. Both values the construction gets right are symmetry-forced (aligned has a single
+    closure, transverse is basis-independence), so the free content is precisely the part that is
+    not quantum-mechanical. **The measure question is settled; the amplitude question is not.** The
+    decisive next test is a geometry whose QM answer is known *and* unforced — two-path
+    interference, or the singlet — which needs multi-history closure rather than another weighting.
   * **Under that measure the counting probability converges and the amplitude does not — the sharp
     obstruction.** Conditioned on closure, `P(c | closure)` from multiplicity is knob-free,
     direction-sensitive, and settling in capacity: aligned `1.000`, transverse `0.500`, ZX-mix

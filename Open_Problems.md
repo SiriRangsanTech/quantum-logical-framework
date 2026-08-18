@@ -197,6 +197,20 @@ but **given that everything happens every way, exactly how do those ways add?**
      open item is now quantitative:** either the signed census cancels to `2.828^d` under some
      sharper account of which closures are the *same* event, or the amplitude does not live on this
      tree.
+   * **The normalized-event weight is the best-behaved construction so far — and still not a Born
+     rule.** If the `W` words closing as the same event at the same depth are *ways of one event*
+     rather than `W` outcomes, the weight carries the many-to-one normalisation:
+     `B(c) = Σ_d (W_c(d)/8^d)·(A_c(d)/W_c(d))²` — **multiplicity mass × coherence fraction**, with
+     nothing fitted, and **summable for free** since `|A| ≤ W` puts it under the Kraft bound
+     whatever the phases do. It converges absolutely by depth ~16, is nearly capacity-independent
+     (`0.99386152` at `R = 3` vs `0.99383011` at `R = 4`), and gives aligned `1`, transverse `½`,
+     exact complementarity. **But it does not render an angle:** apparatus tilt does not accumulate
+     (`2·arccos√P` wobbles `9°–13°` over `a = 1…5` transverse letters), a `(m Z, n X)` grid sits at
+     `0.97–0.99` regardless of `n/m` with one inversion to `0.075`, and *order* beats composition
+     (`½` for X-then-Z against `0.994` for Z-then-X). Both correct values are symmetry-forced, so
+     the unforced content is the part that fails. **The measure question is settled; the amplitude
+     question is not** — the decisive test is now a geometry with a known *and unforced* QM answer
+     (two-path interference, the singlet), which needs multi-history closure, not another weighting.
    * **Next Lean anchor (tractable):** the Kraft bound itself — for a prefix-free set of twist words
      `Σ 8^{−|h|} ≤ 1` — is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
      it can be proven outright rather than measured, making the depth measure a theorem.

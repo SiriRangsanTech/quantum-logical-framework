@@ -164,6 +164,45 @@ What it changes, and what it does not:
     either. That is where the route stands: a derived measure, a convergent multiplicity, and a
     quantitative threshold (2.828^d) that the signed census misses.
 
+The normalized-event weight: multiplicity times squared mean phase
+------------------------------------------------------------------
+The divergence above is a normalisation, not a verdict. The raw signed sum treats each closing
+word as its own outcome; if instead the W words that close as the same event at the same depth are
+W *ways of one event*, the weight carries the many-to-one normalisation:
+
+    B(c) = sum_d  A_c(d)^2 / (W_c(d) . 8^d)  =  sum_d (W_c(d)/8^d) . (A_c(d)/W_c(d))^2
+                                                 multiplicity mass    coherence fraction
+
+-- frequency from how many ways the event happens, interference from how coherently those ways add.
+Nothing is fitted: the depth factor is the cylinder measure and the divisor is the size of the event
+class. **Summability is then automatic**, since |A| <= W gives A^2/W <= W and Kraft bounds the rest
+(lean/QLF_KraftMeasure.lean) -- convergence no longer depends on how strongly the phases cancel.
+
+Measured, exactly, and it is the best-behaved construction in this file:
+
+  * it **converges absolutely and fast** -- stable to 8 digits by depth 16, with no cutoff anywhere;
+  * it is **nearly capacity-independent**: the ZX mix reads .99386152 at R = 3 against .99383011 at
+    R = 4, a fifth-digit difference where every earlier reading moved in the first or second;
+  * the limiting cases come out right: aligned 1.000000 (one closure, at depth 0), transverse
+    .500000, and reversing the preparation gives the exact complement;
+  * fully coherent ways keep their whole multiplicity mass, perfectly cancelling ways weigh zero.
+
+**And it still does not render an angle, which is the test that matters.** Sweeping the apparatus
+does not sweep the weight. Adding transverse letters one at a time gives 2.acos(sqrt(P)) = 0, 8.99,
+13.04, 10.37, 12.89, 11.13 degrees for a = 0..5 -- wobbling, never accumulating, where a rotation
+would step. A grid of apparatus with m Z-letters and n X-letters sits at .97-.99 almost everywhere
+regardless of n/m, with one outlier at (m,n) = (2,1) that inverts to .075. And *order* dominates
+composition: the same two letters give exactly .5 as X-then-Z and .994 as Z-then-X. Note also that
+both values this construction gets right are symmetry-forced (aligned has a single closure;
+transverse is QLF_BasisIndependence), so the free content is exactly the part that does not look
+like quantum mechanics.
+
+So the measure question is settled and the amplitude question is not: the honest statement is that
+this weight is well-defined, convergent and parameter-free, and that its unforced values are not a
+cos^2 family. The decisive next test is a geometry with a known QM answer that is *not* forced --
+two-path interference, or the singlet -- which needs multi-history closure rather than a new
+weighting.
+
 Usage:  python3 contextual_census.py [--max-k 12] [--brute-check 4] [--depth-scan 3]
         python3 contextual_census.py --listening 2,3,4 [--listen-k 160]
         python3 contextual_census.py --first-closure 3 [--closure-depth 24]
@@ -581,6 +620,33 @@ def cylinder_readings(prep: str, branches: list[str], R: int, dmax: int) -> dict
             "amplitude_growth": growth, "threshold": math.sqrt(8)}
 
 
+def normalized_event_weights(prep: str, branches: list[str], R: int, dmax: int) -> list:
+    """The **normalized-event** weight: multiplicity times squared mean phase.
+
+    The raw signed sum treats each first-closure word as its own outcome. If instead the `W`
+    words that close as the same event at the same depth are `W` *ways of one event*, the event's
+    weight carries the many-to-one normalisation, and the aggregate becomes
+
+        B(c) = sum_d  A_c(d)^2 / (W_c(d) . 8^d)
+             = sum_d  (W_c(d)/8^d) . (A_c(d)/W_c(d))^2
+               \_____________/   \________________/
+                multiplicity mass   coherence fraction
+
+    -- frequency from how many ways the event happens, interference from how coherently those
+    ways add. Nothing is fitted: the depth factor is the cylinder measure (see `cylinder_readings`)
+    and the normalisation is the size of the event class.
+
+    **It is summable for free**, which the raw forms were not: |A| <= W gives A^2/W <= W, so
+    B(c) <= sum_d W_c(d)/8^d <= 1 by Kraft (lean/QLF_KraftMeasure.lean, `twist_kraft`). Convergence
+    no longer depends on how strongly the phases cancel. Exact rationals throughout.
+    """
+    A, _ = first_closure_census(prep, branches, R, dmax)
+    W, _ = first_closure_census(prep, branches, R, dmax, signed=False)
+    return [sum(Fraction(A[i][d] ** 2, W[i][d] * 8 ** d)
+                for d in range(dmax + 1) if W[i][d])
+            for i in range(len(branches))]
+
+
 def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
     """The absorbing census, read at the depth the run itself chooses.
 
@@ -636,6 +702,14 @@ def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
             ways = float(cyl["mass"][0] / k) if k else float('nan')
             print(f"     cylinder measure 8^-d:  Kraft mass = {float(k):.6f} "
                   f"(the rest never closes here)   multiplicity P(+|closure) = {ways:.6f}")
+            B = normalized_event_weights(prep, [bp, bm], R, dmax)
+            tb = B[0] + B[1]
+            if tb:
+                print(f"     normalized-event weight (multiplicity x squared mean phase): "
+                      f"P(+) = {float(B[0] / tb):.8f}")
+                if tb > 1:
+                    failures.append(f"R={R} {label}: normalized-event mass {float(tb):.6f} exceeds "
+                                    f"the Kraft bound of 1")
             g, thr = cyl["amplitude_growth"], cyl["threshold"]
             if g != g:                                   # a single closure depth: nothing to sum
                 print("     phase-weighted forms: one closure depth only, so the weighting "
