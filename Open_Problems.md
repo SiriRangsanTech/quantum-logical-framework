@@ -113,9 +113,16 @@ but **given that everything happens every way, exactly how do those ways add?**
      give `A₊ = A₋` in every non-empty case, with no angular dependence whatsoever. So the quantum
      basis change is **not** the substrate relabeling, and Hadamard mixing `(A₊,A₋) ↦ (A₊+A₋, A₊−A₋)`
      cannot come from relabeling — a permutation of ways never sums two amplitude classes into one.
-     **The asymmetry has to come from the preparation**: a prefix-prepared ensemble does give unequal
-     amplitudes (`(+1,+8)`, then `(−24,−120)`), but the ratio drifts with length rather than sharpening,
-     so the crude version does not reproduce QM. That is the open piece.
+     **The asymmetry is therefore relational — `K = K(P,M)`, neither `K(P)` nor `K(M)`.** Neither side
+     determines the event; their joint closure does, which is why the same prepared state must behave
+     differently against an aligned and a transverse apparatus. The transverse case is already
+     *forced correct*: when the two branches are exchanged by a relabeling that fixes the preparation,
+     `A₊ = A₋` exactly, so a `z`-prepared spin measured along `x` is `½`/`½` by theorem. The aligned
+     case is the open one: a prefix-prepared ensemble gives unequal amplitudes (`(+1,+8)`, then
+     `(−24,−120)`), but over the two horizons reached the ratio moves away from sharpness rather than
+     toward it. **Two horizons establish no limit** — this is a reason to build the finite-size scaling
+     study, not a refutation, and it does say prefix-as-preparation is suspect as the physical
+     identification.
    * Then test **blind** against known answers: single-spin rotation, Mach–Zehnder, the two-spin
      singlet / Bell correlations, three-path interference. **Watch for symmetry-locked results** — a
      `½` forced by a proven invariance is multiplicity-invariant bookkeeping, not evidence.
