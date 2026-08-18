@@ -76,6 +76,35 @@ canonical status list; when an item moves, update it here and in its owning doc.
 
 ---
 
+## Working priority — what to do next
+
+Recorded here so it survives a session boundary. The governing question has shifted: not *how many ways*,
+but **given that everything happens every way, exactly how do those ways add?**
+
+1. ~~**Instantiate `DivergenceCalculus`**~~ — ✅ done ([`QLF_LatticeCalculus`](lean/QLF_LatticeCalculus.lean)).
+   A forward-difference calculus on `ℤ` with metric compatibility computed rather than imposed and a
+   genuinely non-zero gradient, so the field-equation theorems are conditional on *satisfiable*
+   hypotheses. Claimed only as that: **consistent and inhabited**, not an implementation of GR geometry.
+2. **Prove the full phase rule** — `φ(h) = (−1)^{N₋(h)} · (−1)^{inv(axis(h))}`. The highest-value
+   tractable theorem left: 0 violations across 8,134,416 histories, proven for the pair sector, with
+   `axisProd` infrastructure already in [`QLF_TwistAlphabet`](lean/QLF_TwistAlphabet.lean) and the
+   `μ₄→μ₂` determinant argument ([`QLF_BalancedPhaseReal`](lean/QLF_BalancedPhaseReal.lean)) showing the
+   family is in reach. Finishing it gives an explicit combinatorial rule for how **every** history
+   interferes with every other.
+3. **The signed-census → amplitude bridge** — with the phase rule in hand, stop evaluating Pauli matrices
+   and compute, per outcome class `E`, `A(E) = N₊ − N₋` and the weight `A(E)²`. Test **blind** against
+   systems whose answers are known: single-spin rotation, Mach–Zehnder, the two-spin singlet / Bell
+   correlations, three-path interference. This answers the question the repo has already flagged: *can
+   ordinary quantum amplitudes be reconstructed from the signed census of all ways?* A negative is as
+   valuable as a positive — it would show "all ways + current phase" is insufficient. Higher near-term
+   priority than returning to gravity.
+4. **Phase-weighted focusing / Raychaudhuri** — only after 2–3, and then ask whether matter-energy flux
+   changes the *interference* structure of horizon-crossing histories rather than their raw count. The
+   raw-congestion route was already shown to be bookkeeping (multiplicity-invariant, hence no content),
+   so this is the substrate-native replacement.
+
+---
+
 ## Closed — derived / machine-verified
 
 | Item | Status | Where |
