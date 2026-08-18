@@ -282,7 +282,7 @@ theorem merge_gap {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
 /-- Cauchy–Schwarz in Engel form, two terms. -/
 theorem sq_div_add_sq_div {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
     (a + b) ^ 2 / (p + q) ≤ a ^ 2 / p + b ^ 2 / q := by
-  have h := merge_gap hp hq
+  have h := merge_gap (a := a) (b := b) hp hq
   have hnn : 0 ≤ (a * q - b * p) ^ 2 / (p * q * (p + q)) := by positivity
   linarith
 
@@ -301,7 +301,7 @@ theorem no_constructive_interference {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
 agree, `a/p = b/q`. -/
 theorem merge_eq_sum_iff {a b p q : ℚ} (hp : 0 < p) (hq : 0 < q) :
     (a + b) ^ 2 / (p + q) = a ^ 2 / p + b ^ 2 / q ↔ a * q = b * p := by
-  have h := merge_gap hp hq
+  have h := merge_gap (a := a) (b := b) hp hq
   have hden : (0 : ℚ) < p * q * (p + q) := by positivity
   constructor
   · intro heq
