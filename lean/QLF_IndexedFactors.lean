@@ -114,8 +114,16 @@ theorem not_all_flat_pairs_commute :
   show σy * σx ≠ σx * σy
   rw [sigma_yx, sigma_xy]
   intro hcon
-  have h0 : (Complex.I • σz) 0 1 = (-(Complex.I • σz)) 0 1 := by rw [← hcon]
-  simp [σz, Matrix.smul_apply, Matrix.neg_apply] at h0
+  -- read the `(0,0)` entry, where `σz` is `1`; the `(0,1)` entry is `0` on both sides
+  have h : (-(Complex.I • σz)) 0 0 = (Complex.I • σz) 0 0 := by rw [hcon]
+  have h2 : -Complex.I = Complex.I := by
+    simpa [σz, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.head_fin_const] using h
+  have h3 : (-Complex.I).im = Complex.I.im := by rw [h2]
+  first
+    | (simp at h3)
+    | (norm_num [Complex.I_im, Complex.neg_im] at h3)
 
 -- ==========================================
 -- The flat fold splits over a cut — always
