@@ -107,7 +107,8 @@ theorem card_words (n : ℕ) : (words α n).card = (Fintype.card α) ^ n := by
         rw [Finset.mem_image] at hwa hwb
         obtain ⟨u, -, rfl⟩ := hwa
         obtain ⟨v, -, hv⟩ := hwb
-        exact hab (by simpa using hv).1.symm
+        injection hv with hba hvu
+        exact hab hba.symm
       have hstep : ∀ a ∈ (univ : Finset α),
           ((words α n).image (fun w => a :: w)).card = (Fintype.card α) ^ n := by
         intro a _
