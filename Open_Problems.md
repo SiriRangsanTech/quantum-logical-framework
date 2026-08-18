@@ -228,9 +228,13 @@ but **given that everything happens every way, exactly how do those ways add?**
      *bracketed*, since every quotient lies between the two splits now recorded in
      [`data/census_inventory.json`](data/census_inventory.json), and quotienting by Pauli fold
      collapses onto the finest, removing interference outright.
-   * **Next Lean anchor (tractable):** the Kraft bound itself — for a prefix-free set of twist words
-     `Σ 8^{−|h|} ≤ 1` — is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
-     it can be proven outright rather than measured, making the depth measure a theorem.
+   * ~~**Next Lean anchor (tractable):** the Kraft bound itself~~ — ✅ **done**
+     ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). For a prefix-free set of twist words
+     `Σ 8^{−|h|} ≤ 1` is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
+     **the depth measure is a theorem, not a measured regularity** (`kraft_count`, `kraft_measure`,
+     `twist_kraft`). The same module carries the interference no-go it implies (`merge_le_sum`,
+     `no_constructive_interference`, `merge_eq_sum_iff`) and the summability bound
+     (`normalized_event_mass_le_one`).
    * **Method note, recorded because it produced a wrong answer first:** the float scan is
      contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` (≈ 730 twists at `R = 3`), where roundoff — which
      overlaps the dominant subspace — makes every preparation *appear* to share one universal limit.
