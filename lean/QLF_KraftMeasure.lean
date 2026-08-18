@@ -2,6 +2,7 @@ import QLF_TwistAlphabet
 import Mathlib
 
 set_option linter.unusedVariables false
+set_option linter.unusedSectionVars false
 
 /-!
 # QLF_KraftMeasure — **the closure-depth measure is counted, not chosen**
@@ -94,8 +95,9 @@ theorem card_words (n : ℕ) : (words α n).card = (Fintype.card α) ^ n := by
   induction n with
   | zero => simp [words]
   | succ n ih =>
-      have hinj : ∀ a : α, Function.Injective (fun w : List α => a :: w) :=
-        fun a w₁ w₂ h => by simpa using h
+      have hinj : ∀ a : α, Function.Injective (fun w : List α => a :: w) := by
+        intro a w₁ w₂ h
+        simpa using h
       have hdisj : ∀ a ∈ (univ : Finset α), ∀ b ∈ (univ : Finset α), a ≠ b →
           Disjoint ((words α n).image (fun w => a :: w))
                    ((words α n).image (fun w => b :: w)) := by
@@ -205,8 +207,9 @@ theorem kraft_measure {F : Finset (List α)} (hF : PrefixFree F) {D : ℕ}
       = ((Fintype.card α : ℚ) ^ (D - h.length)) / ((Fintype.card α : ℚ) ^ D) := by
     intro h hh
     have hsum : (D - h.length) + h.length = D := Nat.sub_add_cancel (hlen h hh)
-    field_simp
-    rw [← pow_add, hsum]
+    have hne : ((Fintype.card α : ℚ)) ≠ 0 := ne_of_gt hc
+    rw [div_pow, one_pow, div_eq_div_iff (pow_ne_zero _ hne) (pow_ne_zero _ hne), one_mul,
+      ← pow_add, hsum]
   rw [Finset.sum_congr rfl key, ← Finset.sum_div, div_le_one (by positivity)]
   exact_mod_cast kraft_count hF hlen
 
@@ -214,7 +217,7 @@ end Kraft
 
 instance : Fintype Twist :=
   ⟨{Twist.up, Twist.down, Twist.left, Twist.right,
-    Twist.slash, Twist.backslash, Twist.plus, Twist.minus}, by decide⟩
+    Twist.slash, Twist.backslash, Twist.plus, Twist.minus}, by intro x; cases x <;> decide⟩
 
 theorem card_twist : Fintype.card Twist = 8 := by decide
 
