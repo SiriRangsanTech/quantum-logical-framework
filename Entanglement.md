@@ -20,6 +20,37 @@ This is the QLF realization of **Hermitian-pair creation**: every entangled pair
 
 Entangled pairs are created together by Hermitian splitting; they remain entangled because their joint history still folds to the original Identity in the Pauli group; they disentangle when one half meets a Hermitian conjugate from a different shared past (decoherence), or when both halves reunite and re-annihilate (pair annihilation).
 
+## 2a. Entanglement is provably **not** of product form
+
+Machine-verified in [`lean/QLF_IndexedFactors.lean`](lean/QLF_IndexedFactors.lean).
+
+A natural objection to writing a two-body history as the concatenation `A ++ B` is that it forgets which
+twist belongs to which body. Labelling them fixes that — a many-body token is `(factor, twist) ∈ ℕ × Σ₈`,
+indexed *uses* of the same eight primitives, never new ones — and independent bodies then act as `A ⊗ I`
+and `I ⊗ B`, which **commute** (`indexed_factors_commute`), where a flat word puts them in one Pauli
+algebra and makes distinct axes anticommute (`not_all_flat_pairs_commute`).
+
+But labelling cannot *replace* concatenation, and the reason is exactly what entanglement is. A Kronecker
+product is a scalar precisely when both its factors are, so a joint closure of **independent** factors
+requires each body to close on its own. Concatenation is what allows a body to stay **open**, closed only
+by its partner — which is the definition of a shared closure.
+
+| sector | condition | model | example |
+|---|---|---|---|
+| **product** | both bodies close alone | independent; phases multiply in `μ₄` | `+ \| −` |
+| **coupled** | neither closes alone, the pair does | **entanglement**; concatenation only | `^ \| v` |
+
+**`shared_closure_not_factorizable`** proves the coupled sector is real at the sharpest point available:
+the primordial pair `^ \| v` of §2 is jointly balanced while **neither** half folds to a scalar. So no
+assignment of those two histories to independent labelled bodies reproduces the closure — the primordial
+Hermitian pair is *constitutively* non-factorizable, not merely correlated. The gauge pair `+ \| −` falls
+on the other side (`gauge_pair_is_product_sector`), so the boundary is sharp from both directions.
+
+Measured in [`census_inventory.py`](census_inventory.py)'s factor census (every cut of a balanced history
+read as two bodies): the coupled sector is the **majority**, settling near four fifths — `0.750`, `0.791`,
+`0.804`, `0.803` of shared closures at lengths 2, 4, 6, 8. Binding two bodies takes a genuine Pauli
+**string** `σ ⊗ σ`, not a product of single-body operations.
+
 ## 3. ER = EPR by construction
 
 [ER_EPR_QLF.md](ER_EPR_QLF.md) develops the identity between Einstein-Rosen bridges (geometric wormholes) and EPR entanglement (quantum correlations). In QLF this identity is **automatic at the topological level**: two entangled particles are connected by a shared ZFA-constraint string that crosses no intervening spacetime. The "wormhole" is the path the engine traces between the two halves of the original Hermitian pair while enforcing global ZFA closure.

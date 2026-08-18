@@ -20,6 +20,16 @@ This is the substrate reading of ER=EPR: entanglement *is* a shared closure betw
 
 The demo enforces the **full** ZFA condition via `twist_core.is_zfa`: count balance **and** Pauli closure (the matrix product of the twists folds to a scalar `±I` / `±iI`), not count balance alone. It also computes both sets side by side and reports that they coincide — a runtime reconfirmation of the Lean keystone **`count_balanced_pauli_closed`** (`QLF_TwistAlphabet`): every count-balanced joint history of length ≥ 4 is Pauli-closed. In the shipped run, all 1860 count-balanced joint states are full-ZFA closures, `1860 == 1860`.
 
+**Why concatenation is not a shortcut here.** Writing the joint history as `A ++ B` looks like it merely
+forgets which twist belongs to which particle — but that "forgetting" is load-bearing. Labelling the
+twists by body (`(factor, twist) ∈ ℕ × Σ₈`) makes independent bodies commute, and then a joint closure
+requires *each* body to close on its own, because a Kronecker product is a scalar only when both factors
+are. The shared closures this demo searches for are exactly the ones where **neither** side closes alone —
+the coupled sector, which has no product form at all
+([`QLF_IndexedFactors`](lean/QLF_IndexedFactors.lean), `shared_closure_not_factorizable`;
+[`Entanglement.md`](Entanglement.md) §2a). Measured across the census it is the *majority* of shared
+closures (~4/5).
+
 ## 3. Turbulence: the entangled tangle
 
 A population of coexisting joint closures is a tangle of quantized vortex lines. The demo reads three turbulence observables off that tangle, each reusing a real QLF primitive.

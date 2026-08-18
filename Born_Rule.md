@@ -127,9 +127,41 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
   are signed **integers**. The general rule `(−1)^{#neg}·sign(axis permutation)` is verified but not
   proven. Two corrections were recorded in the process: the census pair's ways are *not* orthogonal, and
   alignment is a **sector** property rather than a census one (both phases occur, so a census-spanning
-  branch has the *signed* sum as its amplitude). **What remains open** is the census↔amplitude
-  identification itself — and it is known **false** in the naive form, since counts are not weights.
-- **Numerical demo**: extend `path_integral.py` to compute Born probabilities directly from QuCalc path enumeration; verify against standard QM for a battery of canonical cases (single spin, two-spin singlet, three-slit interference).
+  branch has the *signed* sum as its amplitude). **The general rule is now proven too**
+  ([`QLF_PhaseRule`](lean/QLF_PhaseRule.lean)): `φ(h) = (−1)^{#neg + inv(axis word)}` for every balanced
+  history at every length (`phase_rule`), and in a stronger form needing no balance hypothesis
+  (`twist_fold_phase_normal_form`). So the phase a way carries is a **computable integer read off the
+  word** — no matrix product per history — which is exactly the input this section said was missing.
+  **What remains open** is the census↔amplitude identification itself — known **false** in the naive
+  form (counts are not weights), and now with a *measured* obstruction as well; see the next item.
+- **Numerical demo — run, and it does not yet reproduce QM.** [`contextual_census.py`](contextual_census.py)
+  does what this item asked: exact signed amplitudes `A = N₊ − N₋` from the proven phase rule (never a
+  matrix), preparation as an *open* strand, apparatus specified independently, membership by joint
+  closure, over increasing horizons. Two results, and the first is a caution rather than a success:
+  * **Transverse geometries give exactly `½` at every horizon — but that is *forced*, not evidence.**
+    [`QLF_BasisIndependence`](lean/QLF_BasisIndependence.lean) proves relabeling the axes preserves every
+    balanced history's phase, so when the two branches are exchanged by a relabeling fixing the
+    preparation, `A₊ = A₋` identically. A number a proven symmetry forces is bookkeeping
+    ([`Philosophy.md`](Philosophy.md) §3a rule 4). **Any future Born test must check for this before
+    counting an agreement.**
+  * **Aligned geometries wash out.** For a fixed preparation the branch ratio climbs monotonically
+    toward `1` (`0, .125, .200, … .546` at `k=18`, `.677` at `k=28`), so the weight decays toward `½`;
+    letting preparation depth grow with the horizon drives it to `1` instead. Both limits are
+    degenerate, so **this partition does not define a horizon-independent probability** — the number is
+    set by the depth-to-horizon ratio. Not a proven limit (monotone data is not a theorem), and not a
+    refutation of the closure→amplitude idea; it does say a further principle must fix the regime.
+  * **Two candidate explanations have been tested and eliminated.** It is *not* an artifact of
+    flattening system and apparatus into one Pauli algebra: recomputing with them as independent
+    indexed factors ([`QLF_IndexedFactors`](lean/QLF_IndexedFactors.lean)) gives **identical**
+    probabilities at every horizon, because a strand's axis parity is determined by its imbalance, so
+    the difference is a constant sign per branch and cannot survive `|A|²`. And it is not the phase
+    model, which is proven.
+  * **The live candidate is capacity.** Closure is horizon-relative
+    (`closedAtHorizon_iff_maxExcursion_le`), and the count/**listening** distinction says what a horizon
+    of capacity `R` receives. Reading the weight at the observer's listening horizon rather than at
+    `k→∞` is the next experiment.
+- **Remaining canonical cases** — two-spin singlet, Mach–Zehnder, three-path interference — still to be
+  run, and to be run **blind**, with the symmetry-lock check above applied to every agreement.
 - **Gleason-theorem connection in Lean**: formalize the QLF-side of Gleason's uniqueness — given the uniform prior and the Pauli algebra, $|A|^2$ is the unique probability functional.
 - **Quantum contextuality**: Bell-Kochen-Specker theorem is the constraint that probability assignments must be consistent across measurement contexts. QLF's per-context possibility trees should derive this consistency automatically.
 
