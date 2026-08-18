@@ -195,16 +195,36 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
       `P(+|ψ) + P(+|ψ̄) = 1` is forced by [`QLF_BasisIndependence`](lean/QLF_BasisIndependence.lean),
       and indeed for a branch pair no relabeling can exchange the sums are `1.878` and `0.352`. The
       symmetry-lock check this section demanded is applied and reported by the script itself.
-    - **The stopping scale is unresolved, and is now the whole remaining problem.** `P(+|d)` decays
-      monotonically toward `½` with closure depth (`1.000, .962, .917, … .690` at `d = 15`, `R = 3`),
-      so both aggregations fixed in advance — coherent `|Σ_d A_c(d)|²` and incoherent `Σ_d |A_c(d)|²`
-      — drift with the cutoff and agree with each other to three digits, so the choice between them
-      is not what is at stake. Letting the walk decide the weighting needs a **derived** measure over
-      closure depths; the obvious candidate is not one (capacity pruning breaks the product
-      structure, so first-closure count over path count sums past `1` — measured at `1.02` and
-      `1.11`), and a weighting chosen to make the answer come out is a fitted parameter by
-      [`Philosophy.md`](Philosophy.md) §3a rule 4. So: **direction test passed, stopping-scale test
-      failed**, and the route needs a derived depth measure rather than another horizon.
+    - **Unweighted over depth, the stopping scale is a knob.** `P(+|d)` decays monotonically toward
+      `½` with closure depth (`1.000, .962, .917, … .690` at `d = 15`, `R = 3`), so both
+      aggregations fixed in advance — coherent `|Σ_d A_c(d)|²` and incoherent `Σ_d |A_c(d)|²` —
+      drift with the cutoff, agreeing with each other to three digits, so the choice between them is
+      not what is at stake.
+  * **The depth measure turns out to be counted, not chosen.** First closures are **prefix-free** —
+    a run that has closed is not continued, so no first-closure word extends another — which makes
+    the global cylinder measure on the Σ₈ tree, `μ(h) = 8^{−|h|}`, available, and **Kraft's
+    inequality** bounds the total at `1` by finite counting alone: at a common horizon `K` each
+    first closure at depth `d` owns `8^{K−d}` of the `8^K` complete histories, and prefix-freeness
+    makes those sets disjoint. The multiplicity reading of the same fact is the QLF one — **an
+    earlier closure weighs more because more complete histories contain it** — so this is the
+    possibility tree counting itself, not a probability postulate. Capacity then causes **leakage**,
+    never renormalisation: the mass that never closes is simply absent, and one conditions once at
+    the end. Measured exactly at `R = 3`: Kraft mass `1.000` (aligned), `0.321` (transverse),
+    `0.180` (ZX-mix) — at or below `1` and monotone in every geometry, now an asserted invariant of
+    the script. *Correction recorded:* the earlier "not a measure" verdict came from dividing depth
+    by depth by the surviving **capacity-limited** population, which sums past `1` (`1.02`, `1.11`).
+    That was the error, not the measure.
+  * **Under that measure the counting probability converges and the amplitude does not — the sharp
+    obstruction.** Conditioned on closure, `P(c | closure)` from multiplicity is knob-free,
+    direction-sensitive, and settling in capacity: aligned `1.000`, transverse `0.500`, ZX-mix
+    `0.9164 / 0.9023 / 0.9005` at `R = 3 / 4 / 5`, deeper mix `0.8600 / 0.8237 / 0.8151`. But both
+    phase-weighted forms **diverge**: a Born weight needs `|A_c(d)|` to grow no faster than
+    `√8^d = 2.828^d`, and the measured growth is `3.91^d, 4.35^d, 4.56^d` at `R = 3, 4, 5`, the gap
+    *widening* with capacity. **QLF's own phases cancel too weakly to define an amplitude under the
+    one measure that makes its counts summable.** And a pure-count probability is not a Born rule
+    either, since counts are provably not weights ([`QLF_Degeneracy`](lean/QLF_Degeneracy.lean) —
+    interference is real). So the route now has a derived measure, a convergent multiplicity, and a
+    **quantitative target**: the signed census would have to cancel down to `2.828^d`.
   * **A method note, recorded because it produced a wrong answer first.** The same scan in floating
     point is contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` — about 730 twists at `R = 3` — where the
     subdominant, preparation-dependent part sinks under the roundoff floor and the arithmetic noise,

@@ -135,13 +135,34 @@ What it changes, and what it does not:
     is forced by QLF_BasisIndependence, and the script says so. For a branch pair no relabeling can
     exchange the sums are 1.878 and 0.352 -- not complementary. The identity is a consistency check,
     never evidence.
-  * **The stopping scale is still unresolved, and that is the whole remaining problem.** The
-    depth-resolved weight P(+|d) decays monotonically toward 1/2 as the closure depth grows
-    (1.000, .962, .917, ... .690 at d = 15, R = 3), so both pre-registered aggregations drift with
-    the cutoff. Weighting depths by "let the walk decide" needs a **derived** measure over closure
-    depths, and the obvious candidate is not one: capacity pruning breaks the product structure, so
-    first-closure count over path count sums past 1 (1.02, 1.11 in test runs). A weighting chosen to
-    make the answer come out is a fitted parameter (Philosophy.md 3a rule 4), so none is used here.
+  * **Unweighted over depth, the stopping scale is still a knob.** P(+|d) decays monotonically
+    toward 1/2 as the closure depth grows (1.000, .962, .917, ... .690 at d = 15, R = 3), so both
+    pre-registered aggregations -- coherent |sum_d A_c(d)|^2 and incoherent sum_d |A_c(d)|^2 --
+    drift with the cutoff, and agree with each other to three digits, so the choice between them is
+    not what is at stake.
+  * **The depth measure is not a free choice after all: it is counted.** First closures are
+    **prefix-free** (a run that has closed is not continued, so no first-closure word extends
+    another), so the global cylinder measure on the Sigma_8 tree, mu(h) = 8^-|h|, is available and
+    Kraft's inequality bounds the total at 1 with no probability theory -- just finite counting: at
+    a common horizon K each first closure at depth d owns 8^(K-d) of the 8^K complete histories, and
+    those sets are disjoint. The QLF reading is the multiplicity one: **an earlier closure weighs
+    more because more complete histories contain it.** Capacity then causes **leakage**, never
+    renormalisation -- the mass that never closes here is simply missing from the total, and one
+    conditions once at the end. Measured, exactly: Kraft mass 1.000 (aligned), .321 (transverse),
+    .180 (ZX mix) at R = 3, always at or below 1, always monotone. An earlier version of this
+    weighting divided depth by depth by the *surviving capacity-limited* population instead and
+    summed past 1 (1.02, 1.11); that was the error, not the measure.
+  * **Under that measure the multiplicity reading converges and the amplitude reading does not --
+    and that is the sharp obstruction.** Conditioned on closure, the counting probability
+    P(c | closure) is knob-free, direction-sensitive, and settling in capacity: aligned 1.000,
+    transverse .500, ZX-mix .9164/.9023/.9005 at R = 3/4/5 and .8600/.8237/.8151 for the deeper mix.
+    But both phase-weighted forms **diverge**: a Born weight needs |A_c(d)| to grow no faster than
+    sqrt(8)^d = 2.828^d, and the measured growth is 3.91^d, 4.35^d, 4.56^d at R = 3, 4, 5 -- the gap
+    *widening* with capacity. **QLF's own phases cancel too weakly to define an amplitude under the
+    one measure that makes its counts summable.** And since counts are provably not weights
+    (interference is real -- QLF_Degeneracy), the convergent counting probability is not a Born rule
+    either. That is where the route stands: a derived measure, a convergent multiplicity, and a
+    quantitative threshold (2.828^d) that the signed census misses.
 
 Usage:  python3 contextual_census.py [--max-k 12] [--brute-check 4] [--depth-scan 3]
         python3 contextual_census.py --listening 2,3,4 [--listen-k 160]
@@ -152,6 +173,7 @@ from __future__ import annotations
 import argparse
 import itertools
 import math
+from fractions import Fraction
 from collections import defaultdict
 
 # --------------------------------------------------------------------------- #
@@ -522,6 +544,43 @@ def capacity_spectrum(R: int) -> tuple:
     return len(states), l1, top, l2
 
 
+def cylinder_readings(prep: str, branches: list[str], R: int, dmax: int) -> dict:
+    """Aggregate the first-closure census under the **global cylinder measure** mu(h) = 8^-|h|.
+
+    This is the one weighting over closure depths that is derived rather than chosen. A first
+    closure at depth d is the prefix of 8^(K-d) equally generable futures out of 8^K, so relative
+    to any common horizon its share is exactly 8^-d: an earlier closure weighs more because more
+    complete histories contain it. And because first closures are **prefix-free** -- a run that
+    closed at depth d is not continued, so no first-closure word extends another -- Kraft's
+    inequality gives, with no probability theory at all,
+
+        sum over first closures of 8^-|h|  <=  1,
+
+    the leftover being the runs that never close here (they exceed the capacity, or wander
+    forever). Capacity therefore causes **leakage**, never renormalisation: normalising depth by
+    depth against the surviving capacity-limited population is what pushed an earlier version of
+    this sum past 1 (measured 1.02, 1.11), and that was the error, not the measure.
+
+    Returns the Kraft mass, its per-branch split (the multiplicity reading), and both
+    phase-weighted forms with the growth diagnostic that decides whether they converge at all.
+    """
+    A, _ = first_closure_census(prep, branches, R, dmax)
+    W, _ = first_closure_census(prep, branches, R, dmax, signed=False)
+    mass = [sum(Fraction(W[i][d], 8 ** d) for d in range(dmax + 1)) for i in range(len(branches))]
+    total = sum(mass)
+    # the two phase-weighted forms: amplitude per measure-weighted way
+    inc = [sum(Fraction(A[i][d] ** 2, 8 ** d) for d in range(dmax + 1)) for i in range(len(branches))]
+    coh = [sum(A[i][d] / math.sqrt(8) ** d for d in range(dmax + 1)) for i in range(len(branches))]
+    # do they converge? |A(d)| ~ a^d needs a < sqrt(8) for sum 8^-d |A|^2 to exist
+    ds = [d for d in range(dmax + 1) if A[0][d]]
+    growth = float('nan')
+    if len(ds) >= 4:
+        d0, d1 = ds[len(ds) // 2], ds[-1]
+        growth = (abs(A[0][d1]) / abs(A[0][d0])) ** (1.0 / (d1 - d0))
+    return {"kraft": total, "mass": mass, "incoherent": inc, "coherent": coh,
+            "amplitude_growth": growth, "threshold": math.sqrt(8)}
+
+
 def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
     """The absorbing census, read at the depth the run itself chooses.
 
@@ -537,6 +596,8 @@ def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
     failures: list[str] = []
     for R in capacities:
         print(f"\n===== first joint closure at capacity R = {R}")
+        print("   (weights below use the global cylinder measure mu(h) = 8^-|h| on the Sigma_8 "
+              "tree,\n    the one weighting over closure depths that is counted rather than chosen)")
         for label, prep, bp, bm, forced in geometries():
             try:
                 A, _ = first_closure_census(prep, [bp, bm], R, dmax)
@@ -559,12 +620,30 @@ def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
                 if forced == "forced equal" and A[0][d] != A[1][d]:
                     failures.append(f"R={R} {label} d={d}: branches exchanged by a preparation-fixing "
                                     f"relabeling must have equal amplitudes (QLF_BasisIndependence)")
-            for cut in (depths[0], depths[len(depths) // 2], depths[-1]):
+            for cut in sorted({depths[0], depths[len(depths) // 2], depths[-1]}):
                 coh = [sum(A[i][:cut + 1]) for i in (0, 1)]
                 inc = [sum(x * x for x in A[i][:cut + 1]) for i in (0, 1)]
                 tc, ti = coh[0] ** 2 + coh[1] ** 2, inc[0] + inc[1]
-                print(f"     cutoff D={cut:>3}   coherent P(+) = {coh[0] ** 2 / tc:.6f}"
+                print(f"     unweighted, cutoff D={cut:>3}   coherent P(+) = {coh[0] ** 2 / tc:.6f}"
                       f"   incoherent P(+) = {inc[0] / ti:.6f}")
+
+            # the derived weighting: the global cylinder measure 8^-d
+            cyl = cylinder_readings(prep, [bp, bm], R, dmax)
+            k = cyl["kraft"]
+            if k > 1:
+                failures.append(f"R={R} {label}: Kraft mass {float(k):.6f} exceeds 1 -- the "
+                                f"first-closure set is not prefix-free, or a run was counted twice")
+            ways = float(cyl["mass"][0] / k) if k else float('nan')
+            print(f"     cylinder measure 8^-d:  Kraft mass = {float(k):.6f} "
+                  f"(the rest never closes here)   multiplicity P(+|closure) = {ways:.6f}")
+            g, thr = cyl["amplitude_growth"], cyl["threshold"]
+            if g != g:                                   # a single closure depth: nothing to sum
+                print("     phase-weighted forms: one closure depth only, so the weighting "
+                      "question does not arise here")
+            else:
+                verdict = "converges" if g < thr else "DIVERGES, so no Born weight exists under it"
+                print(f"     phase-weighted forms: |A(d)| ~ {g:.3f}^d against the {thr:.3f}^d the "
+                      f"measure needs, so the amplitude sum {verdict}")
 
         # --- does the preparation's DIRECTION still reach the outcome? ---------------
         print("  -- direction test: the same apparatus against a preparation and its reversal")
@@ -717,7 +796,8 @@ def main() -> None:
                 print(f"     - {f}")
             raise SystemExit(1)
         print("   all asserted invariants hold (absorbing program = enumeration; symmetric branch "
-              "pairs exactly equal; reversing the preparation changes the outcome weights)")
+              "pairs exactly equal; reversing the preparation changes the outcome weights; the "
+              "Kraft mass of\n   the prefix-free first-closure set stays at or below 1)")
         return
 
     if args.listening:

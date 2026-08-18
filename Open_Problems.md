@@ -177,10 +177,29 @@ but **given that everything happens every way, exactly how do those ways add?**
      question: a derived measure over closure depths.** `P(+|d)` decays monotonically toward `½`
      with depth, so both pre-registered aggregations (coherent `|Σ_d A_c(d)|²`, incoherent
      `Σ_d |A_c(d)|²`) drift with the cutoff and agree with each other to three digits; and the
-     "let the walk decide" weighting is not available for free, since capacity pruning breaks the
-     product structure and first-closure-over-path counts sum past `1` (`1.02`, `1.11`). A weighting
-     chosen to make the answer come out is a fitted parameter. **Direction test passed;
-     stopping-scale test failed.**
+     unweighted aggregations drift with the cutoff.
+   * **The depth measure is counted, not chosen — correcting the line above.** First closures are
+     **prefix-free**, so the global cylinder measure `μ(h) = 8^{−|h|}` on the Σ₈ tree applies and
+     **Kraft's inequality** caps the total at `1` by finite counting: at a common horizon `K` a
+     first closure at depth `d` owns `8^{K−d}` of the `8^K` complete histories, disjointly. In QLF
+     terms, **an earlier closure weighs more because more complete histories contain it** — the
+     possibility tree counting itself, not a new postulate. Capacity causes **leakage**, not
+     renormalisation. Measured (`R = 3`): Kraft mass `1.000` aligned, `0.321` transverse, `0.180`
+     ZX-mix, always `≤ 1` and monotone, now an asserted invariant. The earlier `1.02 / 1.11` came
+     from normalising depth by depth against the surviving capacity-limited population — that was
+     the error, not the measure.
+   * **Under it the multiplicity converges and the amplitude does not.** `P(c | closure)` from
+     counts is knob-free, direction-sensitive and settling in capacity (aligned `1.000`, transverse
+     `0.500`, ZX-mix `0.9164/0.9023/0.9005` at `R = 3/4/5`), but a Born weight needs
+     `|A_c(d)| ≲ √8^d = 2.828^d` and the measured growth is `3.91^d, 4.35^d, 4.56^d`, widening with
+     capacity. **The phases cancel too weakly to define an amplitude under the measure that makes
+     the counts summable** — and counts are provably not weights, so neither is the answer. **The
+     open item is now quantitative:** either the signed census cancels to `2.828^d` under some
+     sharper account of which closures are the *same* event, or the amplitude does not live on this
+     tree.
+   * **Next Lean anchor (tractable):** the Kraft bound itself — for a prefix-free set of twist words
+     `Σ 8^{−|h|} ≤ 1` — is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
+     it can be proven outright rather than measured, making the depth measure a theorem.
    * **Method note, recorded because it produced a wrong answer first:** the float scan is
      contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` (≈ 730 twists at `R = 3`), where roundoff — which
      overlaps the dominant subspace — makes every preparation *appear* to share one universal limit.
