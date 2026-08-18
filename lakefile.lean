@@ -208,6 +208,7 @@ lean_lib QLF where
     `QLF_BalancedPhaseReal,
     `QLF_PhaseRule,
     `QLF_BasisIndependence,
+    `QLF_IndexedFactors,
     `QLF_Mpemba,
     `QLF_LatticeCalculus
   ]
