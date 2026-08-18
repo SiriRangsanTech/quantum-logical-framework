@@ -120,10 +120,10 @@ theorem not_all_flat_pairs_commute :
     simpa [σz, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul,
       Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
       Matrix.head_fin_const] using h
-  have h3 : (-Complex.I).im = Complex.I.im := by rw [h2]
-  first
-    | (simp at h3)
-    | (norm_num [Complex.I_im, Complex.neg_im] at h3)
+  -- `-I = I` compares imaginary parts as `-1 = 1` in ℝ
+  have h3 : (-Complex.I).im = Complex.I.im := congrArg Complex.im h2
+  rw [Complex.neg_im, Complex.I_im] at h3
+  linarith
 
 -- ==========================================
 -- The flat fold splits over a cut — always
