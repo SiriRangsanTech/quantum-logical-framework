@@ -207,6 +207,7 @@ lean_lib QLF where
     `QLF_PhaseAssignment,
     `QLF_BalancedPhaseReal,
     `QLF_PhaseRule,
+    `QLF_BasisIndependence,
     `QLF_Mpemba,
     `QLF_LatticeCalculus
   ]
