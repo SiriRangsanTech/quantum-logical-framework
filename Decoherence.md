@@ -69,8 +69,9 @@ capacity-$R$ listening can still read of the preparation after $k$ twists. Exact
 
 Three things follow, and they are the quantitative form of this document's thesis:
 
-1. **Coherence is capacity.** A bigger blanket holds a preparation readable for longer — $\tau$ rises
-   with $R$ at every capacity measured. This is the substrate version of "isolate the qubit better" (§5): isolation
+1. **Capacity controls coherence persistence in this finite census model** — a bigger capacity holds
+   a preparation readable for longer, with $\tau$ rising with $R$ at every capacity measured. Stated
+   as what it is: a measurement on the twist census at three capacities, not a general theorem. This is the substrate version of "isolate the qubit better" (§5): isolation
    *is* capacity, and there is no other knob.
 2. **Nothing is destroyed; the reading degrades.** The history is the same exact object at every $k$;
    what decays is what a bounded listening can *distinguish*. The mechanism is spectral — at fixed

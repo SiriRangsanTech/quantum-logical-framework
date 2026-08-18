@@ -141,7 +141,9 @@ but **given that everything happens every way, exactly how do those ways add?**
    * **The listening horizon was the candidate, and it is now run — it does not rescue the
      partition.** Closure is **capacity-relative** (`closedAtHorizon_iff_maxExcursion_le`,
      [`QLF_ClosureDepthLaw`](lean/QLF_ClosureDepthLaw.lean)), so the weight was read at a finite
-     listening capacity `R`: keep only runs whose free action (the repo's own
+     closure capacity `R` (a *physical* capacity — which histories can close at all, not an
+     observer's act; "listening" is this repo's established name for the capacity-relative count):
+     keep only runs whose free action (the repo's own
      `spatial_free_action + local_free_action`, maximised over prefixes — the multi-pair form of
      `maxExcursion`) never exceeds `R` (`contextual_census.py --listening 2,3,4`, exact integers).
      Result, and it is sharper than the wash-out it was meant to cure: **capacity sets the rate of
@@ -159,6 +161,26 @@ but **given that everything happens every way, exactly how do those ways add?**
      carries a Born weight lives in the **transient**, at horizons comparable to the preparation
      itself. That the substrate thermalises under long free evolution is not itself wrong physics
      (a measurement is a prompt joint closure, not an infinite free run), but it is not a Born rule.
+   * **First joint closure — the absorbing census — is the answer to "which horizon", and it moves
+     the problem.** A closure *is* an event; continuing a run past it describes a longer, different
+     history, and that continuation is exactly what the long-horizon scans were mixing. The
+     absorbing census (`contextual_census.py --first-closure`) stops each run at its **first** joint
+     closure, whichever branch closes it — the run chooses its own stopping depth, so no horizon is
+     chosen for it — cross-checked against enumeration. **Direction reaches the outcome again:**
+     reversing the preparation changes the weights (`0.688` vs `0.312` on the ZX-mix at `R = 3`;
+     `1.000` vs `0.878` for a branch pair no relabeling can exchange), where every long-horizon
+     reading gave a preparation and its reversal one identical limit; and the aligned geometry
+     closes at depth `0` with `P(+) = 1` exactly at every capacity. **But the complementarity is
+     symmetry-forced** — `P(+|ψ) + P(+|ψ̄) = 1` holds exactly where a relabeling exchanges the
+     branches *and* reverses the preparation, and fails otherwise (sums `1.878`, `0.352`), so it is
+     bookkeeping by rule 4, and the script reports it as such. **What remains is a single sharp
+     question: a derived measure over closure depths.** `P(+|d)` decays monotonically toward `½`
+     with depth, so both pre-registered aggregations (coherent `|Σ_d A_c(d)|²`, incoherent
+     `Σ_d |A_c(d)|²`) drift with the cutoff and agree with each other to three digits; and the
+     "let the walk decide" weighting is not available for free, since capacity pruning breaks the
+     product structure and first-closure-over-path counts sum past `1` (`1.02`, `1.11`). A weighting
+     chosen to make the answer come out is a fitted parameter. **Direction test passed;
+     stopping-scale test failed.**
    * **Method note, recorded because it produced a wrong answer first:** the float scan is
      contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` (≈ 730 twists at `R = 3`), where roundoff — which
      overlaps the dominant subspace — makes every preparation *appear* to share one universal limit.

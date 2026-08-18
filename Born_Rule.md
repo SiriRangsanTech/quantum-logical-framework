@@ -178,6 +178,33 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     bounded capacity thermalises, and a measurement is a *prompt* joint closure, not an infinite free
     run; the coherence numbers are collected in [`Decoherence.md`](Decoherence.md) §4a), but it is not
     yet a Born rule.
+  * **First joint closure — the absorbing census — restores direction, and localizes the failure to
+    one question.** A closure *is* an event, so continuing a run past it describes a different,
+    longer history; the scans above let a run that closed at depth 4 keep contributing at depth 700,
+    and that continuation is exactly what mixes direction away. The absorbing census
+    (`--first-closure`) stops each run at its **first** joint closure, whichever branch closes it —
+    the run chooses its own stopping depth, so no horizon is chosen by us — and it is cross-checked
+    against enumeration. Three results:
+    - **Direction reaches the outcome again.** Reversing the preparation changes the weights:
+      `P(+) = 0.688` vs `0.312` on the ZX-mix at `R = 3`, and `1.000` vs `0.878` for a branch pair no
+      relabeling can exchange. Under *every* long-horizon reading a preparation and its reversal
+      shared one limit exactly. The aligned geometry closes at depth `0` with `P(+) = 1` exactly, at
+      every capacity, and nothing else ever closes — the deterministic case comes out deterministic.
+    - **The complementarity is symmetry-forced, so it is bookkeeping — not evidence.** Where the
+      branches are exchanged by a relabeling that also reverses the preparation,
+      `P(+|ψ) + P(+|ψ̄) = 1` is forced by [`QLF_BasisIndependence`](lean/QLF_BasisIndependence.lean),
+      and indeed for a branch pair no relabeling can exchange the sums are `1.878` and `0.352`. The
+      symmetry-lock check this section demanded is applied and reported by the script itself.
+    - **The stopping scale is unresolved, and is now the whole remaining problem.** `P(+|d)` decays
+      monotonically toward `½` with closure depth (`1.000, .962, .917, … .690` at `d = 15`, `R = 3`),
+      so both aggregations fixed in advance — coherent `|Σ_d A_c(d)|²` and incoherent `Σ_d |A_c(d)|²`
+      — drift with the cutoff and agree with each other to three digits, so the choice between them
+      is not what is at stake. Letting the walk decide the weighting needs a **derived** measure over
+      closure depths; the obvious candidate is not one (capacity pruning breaks the product
+      structure, so first-closure count over path count sums past `1` — measured at `1.02` and
+      `1.11`), and a weighting chosen to make the answer come out is a fitted parameter by
+      [`Philosophy.md`](Philosophy.md) §3a rule 4. So: **direction test passed, stopping-scale test
+      failed**, and the route needs a derived depth measure rather than another horizon.
   * **A method note, recorded because it produced a wrong answer first.** The same scan in floating
     point is contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)` — about 730 twists at `R = 3` — where the
     subdominant, preparation-dependent part sinks under the roundoff floor and the arithmetic noise,

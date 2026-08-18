@@ -108,8 +108,44 @@ Physically the substrate is saying something reasonable -- free evolution inside
 thermalises, and a measurement is a prompt joint closure, not an infinite free run -- but it is not
 yet a Born rule.
 
+(Terminology: "listening" is this repo's established name for the capacity-relative count -- what
+a horizon of capacity R can close, as against the absolute count of ways. It is a **physical closure
+capacity**, a property of which histories can close at all, not an observer's act; measurement has
+no potency here.)
+
+First joint closure: the event ends the history (--first-closure 3)
+-------------------------------------------------------------------
+Every scan above asks what the weight is after a prescribed k further twists, which lets a run that
+already closed at depth 4 keep contributing at 5, 6, ... 700 -- and that continuation is what mixes
+the census until direction is gone. But a closure IS an event; continuing past it is a longer,
+different history. So the absorbing census stops each run at its **first joint closure**, whichever
+branch closes it: the run chooses its own stopping depth, and no k is chosen by us. Closure with
+outcome c happens exactly when the running imbalance reaches -imbalance(M_c), so the branches
+compete for one absorbing hit. Cross-checked against enumeration.
+
+What it changes, and what it does not:
+
+  * **Direction reaches the outcome again.** Reversing the preparation changes the weights --
+    P(+) = 0.688 vs 0.312 on the ZX-mix at R = 3, and 1.000 vs 0.878 for a branch pair no
+    relabeling can exchange. Under every long-horizon reading a preparation and its reversal shared
+    one limit exactly; under first closure they do not. The aligned geometry closes at depth 0 with
+    P(+) = 1 exactly, at every capacity, and nothing else ever closes.
+  * **But the complementarity is symmetry-forced, so it is bookkeeping.** Where the two branches are
+    exchanged by a relabeling that also reverses the preparation, P(+|psi) + P(+|reversed psi) = 1
+    is forced by QLF_BasisIndependence, and the script says so. For a branch pair no relabeling can
+    exchange the sums are 1.878 and 0.352 -- not complementary. The identity is a consistency check,
+    never evidence.
+  * **The stopping scale is still unresolved, and that is the whole remaining problem.** The
+    depth-resolved weight P(+|d) decays monotonically toward 1/2 as the closure depth grows
+    (1.000, .962, .917, ... .690 at d = 15, R = 3), so both pre-registered aggregations drift with
+    the cutoff. Weighting depths by "let the walk decide" needs a **derived** measure over closure
+    depths, and the obvious candidate is not one: capacity pruning breaks the product structure, so
+    first-closure count over path count sums past 1 (1.02, 1.11 in test runs). A weighting chosen to
+    make the answer come out is a fitted parameter (Philosophy.md 3a rule 4), so none is used here.
+
 Usage:  python3 contextual_census.py [--max-k 12] [--brute-check 4] [--depth-scan 3]
         python3 contextual_census.py --listening 2,3,4 [--listen-k 160]
+        python3 contextual_census.py --first-closure 3 [--closure-depth 24]
         python3 contextual_census.py --spectrum 2,3,4          (needs numpy)
 """
 from __future__ import annotations
@@ -199,14 +235,17 @@ def strand_census(k: int) -> dict:
     return states
 
 
-def _step(states: dict, capacity: int | None = None, letters: str = ALPHABET) -> dict:
+def _step(states: dict, capacity: int | None = None, letters: str = ALPHABET,
+          signed: bool = True) -> dict:
     """Extend every strand by one letter. The sign it costs is fixed by axis-count parities
     alone -- which is exactly why the phase rule turns an 8^k enumeration into a polynomial
     dynamic program.
 
-    With `capacity=R` the walk is confined to the listening horizon: any extension whose free
+    With `capacity=R` the walk is confined to the closure capacity: any extension whose free
     action exceeds R is dropped (see `free_action`). With `letters` a single character, the
-    step feeds one prescribed letter rather than branching over the alphabet.
+    step feeds one prescribed letter rather than branching over the alphabet. With
+    `signed=False` it counts ways instead of summing phases -- the multiplicity, not the
+    amplitude.
     """
     nxt = defaultdict(int)
     for (imb, par), amp in states.items():
@@ -216,7 +255,7 @@ def _step(states: dict, capacity: int | None = None, letters: str = ALPHABET) ->
             if o == 1:      new_inv = (par[1] + par[2]) % 2
             elif o == 2:    new_inv = par[2] % 2
             else:           new_inv = 0
-            sign = -1 if (c in NEG_TWISTS) != (new_inv == 1) else 1
+            sign = (-1 if (c in NEG_TWISTS) != (new_inv == 1) else 1) if signed else 1
             d = [0, 0, 0, 0]
             for idx, (a, b) in enumerate(CONJ_PAIRS):
                 if c == a: d[idx] = 1
@@ -263,10 +302,10 @@ def amplitude_brute(prep: str, app: str, k: int) -> int:
 START = {((0, 0, 0, 0), (0, 0, 0)): 1}
 
 
-def _feed(states: dict, word: str, capacity: int | None) -> dict:
+def _feed(states: dict, word: str, capacity: int | None, signed: bool = True) -> dict:
     """Append a prescribed word, letter by letter, under the capacity bound."""
     for c in word:
-        states = _step(states, capacity, letters=c)
+        states = _step(states, capacity, letters=c, signed=signed)
         if not states:
             return {}
     return states
@@ -383,6 +422,81 @@ def depth_scan(dmax: int, kmax: int) -> None:
                   else f"   {k:>3}  {p:>10.6f}")
 
 
+# --------------------------------------------------------------------------- #
+# first joint closure: the event ends the history
+# --------------------------------------------------------------------------- #
+def first_closure_census(prep: str, branches: list[str], R: int, dmax: int,
+                         signed: bool = True) -> tuple:
+    """Absorbing census: a run contributes **once**, at the depth where it first closes.
+
+    The scans above ask what the weight is after a prescribed k further twists, which lets a run
+    that already closed at depth 4 go on contributing at 5, 6, ... 700 -- and that continuation is
+    what mixes the census until the preparation's direction is gone. But a closure **is** an event
+    (`achieves_ZFA`); continuing past it is a different, longer history, not the same one seen
+    later. So here the history stops at its first joint closure, whichever outcome closes it, and
+    the stopping depth is chosen by the run rather than by us.
+
+    Closure with outcome `c` happens exactly when the running imbalance of `prep ++ s` reaches
+    `-imbalance(M_c)`, so the absorbing set is one imbalance value per branch and the branches
+    **compete** for the run: the first target hit ends it. Returns
+    `(A, W, open_ways)` with `A[i][d]` the signed first-closure amplitude of branch `i` at depth
+    `d`, `W[i][d]` its way-count (`signed=False` run), and `open_ways[d]` the states still open.
+    """
+    targets = [tuple(-v for v in imbalance(app)) for app in branches]
+    if len(set(targets)) < len(targets):
+        raise ValueError("two branches share an absorbing target: they close together, so this "
+                         "geometry does not separate outcomes")
+    st = _feed(START, prep, R, signed=signed)
+    A = [[] for _ in branches]
+    open_ways = []
+    for _ in range(dmax + 1):
+        for i, (app, t) in enumerate(zip(branches, targets)):
+            hit = {s: v for s, v in st.items() if s[0] == t}
+            closed = _feed(hit, app, R, signed=signed)
+            A[i].append(sum(v for (imb, _), v in closed.items() if imb == (0, 0, 0, 0)))
+        st = {s: v for s, v in st.items() if s[0] not in targets}   # the event ends the history
+        open_ways.append(len(st))
+        st = _step(st, R, signed=signed)
+    return A, open_ways
+
+
+def first_closure_brute(prep: str, branches: list[str], R: int, d: int) -> list[int]:
+    """The same first-closure amplitudes at depth d by enumeration -- the cross-check."""
+    targets = [tuple(-v for v in imbalance(app)) for app in branches]
+    out = [0] * len(branches)
+    for s in itertools.product(ALPHABET, repeat=d):
+        word = prep + ''.join(s)
+        imb, hit = [0, 0, 0, 0], None
+        for j, c in enumerate(word):
+            for idx, (a, b) in enumerate(CONJ_PAIRS):
+                if c == a: imb[idx] += 1
+                elif c == b: imb[idx] -= 1
+            if free_action(tuple(imb)) > R:
+                hit = "over"
+                break
+            if j >= len(prep) - 1 and tuple(imb) in targets:      # a closure, at strand depth
+                hit = (j - len(prep) + 1, targets.index(tuple(imb)))
+                break
+        if hit == "over" or hit is None:
+            continue
+        # the preparation itself may already sit on a target: that is a closure at depth 0
+        depth, which = hit
+        if depth != d:
+            continue
+        full = word + branches[which]
+        run, ok = [0, 0, 0, 0], True
+        for c in full:
+            for idx, (a, b) in enumerate(CONJ_PAIRS):
+                if c == a: run[idx] += 1
+                elif c == b: run[idx] -= 1
+            if free_action(tuple(run)) > R:
+                ok = False
+                break
+        if ok and all(v == 0 for v in run):
+            out[which] += phase(full)
+    return out
+
+
 def capacity_spectrum(R: int) -> tuple:
     """The capacity-R transfer operator's spectrum: what sets the forgetting rate.
 
@@ -406,6 +520,72 @@ def capacity_spectrum(R: int) -> tuple:
     top = int((mags > l1 - 1e-7).sum())
     l2 = mags[mags < l1 - 1e-7].max()
     return len(states), l1, top, l2
+
+
+def first_closure_report(capacities: list[int], dmax: int) -> list[str]:
+    """The absorbing census, read at the depth the run itself chooses.
+
+    Two aggregations over closure depth are fixed **before** any number is looked at, because a
+    rule chosen after seeing the answer is a fitted parameter:
+
+        coherent    P(c) proportional to |sum_d A_c(d)|^2      (one event, interfering depths)
+        incoherent  P(c) proportional to sum_d |A_c(d)|^2      (distinct events, added frequencies)
+
+    Both are reported at several cutoffs, since a value that moves with the cutoff has not earned
+    the name probability.
+    """
+    failures: list[str] = []
+    for R in capacities:
+        print(f"\n===== first joint closure at capacity R = {R}")
+        for label, prep, bp, bm, forced in geometries():
+            try:
+                A, _ = first_closure_census(prep, [bp, bm], R, dmax)
+                W, _ = first_closure_census(prep, [bp, bm], R, dmax, signed=False)
+            except ValueError as exc:
+                print(f"  {label}: {exc}")
+                continue
+            depths = [d for d in range(dmax + 1) if A[0][d] or A[1][d]]
+            if not depths:
+                print(f"  {label}: nothing closes at this capacity")
+                continue
+            print(f"  {label}   [{forced}]   first closes at d = {depths[0]}")
+            for d in depths[:3] + ([None] + depths[-2:] if len(depths) > 5 else []):
+                if d is None:
+                    print("     ...")
+                    continue
+                p = A[0][d] ** 2 / (A[0][d] ** 2 + A[1][d] ** 2)
+                print(f"     d={d:>3}   A+ = {A[0][d]:>14}  A- = {A[1][d]:>14}   "
+                      f"ways {W[0][d]:>12} / {W[1][d]:<12}   P(+|d) = {p:.6f}")
+                if forced == "forced equal" and A[0][d] != A[1][d]:
+                    failures.append(f"R={R} {label} d={d}: branches exchanged by a preparation-fixing "
+                                    f"relabeling must have equal amplitudes (QLF_BasisIndependence)")
+            for cut in (depths[0], depths[len(depths) // 2], depths[-1]):
+                coh = [sum(A[i][:cut + 1]) for i in (0, 1)]
+                inc = [sum(x * x for x in A[i][:cut + 1]) for i in (0, 1)]
+                tc, ti = coh[0] ** 2 + coh[1] ** 2, inc[0] + inc[1]
+                print(f"     cutoff D={cut:>3}   coherent P(+) = {coh[0] ** 2 / tc:.6f}"
+                      f"   incoherent P(+) = {inc[0] / ti:.6f}")
+
+        # --- does the preparation's DIRECTION still reach the outcome? ---------------
+        print("  -- direction test: the same apparatus against a preparation and its reversal")
+        for label, prep, bp, bm in [("branches a relabeling exchanges", "/", "\\", "/"),
+                                    ("branches a relabeling exchanges", "/", "\\>", "/<"),
+                                    ("branches NO relabeling exchanges", "/", "\\", "/>>")]:
+            vals = {}
+            for p in (prep, "\\" if prep == "/" else "/"):
+                A, _ = first_closure_census(p, [bp, bm], R, dmax)
+                coh = [sum(A[i]) for i in (0, 1)]
+                t = coh[0] ** 2 + coh[1] ** 2
+                vals[p] = coh[0] ** 2 / t if t else float('nan')
+            a, b = vals[prep], vals["\\" if prep == "/" else "/"]
+            note = ("complementary -- but FORCED by QLF_BasisIndependence, so bookkeeping"
+                    if abs(a + b - 1) < 1e-9 else "not complementary, as expected here")
+            print(f"     {label:<34} ({bp!r},{bm!r}):  P(+) = {a:.6f} vs {b:.6f}   sum {a + b:.6f}"
+                  f"   [{note}]")
+            if a == b:
+                failures.append(f"R={R} {bp!r}/{bm!r}: reversing the preparation changed nothing -- "
+                                f"first closure is supposed to be direction-sensitive")
+    return failures
 
 
 def listening_report(capacities: list[int], kmax: int) -> list[str]:
@@ -490,6 +670,11 @@ def main() -> None:
     ap.add_argument("--listening", type=str, default="", metavar="R1,R2,...",
                     help="read the weight at finite listening capacities instead (closure is "
                          "capacity-relative: closedAtHorizon_iff_maxExcursion_le)")
+    ap.add_argument("--first-closure", type=str, default="", metavar="R1,R2,...",
+                    help="absorbing census: the history ends at its first joint closure, so the run "
+                         "chooses its own stopping depth")
+    ap.add_argument("--closure-depth", type=int, default=24,
+                    help="deepest first-closure depth to enumerate")
     ap.add_argument("--spectrum", type=str, default="", metavar="R1,R2,...",
                     help="report the capacity-R transfer operator's spectrum: the forgetting rate "
                          "quoted by the listening scan is its spectral gap")
@@ -508,6 +693,31 @@ def main() -> None:
             gap = l2 / l1
             print(f"   {R:>3}  {n:>8}  {l1:>10.6f}  {top:>9}  {l2:>10.6f}  {gap:>8.6f}  "
                   f"{-1 / math.log(gap):>8.1f}")
+        return
+
+    if args.first_closure:
+        caps = [int(x) for x in args.first_closure.split(",")]
+        print("== cross-check: absorbing program vs brute-force enumeration")
+        bad = []
+        for R in caps[:2]:
+            for label, prep, bp, bm, _ in geometries():
+                try:
+                    A, _ = first_closure_census(prep, [bp, bm], R, min(args.brute_check, 4))
+                except ValueError:
+                    continue
+                for d in range(min(args.brute_check, 4) + 1):
+                    if [A[0][d], A[1][d]] != first_closure_brute(prep, [bp, bm], R, d):
+                        bad.append(f"R={R} d={d} {prep!r}")
+        print(f"   {'OK' if not bad else 'MISMATCH: ' + ', '.join(bad)}")
+        failures = bad + first_closure_report(caps, args.closure_depth)
+        print("\n== invariants")
+        if failures:
+            print("   FAILURES:")
+            for f in failures:
+                print(f"     - {f}")
+            raise SystemExit(1)
+        print("   all asserted invariants hold (absorbing program = enumeration; symmetric branch "
+              "pairs exactly equal; reversing the preparation changes the outcome weights)")
         return
 
     if args.listening:
