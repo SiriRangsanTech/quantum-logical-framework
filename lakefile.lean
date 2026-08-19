@@ -9,8 +9,12 @@ package «QuantumLogicalFramework»
 -- this unpinned means every run silently tests a different Mathlib, and a breaking change
 -- upstream arrives as a mystery failure in an unrelated commit.
 --
--- To advance Mathlib deliberately: run `lake update`, put the resolved mathlib revision
--- here, commit the regenerated manifest with it, and let CI confirm green in its own commit.
+-- lean-toolchain must match this Mathlib's own lean-toolchain — Mathlib tracks Lean closely
+-- and its files do not compile under an older one.
+--
+-- To advance Mathlib deliberately: run `lake update`, put the resolved mathlib revision here,
+-- commit the regenerated manifest and the toolchain it requires with it, and let CI confirm
+-- green in its own commit.
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @
   "abec794dccc82583e8ac6f31968adf01c264d2da"
