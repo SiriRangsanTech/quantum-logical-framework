@@ -17,7 +17,7 @@
 | **Frieden — Extreme Physical Information** | an information quantity that *is* the action | continuum; *extremal* not zero; no discrete substrate, no verification | Frieden 1998 |
 | **Caticha — Entropic Dynamics** | inference-first derivation of QM | probabilistic-continuous, not closure-exact | Caticha 2011 |
 | **It-from-bit / finite capacity** | information is physical & finite | supplies *premises*, not a selection rule | Wheeler, Zeilinger–Brukner, Landauer, Bekenstein |
-| **Fredkin / 't Hooft / Wolfram** | reality is discrete computation | *no action-zero admissibility criterion* — everything runs, nothing is selected | Fredkin 1990, 't Hooft 2016, Wolfram 2020 |
+| **Fredkin / 't Hooft / Wolfram** | reality is discrete computation | *no action-zero admissibility criterion* — everything runs, nothing is selected. Fredkin's own gate is built on the substrate in [`Fredkin_QLF.md`](Fredkin_QLF.md), where his conservation law turns out to **be** ZFA count balance — he had the law and not the selection principle | Fredkin 1990, 't Hooft 2016, Wolfram 2020 |
 | **Deutsch–Marletto — Constructor Theory** | possibilist modality (possible vs. impossible) | no counting, no action, no constants | Deutsch–Marletto 2015 |
 
 ### 1. Friston's Free Energy Principle — the nearest relative (already linked in the repo)

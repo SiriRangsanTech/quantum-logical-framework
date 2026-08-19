@@ -1,5 +1,11 @@
 # Reversibility in QLF — the reverse *is* the Hermitian conjugate
 
+> **Worked case:** [`Fredkin_QLF.md`](Fredkin_QLF.md) builds Fredkin & Toffoli's conservative-logic
+> computer on the substrate, where the logic stays reversible all the way to the end and the process
+> never has to commit. The payoff is a ledger: an instantaneous zero-free-action closure is **free**,
+> because `ΔF = −log 2` receipts a *many-to-one* closure and a Fredkin gate is a bijection. Landauer
+> and Bennett come out rather than going in.
+
 In the [Quantum Logical Framework (QLF)](README.md), **time-reversal is the Hermitian conjugate** (the
 dagger `†`), and this resolves the old tension between *reversible microscopic laws* and the *forward
 arrow of time* — not by a new postulate, but because the two live in different places: reversibility in
