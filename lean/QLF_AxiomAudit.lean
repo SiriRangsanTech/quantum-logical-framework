@@ -50,6 +50,7 @@ import QLF_AlphaBound
 import QLF_Hodge
 import QLF_BSD
 import QLF_PvsNP
+import QLF_Fredkin
 import QLF_RiemannMRE
 
 /-! ## The combinatorial core — expected: no QLF axiom -/
@@ -61,6 +62,13 @@ import QLF_RiemannMRE
 #print axioms QLF.twist_kraft
 #print axioms QLF.Realizability.no_continuum_in_finite_region
 #print axioms QLF.LawOfExceptions.law_of_exceptions
+
+/-! Fredkin's conservative logic identified with ZFA (Fredkin_QLF.md). `fredkin_preserves_zfa`
+    runs through the `count_balanced_pauli_closed` keystone, so it must show the Lean three
+    and no QLF axiom — the identification is a theorem, not a bridge. -/
+
+#print axioms QLF.Fredkin.fredkin_preserves_zfa
+#print axioms QLF.Fredkin.fredkin_bijective
 
 /-! ## Derived results — expected: no QLF axiom.
 

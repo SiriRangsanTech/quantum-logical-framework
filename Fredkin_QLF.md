@@ -5,6 +5,7 @@ substrate, where the gate's conservation law and the substrate's admissibility c
 turn out to be the same law.**
 
 Implementation: [`fredkin_qlf.py`](fredkin_qlf.py) · run it with `python3 fredkin_qlf.py`
+Machine-verified core: [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)
 
 ---
 
@@ -226,17 +227,24 @@ permutation structure and not from the particular word picked, but a different e
 would need its own check. The `interaction_gate` is Fredkin and Toffoli's idealized
 collision, not a dynamical simulation of two helium atoms.
 
-**Not done here.** No Lean module for the gate itself; the substrate step leans on an
-existing theorem rather than a new one. No trajectory-level billiard simulation, so no
+**Machine-verified.** [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean) closes the substrate
+chain inside Lean, zero `sorry`: `fredkin_involutive`, `fredkin_bijective`,
+`fredkin_conserves_weight`, `encode_fredkin_perm` (the gate acts by *permutation*),
+`fredkin_preserves_counts`, `encode_countBalanced`, `fredkin_preserves_countBalanced`, and
+the payoff `fredkin_preserves_zfa` — the output folds to a Pauli scalar, so both conjuncts
+of runtime ZFA hold and neither needed its own argument. `fredkin_bijective` is the ledger's
+premise in §5, stated where it can be checked.
+
+**Not done here.** No trajectory-level billiard simulation, so no
 timing, alignment or error analysis — the known Achilles heel of the billiard ball model,
 where trajectory errors compound and the model needs periodic correction it cannot supply
 reversibly. And no claim that a helium apparatus is buildable; §3 argues only that if you
 want balls that never stick, QLF says why a valence-0 species is the right choice.
 
-**The obvious next step** is `QLF_Fredkin.lean`: `fredkin` on a three-line register, with
-`fredkin_involutive`, `fredkin_conserves_weight`, and the encoding lemma taking a register
-to a `List Twist` whose `countBalanced` is preserved — at which point the chain to
-`count_balanced_pauli_closed` is closed inside Lean rather than in this document.
+**The next step** is the dynamics rather than the logic: a trajectory-level billiard model
+in which the collision is a joint closure of two causal diamonds
+([`MultiParticle.py`](MultiParticle.py) already builds that interactor), which is where
+timing and alignment error would finally become measurable instead of assumed away.
 
 ---
 
