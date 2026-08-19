@@ -88,6 +88,14 @@ import QLF_RiemannMRE
 #print axioms QLF.continuumClaim_nonempty
 #print axioms QLF.realized_flow_achieves_zfa
 
+/-! Hodge. The two lines belong together: `hodge_realized_on_substrate` (above) is the
+    reformulation theorem and carries no QLF axiom, while `algebraicityBridge_nonempty`
+    shows the faithfulness bridge is satisfied by reading every class as algebraic. The
+    theorem is real and the bridge, in Lean, excludes nothing — that is the whole distinction
+    the module's framing turns on. -/
+
+#print axioms QLF.algebraicityBridge_nonempty
+
 /-! ## Derived results — expected: no QLF axiom.
 
     `censusTail_eq` is the discharged one: it was a bridge axiom and is now derived from

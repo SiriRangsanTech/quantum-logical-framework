@@ -94,11 +94,35 @@ theorem CohClass.isHodge_of_conj_fixed (c : CohClass) (h : c.conj = c) :
     have hq : q = p := congrArg CohClass.p h
     exact hq.symm
 
-/-- **Algebraicity** (abstract): the class is a ℚ-combination of
-    cohomology classes of algebraic cycles — realized by actual
-    subvarieties (constructed closures).  Opaque pending the constructive
-    cycle→closure encoding. -/
-axiom CohClass.isAlgebraic : CohClass → Prop
+/-! ### Algebraicity and the faithfulness bridge, as one assumption whose strength is measured
+
+    Two things must be kept apart here, and the audit sharpens the line between them rather
+    than moving it.
+
+    **The reformulation theorem is real.** `hodge_realized_on_substrate` — every Hodge class
+    is realized on the substrate — is *proved*, with no QLF axiom, via `encode_countBalanced`
+    and the `count_balanced_pauli_closed` keystone. The `#print axioms` audit confirms it
+    carries only Lean's three. That is a theorem about the substrate frame and it stands
+    without any of what follows.
+
+    **The bridge, in Lean, assumes nothing.** `isAlgebraic` is uninterpreted, so
+    `algebraicityBridge_nonempty` satisfies the whole interface with `fun _ => True`: read
+    every class as algebraic and the implication holds for free. As a Lean statement the
+    faithfulness bridge excludes no possibility.
+
+    That is not a *contradiction* of the standing framing — which already says `isAlgebraic`
+    is abstract and that the bridge carries the classical conjecture's full strength — but it
+    is more precise, and the precision cuts against us. The bridge's content is entirely the
+    *interpretation* of `isAlgebraic` as "a ℚ-combination of classes of algebraic cycles",
+    and that reading is not expressible here, because Mathlib carries no algebraic cycles to
+    state it against. Compare `NonTrivialZero`, the one case where the fix was available:
+    Mathlib has `riemannZeta`, so naming the object turned a vacuous boundary into one
+    asserting RH. Hodge has no such move, so the axiom stays and the measurement stands
+    beside it.
+
+    The faithfulness swings (`QLF_HodgeExpSequence`, `QLF_HodgeIrreducible`) locate *where*
+    the gap is, and they are unaffected. What the measurement adds is that the gap is not
+    merely open but, at present, unstated in Lean. -/
 
 /-! ### Discharging the Hodge boundary through the substrate
 
@@ -154,16 +178,42 @@ theorem hodge_realized_on_substrate (c : CohClass) (h : c.isHodge) :
     c.isRealizedOnSubstrate :=
   hodge_pattern_substrate_witness (c.encode_countBalanced h)
 
-/-- **The faithfulness bridge — the one gap of the reformulation.** The reformulation proves
-    `hodge_realized_on_substrate` (Hodge ⟹ realized, no axiom); this axiom is the remaining step
-    — that a substrate-realized closure is a *classical* algebraic cycle. On Hodge classes it has
-    the full strength of the classical conjecture (`isAlgebraic` is abstract), so it is a genuine
-    gap, not a weaker structural fact — and it is the *only* gap: the faithfulness swings
-    (`QLF_HodgeExpSequence`, `QLF_HodgeIrreducible`) locate it precisely as a cycle-faithful
-    encoding, every surrounding invariant already in hand. (Not a "ZFC's-defect" boundary: Hodge
-    is finite ℚ-linear algebra, an ordinary conjecture.) -/
-axiom substrate_realization_is_algebraic (c : CohClass) :
-    c.isRealizedOnSubstrate → c.isAlgebraic
+/-- **A reading of algebraicity, with the faithfulness bridge over it.** Bundled so the one
+    assumption is one axiom, and so the interface can be measured. -/
+structure AlgebraicityBridge where
+  /-- Algebraicity: the class is a ℚ-combination of cohomology classes of algebraic cycles —
+      realized by actual subvarieties. Abstract, pending the constructive cycle→closure
+      encoding. -/
+  isAlgebraic : CohClass → Prop
+  /-- **Faithfulness**: a substrate-realized closure is a *classical* algebraic cycle. On
+      Hodge classes this carries the full strength of the classical conjecture. -/
+  realized_is_algebraic : ∀ c : CohClass, c.isRealizedOnSubstrate → isAlgebraic c
+
+/-- **The interface is inhabited, by reading everything as algebraic.** So exhibiting a model
+    is no evidence, and the bridge — as a Lean statement — excludes nothing. Its force is the
+    intended reading of `isAlgebraic`, which this development cannot express. -/
+theorem algebraicityBridge_nonempty : Nonempty AlgebraicityBridge :=
+  ⟨⟨fun _ => True, fun _ _ => trivial⟩⟩
+
+/-- **The faithfulness bridge — the one gap of the reformulation, and one axiom.** The
+    reformulation proves `hodge_realized_on_substrate` (Hodge ⟹ realized, no axiom); this is
+    the remaining step — that a substrate-realized closure is a *classical* algebraic cycle.
+    On Hodge classes it has the full strength of the classical conjecture, so it is a genuine
+    gap and not a weaker structural fact; and it is the *only* gap, the faithfulness swings
+    (`QLF_HodgeExpSequence`, `QLF_HodgeIrreducible`) locating it precisely as a cycle-faithful
+    encoding with every surrounding invariant in hand. Read `algebraicityBridge_nonempty`
+    before citing it: in Lean the interface is satisfied by reading every class as algebraic,
+    so the assumption's whole force is the intended meaning of `isAlgebraic`. (Not a
+    "ZFC's-defect" boundary: Hodge is finite ℚ-linear algebra, an ordinary conjecture.) -/
+axiom hodge_algebraicity : AlgebraicityBridge
+
+/-- **Algebraicity** — a definition now, over the boundary's own data. -/
+def CohClass.isAlgebraic (c : CohClass) : Prop := hodge_algebraicity.isAlgebraic c
+
+/-- **Substrate-realized ⟹ classically algebraic** — read off the boundary. -/
+theorem substrate_realization_is_algebraic (c : CohClass) :
+    c.isRealizedOnSubstrate → c.isAlgebraic :=
+  hodge_algebraicity.realized_is_algebraic c
 
 /-- **Hodge class is algebraic — the reformulation result, modulo faithfulness.** The proven core
     is `hodge_realized_on_substrate` (Hodge ⟹ realized, *no axiom*); composing it with the

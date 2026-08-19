@@ -2,8 +2,7 @@ QLF_BSD.lean bsd_multiplicity
 QLF_CausalContinuum.lean benincasa_dowker_limit
 QLF_CensusCurvature.lean jost_liu_triangle_free
 QLF_CensusCurvature.lean ollivierRicci
-QLF_Hodge.lean CohClass.isAlgebraic
-QLF_Hodge.lean substrate_realization_is_algebraic
+QLF_Hodge.lean hodge_algebraicity
 QLF_LorentzCover.lean lorentz_generated_by_boosts_rotations
 QLF_MassGap.lean yang_mills_gap
 QLF_NavierStokesBKM.lean beale_kato_majda
