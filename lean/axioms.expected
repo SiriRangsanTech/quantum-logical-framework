@@ -5,8 +5,7 @@ QLF_CensusCurvature.lean ollivierRicci
 QLF_Hodge.lean CohClass.isAlgebraic
 QLF_Hodge.lean substrate_realization_is_algebraic
 QLF_LorentzCover.lean lorentz_generated_by_boosts_rotations
-QLF_MassGap.lean YangMillsMassGap
-QLF_MassGap.lean yang_mills_continuum_gap
+QLF_MassGap.lean yang_mills_gap
 QLF_NavierStokes.lean NavierStokesGlobalSmoothness
 QLF_NavierStokes.lean navier_stokes_continuum_limit
 QLF_NavierStokesBKM.lean beale_kato_majda

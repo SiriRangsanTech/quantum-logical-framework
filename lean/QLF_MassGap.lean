@@ -60,25 +60,80 @@ theorem lightest_closure_is_gap_quantum :
   unfold gaugeMassGap
   exact zfa_closure_minimizes_free_energy
 
-/-- The mass gap of the continuum Yang–Mills theory on ℝ⁴ — an opaque real whose
-    well-definedness as a positive number is the content of the Clay problem. -/
-axiom YangMillsMassGap : ℝ
+/-! ### The boundary, as one assumption whose strength is measured
 
-/-- **Boundary axiom (RCA₀ → analytic, à la `spectral_hilbert_polya`).**
+    This was two axioms — an opaque real and the claim that it equals the substrate
+    quantum — and measuring them gives the bluntest reading of any boundary in the
+    repository. It is worth stating plainly rather than softening.
 
-    The Osterwalder–Schrader / Wightman reconstruction of the continuum Yang–Mills
-    theory on ℝ⁴ realises its physical mass gap as the substrate's per-closure
-    quantum `gaugeMassGap = log 2` (in substrate units). This marks exactly the step
-    QLF does not discharge constructively: the existence of the continuum quantum
-    field theory and its continuum limit. QLF supplies the *structural* gap (a
-    positive minimal closure energy); this axiom carries the analytic continuation
-    to the continuum theory. It is a logical boundary, not a `sorry`. -/
-axiom yang_mills_continuum_gap : YangMillsMassGap = gaugeMassGap
+    **In Lean, the pair assumes nothing.** `continuumGap_nonempty` constructs an instance
+    as `⟨gaugeMassGap, rfl⟩`: a real equal to `gaugeMassGap` exists because `gaugeMassGap`
+    is one. Worse for the axiom's standing, `continuumGap_gap_unique` shows the interface
+    pins the value exactly — any two realizations agree — so the axiom does not even choose
+    between candidates. As a Lean statement it is a **definition wearing an axiom's
+    clothes**, and `yang_mills_mass_gap_in_qlf` reduces to `mass_gap_quantum_pos`, which is
+    proved outright and needs no boundary.
 
-/-- **The continuum Yang–Mills mass gap is positive — conditional on the boundary
-    axiom.** Mirrors `riemann_hypothesis_in_qlf`: a structural theorem chain whose
-    only non-constructive input is the explicit `yang_mills_continuum_gap` boundary
-    axiom. Within QLF's frame, the gap is the substrate's `log 2` closure quantum. -/
+    **The content is the interpretation, and Lean cannot hold it.** The real assumption is
+    that the object so named *is* the mass gap of the Osterwalder–Schrader / Wightman
+    reconstruction of continuum Yang–Mills on ℝ⁴ — and that is not a proposition in this
+    development, because Mathlib carries no Yang–Mills theory to state it against. Compare
+    `NonTrivialZero`, which was the same shape and could be *fixed*: Mathlib has
+    `riemannZeta`, so naming the real object turned a vacuous boundary into one asserting
+    RH. No such move is available here. The honest response is therefore not to remove the
+    axiom but to stop it looking like it does work — which is what the theorems below are
+    for.
+
+    None of this touches the substrate result, which is proved and independent:
+    `gaugeMassGap = log 2 > 0` (`mass_gap_quantum_pos`) and the lightest closure realising
+    exactly that quantum (`lightest_closure_is_gap_quantum`). QLF has a structural mass gap.
+    What it does not have, and this records, is a formal grip on the continuum theory whose
+    gap the Clay problem is about. -/
+
+/-- **A realization of the continuum mass gap**: a real number, together with the claim
+    that it is the substrate's per-closure quantum. -/
+structure ContinuumGap where
+  /-- The mass gap of the continuum Yang–Mills theory on ℝ⁴. -/
+  gap : ℝ
+  /-- The Osterwalder–Schrader / Wightman reconstruction realises it as the substrate's
+      per-closure quantum `gaugeMassGap = log 2`, in substrate units. -/
+  is_substrate_quantum : gap = gaugeMassGap
+
+/-- **The interface is inhabited, and by `rfl`.** A real equal to `gaugeMassGap` exists
+    because `gaugeMassGap` is one — so exhibiting a model here is not weak evidence, it is
+    no evidence. -/
+theorem continuumGap_nonempty : Nonempty ContinuumGap :=
+  ⟨⟨gaugeMassGap, rfl⟩⟩
+
+/-- **The interface pins its own value.** Any two realizations carry the same number, so
+    the axiom does not select among candidates — there is only one. This is what makes the
+    boundary definitional rather than substantive *as a Lean statement*; its content lives
+    in the reading of `gap` as the continuum theory's, which Lean cannot check. -/
+theorem continuumGap_gap_unique (g h : ContinuumGap) : g.gap = h.gap := by
+  rw [g.is_substrate_quantum, h.is_substrate_quantum]
+
+/-- **The Yang–Mills boundary — one axiom** (RCA₀ → analytic, à la `spectral_hilbert_polya`).
+    The continuum Yang–Mills theory on ℝ⁴ has a mass gap, and it is the substrate's
+    per-closure quantum. This marks the step QLF does not discharge constructively: the
+    existence of the continuum quantum field theory and its continuum limit. Read the two
+    theorems above before citing it — in Lean it is definitional, and its force is entirely
+    the identification of `gap` with the reconstructed theory's, which is a claim about the
+    world rather than about this development. -/
+axiom yang_mills_gap : ContinuumGap
+
+/-- The mass gap of the continuum Yang–Mills theory on ℝ⁴ — a definition now, over the
+    boundary's own data. -/
+noncomputable def YangMillsMassGap : ℝ := yang_mills_gap.gap
+
+/-- **The continuum gap is the substrate quantum** — read off the boundary. -/
+theorem yang_mills_continuum_gap : YangMillsMassGap = gaugeMassGap :=
+  yang_mills_gap.is_substrate_quantum
+
+/-- **The continuum Yang–Mills mass gap is positive — conditional on the boundary.**
+    Within QLF's frame the gap is the substrate's `log 2` closure quantum, and positivity
+    follows from `mass_gap_quantum_pos`, which is proved outright. Note what that means:
+    the substrate half of this statement needs no boundary at all, and the boundary
+    contributes only the name. -/
 theorem yang_mills_mass_gap_in_qlf : 0 < YangMillsMassGap := by
   rw [yang_mills_continuum_gap]
   exact mass_gap_quantum_pos

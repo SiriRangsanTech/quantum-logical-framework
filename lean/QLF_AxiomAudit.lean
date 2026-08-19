@@ -51,6 +51,7 @@ import QLF_Hodge
 import QLF_BSD
 import QLF_PvsNP
 import QLF_Fredkin
+import QLF_MassGap
 import QLF_RiemannMRE
 
 /-! ## The combinatorial core — expected: no QLF axiom -/
@@ -69,6 +70,14 @@ import QLF_RiemannMRE
 
 #print axioms QLF.Fredkin.fredkin_preserves_zfa
 #print axioms QLF.Fredkin.fredkin_bijective
+
+/-! The Yang-Mills measurement. `continuumGap_nonempty` builds a realization by `rfl` and
+    `continuumGap_gap_unique` shows the interface pins its own value, so both must show no
+    QLF axiom — which is exactly what makes that boundary definitional in Lean. -/
+
+#print axioms QLF.continuumGap_nonempty
+#print axioms QLF.continuumGap_gap_unique
+#print axioms QLF.mass_gap_quantum_pos
 
 /-! ## Derived results — expected: no QLF axiom.
 
