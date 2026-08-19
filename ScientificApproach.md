@@ -323,6 +323,12 @@ replace a wrong conclusion with a right one — the audit trail *is* the evidenc
 works. A rejected route is a result: it removes a possibility, which is exactly what a finite search
 needs.
 
+**Where a rejection goes.** A rejection earns a place in a narrative document only when it *changes
+what is believed* — it retracts a published claim, or it closes a route the document was still
+proposing. Everything else belongs in the commit message, where it stays searchable and dated
+without interrupting the argument a reader is following. A tested-and-empty feature scan is a
+result; it is not a section.
+
 ---
 
 ## 12. Reproducibility requirements
