@@ -1,5 +1,7 @@
 # Open Problems — QLF gap registry
 
+**Method:** how items here are promoted, rejected, or corrected — status labels, kill conditions, the inventory-first rule — is [`ScientificApproach.md`](ScientificApproach.md).
+
 A single map of what is **closed**, what is a **principled boundary**, and what is
 genuinely **open**, with a pointer to the document that owns each item. This is an
 *index*, not a re-derivation: the substance lives in the linked docs. Its mirror is

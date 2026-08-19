@@ -251,7 +251,7 @@ This output demonstrates the full QLF narrative in action: gauge-fold handshake,
 - `BLACK-HOLES.md` & `Particles.md`: Gauge folding determines fusability (primordial-BH-like behavior at nuclear scale).  
 - `Frequency_Synchronization.md` & `Entropy.md`: High \(f\) and logical density enable the merger; entropy balance gives exact Q-value.  
 - `Gravity.md` & `SpaceTime.md`: Density gradient during fusion produces local contraction (stellar core pressure).  
-- `ScientificApproach.md`: Fusion is another executable prediction of “Don’t shut up and calculate — Run it.”
+- [`ScientificApproach.md`](ScientificApproach.md): the method this claim is graded by — conjecture, census, kill condition, then Lean.
 
 ## 7. Experimental & Stellar Implications
 
