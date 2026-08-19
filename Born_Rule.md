@@ -264,14 +264,36 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     preparation–apparatus pairs carry a convergent amplitude and others do not**, and every geometry
     tested at `R ≥ 3` falls in the second class (`3.97^d`–`4.33^d`). Capacity is not the criterion;
     it was the variable that happened to separate the cases first looked at.
+  * **The convergent geometries are a structured class, and a very sparse one — surveyed.** Over
+    **1,326 preparation–apparatus pairs** at capacity 2, measured from the *terms* of the series at
+    depth 200 (a two-point growth fit taken at depth 90 reads a transient — the same geometry gives
+    `8.16` there and `0.19` at depth 200, so the estimator matters):
+    - **19 pairs converge — 1.4%** — and every one has an **integer** squared growth, `a² = 5` (7
+      cases) or `a² = 7` (12 cases);
+    - **20 more sit exactly on the threshold**, `a² = 8.000000`, neither growing nor decaying;
+    - above the threshold both integers and irrationals occur (`9.000000` in 119 cases, but also
+      `8.162278 = 5+√10`, `8.414214 = 7+√2`, up to `15.85`). **Integrality holds exactly at and
+      below the threshold; irrationals appear only above it.**
+  * **And the class is characterised by a selection rule relating apparatus to preparation.** Reading
+    the branch imbalances of all 39 convergent-or-marginal cases:
+    - `a² = 7` ⟺ the two branch targets are **antipodal**, `t₊ = −t₋` — e.g. `(1,0,1,0)` against
+      `(−1,0,−1,0)`;
+    - `a² = 5` ⟺ the branches **share a component anti-aligned with the preparation** and differ by
+      a sign flip on another axis — prep `>` (X) with branches both carrying `X = −1`;
+    - `a² = 8`, marginal ⟺ the same shape, but with the shared component **orthogonal** to the
+      preparation — prep `/` (Z) with branches both carrying `X = −1`.
+    So whether an arrangement has a Born weight at all depends on how the apparatus sits relative to
+    the prepared direction — antipodal or anti-aligned yes, orthogonal marginal, otherwise no. That
+    is a **selection rule**, read off the data rather than proven, and it is the characterisation
+    this section previously listed as open.
   * **What that changes, and what it does not.** The sub-additivity theorem stands exactly as proven
     — it bounds the *normalized* weight everywhere. What was wrong was the conclusion drawn from it:
-    the substrate is not universally unable to carry an amplitude. **Open, and now the sharp
-    question:** whether the geometries whose amplitude converges form a *structured class* — a
-    characterisation of which apparatus a given preparation has a Born weight against — or a handful
-    of accidents. A survey over preparation–apparatus pairs is the measurement that decides it.
-    Not implicated either way: the measure (proven), the phase rule (proven), the depth law
-    (proven), event identity (bracketed).
+    the substrate is not universally unable to carry an amplitude. **Still open:** why the threshold
+    is *realized* rather than straddled (20 geometries land on `a² = 8` exactly), which is either
+    deep — the `8` of `√8` and the `8` of the alphabet being the same `8` — or circular, and the
+    difference is not yet established; and whether 1.4% is a physical selection rule or a sign the
+    encoding is too rigid. Not implicated either way: the measure (proven), the phase rule (proven),
+    the depth law (proven), event identity (bracketed).
   * **But it does not render an angle, and that is the test that matters.** Sweeping the apparatus
     does not sweep the weight: adding transverse letters one at a time gives
     `2·arccos√P = 0°, 8.99°, 13.04°, 10.37°, 12.89°, 11.13°` for `a = 0…5` — wobbling, never

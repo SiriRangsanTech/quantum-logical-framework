@@ -273,8 +273,13 @@ constructive against `0.0000` destructive. But this is a property of the **geome
 capacity: the absorbing operator's spectral radius is `3.99` at capacity 2 and `4.38` at capacity 3,
 both above the threshold, so the convergent cases are those whose preparation and apparatus project
 out the dominant modes. Every geometry tested at capacity 3 or more diverges. So the theorems below
-bound the *normalized* weight everywhere, and whether the convergent geometries form a structured
-class is the open question.
+bound the *normalized* weight everywhere.
+
+The convergent geometries have since been surveyed (1,326 pairs at capacity 2): **19 converge**, all
+with integer squared growth `a² = 5` or `7`, **20 sit exactly on the threshold** at `a² = 8`, and
+irrationals appear only above it. They are picked out by a selection rule on how the apparatus sits
+relative to the preparation — antipodal branch targets give `7`, a shared component anti-aligned with
+the preparation gives `5`, the same shape orthogonal to it gives the marginal `8`.
 -/
 
 /-- The exact gap between the merged weight and the split one: a perfect square over a positive

@@ -238,11 +238,25 @@ but **given that everything happens every way, exactly how do those ways add?**
      Certain pairs carry a convergent amplitude and others do not; every geometry tested at `R ≥ 3`
      is in the second class (`3.97^d`–`4.33^d`). Capacity separated the first cases looked at; it is
      not the criterion.
-   * **The sharp open question is now a characterisation.** Do the geometries whose amplitude
-     converges form a *structured class* — which apparatus a given preparation has a Born weight
-     against — or are they accidents? A survey over preparation–apparatus pairs decides it, and is
-     the measurement in progress. The sub-additivity theorem is unaffected: it bounds the
-     *normalized* weight everywhere.
+   * **Surveyed, and the class is structured but sparse.** Over **1,326 preparation–apparatus pairs**
+     at capacity 2, measured from the series' *terms* at depth 200 (a two-point fit at depth 90 reads
+     a transient — same geometry, `8.16` there against `0.19` at 200): **19 converge, 1.4%**, every
+     one with **integer** squared growth `a² = 5` (7 cases) or `a² = 7` (12 cases); **20 sit exactly
+     on the threshold** at `a² = 8.000000`; above it both integers (`9.000000`, 119 cases) and
+     irrationals (`5+√10`, `7+√2`, … up to `15.85`) occur. **Integrality holds exactly at and below
+     the threshold.** By the (fragile) earlier estimator, capacity 3 gave 0 of 5,515 — consistent,
+     but not to be quoted without the term test.
+   * **The selection rule.** Across all 39 convergent-or-marginal cases: `a² = 7` ⟺ the branch
+     targets are **antipodal** (`t₊ = −t₋`); `a² = 5` ⟺ the branches **share a component
+     anti-aligned with the preparation**, differing by a sign flip elsewhere; `a² = 8` (marginal) ⟺
+     the same shape with the shared component **orthogonal** to the preparation. So whether an
+     arrangement carries a Born weight at all depends on how the apparatus sits relative to the
+     prepared direction. Read off the data, not proven.
+   * **What is still open:** why the threshold is *realized* rather than straddled — 20 geometries
+     land on `a² = 8` exactly, which is either deep (the `8` of `√8` and the `8` of the alphabet
+     being one `8`) or circular, and that is not yet settled; and whether 1.4% is a physical
+     selection rule or the encoding being too rigid. The sub-additivity theorem is unaffected: it
+     bounds the *normalized* weight everywhere.
    * ~~**Next Lean anchor (tractable):** the Kraft bound itself~~ — ✅ **done**
      ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). For a prefix-free set of twist words
      `Σ 8^{−|h|} ≤ 1` is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so

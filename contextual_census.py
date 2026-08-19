@@ -782,11 +782,14 @@ def coherent_limits(prep: str, branches: list[str], R: int, dmax: int) -> tuple:
     par = depths[0] % 2
     if any(d % 2 != par for d in depths):
         return None, None, None, float('nan')          # mixed parity: needs Q(sqrt 2)
-    ds = [d for d in depths if A[0][d]]
+    # measure the growth from the TERMS of the series, in its tail -- a two-point fit taken too
+    # early reads a transient: the same geometry gives 8.16 at depth 90 and 0.19 at depth 200
+    terms = [(d, max(abs(A[i][d]) for i in range(len(branches)))) for d in depths]
     growth = float('nan')
-    if len(ds) >= 4:
-        d0, d1 = ds[len(ds) // 2], ds[-1]
-        growth = (abs(A[0][d1]) / abs(A[0][d0])) ** (1.0 / (d1 - d0))
+    if len(terms) >= 6 and all(t > 0 for _, t in terms[-5:]):
+        step = terms[-1][0] - terms[-2][0]
+        ratio = (terms[-1][1] / terms[-5][1]) ** (1.0 / 4)      # per closure step
+        growth = ratio ** (1.0 / step)                          # per depth
     T = []
     for i in range(len(branches)):
         num = sum(A[i][d] * 2 ** (3 * (dmax - d) // 2) for d in range(par, dmax + 1, 2))
@@ -815,7 +818,9 @@ def coherent_report(R: int, dmax: int) -> list[str]:
             continue
         state = ("one closure depth, finite sum" if growth != growth else
                  "summable" if ok else "DIVERGES")
-        rate = "-" if growth != growth else f"{growth:.4f}^d"
+        # a^2 is the informative number: measured values sit on integers at and below the
+        # threshold of 8, and only above it do irrationals appear
+        rate = "-" if growth != growth else f"{growth:.4f}^d  (a^2 = {growth * growth:.6f})"
         # the tail is geometric, so a truncation at dmax reconstructs the exact rational limit
         approx = T[0].limit_denominator(10 ** 5), T[1].limit_denominator(10 ** 5)
         print(f"  {label:<34} |A(d)| ~ {rate:<9} [{state}]")
