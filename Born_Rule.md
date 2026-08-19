@@ -286,14 +286,40 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     the prepared direction — antipodal or anti-aligned yes, orthogonal marginal, otherwise no. That
     is a **selection rule**, read off the data rather than proven, and it is the characterisation
     this section previously listed as open.
+  * **The invariant that decides it is spectral, and it is a property of the *readout*.** Write the
+    branch amplitude as `A_c(d) = u_c · M^d · v_prep`, with `M` the absorbing closure operator,
+    `v_prep` the preparation and `u_c` the functional that collects outcome `c`. Then
+    > **`a²` is the largest `|λ|²` in the *joint support* of readout and preparation, and an
+    > amplitude exists exactly when that is `< 8`.**
+
+    Predicted from the eigen-structure alone, with no series run, against the measured growth over 90
+    geometries: **86 agree exactly** (`14.6569`, `14.4326`, `12.9085`, `15.1433`, `15.0027`,
+    `15.2350`, … each reproduced to four decimals) and **all 90 agree on the summability verdict**.
+    The four exceptions are one family measured at `8.1623` against a predicted `9.0000` — both above
+    threshold, so the verdict is unaffected, and `8.1623` is exactly the shape of a pre-asymptotic
+    reading (`ScientificApproach.md` R5).
+  * **What that explains.** *Divergent* geometries have `a²` equal to the dominant `λ²` **exactly**
+    — nothing special happens, the readout sees the fastest mode and inherits it. *Convergent* ones
+    are those whose readout is **blind to the dominant modes**: measured overlap `~10⁻¹⁶` against
+    `10⁻¹`–`10⁻²` for divergent ones, a switch rather than a gradient. Their growth then drops to a
+    subdominant eigenvalue — `√7`, `√5` — which is why the recurring integers appeared at all: they
+    are subdominant eigenvalues of an integer matrix. Blindness to the top eigenspace is **necessary
+    but not sufficient** (8 of 140 geometries dodge the top and still excite a second-tier mode above
+    `√8`); blindness to *everything* above `√8` is necessary and sufficient, which is just the
+    criterion restated.
+  * **And it dissolves the "realized threshold" worry.** `a² = 8` is *in the spectrum*, so geometries
+    landing exactly on it is expected, not a coincidence demanding that the `8` of `√8` and the `8`
+    of the alphabet be secretly the same `8`. The earlier imbalance-based rules (antipodal targets,
+    shared component anti-aligned with the preparation) are **proxies** for this orthogonality and
+    fail as proxies do — antipodal geometries converge only 52% of the time.
   * **What that changes, and what it does not.** The sub-additivity theorem stands exactly as proven
     — it bounds the *normalized* weight everywhere. What was wrong was the conclusion drawn from it:
-    the substrate is not universally unable to carry an amplitude. **Still open:** why the threshold
-    is *realized* rather than straddled (20 geometries land on `a² = 8` exactly), which is either
-    deep — the `8` of `√8` and the `8` of the alphabet being the same `8` — or circular, and the
-    difference is not yet established; and whether 1.4% is a physical selection rule or a sign the
-    encoding is too rigid. Not implicated either way: the measure (proven), the phase rule (proven),
-    the depth law (proven), event identity (bracketed).
+    the substrate is not universally unable to carry an amplitude. **Still open, and now sharper:**
+    *which apparatus words produce dominant-blind readouts* — a combinatorial question about `u_c`
+    rather than a search over geometries — and whether the excited eigenvalue set carries physical
+    meaning. Whether 1.4% is a physical selection rule or a sign the encoding is too rigid also
+    remains open. Not implicated either way: the measure (proven), the phase rule (proven), the
+    depth law (proven), event identity (bracketed).
   * **But it does not render an angle, and that is the test that matters.** Sweeping the apparatus
     does not sweep the weight: adding transverse letters one at a time gives
     `2·arccos√P = 0°, 8.99°, 13.04°, 10.37°, 12.89°, 11.13°` for `a = 0…5` — wobbling, never

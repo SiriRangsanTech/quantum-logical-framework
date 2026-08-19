@@ -254,11 +254,22 @@ but **given that everything happens every way, exactly how do those ways add?**
      the same shape with the shared component **orthogonal** to the preparation. So whether an
      arrangement carries a Born weight at all depends on how the apparatus sits relative to the
      prepared direction. Read off the data, not proven.
-   * **What is still open:** why the threshold is *realized* rather than straddled — 20 geometries
-     land on `a² = 8` exactly, which is either deep (the `8` of `√8` and the `8` of the alphabet
-     being one `8`) or circular, and that is not yet settled; and whether 1.4% is a physical
-     selection rule or the encoding being too rigid. The sub-additivity theorem is unaffected: it
-     bounds the *normalized* weight everywhere.
+   * **The invariant is spectral, and it belongs to the readout.** With `A_c(d) = u_c·M^d·v_prep`
+     (`M` the absorbing closure operator), **`a²` is the largest `|λ|²` in the joint support of
+     readout and preparation, and the amplitude exists iff that is `< 8`.** Predicted from the
+     spectrum with no series run: **86 of 90 geometries match exactly**, and **90 of 90 agree on the
+     summability verdict** (the four exceptions read `8.1623` against a predicted `9.0000`, both
+     above threshold — a pre-asymptotic reading by R5). Divergent geometries have `a²` = the dominant
+     `λ²` exactly; convergent ones are **blind to the dominant modes** (overlap `~10⁻¹⁶` against
+     `10⁻¹`–`10⁻²`), dropping to a subdominant eigenvalue — which is where the recurring integers
+     `5`, `7` come from. This also dissolves the "realized threshold" puzzle: `8` is *in* the
+     spectrum. The earlier imbalance rules were proxies and behave like proxies (antipodal converges
+     52% of the time).
+   * **What is still open:** *which apparatus words produce dominant-blind readouts* — now a
+     combinatorial question about `u_c` rather than a search over geometries — whether the excited
+     eigenvalue set means anything physically, and whether 1.4% is a selection rule or the encoding
+     being too rigid. The sub-additivity theorem is unaffected: it bounds the *normalized* weight
+     everywhere.
    * ~~**Next Lean anchor (tractable):** the Kraft bound itself~~ — ✅ **done**
      ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). For a prefix-free set of twist words
      `Σ 8^{−|h|} ≤ 1` is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
