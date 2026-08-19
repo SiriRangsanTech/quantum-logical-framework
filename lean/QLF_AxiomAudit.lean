@@ -79,9 +79,10 @@ import QLF_RiemannMRE
 
 #print axioms QLF.hodge_realized_on_substrate
 
-/-- `trivial_zero_not_nonTrivial` is the check that the RH boundary now speaks about ζ:
+/-! `trivial_zero_not_nonTrivial` is the check that the RH boundary now speaks about ζ:
     an ordinary theorem, about Mathlib's `riemannZeta`, carrying no QLF axiom. It could not
     be stated at all while `NonTrivialZero` was an uninterpreted predicate. -/
+
 #print axioms QLF.trivial_zero_not_nonTrivial
 
 /-! ## Boundaries — expected: exactly the named bridge, and nothing further.
