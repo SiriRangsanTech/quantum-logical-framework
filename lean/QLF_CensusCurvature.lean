@@ -161,24 +161,70 @@ theorem census_no_triangles :
 
 /-! ## 5. The transport curvature, and the one cited bridge -/
 
-/-- The **Ollivier-Ricci curvature** of a census edge,
-    `κ(x,y) = 1 - W₁(mₓ,m_y)/d(x,y)` — an optimal-transport cost over a graph
-    distance, both pure step counts. Opaque here: `W₁` needs discrete optimal
-    transport, which Mathlib does not carry. Computed numerically in
-    `lepton_blind_classifier.py` §K. -/
-axiom ollivierRicci : List Twist → List Twist → ℝ
+/-! ### The boundary, as one assumption — and a distinction the audit needs
 
-/-- **Cited, not posited — Jost & Liu (2014).** In a graph with no triangle
-    on an edge, the Ollivier-Ricci curvature of that edge is non-positive:
-    the upper bound `κ(x,y) ≤ #triangles(x,y) / (dₓ ∨ d_y)` degenerates to
-    `κ ≤ 0`. A real theorem of discrete geometry, named as a boundary because
-    QLF's Lean carries no optimal-transport machinery — the same role as
-    `beale_kato_majda` in `QLF_NavierStokesBKM`, or Wallis/Stirling for `π`.
-    Its combinatorial hypothesis is *proven* above (`census_no_triangles`);
-    nothing about the census is assumed here. -/
-axiom jost_liu_triangle_free :
+    `ollivierRicci` and the Jost–Liu bound are bundled below into one axiom, and
+    `transportCurvature_nonempty` shows the interface is satisfied by the constant-zero
+    curvature. By the letter of the audit that is the same finding as everywhere else.
+
+    It should **not** be read the same way, and the difference is the point of the label
+    *cited, not posited*. Jost & Liu (2014) is a real theorem about a real object. Its Lean
+    form is trivially satisfiable only because Mathlib carries no discrete optimal transport,
+    so `ollivierRicci` cannot be *defined* here and the statement has nothing to bite on —
+    the vacuity is a fact about this formalization, not about the mathematics. Discharging it
+    means building Wasserstein distance on graphs, which is ordinary work with a known
+    answer, not an open problem.
+
+    That is a different situation from `yang_mills_gap` or `hodge_algebraicity`, where the
+    intended reading is precisely what nobody has established. Both kinds are trivially
+    satisfiable in Lean; only one kind is trivially satisfiable *in the world*. The
+    inventory's cited/posited split is exactly this line, and the same reading applies to
+    `beale_kato_majda` in `QLF_NavierStokesBKM`.
+
+    Note also what is **not** assumed: the combinatorial hypothesis Jost–Liu needs is proved
+    here in full (`census_no_triangles`), so nothing about the census is taken on trust. -/
+
+/-- **Transport curvature on the census graph**: the Ollivier-Ricci curvature together with
+    the Jost–Liu bound it satisfies. -/
+structure TransportCurvature where
+  /-- `κ(x,y) = 1 - W₁(mₓ,m_y)/d(x,y)` — an optimal-transport cost over a graph distance,
+      both pure step counts. Opaque: `W₁` needs discrete optimal transport, which Mathlib does
+      not carry. Computed numerically in `lepton_blind_classifier.py` §K. -/
+  ollivierRicci : List Twist → List Twist → ℝ
+  /-- **Cited, not posited — Jost & Liu (2014).** In a graph with no triangle on an edge, the
+      Ollivier-Ricci curvature of that edge is non-positive: the bound
+      `κ(x,y) ≤ #triangles(x,y) / (dₓ ∨ d_y)` degenerates to `κ ≤ 0`. -/
+  jost_liu :
     (∀ a b c : List Twist, Adj a b → Adj b c → Adj c a → False) →
     ∀ a b : List Twist, Adj a b → ollivierRicci a b ≤ 0
+
+/-- Constant-zero curvature satisfies the bound. -/
+def zeroTransportCurvature : TransportCurvature where
+  ollivierRicci := fun _ _ => 0
+  jost_liu := fun _ _ _ _ => le_refl 0
+
+/-- **The interface is inhabited** — so, in Lean, the boundary excludes nothing. Read the
+    section note above before drawing the usual conclusion: here that reflects Mathlib's
+    missing optimal transport rather than an empty claim, and discharging it is ordinary
+    work with a known answer. -/
+theorem transportCurvature_nonempty : Nonempty TransportCurvature :=
+  ⟨zeroTransportCurvature⟩
+
+/-- **The transport-curvature boundary — one axiom**, in the same *cited* role as
+    `beale_kato_majda`: settled discrete geometry that Lean here cannot state against a
+    defined object. -/
+axiom census_transport_curvature : TransportCurvature
+
+/-- The Ollivier-Ricci curvature of a census edge — a definition now, over the boundary's
+    own data. -/
+noncomputable def ollivierRicci : List Twist → List Twist → ℝ :=
+  census_transport_curvature.ollivierRicci
+
+/-- **Jost & Liu (2014)** — read off the boundary. -/
+theorem jost_liu_triangle_free :
+    (∀ a b c : List Twist, Adj a b → Adj b c → Adj c a → False) →
+    ∀ a b : List Twist, Adj a b → ollivierRicci a b ≤ 0 :=
+  census_transport_curvature.jost_liu
 
 /-- **The possibility graph is nowhere positively curved** — at every length,
     not merely on the finite census that was enumerated. A theorem, from the

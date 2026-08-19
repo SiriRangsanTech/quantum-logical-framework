@@ -356,7 +356,7 @@ Witten→RT mode. So "dischargeable" = "how close is this bridge to the **knot s
 math lemma from that end-state; Class A carries the problem's own content and, by design, is not (see
 [`Millennium.md`](Millennium.md) § *The engine*).
 
-QLF carries **14 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
+QLF carries **13 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
 role). The number is not maintained by hand: [`scripts/axiom_audit.sh`](scripts/axiom_audit.sh) pins the list
 in `lean/axioms.expected` and fails CI on any assumption that is added or removed without review, and
 [`lean/QLF_AxiomAudit.lean`](lean/QLF_AxiomAudit.lean) reports, via `#print axioms`, which of them each anchor

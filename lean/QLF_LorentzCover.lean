@@ -201,6 +201,33 @@ structure ProperOrthochronous where
   proper : Λ.det = 1
   orthochronous : 1 ≤ Λ 0 0
 
+/-- **The identity is proper orthochronous** — so the axiom below quantifies over a class
+    that is not empty, and is not vacuously true for want of instances. -/
+def properOrthochronous_id : ProperOrthochronous where
+  Λ := 1
+  preserves_metric := by simp
+  proper := Matrix.det_one
+  orthochronous := by simp
+
+/-! ### Why this boundary reads differently from the others
+
+    The axiom-measurement pass found the same shape in one boundary after another: the
+    interface is satisfied by a trivial reading, so in Lean the assumption excludes nothing
+    and its force lives entirely in an intended interpretation the development cannot state
+    (`yang_mills_gap`, `hodge_algebraicity`, `qlf_cost_model`, `bsd_multiplicity`).
+
+    **This one is the exception, and it is worth having a standard to compare against.**
+    `ProperOrthochronous` is fully concrete — a real `4×4` matrix with three explicit
+    conditions — and `Form`, `spinorAct`, `toCoord` and `ofCoord` are all defined. So the
+    statement below has nothing uninterpreted in it: it asserts something definite about
+    concrete objects, it is true, and it is provable in principle. There is no trivial model
+    to exhibit, because there is nothing left to choose. `properOrthochronous_id` confirms
+    the quantifier is not empty either.
+
+    That is what a healthy boundary looks like: **Class B, settled mathematics Mathlib has
+    not packaged**, where the gap is labour rather than knowledge. The others fall short of
+    it in a way that is now measurable, which is the pass's most useful outcome. -/
+
 /-- **Bridge axiom — boosts and rotations generate `SO⁺(1,3)` (a settled-mathematics bridge, the
     Witten-1988 mode).** Every proper orthochronous Lorentz transformation factors into boosts and
     rotations — the **KAK/Cartan decomposition of `SO⁺(1,3)`** — so it is the spinor action of some

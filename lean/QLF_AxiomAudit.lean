@@ -53,6 +53,8 @@ import QLF_PvsNP
 import QLF_Fredkin
 import QLF_MassGap
 import QLF_NavierStokes
+import QLF_CensusCurvature
+import QLF_LorentzCover
 import QLF_RiemannMRE
 
 /-! ## The combinatorial core — expected: no QLF axiom -/
@@ -95,6 +97,22 @@ import QLF_RiemannMRE
     the module's framing turns on. -/
 
 #print axioms QLF.algebraicityBridge_nonempty
+
+/-! The last two, and the contrast between them is the pass's most useful outcome.
+
+    `transportCurvature_nonempty` is trivially satisfiable like the rest — but that reflects
+    Mathlib's missing discrete optimal transport, not an empty claim: Jost & Liu (2014) is a
+    real theorem, *cited* rather than posited, and discharging it is labour with a known
+    answer.
+
+    `properOrthochronous_id` marks the healthy case. `lorentz_generated_by_boosts_rotations`
+    quantifies over a fully concrete class with nothing uninterpreted in it, so there is no
+    trivial model to exhibit — there is nothing left to choose. That is the standard the
+    other boundaries fall short of. -/
+
+#print axioms QLF.transportCurvature_nonempty
+#print axioms QLF.properOrthochronous_id
+#print axioms QLF.census_no_triangles
 
 /-! ## Derived results — expected: no QLF axiom.
 
