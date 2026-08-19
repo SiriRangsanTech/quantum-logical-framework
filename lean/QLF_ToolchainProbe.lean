@@ -7,10 +7,12 @@
   Each block states what CLAUDE.md claims; the log says whether the claim still holds.
 -/
 
-import Mathlib.Data.Matrix.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Basic
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic   -- gotcha 10: the path that works
+-- Wholesale, deliberately. The first attempt imported four specific modules and died on
+-- `Mathlib.Algebra.BigOperators.Basic`, which no longer exists — so elaboration stopped at
+-- the imports and not one gotcha was tested. A probe must not be blocked by the very kind
+-- of staleness it exists to find. (That dead path is itself a result: another rule of the
+-- same family as gotcha 10.)
+import Mathlib
 
 /-! ## Gotcha 1 — `private noncomputable def`, in that order.
     Claim: the reverse order is rejected, and `1/2 : ℝ` needs `noncomputable`. -/
