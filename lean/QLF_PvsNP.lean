@@ -110,6 +110,9 @@ structure CostModel where
 /-- A cost model with no complexity theory in it: `PTime f` means "`f` agrees with `verify`
     somewhere", and `search` negates `verify` pointwise. Verification is polynomial because
     `verify` agrees with itself, and the separation holds because `!b ≠ b`. -/
+private theorem bool_not_ne (b : Bool) : (!b) ≠ b := by
+  cases b <;> simp
+
 def toyCostModel : CostModel where
   PTime := fun f => ∃ s : TopoString, f s = verify s
   search := fun _ => fun s => !(verify s)
@@ -117,7 +120,7 @@ def toyCostModel : CostModel where
   generate_not_reducible_to_verify := by
     refine ⟨verify, ⟨[], rfl⟩, ?_⟩
     rintro ⟨s, hs⟩
-    cases hv : verify s <;> rw [hv] at hs <;> simp at hs
+    exact bool_not_ne (verify s) hs
 
 /-- **The interface is inhabited, and trivially so — so exhibiting a model proves
     nothing here.** `toyCostModel` satisfies every field without reference to running

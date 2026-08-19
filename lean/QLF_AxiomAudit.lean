@@ -49,6 +49,7 @@ import QLF_LawOfExceptions
 import QLF_AlphaBound
 import QLF_Hodge
 import QLF_BSD
+import QLF_PvsNP
 import QLF_RiemannMRE
 
 /-! ## The combinatorial core — expected: no QLF axiom -/
