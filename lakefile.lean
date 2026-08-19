@@ -3,8 +3,17 @@ open Lake DSL
 
 package «QuantumLogicalFramework»
 
+-- Mathlib is pinned by revision, and lake-manifest.json records the whole resolved
+-- dependency set. CI builds from that manifest and does NOT run `lake update`, so a green
+-- build means the modules verify against a *stated* Mathlib and reproduces later. Leaving
+-- this unpinned means every run silently tests a different Mathlib, and a breaking change
+-- upstream arrives as a mystery failure in an unrelated commit.
+--
+-- To advance Mathlib deliberately: run `lake update`, put the resolved mathlib revision
+-- here, commit the regenerated manifest with it, and let CI confirm green in its own commit.
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git"
+  "https://github.com/leanprover-community/mathlib4.git" @
+  "abec794dccc82583e8ac6f31968adf01c264d2da"
 
 @[default_target]
 lean_lib QLF where

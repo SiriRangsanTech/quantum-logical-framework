@@ -45,9 +45,11 @@ jobs:
           rm -rf .lake
           lake clean
 
-      - name: Update Lake dependencies
-        run: lake update
-
+      # Deliberately NOT `lake update`. The dependency set is pinned in lakefile.lean and
+      # recorded in lake-manifest.json, so the build resolves to stated revisions and a green
+      # run reproduces. `lake update` re-resolved Mathlib to master on every push, which meant
+      # the verification claim was against whatever master happened to be that morning.
+      # To advance Mathlib, update the pin and manifest in a commit of their own.
       - name: Fetch Mathlib cache
         run: lake exe cache get
 
