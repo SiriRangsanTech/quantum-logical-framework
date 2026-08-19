@@ -93,11 +93,23 @@ import QLF_RiemannMRE
 #print axioms QLF.mellinFactorization_iff_rh
 #print axioms QLF.mellinFactorization_independent_of_generator
 
+/-! The BSD counterparts. `mirrorInvariant_iff_perspectives_agree` shows the modularity
+    mirror carries no strength beyond the agreement it concludes, and
+    `mirrorMultiplicity_nonempty` shows the interface is inhabited by constant zero — so a
+    construction cannot discharge that boundary the way `QLF_LatticeCalculus` discharged
+    its own. Both must show no QLF axiom. -/
+
+#print axioms QLF.mirrorInvariant_iff_perspectives_agree
+#print axioms QLF.mirrorMultiplicity_nonempty
+
 /-! ## Boundaries — expected: exactly the named bridge, and nothing further.
 
-    `bsd_rank_equals_order` should consume `modularity_mirror_invariant` (plus the abstract
-    datum `centralMultiplicity`) and no other QLF axiom — it is a theorem downstream of one
-    boundary, not a second boundary.
+    `bsd_rank_equals_order` should consume `bsd_multiplicity` and no other QLF axiom. Note
+    what its footprint lacks: `propext`, `Classical.choice` and `Quot.sound` are all absent,
+    which is the signature of a pure application — the machine's own way of saying the
+    theorem restates its boundary rather than deriving from it. Compare
+    `hodge_realized_on_substrate` above, which carries the Lean three and no QLF name: that
+    is what a proof looks like.
 
     `riemann_hypothesis_in_qlf_via_MRE` should consume `mre_factorization` and *not*
     `spectral_hilbert_polya`. The two routes are independent in *dependency* — neither

@@ -6,7 +6,7 @@
 > (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
 > **Generate:** the elliptic-curve closure (computed Frobenius traces `a_p`, `EllipticCurveQLF`). **Select:**
 > the `L(E,s)` self-dual central point `s=1` of `s↦2−s` (`bsd_central_point_self_dual`). **Bridge (Class A,
-> couched Witten→RT):** `modularity_mirror_invariant` — carries BSD's own content; its settled-math neighbour
+> couched Witten→RT):** `bsd_multiplicity` — carries BSD's own content; its settled-math neighbour
 > is modularity (Wiles / Langlands). See [Millennium.md](Millennium.md) § *The engine*.
 
 > **Status: `bsd_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical** BSD
@@ -14,7 +14,7 @@
 > structure is machine-verified, and the **elliptic-curve→closure encoding is built** —
 > `EllipticCurveQLF` is a concrete Weierstrass curve whose Frobenius-trace closure is *computed*
 > ([`lean/QLF_BSD.lean`](lean/QLF_BSD.lean)). *The gap (faithfulness):* `rank = ord`
-> (`bsd_rank_equals_order`) follows from the one bridge axiom **`modularity_mirror_invariant`** —
+> (`bsd_rank_equals_order`) follows from the one bridge axiom **`bsd_multiplicity`** —
 > the mirror-invariance of the central multiplicity, which on BSD has the conjecture's full
 > strength. **BSD is a *finitary* arithmetic statement, not a continuum or independence
 > phenomenon**, so the "ZFC's defect" framing does **not** apply to it (it applies to genuine
@@ -82,15 +82,18 @@ each side; and because the central point `s=1` is the mirror's **fixed point**
 follows:
 
 ```lean
+-- the single boundary — one axiom, bundling the multiplicity with its invariance:
+structure MirrorMultiplicity where
+  mult : EllipticCurveQLF → Perspective → ℕ
+  mirror_invariant (E) (p) : mult E (modularityMirror p) = mult E p
+
+axiom bsd_multiplicity : MirrorMultiplicity
+
 -- the ranks are the one multiplicity, read on the two mirror sides:
 def mordellWeilRank (E) : ℕ := centralMultiplicity E .galois
 def analyticRank   (E) : ℕ := centralMultiplicity E .automorphic
 
--- the single boundary, structural (the mirror's fixed point is the central point):
-axiom modularity_mirror_invariant (E) (p) :
-    centralMultiplicity E (modularityMirror p) = centralMultiplicity E p
-
--- rank = ord is a THEOREM:
+-- rank = ord, through the mirror:
 theorem bsd_rank_equals_order (E) : mordellWeilRank E = analyticRank E := by
   unfold mordellWeilRank analyticRank
   exact (modularity_mirror_invariant E .galois).symm
@@ -99,6 +102,27 @@ theorem bsd_in_qlf (E) :                                -- qualitative BSD, deri
     (0 < mordellWeilRank E) ↔ (0 < analyticRank E) := by
   rw [bsd_rank_equals_order E]
 ```
+
+**How much the mirror buys, measured.** `Perspective` has two constructors and
+`modularityMirror` swaps them, so mirror-invariance is not a symmetry from which agreement
+follows — it *is* agreement, in involution language. That is now a theorem,
+`mirrorInvariant_iff_perspectives_agree`, and it says `bsd_rank_equals_order` restates the
+boundary rather than deriving from something weaker. The machine agrees independently: the
+`#print axioms` footprint of `bsd_rank_equals_order` consumes the boundary and *nothing
+else* — not even `propext` — which is the signature of a pure application.
+
+Nor is exhibiting a model evidence here. `mirrorMultiplicity_nonempty` builds an instance
+from the constant-zero multiplicity, so the interface is inhabited for reasons with no
+arithmetic in them — unlike `QLF_LatticeCalculus`, where constructing a *nondegenerate*
+forward-difference instance genuinely discharged "suppose such a calculus exists". The
+content is the claim that the **intended** multiplicity — the actual Mordell–Weil rank, the
+actual order of vanishing of `L(E,s)` — is an instance, and that claim is BSD.
+
+None of this touches what the reformulation builds: the self-dual central point is proved,
+the curve is concrete, its Frobenius traces are computed. The mirror is a real reason to
+*believe* the boundary — modularity as one closure read from two perspectives — which is
+what a structural motivation is for. It is not less to assume, and the two are worth
+keeping apart.
 
 `bsd_in_qlf` is the qualitative Birch–Swinnerton-Dyer statement: **`E(ℚ)` is infinite iff
 `L(E,1) = 0`** — infinitely many rational solutions exactly when the L-function vanishes at
@@ -111,8 +135,8 @@ encoding** (§5: concrete `EllipticCurveQLF` with its Frobenius traces). Within 
 reformulation, rank = ord (`bsd_rank_equals_order`) is a *theorem* — it follows from the
 two ranks being one `centralMultiplicity` read on the two mirror sides, equal by
 mirror-invariance at the self-dual fixed point. **The whole weight rests on one bridge
-axiom**, `modularity_mirror_invariant`: that the Hermitian-pair mirror genuinely preserves
-the central multiplicity at its fixed point — i.e. that the QLF closure datum on the two
+axiom**, `bsd_multiplicity` (of which `modularity_mirror_invariant` is now a projection):
+that the Hermitian-pair mirror genuinely preserves the central multiplicity at its fixed point — i.e. that the QLF closure datum on the two
 sides really *is* the Mordell–Weil rank on one and the analytic order on the other. **That
 bridge carries the classical conjecture's full strength.** It is the faithfulness gap, the
 exact BSD analog of Hodge's `substrate_realization_is_algebraic`: the substrate side is

@@ -356,7 +356,7 @@ Witten→RT mode. So "dischargeable" = "how close is this bridge to the **knot s
 math lemma from that end-state; Class A carries the problem's own content and, by design, is not (see
 [`Millennium.md`](Millennium.md) § *The engine*).
 
-QLF carries **22 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
+QLF carries **21 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
 role). The number is not maintained by hand: [`scripts/axiom_audit.sh`](scripts/axiom_audit.sh) pins the list
 in `lean/axioms.expected` and fails CI on any assumption that is added or removed without review, and
 [`lean/QLF_AxiomAudit.lean`](lean/QLF_AxiomAudit.lean) reports, via `#print axioms`, which of them each anchor
@@ -385,11 +385,23 @@ itself — an unconstrained middle predicate constrains nothing — and
 The scaffold is motivation for believing the bridge, which is what a scaffold is for; it was never a
 weakening, and now that is a theorem rather than a reading. The same measurement shows why the *other*
 tempting move is a trap: giving the predicate a concrete definition falsifies one leg or the other and makes
-the axiom set inconsistent, which is strictly worse than an opaque boundary. The remaining axioms split:
+the axiom set inconsistent, which is strictly worse than an opaque boundary.
+
+BSD went the same way and returned a sharper reading. `centralMultiplicity` and `modularity_mirror_invariant`
+are the single `bsd_multiplicity`, licensed by `mirrorInvariant_iff_perspectives_agree`: with two perspectives
+and a mirror that swaps them, invariance is not a symmetry from which agreement follows — it *is* agreement,
+in involution language. So `bsd_rank_equals_order` restates its boundary rather than deriving from something
+weaker, and the `#print axioms` footprint says so independently, consuming the boundary and not even
+`propext` — the signature of a pure application. `mirrorMultiplicity_nonempty` adds the second half:
+constant zero satisfies the interface, so **exhibiting a model is not evidence here**, unlike
+`QLF_LatticeCalculus` where a *nondegenerate* instance genuinely discharged "suppose such a calculus exists".
+The arithmetic content is the claim that the intended multiplicity — the real Mordell–Weil rank, the real
+order of vanishing — is an instance, which is BSD. What the reformulation builds is untouched: self-dual
+central point proved, concrete curve, computed Frobenius traces. The remaining axioms split:
 
 | Class | Axioms | Provable? | What discharge requires |
 |---|---|---|---|
-| **A — open-conjecture content** (the deliberate boundaries) | `spectral_hilbert_polya`, `resonant_computation_for`, `mre_factorization` (Riemann); `modularity_mirror_invariant`, `centralMultiplicity` (BSD); `generate_not_reducible_to_verify`, `PTime`, `search`, `verify_is_ptime` (P vs NP); `yang_mills_continuum_gap`, `YangMillsMassGap`; `NavierStokesGlobalSmoothness` (`navier_stokes_continuum_limit` reduced, see above); `substrate_realization_is_algebraic`, `CohClass.isAlgebraic` (Hodge faithfulness — the located wall) | **No** — proving one *is* solving the corresponding open problem (Riemann / BSD / P-vs-NP / Yang–Mills, or the Hodge cycle-faithful encoding). These are the explicit `RCA₀→analytic/WKL₀` boundaries, not gaps. **Audited, not assumed:** each Class-A bridge sits where a *cheaper-looking* derivation appears available, and all six such routes were checked and found closed — the cheap fact is in every case automatic, pointed the wrong way, or about a different object ([`Millennium.md`](Millennium.md) § *The competing-route trap*). None is a near miss. | The very analytic / continuum / independence content the reformulation isolates — not a Mathlib lemma away. |
+| **A — open-conjecture content** (the deliberate boundaries) | `spectral_hilbert_polya`, `resonant_computation_for`, `mre_factorization` (Riemann); `bsd_multiplicity` (BSD); `generate_not_reducible_to_verify`, `PTime`, `search`, `verify_is_ptime` (P vs NP); `yang_mills_continuum_gap`, `YangMillsMassGap`; `NavierStokesGlobalSmoothness` (`navier_stokes_continuum_limit` reduced, see above); `substrate_realization_is_algebraic`, `CohClass.isAlgebraic` (Hodge faithfulness — the located wall) | **No** — proving one *is* solving the corresponding open problem (Riemann / BSD / P-vs-NP / Yang–Mills, or the Hodge cycle-faithful encoding). These are the explicit `RCA₀→analytic/WKL₀` boundaries, not gaps. **Audited, not assumed:** each Class-A bridge sits where a *cheaper-looking* derivation appears available, and all six such routes were checked and found closed — the cheap fact is in every case automatic, pointed the wrong way, or about a different object ([`Millennium.md`](Millennium.md) § *The competing-route trap*). None is a near miss. | The very analytic / continuum / independence content the reformulation isolates — not a Mathlib lemma away. |
 | **B — settled math Mathlib lacks assembled** | `lorentz_generated_by_boosts_rotations` (most feasible); `benincasa_dowker_limit`, `order_metric_continuum_limit`; `beale_kato_majda`, `continuum_vorticity_planck_capped` | **In principle, yes** — each is a *published* theorem (Lie generation of `SO⁺(1,3)`; Benincasa–Dowker 2010; Malament / Bombelli–Henson–Sorkin; BKM 1984), so provable but not yet in Lean. | A real multi-hundred-line Lean project: `sl(2,ℂ)≅so(1,3)` + exp-surjectivity onto the identity component (Lorentz); Poisson processes on Lorentzian regions (CST limits); Sobolev/Gronwall PDE regularity (BKM). Mathlib has fragments, not the assembly. |
 
 **Bottom line.** The axioms that *can* be proven are the **Class B** "settled math" ones — chiefly

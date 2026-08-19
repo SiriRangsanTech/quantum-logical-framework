@@ -1,5 +1,4 @@
-QLF_BSD.lean centralMultiplicity
-QLF_BSD.lean modularity_mirror_invariant
+QLF_BSD.lean bsd_multiplicity
 QLF_CausalContinuum.lean benincasa_dowker_limit
 QLF_CensusCurvature.lean jost_liu_triangle_free
 QLF_CensusCurvature.lean ollivierRicci
