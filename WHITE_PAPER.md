@@ -240,7 +240,7 @@ All six Clay Millennium problems have a Lean module reducing each to a construct
 | Yang–Mills mass gap | `QLF_MassGap` | `yang_mills_continuum_gap` |
 | Birch–Swinnerton-Dyer | `QLF_BSD` | `modularity_mirror_invariant` (rank = ord is a theorem) |
 | Hodge conjecture | `QLF_Hodge`, `QLF_CohomologyAlgebra`, `QLF_HodgeStructure` | `substrate_realization_is_algebraic` (both sides built; gap = geometric realization — see below) |
-| P vs NP | `QLF_PvsNP` | `generate_not_reducible_to_verify` |
+| P vs NP | `QLF_PvsNP` | `qlf_cost_model` |
 | Navier–Stokes | `QLF_NavierStokes`, `QLF_AngularMomentum` | `navier_stokes_continuum_limit` (no-blow-up *mechanism* now anchored — see below) |
 
 Read each as **contrast-then-focus**: the classical Clay conjecture is a different statement (not

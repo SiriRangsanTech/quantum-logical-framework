@@ -102,6 +102,15 @@ import QLF_RiemannMRE
 #print axioms QLF.mirrorInvariant_iff_perspectives_agree
 #print axioms QLF.mirrorMultiplicity_nonempty
 
+/-! The P-vs-NP counterparts. `realized_count_eq_central_binomial` is the module's real
+    content — the `C(2n,n)` count of the verify-filtered set — and must carry no QLF axiom.
+    `costModel_nonempty` is the measurement: it builds a cost model out of `verify` and
+    boolean negation, so it too must carry none, which is precisely what makes it bad news
+    for the boundary rather than good. -/
+
+#print axioms QLF.realized_count_eq_central_binomial
+#print axioms QLF.costModel_nonempty
+
 /-! ## Boundaries — expected: exactly the named bridge, and nothing further.
 
     `bsd_rank_equals_order` should consume `bsd_multiplicity` and no other QLF axiom. Note
@@ -118,5 +127,6 @@ import QLF_RiemannMRE
     having and they are different facts; the audit reports the first one. -/
 
 #print axioms QLF.bsd_rank_equals_order
+#print axioms QLF.p_vs_np_in_qlf
 #print axioms QLF.riemann_hypothesis_in_qlf
 #print axioms QLF.riemann_hypothesis_in_qlf_via_MRE

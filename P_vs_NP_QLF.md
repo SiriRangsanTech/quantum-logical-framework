@@ -6,14 +6,14 @@
 > Jones-polynomial path integral (a physics sum-over-everything that proved rigorous mathematics, discharged
 > by Reshetikhin–Turaev). **Generate:** the `4ⁿ` candidate histories (`generated_count`). **Select:** the O(n)
 > verify-filter = `C(2n,n)` closing ones (`realized_is_verify_filter`) — generate-cheap, check-cheap, the
-> firebreak ([`QLF_Firebreak`](lean/QLF_Firebreak.lean)). **Bridge (Class A):** `generate_not_reducible_to_verify`
+> firebreak ([`QLF_Firebreak`](lean/QLF_Firebreak.lean)). **Bridge (Class A):** `qlf_cost_model`
 > — the complexity separation itself. See [Millennium.md](Millennium.md) § *The engine*.
 
 > **Status: `p_vs_np_proof_in_progress` — a reformulation.** *Contrast (once):* the **classical** P
 > vs NP question is not settled here. *What is proven (the reformulation):* the generate/verify
 > asymmetry on real theorems — the realized set *is* the O(n) verify-filter of the candidates, with
 > size `C(2n,n)` ([`lean/QLF_PvsNP.lean`](lean/QLF_PvsNP.lean)). *The gap:* the formal complexity
-> separation is the one bridge axiom `generate_not_reducible_to_verify`, over an abstract cost model
+> separation is the one bridge axiom `qlf_cost_model`, over an abstract cost model
 > (QLF has no machine model). P vs NP is a *finitary* statement about computation, **not** a known
 > independence phenomenon — so "ZFC's defect" does not apply (that is for halting / Busy Beaver). So:
 > contrast (classical, not settled) → the proven asymmetry → the named bridge. See
@@ -98,7 +98,7 @@ that *are* QLF facts are proven by reusing verified theorems — the realized se
 O(n) verify-filter of the generated candidates (`realized_is_verify_filter`, definitional)
 and its cardinality is the genuine `C(2n,n)` (`realized_count_eq_central_binomial`, reusing
 `find_stable_states_length_even`) — while the separation itself is the single explicit
-boundary axiom `generate_not_reducible_to_verify` over an abstract `PTime`/`search` cost
+boundary axiom `qlf_cost_model` over an abstract `PTime`/`search` cost
 model, with the `p_vs_np_proof_in_progress` status marker.
 
 ## 5. Epistemic stance
@@ -108,7 +108,23 @@ ZFC ultraviolet catastrophe: **possibility is cheap to enumerate and cheap to ch
 but expensive to *select*.** The universe is the ZFA-closed subset of an exponential
 possibility space, and there is no free lunch that hands you the closure you want
 without searching for it. The circuit lower bound is the remaining step, carried by the one
-bridge axiom `generate_not_reducible_to_verify` over an abstract cost model. **P vs NP is a
+bridge axiom `qlf_cost_model` over an abstract cost model.
+
+**How much that axiom assumes, measured.** `costModel_nonempty` constructs a satisfying cost
+model out of `verify` and boolean negation: read `PTime f` as "`f` agrees with `verify`
+somewhere" and `search` as pointwise `!`, and verification is polynomial because `verify`
+agrees with itself, while the separation holds because `!b ≠ b`. Nothing about running times,
+machine models or `C(2n,n)` is needed. So the axiom **constrains nothing about polynomial
+time** — it is satisfiable by construction, and exhibiting a model is no evidence at all. Its
+whole force is the claim that the *intended* cost model, real polynomial time and real search,
+is an instance; that claim is P ≠ NP. This is the same shape as the BSD interface and the
+opposite of `QLF_LatticeCalculus`, where a *nondegenerate* instance genuinely discharged
+"suppose such a calculus exists". Two smaller findings: `verify_is_ptime` is consumed by
+nothing, and `p_vs_np_in_qlf` is the boundary restated verbatim, which the `#print axioms`
+footprint confirms. None of it touches the proven core — the verify-filter identity and the
+`C(2n,n)` count stand independent of the boundary.
+
+**P vs NP is a
 *finitary* statement about computation — not a known independence phenomenon — so the "ZFC's
 defect" framing (which belongs to genuine uncomputability: halting, Busy Beaver) does *not*
 apply here.** The honest reading: the substrate-constructive generate/verify asymmetry is

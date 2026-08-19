@@ -12,10 +12,7 @@ QLF_NavierStokes.lean navier_stokes_continuum_limit
 QLF_NavierStokesBKM.lean beale_kato_majda
 QLF_NavierStokesBKM.lean continuum_vorticity_planck_capped
 QLF_OrderMetric.lean order_metric_continuum_limit
-QLF_PvsNP.lean PTime
-QLF_PvsNP.lean generate_not_reducible_to_verify
-QLF_PvsNP.lean search
-QLF_PvsNP.lean verify_is_ptime
+QLF_PvsNP.lean qlf_cost_model
 QLF_Riemann.lean resonant_computation_for
 QLF_Riemann.lean spectral_hilbert_polya
 QLF_RiemannMRE.lean mre_factorization

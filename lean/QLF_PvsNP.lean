@@ -51,31 +51,111 @@ theorem realized_count_eq_central_binomial (n : ℕ) :
   unfold realizedSet
   exact find_stable_states_length_even n
 
-/-- Abstract cost model. `PTime f` means the boolean history-predicate `f` is
-    decidable within a polynomial-time bound. QLF formalises no machine model — the
-    cost model is exactly the abstraction the formal separation lives in — but it is
-    instantiated on the substrate's real predicates (`verify`, below). -/
-axiom PTime : (TopoString → Bool) → Prop
+/-! ### The boundary, as one assumption whose strength is measured
 
-/-- The search decider for a target property `prop`: "does a realized closure satisfy
-    `prop`?" Abstract (its cost is the open question). -/
-axiom search : (TopoString → Bool) → (TopoString → Bool)
+    The cost model used to be four axioms: the predicate `PTime`, the operator `search`,
+    the claim that verification is polynomial, and the separation. Measuring them returns
+    the sharpest reading of the three Millennium boundaries audited so far, and it is not
+    a flattering one.
 
-/-- **Verification is polynomial.** The closure check `verify` that defines the
-    realized set runs in time linear in the input length. -/
-axiom verify_is_ptime : PTime verify
+    **The four are jointly satisfied by a model with no complexity theory in it.**
+    `toyCostModel` reads `PTime f` as "`f` agrees with `verify` somewhere" and `search` as
+    boolean negation of `verify`. Verification is then polynomial because `verify` agrees
+    with itself; the separation holds because `!b ≠ b`. That is the whole proof —
+    `costModel_nonempty` needs nothing about running times, machine models, or `C(2n,n)`.
+    So the axioms as stated **constrain nothing about polynomial time**: they are
+    satisfiable by construction, and exhibiting a model is therefore no evidence at all.
+    The content is entirely the claim that the *intended* cost model — real polynomial
+    time, real search — is an instance, and that claim is P ≠ NP.
 
-/-- **The P vs NP boundary axiom.** There is a target property that is polynomial to
-    *verify* yet whose realized-closure *search* is not polynomial — the generate/
-    verify gap does not collapse, because ZFA closure is global (a prefix of a closure
-    is not a closure, so no greedy certificate extends a partial history to a target
-    solution). This is the formal P ≠ NP separation over the infinite computational
-    model: the named continuum-sector boundary, not a QLF theorem. -/
-axiom generate_not_reducible_to_verify :
+    This is the same shape as the BSD interface (`mirrorMultiplicity_nonempty`) and the
+    opposite of `QLF_LatticeCalculus`, where constructing a *nondegenerate* instance
+    genuinely discharged "suppose such a calculus exists". Which case one is in is exactly
+    what a satisfiability proof is for, and it can only be found by trying to build the
+    toy.
+
+    **`verify_is_ptime` was also load-free.** Nothing consumed it: `p_vs_np_in_qlf` is
+    `generate_not_reducible_to_verify` verbatim, and that statement never mentions
+    `verify`. As a bundled field the claim survives and stays visible, but it should not be
+    read as doing work. The `#print axioms` footprint of `p_vs_np_in_qlf` says the rest:
+    it consumes the boundary and nothing else, the signature of a restatement.
+
+    None of this touches what the module proves, which is real and independent of the
+    boundary: the realized set *is* the verify-filter of the generated candidates
+    (`realized_is_verify_filter`, definitional) and its size is exactly `C(2n,n)`
+    (`realized_count_eq_central_binomial`, reusing the verified count). The generate/verify
+    asymmetry is built here. What is assumed is that it survives translation into a machine
+    model QLF does not carry. -/
+
+/-- **A cost model for the substrate's history-predicates.** `PTime f` reads "`f` is
+    decidable within a polynomial-time bound"; `search prop` is the decider "does a
+    realized closure satisfy `prop`?". QLF formalises no machine model — the cost model is
+    exactly the abstraction the formal separation lives in — so it is named as an
+    interface and the boundary asserts the substrate has one. -/
+structure CostModel where
+  /-- The polynomial-time predicate on boolean history-predicates. -/
+  PTime : (TopoString → Bool) → Prop
+  /-- The search decider for a target property. -/
+  search : (TopoString → Bool) → (TopoString → Bool)
+  /-- **Verification is polynomial.** The closure check `verify` that defines the realized
+      set runs in time linear in the input length. -/
+  verify_is_ptime : PTime verify
+  /-- **The separation.** There is a target property that is polynomial to *verify* yet
+      whose realized-closure *search* is not polynomial — the generate/verify gap does not
+      collapse, because ZFA closure is global: a prefix of a closure is not a closure, so
+      no greedy certificate extends a partial history to a target solution. -/
+  generate_not_reducible_to_verify :
     ∃ prop : TopoString → Bool, PTime prop ∧ ¬ PTime (search prop)
 
+/-- A cost model with no complexity theory in it: `PTime f` means "`f` agrees with `verify`
+    somewhere", and `search` negates `verify` pointwise. Verification is polynomial because
+    `verify` agrees with itself, and the separation holds because `!b ≠ b`. -/
+def toyCostModel : CostModel where
+  PTime := fun f => ∃ s : TopoString, f s = verify s
+  search := fun _ => fun s => !(verify s)
+  verify_is_ptime := ⟨[], rfl⟩
+  generate_not_reducible_to_verify := by
+    refine ⟨verify, ⟨[], rfl⟩, ?_⟩
+    rintro ⟨s, hs⟩
+    cases hv : verify s <;> rw [hv] at hs <;> simp at hs
+
+/-- **The interface is inhabited, and trivially so — so exhibiting a model proves
+    nothing here.** `toyCostModel` satisfies every field without reference to running
+    times, machine models, or the `C(2n,n)` count. Unlike `QLF_LatticeCalculus`, where a
+    nondegenerate instance genuinely discharged the interface, a construction cannot
+    discharge this boundary: its content is the claim that the *intended* cost model is an
+    instance, which is P ≠ NP. A satisfiable interface is evidence only when its instances
+    are hard to come by, and this one's are not. -/
+theorem costModel_nonempty : Nonempty CostModel :=
+  ⟨toyCostModel⟩
+
+/-- **The P vs NP boundary — one axiom.** The substrate carries a cost model in which
+    verification is polynomial and the generate/verify gap does not collapse. This is the
+    formal P ≠ NP separation over the infinite computational model: the named
+    continuum-sector boundary, not a QLF theorem, and by `costModel_nonempty` its force
+    lies entirely in *which* model is intended rather than in the existence of one. -/
+axiom qlf_cost_model : CostModel
+
+/-- The polynomial-time predicate of the substrate's cost model. -/
+noncomputable def PTime : (TopoString → Bool) → Prop := qlf_cost_model.PTime
+
+/-- The search decider of the substrate's cost model. -/
+noncomputable def search : (TopoString → Bool) → (TopoString → Bool) := qlf_cost_model.search
+
+/-- **Verification is polynomial** — read off the cost model. Note that nothing consumes
+    this: the separation statement never mentions `verify`. It is a claim worth making, not
+    a step in an argument. -/
+theorem verify_is_ptime : PTime verify := qlf_cost_model.verify_is_ptime
+
+/-- **The generate/verify gap does not collapse** — read off the cost model. -/
+theorem generate_not_reducible_to_verify :
+    ∃ prop : TopoString → Bool, PTime prop ∧ ¬ PTime (search prop) :=
+  qlf_cost_model.generate_not_reducible_to_verify
+
 /-- **P ≠ NP in QLF** (conditional on the boundary): verification is cheap, search is
-    not, and the substrate exhibits no mechanism reducing one to the other. -/
+    not, and the substrate exhibits no mechanism reducing one to the other. It is the
+    boundary restated — the two statements are the same proposition — which the
+    `#print axioms` footprint confirms by consuming the boundary and nothing else. -/
 theorem p_vs_np_in_qlf :
     ∃ prop : TopoString → Bool, PTime prop ∧ ¬ PTime (search prop) :=
   generate_not_reducible_to_verify
