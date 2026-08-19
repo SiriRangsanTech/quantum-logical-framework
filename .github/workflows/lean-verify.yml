@@ -63,9 +63,3 @@ jobs:
       # build. See that file for how to read it.
       - name: Report axiom footprint of the anchor theorems
         run: lake env lean lean/QLF_AxiomAudit.lean
-
-      # TEMPORARY (issue #146): checks CLAUDE.md's "Lean 4.30 gotchas" against the toolchain
-      # we actually build with. Non-blocking — the errors it prints ARE the report. Remove
-      # this step and lean/QLF_ToolchainProbe.lean once the results are recorded.
-      - name: Probe the documented Lean gotchas
-        run: lake env lean lean/QLF_ToolchainProbe.lean || true

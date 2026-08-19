@@ -95,19 +95,26 @@ The Lagrangian formulation uses a Σ₈ = {τ¹…τ⁸} algebra with **τᵢτ�
 
 ---
 
-## Lean 4.30 gotchas — read before writing any Lean code
+## Lean gotchas — read before writing any Lean code
 
-1. **`noncomputable` order**: Must be `private noncomputable def`, NOT `noncomputable private def`. Any `def` using `1/2 : ℝ` needs `noncomputable` (Real.instDivInvMonoid).
+**Calibrated to `leanprover/lean4:v4.34.0-rc1`**, the toolchain `lean-toolchain` pins and CI
+builds with. Items marked ✅ were *checked against it* by a throwaway probe module
+(issue #146); the rest are project-specific facts about QLF's own definitions, which no
+toolchain change can invalidate. **Re-run the probe when the Mathlib pin advances** — the
+list was previously calibrated to v4.30.0-rc2 while CI had silently been building on v4.34
+for some time, and two rules had gone stale unnoticed.
 
-2. **`Matrix.conjTranspose` not `Matrix.adjoint`**: Lean 4 spelling.
+1. ✅ **`noncomputable` order**: Must be `private noncomputable def`, NOT `noncomputable private def` (the reverse is a parse error: *unexpected token 'private'; expected 'lemma'*). Any `def` using `1/2 : ℝ` needs `noncomputable` (Real.instDivInvMonoid).
+
+2. ✅ **`Matrix.conjTranspose` not `Matrix.adjoint`**: Lean 4 spelling. `Matrix.adjoint` does not exist.
 
 3. **Type aliases**: Use `abbrev Foo := List Bar` not `def` — `def` is opaque to typeclass inference.
 
-4. **`∑` notation**: Use `∑ k ∈ Finset.range n, ...` (Unicode `∈`), NOT `∑ k in ...`.
+4. ✅ **`∑` notation**: Use `∑ k ∈ Finset.range n, ...` (Unicode `∈`), NOT `∑ k in ...` — the old spelling is now a **hard parse error** (*unexpected token 'in'; expected ','*), no longer a deprecation warning.
 
 5. **`count_pos`/`count_neg` are `Int`**: Don't assume non-negativity; prove it via induction if needed.
 
-6. **`List.mem_cons_self` deprecated**: Use `List.Mem.head _` instead. `List.mem_cons_of_mem _ h` → `List.Mem.tail _ h`.
+6. ✅ **~~`List.mem_cons_self` deprecated~~ — NO LONGER TRUE.** `List.mem_cons_self` and `List.mem_cons_of_mem` both exist on the pinned toolchain and emit **no deprecation warning**; `List.Mem.head` / `List.Mem.tail` also exist. All four are fine — use whichever reads better. (Kept rather than deleted as the worked example of the failure mode this section is prone to: a rule that steers you away from something perfectly good is worse than no rule, because it gets followed.)
 
 7. **`zeno_prune.induct` without `with`**: Do NOT add `with` keyword. Cases via `·` and `· next ...`.
 
@@ -115,15 +122,15 @@ The Lagrangian formulation uses a Σ₈ = {τ¹…τ⁸} algebra with **τᵢτ�
 
 9. **Induction inside `have` reverts all context**: Extract as standalone private lemma instead.
 
-10. **`Mathlib.LinearAlgebra.Matrix.Determinant` does not exist** in this Mathlib version.
+10. ✅ **Mathlib module paths go stale — check the tree, don't guess.** `Mathlib.LinearAlgebra.Matrix.Determinant` is a *directory*, not a module, so importing it fails; the working import is **`Mathlib.LinearAlgebra.Matrix.Determinant.Basic`**. Likewise `Mathlib.Algebra.BigOperators.Basic` no longer exists (it killed the first probe run outright). Neither is a one-off: verify a path against the pinned revision before importing it.
 
-11. **`prefix` is a keyword**: Use `pfx` as parameter name instead.
+11. ✅ **`prefix` is a keyword**: Use `pfx` as parameter name instead.
 
-12. **`Nat.toReal` doesn't exist**: Use `(↑n : ℝ)`.
+12. ✅ **`Nat.toReal` doesn't exist**: Use `(↑n : ℝ)`.
 
 13. **`simp_all [is_gauge]` doesn't close False**: Use `cases head <;> simp [is_gauge] at h`.
 
-14. **`first | tac1 | tac2` short-circuits on partial success**: `first` takes the first branch that
+14. ✅ **`first | tac1 | tac2` short-circuits on partial success** *(and still bites — it cost a CI cycle in the P-vs-NP work)*: `first` takes the first branch that
     *succeeds*, and `simp at h` counts as success when it merely **rewrites** `h` without closing the
     goal — so the fallback never runs and you get `unsolved goals` with the hypothesis sitting in the
     contradictory form you wanted. Don't use `first` for "close this goal somehow"; write the
