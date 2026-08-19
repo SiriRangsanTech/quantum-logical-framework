@@ -15,10 +15,48 @@ file that mixes protocol with claims will always end up grading its own work.
 
 ---
 
-## 1. The ontological floor
+## 1. The premise, and the ontological floor
 
-Three commitments are load-bearing for everything below. They are stated once here, in the form the
-method actually uses; the full case is in [`Philosophy.md`](Philosophy.md).
+### 1a. ZFA — what it is, where it came from, and why it is still on trial
+
+**Zero Free Action (ZFA)** is the framework's single premise. *Free action* is the unbound part of a
+history: on the 8-twist alphabet each conjugate pair (`^`/`v`, `>`/`<`, `/`/`\`, `+`/`−`) carries a
+running imbalance, and the free action is their total magnitude,
+
+$$
+F(h) \;=\; |n_{\uparrow} - n_{\downarrow}| \;+\; |n_{\rightarrow} - n_{\leftarrow}| \;+\;
+|n_{\nearrow} - n_{\swarrow}| \;+\; |n_{+} - n_{-}|
+$$
+
+writing $n_x$ for how many times twist $x$ occurs, one term per conjugate pair.
+
+A history **achieves ZFA** when `F(h) = 0` — every distinction it opened has been matched by its
+conjugate, so nothing is left outstanding. That is count balance, and count balance *entails* the
+order-sensitive condition too: `count_balanced_pauli_closed` proves every count-balanced history
+folds to a Pauli scalar. Operationally, `full_zeno_prune s = []`.
+
+**Where the premise comes from.** It is the substrate reading of **least action**. Physical systems
+select histories that extremise action; the substrate's version is sharper and simpler — a history
+persists as an event exactly when its *free* action is zero, `S = ∫ℒ dΩ` with `ℒ = 0`
+([`Lagrangian_Formulation.md`](Lagrangian_Formulation.md)). Least action is the evidence that
+suggested ZFA; ZFA is the discrete condition proposed to underlie it.
+
+**Its epistemic status, by this document's own labels: a standing premise under continuous test —
+and it stands uncontradicted so far.** It is not an axiom held beyond question. Every invariant
+asserted against fresh enumeration, every Lean theorem built on closure, every empirical match in
+[`Experimental_Consistency.md`](Experimental_Consistency.md) is a test of it, and the
+**predicted-absent list** ([`Mysteries_Of_Physics.md`](Mysteries_Of_Physics.md) §6) is where it is
+most exposed: proton decay, a magnetic monopole, a light sterile neutrino, or any persistent state
+requiring an unmatched history would contradict it directly. That the premise has survived every
+such test to date is a result about the premise, not a licence to stop testing it.
+
+> **Kill condition for the premise itself:** a persistent physical event that requires a history with
+> non-zero free action.
+
+### 1b. The floor that follows
+
+Three further commitments are load-bearing for everything below. They are stated once here, in the
+form the method actually uses; the full case is in [`Philosophy.md`](Philosophy.md).
 
 **Generable ⟹ real; ZFA decides closure, not existence.**
 
@@ -53,7 +91,56 @@ Write instead: which histories close jointly, at what capacity, in how many ways
 
 ---
 
-## 2. Epistemic status labels
+## 2. A new kind of science — on a pruned ruliad
+
+The method here is recognisably in the lineage of *A New Kind of Science*: study a computational
+substrate by **enumerating what it does**, rather than by writing down equations and solving them.
+Wolfram's ruliad — the entangled limit of all possible rules, all possible computations — is the
+right object to have identified. QLF's disagreement is not with the object but with the claim that
+the object is already physics.
+
+**The ruliad is unpruned. Physics is not.** By §1, every generable history is a real way, so the
+ruliad is real in full; but only histories that reach zero free action **persist as events**. What
+QLF studies is therefore the ruliad **filtered by ZFA** — and `qlf_universality` proves the filter
+discards no computable physics: every *terminating* computation is already a ZFA string, so what is
+pruned is the non-terminating, undecidable, Busy-Beaver tail that could never have been an event
+anyway.
+
+$$
+\text{ruliad} \;\xrightarrow{\;\text{ZFA}\;}\; \text{the pruned ruliad} \;=\; \text{the physical census}
+$$
+
+**Pruning is what makes the science tractable, and it is a methodological point, not a
+philosophical one.** Three things become available on the pruned side that do not exist on the
+unpruned one:
+
+1. **A measure.** The full ruliad has no canonical measure over its histories — which is why
+   "typical rule behaviour" arguments there stay qualitative. Prune to *first closures* and the
+   surviving set is prefix-free, so Kraft's inequality hands over the cylinder measure `8^{−|h|}`
+   with nothing chosen ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). **Selection is what buys
+   probability.**
+2. **Finiteness at each capacity.** A closure horizon of capacity `R` receives a *finite, decidable*
+   set of histories (`closedAtHorizon_iff_maxExcursion_le`), so a claim about the census can be
+   settled by exhaustive enumeration rather than by exhibiting a suggestive picture.
+3. **A falsifier.** Because the census is complete at each length and capacity, a conjecture can be
+   *killed* by the inventory — as most of them have been (§10).
+
+**What QLF inherits from NKS, and must guard against.** The characteristic failure mode of
+computational exploration is mistaking a suggestive computation for a law: a picture that looks like
+a pattern, a plateau that looks like a limit. Rules **R4** and **R5** exist for exactly this reason,
+and both were written after that failure mode bit — a growth constant read at depth 90 that
+evaporated by depth 200, and a float census whose roundoff was reporting itself as the answer.
+Enumeration is a *generator* of candidates here, never a certifier; certification is Lean.
+
+**Where the observer goes.** NKS makes the observer's computational boundedness central to how the
+ruliad is sampled. QLF keeps the boundedness and drops the anthropic framing: by §1 an observer
+contributes only a **capacity**, and capacity is an axis of the inventory itself, not a fact about
+minds. The apparatus is a closure inventory; the observer is a perspective on it; sampling the
+pruned ruliad is a physical relation between histories, not an act of observation.
+
+---
+
+## 3. Epistemic status labels
 
 Every claim in this repository should carry one of these, and the labels are not decorative — they
 determine what may be built on top of a result.
@@ -77,7 +164,7 @@ Two rules govern the labels:
 
 ---
 
-## 3. Core methodological rules
+## 4. Core methodological rules
 
 **R1 — Inventory before interpretation.** When a question reduces to the finite substrate census,
 ask the complete accessible inventory before proposing a mechanism. Constructed examples demonstrate
@@ -115,11 +202,11 @@ independent layers — the **measure** over ways, the **phase/amplitude** rule, 
 geometry** (how a physical arrangement is encoded). Changing all three at once until the answer
 appears is fitting. Establish them separately, and when something breaks, name the layer.
 
-**R7 — State the kill condition first.** See §5.
+**R7 — State the kill condition first.** See §6.
 
 ---
 
-## 4. The hypothesis lifecycle
+## 5. The hypothesis lifecycle
 
 $$
 \text{conjecture} \;\to\; \text{census} \;\to\; \text{falsification attempt} \;\to\;
@@ -138,7 +225,7 @@ A pattern that survives steps 1–4 is *numerical evidence*. Only step 5 makes i
 
 ---
 
-## 5. Kill conditions and blind tests
+## 6. Kill conditions and blind tests
 
 Every substantial conjecture states, **in advance**:
 
@@ -151,7 +238,7 @@ per-case tuning, with the symmetry-lock check of R3 applied to every agreement b
 
 ---
 
-## 6. The role of the inventory — the apparatus itself
+## 7. The role of the inventory — the apparatus itself
 
 [`census_inventory.py`](census_inventory.py) and [`data/census_inventory.json`](data/census_inventory.json)
 hold what enumeration actually discovers: how many ways close, graded by length and depth; which
@@ -167,7 +254,7 @@ inventory's own axes.
 
 ---
 
-## 7. The role of formal proof
+## 8. The role of formal proof
 
 Lean is where a pattern becomes knowledge. The standard is:
 
@@ -182,7 +269,7 @@ should never be in doubt while the physics is argued.
 
 ---
 
-## 8. The role of numerical simulation
+## 9. The role of numerical simulation
 
 Simulation generates candidates and kills them. It does not establish laws. Its outputs are labelled
 *exact computational result* (exhaustive/exact over a stated domain) or *numerical evidence*
@@ -191,7 +278,7 @@ computed data, so the claim and its check ship together.
 
 ---
 
-## 9. A worked example — attempting to derive quantum weights
+## 10. A worked example — attempting to derive quantum weights
 
 The Born-weight investigation is the clearest illustration of this method, because **most of the
 proposals failed**, and the failures are what produced the constraints.
@@ -216,7 +303,7 @@ than the one the investigation started with.
 
 ---
 
-## 10. Negative results and the correction protocol
+## 11. Negative results and the correction protocol
 
 > **Corrections remain part of the scientific record.**
 
@@ -228,7 +315,7 @@ needs.
 
 ---
 
-## 11. Reproducibility requirements
+## 12. Reproducibility requirements
 
 Every quantitative claim in this repository must be reproducible from the repository:
 
@@ -240,7 +327,7 @@ Every quantitative claim in this repository must be reproducible from the reposi
 
 ---
 
-## 12. The current frontier
+## 13. The current frontier
 
 What the method says is *open* right now, stated as it should be stated:
 
@@ -248,11 +335,11 @@ What the method says is *open* right now, stated as it should be stated:
   is realized rather than straddled ([`Born_Rule.md`](Born_Rule.md) §8);
 - the **context geometry** layer — what substrate object represents a physical orientation, given
   that a word is a history and not a direction;
-- the named bridge axioms of the Millennium reformulations, each an *open bridge* by §2.
+- the named bridge axioms of the Millennium reformulations, each an *open bridge* by §3.
 
 ---
 
-## 13. Where the evidence lives
+## 14. Where the evidence lives
 
 - [`Experimental_Consistency.md`](Experimental_Consistency.md) — the empirical ledger: matches,
   precisions, and the falsifier classes
@@ -263,3 +350,8 @@ What the method says is *open* right now, stated as it should be stated:
 - [`lean/README.md`](lean/README.md) — every module and its theorems
 - [`census_inventory.py`](census_inventory.py) · [`contextual_census.py`](contextual_census.py) — the
   inventory and the contextual layer
+
+**External lineage.** S. Wolfram, *A New Kind of Science* (2002) and the ruliad program — the
+computational-substrate commitment and the enumerate-first practice, which QLF adopts and then
+prunes by ZFA. The convergence table in [`README.md`](README.md) places it among the eighteen
+independent programs that arrive at an informational, computable, closure-bounded reality.
