@@ -69,8 +69,12 @@ Every history the substrate can generate is a real way. ZFA closure does not dec
 *exist* — it decides which ones **persist as events**. This is why census methods are legitimate at
 all: counting ways is counting something real, not tallying hypotheticals.
 
-**Information physics is primary.** The substrate is informational; matter, geometry, and duration
-are *readings* of closure structure, not additional ingredients. When a question can be posed as a
+**Information physics is primary** ([`Information_Physics.md`](Information_Physics.md)). The
+substrate is informational; matter, geometry, and duration are *readings* of closure structure, not
+additional ingredients. This is Wheeler's "it from bit" made constructive [W90], with the classical
+notions — Shannon count [Sh48], Landauer's erasure cost [La61], the Bekenstein bound [Be81] —
+sitting on the substrate as *inherited*, *derived*, or *rendering-layer* objects, each classified
+there rather than assumed here. When a question can be posed as a
 question about information — how many ways, carrying what phase, closing at what depth — that is the
 level at which it should be answered, and any answer that needs an extra physical postulate has
 probably been posed at the wrong level.
@@ -93,7 +97,7 @@ Write instead: which histories close jointly, at what capacity, in how many ways
 
 ## 2. A new kind of science — on a pruned ruliad
 
-The method here is recognisably in the lineage of *A New Kind of Science*: study a computational
+The method here is recognisably in the lineage of *A New Kind of Science* [Wo02]: study a computational
 substrate by **enumerating what it does**, rather than by writing down equations and solving them.
 Wolfram's ruliad — the entangled limit of all possible rules, all possible computations — is the
 right object to have identified. QLF's disagreement is not with the object but with the claim that
@@ -116,7 +120,7 @@ unpruned one:
 
 1. **A measure.** The full ruliad has no canonical measure over its histories — which is why
    "typical rule behaviour" arguments there stay qualitative. Prune to *first closures* and the
-   surviving set is prefix-free, so Kraft's inequality hands over the cylinder measure `8^{−|h|}`
+   surviving set is prefix-free, so Kraft's inequality [Kr49, McM56] hands over the cylinder measure `8^{−|h|}`
    with nothing chosen ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). **Selection is what buys
    probability.**
 2. **Finiteness at each capacity.** A closure horizon of capacity `R` receives a *finite, decidable*
@@ -156,6 +160,10 @@ determine what may be built on top of a result.
 | **Rejected route** | A candidate tested against its kill condition and failed | Keep — it constrains the next attempt |
 | **Superseded** | An earlier conclusion overturned by a better computation | Keep, with what failed and why |
 
+A programme that keeps producing *rejected routes* while its proved core grows is progressive in
+Lakatos's sense [La78]; one that keeps rescuing a claim by adjusting what it means is degenerating.
+The labels exist so the difference is visible from the outside.
+
 Two rules govern the labels:
 
 > **Numerical agreement is not a proof.**
@@ -166,7 +174,7 @@ Two rules govern the labels:
 
 ## 4. Core methodological rules
 
-**R1 — Inventory before interpretation.** When a question reduces to the finite substrate census,
+**R1 — Inventory before interpretation** (Chamberlin's multiple working hypotheses [Ch1890]). When a question reduces to the finite substrate census,
 ask the complete accessible inventory before proposing a mechanism. Constructed examples demonstrate
 *possibility*; census statistics test *generality*. The inventory has repeatedly caught claims that
 would otherwise have become documentation — including an incorrect `μ₂` phase-factorization claim
@@ -202,7 +210,8 @@ independent layers — the **measure** over ways, the **phase/amplitude** rule, 
 geometry** (how a physical arrangement is encoded). Changing all three at once until the answer
 appears is fitting. Establish them separately, and when something breaks, name the layer.
 
-**R7 — State the kill condition first.** See §6.
+**R7 — State the kill condition first** (Popper's falsifiability [Po59] in Platt's operational
+form, strong inference [Pl64]). See §6.
 
 ---
 
@@ -305,7 +314,8 @@ than the one the investigation started with.
 
 ## 11. Negative results and the correction protocol
 
-> **Corrections remain part of the scientific record.**
+> **Corrections remain part of the scientific record.** — the discipline Feynman called the
+> "utter honesty" of leaning over backwards to show how you may be wrong [Fe74].
 
 When a better computation overturns an earlier conclusion: update the owning document, state plainly
 what failed and why, name the new constraint, and leave the commit history intact. Do not quietly
@@ -351,7 +361,44 @@ What the method says is *open* right now, stated as it should be stated:
 - [`census_inventory.py`](census_inventory.py) · [`contextual_census.py`](contextual_census.py) — the
   inventory and the contextual layer
 
-**External lineage.** S. Wolfram, *A New Kind of Science* (2002) and the ruliad program — the
-computational-substrate commitment and the enumerate-first practice, which QLF adopts and then
-prunes by ZFA. The convergence table in [`README.md`](README.md) places it among the eighteen
-independent programs that arrive at an informational, computable, closure-bounded reality.
+---
+
+## References
+
+**Method.**
+[Ch1890] T. C. Chamberlin, *The Method of Multiple Working Hypotheses*, Science **15** (1890) 92 —
+hold several hypotheses at once so none becomes a pet; the ancestor of R1.
+[Po59] K. Popper, *The Logic of Scientific Discovery* (1959) — a claim earns its status from what
+would refute it.
+[Pl64] J. R. Platt, *Strong Inference*, Science **146** (1964) 347 — the operational form used here:
+enumerate alternatives, design the step that excludes one, iterate.
+[Fe74] R. P. Feynman, *Cargo Cult Science*, Caltech commencement address (1974) — leaning over
+backwards to report what might be wrong; the correction protocol of §11.
+[La78] I. Lakatos, *The Methodology of Scientific Research Programmes* (1978) — progressive versus
+degenerating programmes, which is what the status labels of §3 make visible.
+
+**Substrate and computation.**
+[Wo02] S. Wolfram, *A New Kind of Science* (2002), and the ruliad program — the
+computational-substrate commitment and the enumerate-first practice QLF adopts and then prunes by
+ZFA (§2). The convergence table in [`README.md`](README.md) places it among the eighteen independent
+programs arriving at an informational, computable, closure-bounded reality.
+[Si09] S. G. Simpson, *Subsystems of Second Order Arithmetic* (2nd ed., 2009) — the reverse-math
+stratification QLF's core works inside (`RCA₀`), and the conservativity results the continuum
+argument cites.
+
+**Information.**
+[Sh48] C. E. Shannon, *A Mathematical Theory of Communication*, Bell Syst. Tech. J. **27** (1948)
+379 — count/multiplicity information and the finite channel capacity.
+[Kr49] L. G. Kraft, MSc thesis, MIT (1949); [McM56] B. McMillan, *Two inequalities implied by unique
+decipherability*, IRE Trans. Inf. Theory **2** (1956) 115 — the prefix-free inequality that supplies
+the closure-depth measure (`QLF_KraftMeasure`).
+[La61] R. Landauer, *Irreversibility and heat generation in the computing process*, IBM J. Res. Dev.
+**5** (1961) 183 — the `log 2` erasure quantum.
+[Be81] J. D. Bekenstein, *Universal upper bound on the entropy-to-energy ratio*, Phys. Rev. D **23**
+(1981) 287 — finite information in a finite region, the realizability bound.
+[W90] J. A. Wheeler, *Information, Physics, Quantum: The Search for Links* (1990) — "it from bit",
+made constructive in [`Information_Physics.md`](Information_Physics.md).
+
+Sources for the *physics* claims live with the claims, in
+[`Experimental_Consistency.md`](Experimental_Consistency.md) and the domain documents; this list
+covers only the method and the notions it leans on.
