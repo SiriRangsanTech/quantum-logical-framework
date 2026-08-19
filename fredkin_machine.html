@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fredkin Machine — QLF</title>
+<style>
+  :root{
+    --bg:#f7f7f5; --panel:#fff; --ink:#1a1a18; --dim:#6b6b64; --line:#d9d9d2;
+    --wire:#b9b9b0; --ball:#2b6cb0; --ctrl:#c05621; --gate:#8a8a80;
+    --ok:#2f7a44; --warn:#a33; --accent:#5a3ea8;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#131316; --panel:#1c1c20; --ink:#e8e8e4; --dim:#9a9a92; --line:#33333a;
+    --wire:#4a4a52; --ball:#6aa9e0; --ctrl:#e0913f; --gate:#6a6a74;
+    --ok:#6ec98a; --warn:#e08080; --accent:#a690e8;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#131316; --panel:#1c1c20; --ink:#e8e8e4; --dim:#9a9a92; --line:#33333a;
+    --wire:#4a4a52; --ball:#6aa9e0; --ctrl:#e0913f; --gate:#6a6a74;
+    --ok:#6ec98a; --warn:#e08080; --accent:#a690e8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 18px 60px}
+  h1{font-size:1.5rem;margin:0 0 2px;letter-spacing:-.01em}
+  .sub{color:var(--dim);margin:0 0 20px;font-size:.94rem}
+  .sub a{color:var(--accent)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:16px 18px;margin-bottom:16px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,select{font:inherit;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-radius:7px;padding:7px 13px;cursor:pointer}
+  button:hover:not(:disabled),select:hover{border-color:var(--dim)}
+  button:disabled{opacity:.4;cursor:default}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .scroll{overflow-x:auto}
+  svg{display:block;min-width:640px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  td,th{text-align:left;padding:5px 10px 5px 0;vertical-align:top}
+  th{color:var(--dim);font-weight:500}
+  .big{font-size:1.25rem;font-weight:600}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .dim{color:var(--dim)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px}
+  .note{font-size:.88rem;color:var(--dim);margin-top:10px}
+  .note code, .mono code{background:color-mix(in srgb,var(--ink) 8%,transparent);
+    padding:1px 4px;border-radius:4px}
+  .bar{height:7px;background:color-mix(in srgb,var(--ink) 10%,transparent);
+    border-radius:4px;overflow:hidden;margin-top:6px}
+  .bar>div{height:100%;background:var(--accent);width:0;transition:width .18s}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>The Fredkin Machine</h1>
+<p class="sub">Conservative logic running on the QLF substrate — watch the ball count hold,
+the twist action stay at zero, and the whole computation run backwards.
+<a href="Fredkin_QLF.md">Fredkin_QLF.md</a> ·
+<a href="fredkin_qlf.py">fredkin_qlf.py</a> ·
+<a href="lean/QLF_Fredkin.lean">QLF_Fredkin.lean</a></p>
+
+<div class="panel">
+  <div class="row">
+    <select id="prog"></select>
+    <span id="inputs" class="row" style="gap:6px"></span>
+    <span style="flex:1"></span>
+    <button id="back">◀ Step back</button>
+    <button id="fwd" class="primary">Step ▶</button>
+    <button id="run">Run ▶▶</button>
+    <button id="rev">Reverse ◀◀</button>
+    <button id="reset">Reset</button>
+  </div>
+  <div class="bar"><div id="prog-bar"></div></div>
+  <div class="note" id="status">—</div>
+</div>
+
+<div class="panel scroll"><svg id="circuit" height="300"></svg></div>
+
+<div class="grid">
+  <div class="panel">
+    <div class="dim" style="font-size:.85rem">BALLS ON THE WIRES</div>
+    <div class="big"><span id="balls">0</span> <span class="dim" style="font-size:.9rem">of <span id="balls0">0</span> at the start</span></div>
+    <div id="balls-verdict" class="ok" style="font-size:.9rem">conserved</div>
+    <div class="note">Fredkin's conserved quantity. A gate routes balls; it never makes or
+      destroys one.</div>
+  </div>
+  <div class="panel">
+    <div class="dim" style="font-size:.85rem">SIGNED TWIST ACTION</div>
+    <div class="big mono" id="action">(0, 0, 0, 0)</div>
+    <div id="action-verdict" class="ok" style="font-size:.9rem">ZFA — the history is realized</div>
+    <div class="note">Each ball is the plaquette <code class="mono">^&lt;v&gt;</code>. A gate
+      permutes wires, so the multiset never changes — the vector cannot move off zero.</div>
+  </div>
+  <div class="panel">
+    <div class="dim" style="font-size:.85rem">FREE-ENERGY LEDGER</div>
+    <div class="big"><span id="cost">0.000</span> nat</div>
+    <div class="ok" style="font-size:.9rem" id="cost-verdict">nothing forgotten yet</div>
+    <div class="note">Every gate so far is a bijection, so nothing merged and nothing was
+      forgotten. <code>ΔF = −log 2</code> is the price of <em>forgetting</em>, and a
+      permutation forgets nothing.</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="dim" style="font-size:.85rem;margin-bottom:8px">THE HISTORY, AS TWISTS</div>
+  <div class="mono" id="word" style="word-break:break-all;font-size:1.02rem">—</div>
+  <div class="note">The whole register as one history: every wire carrying a ball contributes
+    its plaquette. This is the string <code>twist_core.is_zfa</code> accepts.</div>
+</div>
+
+<div class="panel">
+  <div class="dim" style="font-size:.85rem;margin-bottom:8px">WHEN THE BILL ARRIVES</div>
+  <table>
+    <tr><th>Result wires (kept)</th><td class="mono" id="keep">—</td></tr>
+    <tr><th>Garbage wires (discarded)</th><td class="mono" id="garbage">—</td></tr>
+    <tr><th>Cost to reset the garbage</th><td><span class="mono big" id="erase">0</span>
+      bit — <span class="mono" id="erase-nat">0.000</span> nat</td></tr>
+  </table>
+  <div class="note" style="margin-bottom:10px"><strong>On the count:</strong> garbage is
+    every wire you decline to keep, which includes the spent input wires — the adder runs on
+    32 wires (3 inputs + 29 ancillas) and keeps 2, so 30 are garbage.
+    <a href="fredkin_qlf.py">fredkin_qlf.py</a> reports 29 because it counts ancillas
+    <em>allocated</em>. Same circuit, two honest accountings.</div>
+  <div class="note">Running the machine is free. Tidying up is not: resetting
+    <em>k</em> garbage wires to zero is a <code>2^k → 1</code> map, and that is the only
+    place Landauer's quantum is charged. Keep the garbage and you owe nothing — which is
+    Bennett's point, arrived at here from the one closure quantum rather than assumed
+    beside it.</div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// The gate. fredkin(c,a,b) = (c,a,b) if c=0 else (c,b,a) — a controlled swap,
+// its own inverse, and a permutation of its inputs.
+// ---------------------------------------------------------------------------
+const BALL = '^<v>';           // the minimal closed plaquette
+const LOG2 = Math.log(2);
+
+// A program is a flat list of gates over a fixed set of wires, so stepping
+// forwards and backwards is the same operation applied in opposite order.
+function Builder(){
+  this.wires = [];   // initial values
+  this.names  = [];
+  this.gates  = [];
+  this.kind   = [];  // 'in' | 'const' | 'out' | 'garbage'
+}
+Builder.prototype.wire = function(v, name, kind){
+  this.wires.push(v); this.names.push(name); this.kind.push(kind||'const');
+  return this.wires.length - 1;
+};
+Builder.prototype.gate = function(c, a, b, label){
+  this.gates.push({c:c, a:a, b:b, label:label});
+};
+// FREDKIN(x; 0, y) -> first target carries x AND y
+Builder.prototype.and = function(x, y, nm){
+  const w = this.wire(0, nm||'∧', 'const'); this.gate(x, w, y, 'AND'); return w;
+};
+// FREDKIN(x; 1, y) -> second target carries x OR y
+Builder.prototype.or = function(x, y, nm){
+  const w = this.wire(1, nm||'∨', 'const'); this.gate(x, w, y, 'OR'); return y;
+};
+// FREDKIN(x; 1, 0) -> first target carries NOT x
+Builder.prototype.not = function(x, nm){
+  const w = this.wire(1, nm||'¬', 'const'); const z = this.wire(0, '0', 'const');
+  this.gate(x, w, z, 'NOT'); return w;
+};
+// FREDKIN(x; 0, 1) -> control and first target both carry x
+Builder.prototype.fanout = function(x, nm){
+  const w = this.wire(0, nm||'copy', 'const'); const z = this.wire(1, '1', 'const');
+  this.gate(x, w, z, 'FANOUT'); return [x, w];
+};
+Builder.prototype.xor = function(x, y){
+  const xs = this.fanout(x), ys = this.fanout(y);
+  const o = this.or(xs[0], ys[0]);
+  const a = this.and(xs[1], ys[1]);
+  const n = this.not(a);
+  return this.and(o, n);
+};
+
+// --- the programs ----------------------------------------------------------
+const PROGRAMS = {
+  'Full adder  (a + b + cin)': function(inp){
+    const B = new Builder();
+    const a   = B.wire(inp[0], 'a',   'in');
+    const b   = B.wire(inp[1], 'b',   'in');
+    const cin = B.wire(inp[2], 'cin', 'in');
+    const as = B.fanout(a), bs = B.fanout(b), cs = B.fanout(cin);
+    const axb = B.xor(as[0], bs[0]);
+    const ax = B.fanout(axb);
+    const sum  = B.xor(ax[0], cs[0]);
+    const ab   = B.and(as[1], bs[1]);
+    const cx   = B.and(cs[1], ax[1]);
+    const cout = B.or(ab, cx);
+    B.kind[sum] = 'out'; B.kind[cout] = 'out';
+    B.names[sum] = 'sum'; B.names[cout] = 'carry';
+    return B;
+  },
+  'AND  (x ∧ y)': function(inp){
+    const B = new Builder();
+    const x = B.wire(inp[0], 'x', 'in'), y = B.wire(inp[1], 'y', 'in');
+    const r = B.and(x, y, 'x∧y'); B.kind[r] = 'out'; return B;
+  },
+  'OR  (x ∨ y)': function(inp){
+    const B = new Builder();
+    const x = B.wire(inp[0], 'x', 'in'), y = B.wire(inp[1], 'y', 'in');
+    const r = B.or(x, y); B.kind[r] = 'out'; B.names[r] = 'x∨y'; return B;
+  },
+  'NOT  (¬x)': function(inp){
+    const B = new Builder();
+    const x = B.wire(inp[0], 'x', 'in');
+    const r = B.not(x, '¬x'); B.kind[r] = 'out'; return B;
+  },
+  'FANOUT  (two copies of x)': function(inp){
+    const B = new Builder();
+    const x = B.wire(inp[0], 'x', 'in');
+    const c = B.fanout(x, 'copy');
+    B.kind[c[0]] = 'out'; B.kind[c[1]] = 'out'; return B;
+  }
+};
+const ARITY = {'Full adder  (a + b + cin)':3, 'AND  (x ∧ y)':2, 'OR  (x ∨ y)':2,
+               'NOT  (¬x)':1, 'FANOUT  (two copies of x)':1};
+
+// --- state -----------------------------------------------------------------
+let progName = Object.keys(PROGRAMS)[0];
+let inputs = [1,0,1];
+let B = null, state = [], step = 0, timer = null;
+
+function build(){
+  B = PROGRAMS[progName](inputs);
+  state = B.wires.slice();
+  step = 0;
+  stopTimer();
+  render();
+}
+
+function applyGate(g, s){
+  if (s[g.c]) { const t = s[g.a]; s[g.a] = s[g.b]; s[g.b] = t; }
+}
+
+function forward(){ if (step < B.gates.length){ applyGate(B.gates[step], state); step++; render(); } }
+function backward(){ if (step > 0){ step--; applyGate(B.gates[step], state); render(); } }
+// backwards is the same gate applied again: the gate is its own inverse.
+
+function stopTimer(){ if (timer){ clearInterval(timer); timer = null; } }
+function auto(dir){
+  stopTimer();
+  timer = setInterval(function(){
+    const before = step;
+    dir > 0 ? forward() : backward();
+    if (step === before) stopTimer();
+  }, 260);
+}
+
+// --- readouts --------------------------------------------------------------
+function ballCount(s){ return s.reduce(function(n,v){ return n + (v?1:0); }, 0); }
+function word(s){ return s.map(function(v){ return v ? BALL : ''; }).join(''); }
+function action(w){
+  const c = {};
+  for (const ch of w) c[ch] = (c[ch]||0) + 1;
+  return [ (c['^']||0)-(c['v']||0), (c['>']||0)-(c['<']||0),
+           (c['/']||0)-(c['\\']||0), (c['+']||0)-(c['-']||0) ];
+}
+
+function render(){
+  const balls = ballCount(state), balls0 = ballCount(B.wires);
+  const w = word(state), act = action(w);
+  const zfa = act.every(function(x){ return x === 0; });
+
+  document.getElementById('balls').textContent  = balls;
+  document.getElementById('balls0').textContent = balls0;
+  const bv = document.getElementById('balls-verdict');
+  bv.textContent = balls === balls0 ? 'conserved' : 'BROKEN';
+  bv.className = balls === balls0 ? 'ok' : 'warn';
+
+  document.getElementById('action').textContent = '(' + act.join(', ') + ')';
+  const av = document.getElementById('action-verdict');
+  av.textContent = zfa ? 'ZFA — the history is realized' : 'off zero — not realized';
+  av.className = zfa ? 'ok' : 'warn';
+
+  document.getElementById('cost').textContent = '0.000';
+  document.getElementById('cost-verdict').textContent =
+    step === 0 ? 'nothing forgotten yet'
+               : step + ' gate' + (step===1?'':'s') + ' applied, all bijections';
+
+  document.getElementById('word').textContent = w || '(no balls on any wire)';
+
+  const keep = [], garbage = [];
+  for (let i = 0; i < state.length; i++){
+    (B.kind[i] === 'out' ? keep : garbage).push(B.names[i] + '=' + state[i]);
+  }
+  document.getElementById('keep').textContent = keep.join('   ') || '—';
+  document.getElementById('garbage').textContent = garbage.join('   ') || '—';
+  document.getElementById('erase').textContent = garbage.length;
+  document.getElementById('erase-nat').textContent = (garbage.length * LOG2).toFixed(3);
+
+  document.getElementById('prog-bar').style.width =
+    (B.gates.length ? 100 * step / B.gates.length : 0) + '%';
+  document.getElementById('status').textContent =
+    'gate ' + step + ' of ' + B.gates.length + ' · ' + B.wires.length + ' wires · ' +
+    (step === B.gates.length ? 'done — now press Reverse and watch it undo'
+                             : (step ? 'mid-computation' : 'ready'));
+  document.getElementById('back').disabled = step === 0;
+  document.getElementById('fwd').disabled  = step === B.gates.length;
+
+  drawCircuit();
+}
+
+// --- drawing ---------------------------------------------------------------
+function drawCircuit(){
+  const n = B.wires.length, g = B.gates.length;
+  const padL = 92, padR = 20, padT = 22, dy = Math.max(20, Math.min(30, 260 / n));
+  const dx = 34, W = padL + padR + (g + 1) * dx, H = padT * 2 + n * dy;
+  const svg = document.getElementById('circuit');
+  svg.setAttribute('height', H);
+  svg.setAttribute('width', W);
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+  const y = function(i){ return padT + i * dy + dy / 2; };
+  const x = function(k){ return padL + k * dx + dx / 2; };
+  let out = '';
+
+  for (let i = 0; i < n; i++){
+    out += '<line x1="' + (padL-8) + '" y1="' + y(i) + '" x2="' + (W-padR) +
+           '" y2="' + y(i) + '" stroke="var(--wire)" stroke-width="1"/>';
+    const kind = B.kind[i];
+    const col = kind === 'in' ? 'var(--ctrl)' : kind === 'out' ? 'var(--ok)' : 'var(--dim)';
+    out += '<text x="' + (padL-14) + '" y="' + (y(i)+3.5) + '" text-anchor="end" ' +
+           'font-size="10.5" fill="' + col + '" font-family="ui-monospace,monospace">' +
+           esc(B.names[i]) + '</text>';
+  }
+
+  for (let k = 0; k < g; k++){
+    const gt = B.gates[k];
+    const done = k < step, cur = k === step;
+    const lo = Math.min(gt.c, gt.a, gt.b), hi = Math.max(gt.c, gt.a, gt.b);
+    const col = cur ? 'var(--accent)' : done ? 'var(--gate)' : 'var(--line)';
+    const wd  = cur ? 2.2 : 1.2;
+    out += '<line x1="' + x(k) + '" y1="' + y(lo) + '" x2="' + x(k) + '" y2="' + y(hi) +
+           '" stroke="' + col + '" stroke-width="' + wd + '"/>';
+    out += '<circle cx="' + x(k) + '" cy="' + y(gt.c) + '" r="3.6" fill="' + col + '"/>';
+    for (const t of [gt.a, gt.b]){
+      out += '<rect x="' + (x(k)-3.6) + '" y="' + (y(t)-3.6) + '" width="7.2" height="7.2" ' +
+             'fill="none" stroke="' + col + '" stroke-width="' + wd + '"/>';
+    }
+    if (cur){
+      out += '<text x="' + x(k) + '" y="' + (padT-8) + '" text-anchor="middle" ' +
+             'font-size="9.5" fill="var(--accent)" font-family="ui-monospace,monospace">' +
+             esc(gt.label) + '</text>';
+    }
+  }
+
+  // balls sit where the computation currently is
+  const bx = x(step);
+  for (let i = 0; i < n; i++){
+    if (state[i]){
+      out += '<circle cx="' + bx + '" cy="' + y(i) + '" r="6.2" fill="var(--ball)" ' +
+             'opacity="0.92"/>';
+    }
+  }
+  svg.innerHTML = out;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// --- controls --------------------------------------------------------------
+const sel = document.getElementById('prog');
+Object.keys(PROGRAMS).forEach(function(k){
+  const o = document.createElement('option'); o.value = k; o.textContent = k; sel.appendChild(o);
+});
+sel.value = progName;
+
+function drawInputs(){
+  const host = document.getElementById('inputs');
+  host.innerHTML = '';
+  const names = progName.indexOf('adder') >= 0 ? ['a','b','cin'] : ['x','y','z'];
+  for (let i = 0; i < ARITY[progName]; i++){
+    const btn = document.createElement('button');
+    btn.textContent = names[i] + ' = ' + inputs[i];
+    btn.onclick = function(){ inputs[i] = inputs[i] ? 0 : 1; drawInputs(); build(); };
+    host.appendChild(btn);
+  }
+}
+
+sel.onchange = function(){ progName = sel.value; drawInputs(); build(); };
+document.getElementById('fwd').onclick   = function(){ stopTimer(); forward(); };
+document.getElementById('back').onclick  = function(){ stopTimer(); backward(); };
+document.getElementById('run').onclick   = function(){ auto(+1); };
+document.getElementById('rev').onclick   = function(){ auto(-1); };
+document.getElementById('reset').onclick = function(){ build(); };
+
+drawInputs();
+build();
+</script>
+</div>
+</body>
+</html>

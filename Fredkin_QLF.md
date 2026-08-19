@@ -6,6 +6,8 @@ turn out to be the same law.**
 
 Implementation: [`fredkin_qlf.py`](fredkin_qlf.py) · run it with `python3 fredkin_qlf.py`
 Machine-verified core: [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)
+Interactive: [`fredkin_machine.html`](fredkin_machine.html) —
+[**run it live**](https://jimscarver.github.io/quantum-logical-framework/fredkin_machine.html)
 
 ---
 
@@ -171,6 +173,27 @@ ratio is the real economics of conservative logic: the gate count is modest and 
 bookkeeping dominates, because nothing may be thrown away.
 
 ---
+
+## 4a. Watching it run
+
+[`fredkin_machine.html`](https://jimscarver.github.io/quantum-logical-framework/fredkin_machine.html)
+steps the circuits gate by gate, with the three readouts that matter live: the ball count,
+the signed twist action, and the ledger. It is worth opening for one reason — **the reverse
+button**. Run the adder to the end, press Reverse, and it walks back to the input it started
+from, because each gate is its own inverse and the program is just the gate list read
+backwards. Nothing is recomputed and nothing is restored from a log; the machine simply has
+nowhere to have lost anything.
+
+While it runs, the action vector never leaves `(0,0,0,0)` and the ball count never moves.
+That is §2 happening in front of you: a gate permutes wires, so the twist multiset is
+untouched, so the history stays realized. The ledger stays at zero for the same reason —
+until you look at the garbage panel, which is where the bill actually is.
+
+Verified against the Python before shipping: the same 19 gates, correct on all 8 adder
+inputs, balls conserved at every step, and the reverse pass restoring the input on every
+one. The page counts 30 garbage wires where `fredkin_qlf.py` reports 29 ancillas — the
+adder runs on 32 wires (3 inputs + 29 ancillas) and keeps 2, so 30 are discarded, while the
+script counts ancillas *allocated*. Same circuit, two accountings, both stated.
 
 ## 5. The free-energy ledger
 
