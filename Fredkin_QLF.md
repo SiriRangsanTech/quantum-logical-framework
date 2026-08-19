@@ -4,6 +4,9 @@
 substrate, where the gate's conservation law and the substrate's admissibility condition
 turn out to be the same law.**
 
+
+*Built at the suggestion of **Van Hovey**, whose idea it was to run Fredkin's machine on the substrate.*
+
 Implementation: [`fredkin_qlf.py`](fredkin_qlf.py) · run it with `python3 fredkin_qlf.py`
 Machine-verified core: [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)
 Interactive: [`fredkin_machine.html`](fredkin_machine.html) —
@@ -283,6 +286,9 @@ timing and alignment error would finally become measurable instead of assumed aw
 - Toffoli, T. (1980). *Reversible computing.* MIT LCS Tech Memo MIT/LCS/TM-151.
 - Arndt, M. *et al.* (1999). *Wave–particle duality of C₆₀ molecules.* Nature **401**,
   680–682.
+
+**Acknowledgement.** The idea of building Fredkin's machine on the QLF substrate is
+Van Hovey's.
 
 **In QLF:** [`Reversibility.md`](Reversibility.md) · [`Chemistry.md`](Chemistry.md) ·
 [`Banach_Tarski_QLF.md`](Banach_Tarski_QLF.md) ·

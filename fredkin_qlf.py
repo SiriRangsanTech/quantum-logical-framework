@@ -25,6 +25,8 @@ stick), and here it is a consequence of the valence rule rather than an idealiza
 imposed on the model. Buckyballs work for the same structural reason (a closed cage) and
 are included as the heavier alternative.
 
+Building Fredkin's machine on the substrate was Van Hovey's suggestion.
+
 Run: python3 fredkin_qlf.py
 """
 
