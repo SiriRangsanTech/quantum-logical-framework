@@ -257,21 +257,24 @@ the equality case, so the two paths merely add. Measured, in `contextual_census.
 matched pair gives ratio `1.000000` to the sum, an unequal pair `0.999288`, and the destructive
 configuration `0.000000` — destructive interference survives, constructive interference cannot.
 
-The dichotomy this leaves is **capacity-dependent**, and that is the state of the Born question
-([`Born_Rule.md`](../Born_Rule.md) §8):
+The dichotomy this leaves is **not** universal on the second horn, and the honest statement is
+finer than "the census cannot be both" ([`Born_Rule.md`](../Born_Rule.md) §8):
 
 * **normalise per event** — summable by Kraft, but sub-additive, so no constructive interference;
-* **do not normalise** — interference-capable, but the signed census must then grow slower than
-  `√8^d` for anything to sum.
+* **do not normalise** — interference-capable, but only where the signed census grows slower than
+  `√8^d`, which some preparation–apparatus pairs do and others do not.
 
-The second horn is a claim about growth, so it can be checked capacity by capacity — and it **fails
-at capacity 2**, where the census cancels to `2.24^d`–`2.65^d`, under the threshold. There the plain
-unnormalized amplitude converges to exact rationals (aligned `1`, transverse `1/2`, the ZX/ZY mixes
-`196/197` at amplitude ratio `−1/14`) and interference works in both directions, `2.0000`
-constructive against `0.0000` destructive. At capacity 3 and above every geometry measured diverges
-(`3.97^d`–`4.33^d`). So the theorems below bound the *normalized* weight everywhere, and the
-substrate carries an honest amplitude in a low-capacity window where that normalisation is not
-needed at all.
+That threshold is forced rather than chosen: one way carrying unit phase must weigh its own cylinder
+mass, so an amplitude scaling `μ^s` gives `μ^{2s}` and consistency demands `s = 1/2`. Measured, the
+transverse geometry grows `2.24^d` and the ZX/ZY mixes `2.65^d` at capacity 2 — under the threshold,
+so the plain unnormalized amplitude converges to exact rationals (aligned `1`, transverse `1/2`, the
+mixes `196/197` at amplitude ratio `−1/14`) and interference works in both directions, `2.0000`
+constructive against `0.0000` destructive. But this is a property of the **geometry**, not of the
+capacity: the absorbing operator's spectral radius is `3.99` at capacity 2 and `4.38` at capacity 3,
+both above the threshold, so the convergent cases are those whose preparation and apparatus project
+out the dominant modes. Every geometry tested at capacity 3 or more diverges. So the theorems below
+bound the *normalized* weight everywhere, and whether the convergent geometries form a structured
+class is the open question.
 -/
 
 /-- The exact gap between the merged weight and the split one: a perfect square over a positive

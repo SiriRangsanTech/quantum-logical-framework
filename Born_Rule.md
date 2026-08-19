@@ -241,34 +241,37 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     [`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean) `merge_le_sum`,
     `no_constructive_interference`, `merge_eq_sum_iff`. The very inequality that made the weight
     summable is what forbids the enhancement.
-  * **The dichotomy this seemed to force is capacity-dependent — and at low capacity there is a
-    window where it does not bite.** The two horns are: *normalise per event* → summable by Kraft
-    but sub-additive, so no constructive interference; *don't normalise* → interference-capable but
-    divergent, since the signed census grows `3.9^d`–`4.6^d` against the `√8^d` the cylinder measure
-    allows. That second horn is a statement about growth, so it can be checked capacity by capacity,
-    and **it fails at `R = 2`**: there the census cancels down to `2.24^d`–`2.65^d`, *below* the
-    `√8 = 2.828^d` threshold, and the plain unnormalized amplitude converges.
-  * **Inside that window the census behaves like quantum mechanics** (`--coherent 2`, exact
-    rationals):
-    - `T_c = Σ_d A_c(d)·8^{−d/2}` converges absolutely, and since the closures of one geometry share
-      a depth parity the weight `P(c) = |T_c|²/Σ|T_j|²` is an **exact rational**;
-    - aligned gives `P(+) = 1`, transverse gives `T₊ = T₋ = 8/13` and `P(+) = 1/2`, and the ZX/ZY
-      mixes give `T₊ = −112/195`, `T₋ = 8/195` — amplitude ratio exactly `−1/14`, so
-      **`P(+) = 196/197`**;
-    - with no per-event normalisation, merging paths adds amplitudes, so **interference works in
-      both directions**: the four-run test at `R = 2` gives `B(A+B)/[B(A)+B(B)] = 2.0000` for a
-      matched pair — the factor of two quantum mechanics demands — and `0.0000` destructive.
-    At `R ≥ 3` all of this fails, by divergence, in every geometry measured (`4.00^d`, `3.97^d`,
-    `4.33^d` at `R = 3`).
-  * **What that changes, and what it does not.** The sub-additivity theorem stands exactly as
-    proven; what was wrong was the conclusion drawn from it — the substrate is not universally
-    unable to carry an amplitude, it carries one **at low closure capacity and loses it as capacity
-    grows**. Open, and the reason this is not yet a physical claim: the weights available in the
-    window appear to form a **discrete set** (`1`, `1/2`, `196/197`, …) rather than a continuum,
-    which is what QLF's own no-continuum-in-a-finite-region result would predict but is also what a
-    too-rigid encoding would produce. Whether the achievable set fills in as contexts multiply — the
-    large-census rendering of `cos²(θ/2)` — is the next measurement. Not implicated either way: the
-    measure (proven), the phase rule (proven), the depth law (proven), event identity (bracketed).
+  * **The second horn of that dichotomy is not universal — some geometries carry a convergent
+    amplitude with no normalisation at all.** *Don't normalise* fails only when the signed census
+    outgrows the measure, which is a statement about growth and so is checkable case by case. It
+    does not always hold. Measured at capacity 2 (`--coherent 2`, exact rationals): the transverse
+    geometry grows `2.2361^d` and the ZX/ZY mixes `2.6458^d`, both **below** the `√8 = 2.828^d`
+    threshold, so `T_c = Σ_d A_c(d)·8^{−d/2}` converges absolutely. Since the closures of one
+    geometry share a depth parity, the irrational factor is common to both branches and the weight
+    is an **exact rational**: aligned `P(+) = 1`; transverse `T₊ = T₋ = 8/13`, `P(+) = 1/2`; the
+    mixes `T₊ = −112/195`, `T₋ = 8/195` — amplitude ratio exactly `−1/14`, **`P(+) = 196/197`**.
+    With no per-event normalisation, merging paths adds amplitudes, so **interference works in both
+    directions**: `B(A+B)/[B(A)+B(B)] = 2.0000` for a matched pair — the factor of two quantum
+    mechanics demands — against `0.0000` destructive.
+  * **The threshold is forced, not chosen.** A single way carrying unit phase must weigh exactly its
+    own cylinder mass — its share of the complete histories. With amplitude scaling as `μ^s` that way
+    weighs `μ^{2s}`, so consistency with the counting reading forces `s = 1/2`, hence `8^{−d/2}` and
+    the `√8^d` threshold. So where the sum diverges, it diverges for real.
+  * **But this is a property of the geometry, not of the capacity — the correction that matters.**
+    The absorbing transfer operator's spectral radius is `3.99` at `R = 2` and `4.38` at `R = 3`,
+    both *above* `√8`. The low growth above is therefore **subdominant**: those preparations and
+    apparatus happen to project out the dominant modes. So the honest statement is that **certain
+    preparation–apparatus pairs carry a convergent amplitude and others do not**, and every geometry
+    tested at `R ≥ 3` falls in the second class (`3.97^d`–`4.33^d`). Capacity is not the criterion;
+    it was the variable that happened to separate the cases first looked at.
+  * **What that changes, and what it does not.** The sub-additivity theorem stands exactly as proven
+    — it bounds the *normalized* weight everywhere. What was wrong was the conclusion drawn from it:
+    the substrate is not universally unable to carry an amplitude. **Open, and now the sharp
+    question:** whether the geometries whose amplitude converges form a *structured class* — a
+    characterisation of which apparatus a given preparation has a Born weight against — or a handful
+    of accidents. A survey over preparation–apparatus pairs is the measurement that decides it.
+    Not implicated either way: the measure (proven), the phase rule (proven), the depth law
+    (proven), event identity (bracketed).
   * **But it does not render an angle, and that is the test that matters.** Sweeping the apparatus
     does not sweep the weight: adding transverse letters one at a time gives
     `2·arccos√P = 0°, 8.99°, 13.04°, 10.37°, 12.89°, 11.13°` for `a = 0…5` — wobbling, never
