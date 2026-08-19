@@ -211,5 +211,6 @@ lean_lib QLF where
     `QLF_IndexedFactors,
     `QLF_Mpemba,
     `QLF_LatticeCalculus,
-    `QLF_KraftMeasure
+    `QLF_KraftMeasure,
+    `QLF_AxiomAudit
   ]

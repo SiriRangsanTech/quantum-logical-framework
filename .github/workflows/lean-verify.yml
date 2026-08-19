@@ -5,16 +5,20 @@ on:
     branches: [ "main" ]
     paths:
       - 'lean/**'
-      - 'lake.toml'
-      - 'lakefile.toml'
+      - 'lakefile.lean'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - 'scripts/axiom_audit.sh'
       - '.github/workflows/lean-verify.yml'
 
   pull_request:
     branches: [ "main" ]
     paths:
       - 'lean/**'
-      - 'lake.toml'
-      - 'lakefile.toml'
+      - 'lakefile.lean'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - 'scripts/axiom_audit.sh'
       - '.github/workflows/lean-verify.yml'
 
 jobs:
@@ -24,6 +28,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # Cheap and independent of Lean: catches an assumption added to lean/ before
+      # spending six minutes building. See scripts/axiom_audit.sh.
+      - name: Audit declared axioms
+        run: ./scripts/axiom_audit.sh
 
       - name: Install elan (Lean version manager)
         run: |
@@ -45,3 +54,10 @@ jobs:
       - name: Build all Lean files (in safe order)
         run: |
           lake build
+
+      # The dependency footprint of the anchor theorems: which axioms the kernel
+      # actually used, printed by lean/QLF_AxiomAudit.lean. Re-elaborated on its own so
+      # the report is one contiguous block in the log rather than scattered through the
+      # build. See that file for how to read it.
+      - name: Report axiom footprint of the anchor theorems
+        run: lake env lean lean/QLF_AxiomAudit.lean
