@@ -236,7 +236,7 @@ All six Clay Millennium problems have a Lean module reducing each to a construct
 
 | Problem | QLF module | Boundary |
 |---|---|---|
-| Riemann Hypothesis | `QLF_Riemann`, `QLF_RiemannMRE` | `spectral_hilbert_polya` / `MRE_bridge` |
+| Riemann Hypothesis | `QLF_Riemann`, `QLF_RiemannMRE` | `spectral_hilbert_polya` / `mre_factorization` |
 | Yang–Mills mass gap | `QLF_MassGap` | `yang_mills_continuum_gap` |
 | Birch–Swinnerton-Dyer | `QLF_BSD` | `modularity_mirror_invariant` (rank = ord is a theorem) |
 | Hodge conjecture | `QLF_Hodge`, `QLF_CohomologyAlgebra`, `QLF_HodgeStructure` | `substrate_realization_is_algebraic` (both sides built; gap = geometric realization — see below) |

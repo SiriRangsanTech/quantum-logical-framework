@@ -85,15 +85,25 @@ import QLF_RiemannMRE
 
 #print axioms QLF.trivial_zero_not_nonTrivial
 
+/-! `mellinFactorization_iff_rh` measures the Riemann boundary rather than describing it:
+    the two-leg Mellin factorization is equivalent to RH, so the middle predicate buys no
+    weakening. A theorem about how much an axiom assumes should itself assume nothing, so
+    this line must show no QLF axiom. -/
+
+#print axioms QLF.mellinFactorization_iff_rh
+#print axioms QLF.mellinFactorization_independent_of_generator
+
 /-! ## Boundaries — expected: exactly the named bridge, and nothing further.
 
     `bsd_rank_equals_order` should consume `modularity_mirror_invariant` (plus the abstract
     datum `centralMultiplicity`) and no other QLF axiom — it is a theorem downstream of one
     boundary, not a second boundary.
 
-    `riemann_hypothesis_in_qlf_via_MRE` should consume the MRE pair (`MRE_bridge`,
-    `zero_is_mellin_singularity`) and *not* `spectral_hilbert_polya`: the two RH routes are
-    independent, which is the point of having both. -/
+    `riemann_hypothesis_in_qlf_via_MRE` should consume `mre_factorization` and *not*
+    `spectral_hilbert_polya`. The two routes are independent in *dependency* — neither
+    proof reaches through the other's axiom, and the first green audit confirmed it — while
+    being equivalent in *strength*, since each is equivalent to RH. Both facts are worth
+    having and they are different facts; the audit reports the first one. -/
 
 #print axioms QLF.bsd_rank_equals_order
 #print axioms QLF.riemann_hypothesis_in_qlf
