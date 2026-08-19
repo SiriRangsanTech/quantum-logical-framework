@@ -257,15 +257,21 @@ the equality case, so the two paths merely add. Measured, in `contextual_census.
 matched pair gives ratio `1.000000` to the sum, an unequal pair `0.999288`, and the destructive
 configuration `0.000000` — destructive interference survives, constructive interference cannot.
 
-The dichotomy this leaves is sharp, and it is the state of the Born question
+The dichotomy this leaves is **capacity-dependent**, and that is the state of the Born question
 ([`Born_Rule.md`](../Born_Rule.md) §8):
 
 * **normalise per event** — summable by Kraft, but sub-additive, so no constructive interference;
-* **do not normalise** — interference-capable, but the signed census grows like `3.9^d`–`4.6^d`
-  against the `√8^d` the cylinder measure allows, so nothing sums.
+* **do not normalise** — interference-capable, but the signed census must then grow slower than
+  `√8^d` for anything to sum.
 
-The substrate's signed census cannot presently be both summable and interference-capable under the
-measure its own tree defines.
+The second horn is a claim about growth, so it can be checked capacity by capacity — and it **fails
+at capacity 2**, where the census cancels to `2.24^d`–`2.65^d`, under the threshold. There the plain
+unnormalized amplitude converges to exact rationals (aligned `1`, transverse `1/2`, the ZX/ZY mixes
+`196/197` at amplitude ratio `−1/14`) and interference works in both directions, `2.0000`
+constructive against `0.0000` destructive. At capacity 3 and above every geometry measured diverges
+(`3.97^d`–`4.33^d`). So the theorems below bound the *normalized* weight everywhere, and the
+substrate carries an honest amplitude in a low-capacity window where that normalisation is not
+needed at all.
 -/
 
 /-- The exact gap between the merged weight and the split one: a perfect square over a positive

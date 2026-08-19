@@ -758,6 +758,80 @@ def normalized_event_weights(prep: str, branches: list[str], R: int, dmax: int) 
             for i in range(len(branches))]
 
 
+def coherent_limits(prep: str, branches: list[str], R: int, dmax: int) -> tuple:
+    """The **unnormalized** coherent weight, exactly, where the census is summable.
+
+    The event normalisation was introduced to make the weight converge, and it cost constructive
+    interference (`merge_le_sum`). Drop it and the weight is the honest amplitude,
+
+        T_c = sum_d A_c(d) . 8^(-d/2),      P(c) = |T_c|^2 / sum_j |T_j|^2,
+
+    which converges exactly when the signed census grows slower than sqrt(8)^d -- and at **capacity
+    2 it does** (2.59^d, 2.24^d measured) while at capacity 3 and above it does not (3.90^d, 4.34^d).
+    So there is a low-capacity **window** in which the census is both summable and interference-
+    capable, which the sub-additivity no-go does not reach.
+
+    Closures of one geometry share a depth parity, so `8^(-d/2)` factors as a common irrational
+    times a rational and the *ratio* -- hence `P(c)` -- is an exact rational. Returns
+    `(T_limits, P_plus, summable, growth)` with the limits as `Fraction`s.
+    """
+    A, _ = first_closure_census(prep, branches, R, dmax)
+    depths = [d for d in range(dmax + 1) if any(A[i][d] for i in range(len(branches)))]
+    if not depths:
+        return None, None, None, float('nan')
+    par = depths[0] % 2
+    if any(d % 2 != par for d in depths):
+        return None, None, None, float('nan')          # mixed parity: needs Q(sqrt 2)
+    ds = [d for d in depths if A[0][d]]
+    growth = float('nan')
+    if len(ds) >= 4:
+        d0, d1 = ds[len(ds) // 2], ds[-1]
+        growth = (abs(A[0][d1]) / abs(A[0][d0])) ** (1.0 / (d1 - d0))
+    T = []
+    for i in range(len(branches)):
+        num = sum(A[i][d] * 2 ** (3 * (dmax - d) // 2) for d in range(par, dmax + 1, 2))
+        T.append(Fraction(num, 2 ** (3 * (dmax - par) // 2)))
+    den = sum(t * t for t in T)
+    P = (T[0] * T[0] / den) if den else None
+    # a geometry that closes at one depth only is a finite sum: summable with nothing to check
+    summable = True if growth != growth else (growth < math.sqrt(8))
+    return T, P, summable, growth
+
+
+def coherent_report(R: int, dmax: int) -> list[str]:
+    """Read the geometries with the unnormalized weight, and say whether it exists at all."""
+    failures: list[str] = []
+    thr = math.sqrt(8)
+    print(f"\n===== unnormalized coherent weight at capacity R = {R}"
+          f"   (summable iff |A(d)| grows slower than {thr:.4f}^d)")
+    for label, prep, bp, bm, forced in geometries():
+        try:
+            T, P, ok, growth = coherent_limits(prep, [bp, bm], R, dmax)
+        except ValueError as exc:
+            print(f"  {label}: {exc}")
+            continue
+        if T is None:
+            print(f"  {label}: nothing closes here, or the closure depths are of mixed parity")
+            continue
+        state = ("one closure depth, finite sum" if growth != growth else
+                 "summable" if ok else "DIVERGES")
+        rate = "-" if growth != growth else f"{growth:.4f}^d"
+        # the tail is geometric, so a truncation at dmax reconstructs the exact rational limit
+        approx = T[0].limit_denominator(10 ** 5), T[1].limit_denominator(10 ** 5)
+        print(f"  {label:<34} |A(d)| ~ {rate:<9} [{state}]")
+        if ok:
+            print(f"     T+ = {approx[0]}   T- = {approx[1]}   "
+                  f"P(+) = {(P.limit_denominator(10 ** 5) if P is not None else '-')}"
+                  f" = {float(P):.9f}")
+            if forced == "forced equal" and T[0] != T[1]:
+                failures.append(f"R={R} {label}: a preparation-fixing relabeling exchanges these "
+                                f"branches, so QLF_BasisIndependence forces equality")
+    print("  -- where this converges the weight is the plain amplitude, with no per-event "
+          "normalisation,\n     so merging paths adds amplitudes and interference is available "
+          "in both directions.")
+    return failures
+
+
 def two_path_report(R: int, dmax: int) -> list[str]:
     """The four-run interference test: A alone, B alone, both, and both with one path reversed.
 
@@ -987,6 +1061,9 @@ def main() -> None:
     ap.add_argument("--first-closure", type=str, default="", metavar="R1,R2,...",
                     help="absorbing census: the history ends at its first joint closure, so the run "
                          "chooses its own stopping depth")
+    ap.add_argument("--coherent", type=str, default="", metavar="R",
+                    help="the UNNORMALIZED coherent weight at capacity R, with exact rational "
+                         "limits where the census is summable")
     ap.add_argument("--two-path", type=str, default="", metavar="R",
                     help="four-run interference test at capacity R: A alone, B alone, both, and "
                          "both with one path reversed")
@@ -1010,6 +1087,17 @@ def main() -> None:
             gap = l2 / l1
             print(f"   {R:>3}  {n:>8}  {l1:>10.6f}  {top:>9}  {l2:>10.6f}  {gap:>8.6f}  "
                   f"{-1 / math.log(gap):>8.1f}")
+        return
+
+    if args.coherent:
+        R = int(args.coherent)
+        failures = coherent_report(R, args.closure_depth)
+        print("\n== invariants")
+        if failures:
+            for f in failures:
+                print(f"     - {f}")
+            raise SystemExit(1)
+        print("   all asserted invariants hold")
         return
 
     if args.two_path:

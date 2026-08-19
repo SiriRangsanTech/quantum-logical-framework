@@ -220,14 +220,24 @@ but **given that everything happens every way, exactly how do those ways add?**
      ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean): `merge_le_sum`,
      `no_constructive_interference`, `merge_eq_sum_iff`). The inequality that bought summability
      forbids the enhancement.
-   * **The dichotomy this leaves is the open problem, stated sharply:** *normalise per event* →
-     summable (Kraft) but sub-additive, no interference; *do not normalise* → interference-capable
-     but divergent (`3.9^d`–`4.6^d` against `√8^d`). **The substrate's signed census cannot
-     presently be both summable and interference-capable under the measure its own tree defines.**
-     Not implicated: the measure, the phase rule, the depth law, and event identity — the last is
-     *bracketed*, since every quotient lies between the two splits now recorded in
-     [`data/census_inventory.json`](data/census_inventory.json), and quotienting by Pauli fold
-     collapses onto the finest, removing interference outright.
+   * **That dichotomy is capacity-dependent, and at `R = 2` there is a window where it does not
+     bite — the current live result.** The divergent horn is a claim about growth, checkable
+     capacity by capacity, and at capacity 2 the signed census cancels to `2.24^d`–`2.65^d`, below
+     the `√8 = 2.828^d` threshold. There the **unnormalized** amplitude converges, so no per-event
+     normalisation is needed and the sub-additivity theorem never applies. Measured exactly
+     (`contextual_census.py --coherent 2`): `P(c) = |T_c|²/Σ|T_j|²` is an exact **rational**, aligned
+     `1`, transverse `T₊ = T₋ = 8/13` so `P = 1/2`, ZX/ZY mixes `T₊ = −112/195`, `T₋ = 8/195` —
+     amplitude ratio exactly `−1/14`, `P(+) = 196/197` — and the four-run interference test gives
+     `2.0000` constructive, `0.0000` destructive, **the factor of two quantum mechanics demands**.
+     At `R ≥ 3` every geometry diverges (`3.97^d`–`4.33^d`).
+   * **So the substrate carries an amplitude at low closure capacity and loses it as capacity
+     grows.** The sub-additivity theorem stands; the conclusion drawn from it was too strong. **Open:**
+     the weights in the window look **discrete** (`1`, `1/2`, `196/197`, …), which is what
+     no-continuum-in-a-finite-region predicts and also what a too-rigid encoding would produce —
+     whether the achievable set fills in as contexts multiply (the large-census rendering of
+     `cos²(θ/2)`) is the next measurement. Not implicated: the measure, the phase rule, the depth
+     law, event identity (bracketed by the two splits in
+     [`data/census_inventory.json`](data/census_inventory.json)).
    * ~~**Next Lean anchor (tractable):** the Kraft bound itself~~ — ✅ **done**
      ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). For a prefix-free set of twist words
      `Σ 8^{−|h|} ≤ 1` is finite counting (`8^{K−|h|}` disjoint continuation sets inside `8^K`), so
