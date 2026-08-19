@@ -111,7 +111,7 @@ import QLF_RiemannMRE
     other boundaries fall short of. -/
 
 #print axioms QLF.transportCurvature_nonempty
-#print axioms QLF.properOrthochronous_id
+#print axioms QLF.LorentzCover.properOrthochronous_id
 #print axioms QLF.census_no_triangles
 
 /-! ## Derived results — expected: no QLF axiom.
