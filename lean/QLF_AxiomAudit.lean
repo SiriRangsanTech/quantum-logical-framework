@@ -52,6 +52,7 @@ import QLF_BSD
 import QLF_PvsNP
 import QLF_Fredkin
 import QLF_MassGap
+import QLF_NavierStokes
 import QLF_RiemannMRE
 
 /-! ## The combinatorial core — expected: no QLF axiom -/
@@ -78,6 +79,14 @@ import QLF_RiemannMRE
 #print axioms QLF.continuumGap_nonempty
 #print axioms QLF.continuumGap_gap_unique
 #print axioms QLF.mass_gap_quantum_pos
+
+/-! Navier-Stokes: the boundary here was *removed* rather than merged, because
+    `continuumClaim_nonempty` shows it assumed nothing — an uninterpreted `Prop` plus its
+    truth is satisfied by `True` and `trivial`. What the module still proves stands on its
+    own, and must show no QLF axiom. -/
+
+#print axioms QLF.continuumClaim_nonempty
+#print axioms QLF.realized_flow_achieves_zfa
 
 /-! ## Derived results — expected: no QLF axiom.
 

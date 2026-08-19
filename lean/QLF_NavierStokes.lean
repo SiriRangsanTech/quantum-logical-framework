@@ -39,31 +39,63 @@ theorem realized_flow_is_stable (c : TerminatingComputation) :
     ∃ n, encodeComputation c ∈ find_stable_states n :=
   qlf_universality c
 
-/-- The classical continuum statement: every finite-energy smooth datum yields a
-    globally smooth incompressible Navier–Stokes solution (no finite-time blow-up).
-    Abstract — QLF does not formalise the continuum PDE; this names the analytic
-    object the boundary axiom speaks about. -/
-axiom NavierStokesGlobalSmoothness : Prop
+/-! ### The boundary, measured — and removed
 
-/-- **The Navier–Stokes boundary axiom.** The continuum incompressible flow inherits
-    the substrate's no-blow-up property under the continuum limit of the ZFA event
-    stream: since no realized (terminating) history is singular, the limit is globally
-    smooth. This is the genuinely analytic step — the continuum-PDE crossing, the
-    continuum sector where ZFC is itself proven to fail. The named boundary, not a QLF
-    theorem. -/
-axiom navier_stokes_continuum_limit : NavierStokesGlobalSmoothness
+    This module carried two axioms:
 
-/-- **Navier–Stokes in QLF** (conditional on the boundary): global smoothness holds. -/
-theorem navier_stokes_in_qlf : NavierStokesGlobalSmoothness :=
-  navier_stokes_continuum_limit
+        axiom NavierStokesGlobalSmoothness : Prop
+        axiom navier_stokes_continuum_limit : NavierStokesGlobalSmoothness
 
-/-- **Status — proof in progress (constructively reframed).** Established on the
-    substrate: realized flows achieve ZFA (`realized_flow_achieves_zfa`) and are stable
-    closures (`realized_flow_is_stable`) — no realized history blows up, because
-    blow-up is a non-terminating history `full_zeno_prune` removes. The remaining step
-    is continuum-PDE inheritance under the limit — the continuum sector where ZFC is
-    itself proven to fail (Gödel, Turing, Busy Beaver), so it is ZFC's defect, not a
-    gap here. See NavierStokes_QLF.md. -/
+    an uninterpreted proposition together with the claim that it holds, from which
+    `navier_stokes_in_qlf` followed by restating the second one. Measured, that pair
+    assumes **nothing whatever**: `continuumClaim_nonempty` builds a realization as
+    `⟨True, trivial⟩`. This is the extreme case of the pattern the audit keeps finding —
+    Yang–Mills at least pinned a value, and BSD at least related two readings of one, while
+    here the axiom chooses the *proposition* as well as its truth, so there is no candidate
+    it excludes and nothing it could be wrong about.
+
+    It is also superseded. [`QLF_NavierStokesBKM`](QLF_NavierStokesBKM.lean) unbundles the
+    same claim into three parts with the mechanism visible: the substrate Planck vorticity
+    cap `≤ 1/L_P²` (`planck_caps_vorticity`, **proved**, no axiom), the **cited**
+    Beale–Kato–Majda criterion, and one sharp faithfulness bridge
+    (`continuum_vorticity_planck_capped`) — from which `navier_stokes_no_blowup` is a
+    theorem. That module says outright that it *replaces* the opaque boundary here.
+
+    An axiom that assumes nothing is not a boundary. It is noise that inflates the count of
+    explicit boundaries while carrying none of the weight, and having two of them next to a
+    module that does the work honestly makes the honest one look like one option among
+    several. So both are **removed** rather than merged, and the demonstration below stays
+    as the record of why — a removal should be justified in the file, not just asserted in a
+    commit message.
+
+    What remains here is proved and untouched: realized flows achieve ZFA
+    (`realized_flow_achieves_zfa`) and are stable closures (`realized_flow_is_stable`), so
+    no realized history blows up, because blow-up is a non-terminating history
+    `full_zeno_prune` removes. -/
+
+/-- An uninterpreted claim about the continuum: a proposition, and its truth. -/
+structure ContinuumClaim where
+  /-- The proposition. -/
+  P : Prop
+  /-- That it holds. -/
+  holds : P
+
+/-- **The removed boundary assumed nothing**, and this is the proof: take the proposition
+    to be `True` and its inhabitant to be `trivial`. An axiom of that shape excludes no
+    possibility, so nothing was lost by deleting it — and nothing had been gained by
+    stating it. -/
+theorem continuumClaim_nonempty : Nonempty ContinuumClaim :=
+  ⟨⟨True, trivial⟩⟩
+
+/-- **Status — proof in progress; the boundary now lives in `QLF_NavierStokesBKM`.**
+    Established on the substrate here: realized flows achieve ZFA
+    (`realized_flow_achieves_zfa`) and are stable closures (`realized_flow_is_stable`) — no
+    realized history blows up, because blow-up is a non-terminating history
+    `full_zeno_prune` removes. The continuum-PDE step is **not** an axiom of this module
+    any more; it is the proved Planck vorticity cap + the cited Beale–Kato–Majda criterion
+    + one sharp faithfulness bridge in `QLF_NavierStokesBKM`, where the mechanism is
+    explicit and the residual gap is localized to the vorticity rendering. Cite that, not
+    this. See NavierStokes_QLF.md, Navier_Stokes_Geometry.md. -/
 theorem navier_stokes_proof_in_progress : True := trivial
 
 end QLF
