@@ -22,6 +22,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Byte order, not the caller's locale. Under a UTF-8 collation `sort` folds case and
+# ignores punctuation, so QLF_NavierStokes.lean and QLF_NavierStokesBKM.lean interleave
+# one way on a developer's machine and another on the runner — a diff with no axiom
+# change in it. Pinning the collation makes the list mean the same thing everywhere.
+export LC_ALL=C
+
 EXPECTED="lean/axioms.expected"
 
 # Column-0 `axiom` declarations only — indented occurrences are prose inside doc
