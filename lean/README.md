@@ -268,10 +268,11 @@ All axioms are isolated and explicit. The combinatorial core is axiom-free beyon
 | Axiom | Location | Meaning | Logical role |
 |---|---|---|---|
 | `spectral_hilbert_polya` | `QLF_Riemann` | Scalar spectral mode requires a non-trivial zero on the critical line | Marks the RCA₀ → WKL₀ boundary; the QLF form of the Hilbert-Pólya conjecture |
-| `NonTrivialZero` | `QLF_Riemann` | Predicate identifying non-trivial zeros of ζ(s) | Connects discrete QLF combinatorics to analytic number theory |
 | `resonant_computation_for` | `QLF_Riemann` | Associates a TerminatingComputation to each candidate zero | Bridge from combinatorics to the Dirichlet series world |
 
 `critical_line_forcing` is **derived** from `spectral_hilbert_polya` via `spectral_symmetric_eq_scalar_id` — it is a theorem, not an axiom.
+
+`NonTrivialZero` was formerly listed here as a third axiom. It is now a **definition** over Mathlib's `riemannZeta` — `riemannZeta ρ = 0 ∧ 0 < ρ.re < 1` — with `not_nonTrivialZero_of_re_nonpos` and `trivial_zero_not_nonTrivial` proved from it. It was never a bridge: naming ζ's zeros is vocabulary, and leaving the name opaque made the bridge above assert nothing, since the interpretation where no complex number is a non-trivial zero satisfied it. Two axioms remain.
 
 `ER_EPR_QLF.lean` contains philosophical axioms explicitly marked as speculative; they are not used by any other module.
 

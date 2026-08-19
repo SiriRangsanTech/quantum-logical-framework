@@ -356,16 +356,28 @@ Witten→RT mode. So "dischargeable" = "how close is this bridge to the **knot s
 math lemma from that end-state; Class A carries the problem's own content and, by design, is not (see
 [`Millennium.md`](Millennium.md) § *The engine*).
 
-QLF carries **23 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
-role). Two have already moved *off* the axiom list, setting the model: **`censusTail_eq`** (`QLF_AlphaBound`)
-was **discharged into a theorem** — proved from Mathlib's generalized binomial series
-`Real.one_add_rpow_hasFPowerSeriesOnBall_zero` plus the identity `4ⁿ·choose(−½)n = (−1)ⁿ·C(2n,n)` — and
+QLF carries **24 `axiom` declarations** (the [`CLAUDE.md`](CLAUDE.md) axiom inventory lists each with its
+role). The number is not maintained by hand: [`scripts/axiom_audit.sh`](scripts/axiom_audit.sh) pins the list
+in `lean/axioms.expected` and fails CI on any assumption that is added or removed without review, and
+[`lean/QLF_AxiomAudit.lean`](lean/QLF_AxiomAudit.lean) reports, via `#print axioms`, which of them each anchor
+theorem *actually* consumes — because zero `sorry` says every goal was closed and nothing about what closed it.
+
+Three have moved *off* the list, and the three ways of leaving it are different. **`censusTail_eq`**
+(`QLF_AlphaBound`) was **discharged into a theorem** — proved from Mathlib's generalized binomial series
+`Real.one_add_rpow_hasFPowerSeriesOnBall_zero` plus the identity `4ⁿ·choose(−½)n = (−1)ⁿ·C(2n,n)`.
 **`navier_stokes_continuum_limit`** was **reduced** to a proven Planck vorticity cap + the *cited* BKM theorem
-+ a sharp bridge (`QLF_NavierStokesBKM`). The remaining axioms split:
++ a sharp bridge (`QLF_NavierStokesBKM`). **`NonTrivialZero`** (`QLF_Riemann`) was neither: it was **never an
+assumption at all**, only vocabulary listed as one, and it is now a definition over Mathlib's `riemannZeta`.
+That correction *strengthens* the Riemann boundary rather than weakening it — while the predicate was opaque,
+`spectral_hilbert_polya` was satisfied by the interpretation under which no complex number is a non-trivial
+zero, so `riemann_hypothesis_in_qlf` held in a model where it said nothing about ζ. Naming the real object
+makes the axiom carry the real content of RH. The general lesson is worth keeping: **an axiom that introduces
+a name is not a boundary, and counting it as one hides how much is actually being assumed** — in either
+direction. The remaining axioms split:
 
 | Class | Axioms | Provable? | What discharge requires |
 |---|---|---|---|
-| **A — open-conjecture content** (the deliberate boundaries) | `spectral_hilbert_polya`, `NonTrivialZero`, `resonant_computation_for`, `MellinStructuralSingularity`, `MRE_bridge`, `zero_is_mellin_singularity` (Riemann); `modularity_mirror_invariant`, `centralMultiplicity` (BSD); `generate_not_reducible_to_verify`, `PTime`, `search`, `verify_is_ptime` (P vs NP); `yang_mills_continuum_gap`, `YangMillsMassGap`; `NavierStokesGlobalSmoothness` (`navier_stokes_continuum_limit` reduced, see above); `substrate_realization_is_algebraic`, `CohClass.isAlgebraic` (Hodge faithfulness — the located wall) | **No** — proving one *is* solving the corresponding open problem (Riemann / BSD / P-vs-NP / Yang–Mills, or the Hodge cycle-faithful encoding). These are the explicit `RCA₀→analytic/WKL₀` boundaries, not gaps. **Audited, not assumed:** each Class-A bridge sits where a *cheaper-looking* derivation appears available, and all six such routes were checked and found closed — the cheap fact is in every case automatic, pointed the wrong way, or about a different object ([`Millennium.md`](Millennium.md) § *The competing-route trap*). None is a near miss. | The very analytic / continuum / independence content the reformulation isolates — not a Mathlib lemma away. |
+| **A — open-conjecture content** (the deliberate boundaries) | `spectral_hilbert_polya`, `resonant_computation_for`, `MellinStructuralSingularity`, `MRE_bridge`, `zero_is_mellin_singularity` (Riemann); `modularity_mirror_invariant`, `centralMultiplicity` (BSD); `generate_not_reducible_to_verify`, `PTime`, `search`, `verify_is_ptime` (P vs NP); `yang_mills_continuum_gap`, `YangMillsMassGap`; `NavierStokesGlobalSmoothness` (`navier_stokes_continuum_limit` reduced, see above); `substrate_realization_is_algebraic`, `CohClass.isAlgebraic` (Hodge faithfulness — the located wall) | **No** — proving one *is* solving the corresponding open problem (Riemann / BSD / P-vs-NP / Yang–Mills, or the Hodge cycle-faithful encoding). These are the explicit `RCA₀→analytic/WKL₀` boundaries, not gaps. **Audited, not assumed:** each Class-A bridge sits where a *cheaper-looking* derivation appears available, and all six such routes were checked and found closed — the cheap fact is in every case automatic, pointed the wrong way, or about a different object ([`Millennium.md`](Millennium.md) § *The competing-route trap*). None is a near miss. | The very analytic / continuum / independence content the reformulation isolates — not a Mathlib lemma away. |
 | **B — settled math Mathlib lacks assembled** | `lorentz_generated_by_boosts_rotations` (most feasible); `benincasa_dowker_limit`, `order_metric_continuum_limit`; `beale_kato_majda`, `continuum_vorticity_planck_capped` | **In principle, yes** — each is a *published* theorem (Lie generation of `SO⁺(1,3)`; Benincasa–Dowker 2010; Malament / Bombelli–Henson–Sorkin; BKM 1984), so provable but not yet in Lean. | A real multi-hundred-line Lean project: `sl(2,ℂ)≅so(1,3)` + exp-surjectivity onto the identity component (Lorentz); Poisson processes on Lorentzian regions (CST limits); Sobolev/Gronwall PDE regularity (BKM). Mathlib has fragments, not the assembly. |
 
 **Bottom line.** The axioms that *can* be proven are the **Class B** "settled math" ones — chiefly

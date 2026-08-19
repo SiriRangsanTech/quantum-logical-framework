@@ -58,13 +58,17 @@ This is a fundamental Reverse Mathematics fact: **properties of arbitrary comple
 
 ### What the Lean Axioms Mean
 
-`lean/QLF_Riemann.lean` contains three explicit axioms:
+`lean/QLF_Riemann.lean` contains two explicit axioms:
 
 ```
 spectral_hilbert_polya   : scalar spectral mode ⟹ ρ.re = 1/2
-NonTrivialZero           : predicate identifying non-trivial zeros of ζ(s)
 resonant_computation_for : associates a TerminatingComputation to each candidate zero
 ```
+
+(`NonTrivialZero` was a third. It is now a definition over Mathlib's `riemannZeta` —
+`riemannZeta ρ = 0 ∧ 0 < ρ.re < 1`. Naming ζ's zeros is vocabulary, not a crossing, and
+while the name was opaque the bridge above was satisfiable by reading *nothing* as a
+non-trivial zero. The boundary is where ζ's analysis is invoked, not where it is named.)
 
 These are not gaps, not placeholders, and not apologies. They are the **exact logical boundary** between:
 

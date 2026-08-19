@@ -79,6 +79,11 @@ import QLF_RiemannMRE
 
 #print axioms QLF.hodge_realized_on_substrate
 
+/-- `trivial_zero_not_nonTrivial` is the check that the RH boundary now speaks about ζ:
+    an ordinary theorem, about Mathlib's `riemannZeta`, carrying no QLF axiom. It could not
+    be stated at all while `NonTrivialZero` was an uninterpreted predicate. -/
+#print axioms QLF.trivial_zero_not_nonTrivial
+
 /-! ## Boundaries — expected: exactly the named bridge, and nothing further.
 
     `bsd_rank_equals_order` should consume `modularity_mirror_invariant` (plus the abstract
@@ -90,4 +95,5 @@ import QLF_RiemannMRE
     independent, which is the point of having both. -/
 
 #print axioms QLF.bsd_rank_equals_order
+#print axioms QLF.riemann_hypothesis_in_qlf
 #print axioms QLF.riemann_hypothesis_in_qlf_via_MRE

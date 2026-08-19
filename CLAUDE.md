@@ -179,7 +179,7 @@ theorem foo (p : RhoProcess) : achieves_ZFA (toTopoString p) :=
 |---|---|---|
 | `spectral_hilbert_polya` | `QLF_Riemann` | RCA₀ → WKL₀ boundary; QLF form of Hilbert-Pólya. Refined in `QLF_RiemannMRE` into the structurally-motivated `MRE_bridge` (over the concrete `Z_QLF`, motivated by the proven MRE-saturation theorem) |
 | `MRE_bridge` / `zero_is_mellin_singularity` / `MellinStructuralSingularity` | `QLF_RiemannMRE` | The refined Riemann boundary: a Mellin structural singularity of `Z_QLF` lies on the critical line, and every ζ-zero is such a singularity. The Mellin↔ζ correspondence is the WKL₀/continuum sector |
-| `NonTrivialZero` | `QLF_Riemann` | Connects QLF combinatorics to analytic number theory |
+| ~~`NonTrivialZero`~~ **DISCHARGED** | `QLF_Riemann` | No longer an axiom — a **definition** over Mathlib's `riemannZeta`: `riemannZeta ρ = 0 ∧ 0 < ρ.re < 1`. It never carried open-conjecture content; it was vocabulary, and while it was opaque the Riemann bridge was satisfiable by the interpretation under which nothing is a non-trivial zero. Defining it *strengthens* the boundary — `spectral_hilbert_polya` now asserts the real RH — and buys two theorems: `not_nonTrivialZero_of_re_nonpos` and `trivial_zero_not_nonTrivial` (the trivial zeros `−2, −4, …` are out of scope by construction) |
 | `resonant_computation_for` | `QLF_Riemann` | Bridge from combinatorics to Dirichlet series |
 | `yang_mills_continuum_gap` | `QLF_MassGap` | RCA₀ → analytic (continuum-QFT) boundary; the continuum Yang–Mills theory's gap = the substrate `log 2` closure quantum |
 | `YangMillsMassGap` | `QLF_MassGap` | The continuum Yang–Mills theory's mass gap (opaque real; its well-definedness is the Clay problem) |

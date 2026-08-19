@@ -17,7 +17,6 @@ QLF_PvsNP.lean PTime
 QLF_PvsNP.lean generate_not_reducible_to_verify
 QLF_PvsNP.lean search
 QLF_PvsNP.lean verify_is_ptime
-QLF_Riemann.lean NonTrivialZero
 QLF_Riemann.lean resonant_computation_for
 QLF_Riemann.lean spectral_hilbert_polya
 QLF_RiemannMRE.lean MRE_bridge

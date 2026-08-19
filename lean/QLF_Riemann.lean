@@ -14,11 +14,41 @@ import Mathlib.Data.Nat.Choose.Basic
 
 namespace QLF
 
-axiom NonTrivialZero : ℂ → Prop
+/-- **A non-trivial zero of the Riemann zeta function** — Mathlib's `riemannZeta`,
+    vanishing inside the critical strip. The standard statement: the *trivial* zeros are
+    the negative even integers, which the strip condition `0 < Re ρ` excludes
+    (`trivial_zero_not_nonTrivial`), so what remains is exactly the zeros RH is about.
+
+    This is a definition, not an axiom, and the difference is not bookkeeping. While
+    `NonTrivialZero` was an uninterpreted `ℂ → Prop`, the bridge below was satisfiable by
+    the interpretation under which *nothing* is a non-trivial zero — so
+    `riemann_hypothesis_in_qlf` held in a model where it said nothing about ζ, and the
+    boundary could not be judged. Naming the real object makes the assumption assert what
+    it claims to assume. It is a strengthening: the axiom now carries the full content of
+    RH, which is where a boundary should carry it. -/
+def NonTrivialZero (ρ : ℂ) : Prop :=
+  riemannZeta ρ = 0 ∧ 0 < ρ.re ∧ ρ.re < 1
+
+/-- Nothing in the closed left half-plane is a non-trivial zero — the strip condition
+    alone decides it. -/
+theorem not_nonTrivialZero_of_re_nonpos {ρ : ℂ} (h : ρ.re ≤ 0) : ¬ NonTrivialZero ρ :=
+  fun hz => absurd hz.2.1 (not_lt.mpr h)
+
+/-- **The trivial zeros are out of scope, by construction.** `ζ(−2), ζ(−4), ζ(−6), …`
+    vanish for reasons having nothing to do with RH; each is a non-positive real, so none
+    satisfies `NonTrivialZero`. Under the old opaque predicate this was not a statement
+    that could be made, let alone checked. -/
+theorem trivial_zero_not_nonTrivial (n : ℕ) :
+    ¬ NonTrivialZero ((-2 * ((n : ℝ) + 1) : ℝ) : ℂ) := by
+  apply not_nonTrivialZero_of_re_nonpos
+  rw [Complex.ofReal_re]
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  linarith
 
 -- Hilbert-Pólya bridge (axiom): a QLF string whose spectral mode is a scalar
 -- multiple of the identity forces an associated non-trivial zero to Re(s) = 1/2.
--- This is the QLF form of the Hilbert-Pólya conjecture; it remains an axiom.
+-- This is the QLF form of the Hilbert-Pólya conjecture; it remains an axiom — and now
+-- an interpretable one, stated over Mathlib's ζ rather than over an opaque predicate.
 axiom spectral_hilbert_polya {s : TopoString} {ρ : ℂ} :
     (∃ c : ℂ, toSpectralMode s = c • (1 : Matrix (Fin 2) (Fin 2) ℂ)) →
     NonTrivialZero ρ → ρ.re = 1/2
