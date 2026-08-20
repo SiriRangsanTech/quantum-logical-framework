@@ -60,7 +60,7 @@ QLF's account of beta decay ([`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutri
 
 Concrete anchor: the chiral electron loop `^<v>` is exactly the cross-axis **interleaved closure** machine-verified this cycle — `interleaved_xlvr_folds_to_negI` (`σ_y·−σ_x·−σ_y·σ_x = −I`) in [`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean) — a count-balanced ZFA closure that the keystone `count_balanced_pauli_closed` covers.
 
-**The tension, stated plainly.** In QLF, beta decay is mediated by the gauge-fold pair-flip *operation* — the W as a **process**, not an explicit exchanged particle. The W as a **particle** appears explicitly only in the τ-decay vertex (§5). Reconciling the two readings — is the propagator W just the virtual realization of the pair-flip operation, with `R_W` setting its range? — is open and is the natural next structural question for the weak sector.
+**The tension, stated plainly.** In QLF, beta decay is mediated by the gauge-fold pair-flip *operation* — the W as a **process**, not an explicit exchanged particle. The W as a **particle** appears explicitly only in the τ-decay vertex (§5). Reconciling the two readings — is the propagator W just the virtual realization of the pair-flip operation, with `R_W` setting its range? — is taken up in **§4c**, which proposes that the two are the same relation at two resolutions.
 
 ### 4a. The "proton" is a deficit — the observable is the lepton-balanced atom
 
@@ -122,6 +122,73 @@ capacity reading, and [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1 take
 can stay protected against decay and still be transformable once it is a constituent of a
 higher-capacity joint event. Where nature does this at scale is
 [`Decay.md`](Decay.md) §2.4a — stellar collapse, and the neutron star it leaves.
+
+---
+
+### 4c. W as operation and W as particle — two resolutions of one relation
+
+§4 left a tension: QLF reads the weak interaction as a pair-flip *operation*, while the W appears as
+a *particle* at the τ vertex. Electron capture is where the two can be reconciled, because resolving
+its single vertex splits it in two:
+
+```
+    coarse:   e⁻ + u → ν + d                    one joint weak closure
+    resolved: e⁻ → ν + W⁻*    and    u + W⁻* → d
+```
+
+**The mediator's charge is not put in by hand — it is over-determined.** Each half fixes it alone,
+from data the other half never sees:
+
+| half | equation | forces |
+|---|---|---|
+| lepton | `q_e = q_ν + q_W` | `−1 = 0 + q_W` ⟹ `q_W = −1` |
+| quark | `q_u + q_W = q_d` | `2/3 + q_W = −1/3` ⟹ `q_W = −1` |
+
+Two independent computations, one answer. Machine-verified as
+`wminus_charge_from_lepton_vertex`, `wminus_charge_from_quark_vertex`, and
+`electron_capture_factors_through_wminus` (there is **exactly one** charge making both vertices
+work) in [`lean/QLF_ChargeBalance.lean`](lean/QLF_ChargeBalance.lean). So the direct pair-flip
+bookkeeping of §4b **factors through** a charged intermediate relation rather than merely tolerating
+one, and the W is not an arbitrary extra object: it carries precisely the unit the `u → d` flip
+costs and precisely the unit the electron gives up in becoming a neutrino.
+
+**The proposed resolution, and it comes from QLF's own rule rather than from field theory.** §4a
+insists a net-charge object is an **open** gauge half, not a completed ZFA closure. A `W⁻` carries a
+net charge twist. By QLF's own rule, then, a `W⁻` *cannot* be an independently completed closure —
+it is exactly the kind of thing that must be completed by the event containing it:
+
+```
+    (e⁻ + u)  →  [ e⁻→ν  |  W⁻*  |  u→d ]  →  (ν + d)
+```
+
+**The whole event closes; the internal relation need not.** That is not an evasion — it is the same
+statement quantum field theory makes when it says a virtual particle is not an asymptotic
+observable, arrived at here from the charge-completion rule instead of from a propagator.
+
+And the two readings then differ only by **capacity**, the same ladder as
+[`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1:
+
+| capacity | what the weak relation is |
+|---|---|
+| `E ≪ M_W` | an **internal open relation** of a larger closure — the pair-flip *operation*, no separate object |
+| `E ≳ M_W` | enough to let that relation **close on its own** — a real, briefly-existing W *particle* |
+
+So *W as operation* and *W as particle* are one relation at two resolutions, and which you see is a
+capacity question rather than a choice of story. A consistency check that costs nothing: QLF's rule
+also predicts a lone `W⁻` is never an isolated observable, and it never is — real W production is
+always charge-balanced globally.
+
+**This corrects §2's wording.** That table calls `W±` a "gauge-fold **closure**" with a net charge
+twist; by §4a's rule a net-charged fold is an open half. Read §2 as describing the *fold structure*
+and its depth `R_W`, with completion supplied by the event the fold sits in — not as a claim that a
+charged W is a completed closure standing alone.
+
+**Honest scope, at three strengths.** *Proved:* the charge bookkeeping factors through a unique
+`−1` relation, over-determined from both sides. *Structural proposal:* `W*` as the internal open
+gauge relation of the joint closure, with a real W the case where capacity lets it close — this is a
+reading that fits QLF's existing commitments, not a theorem. *Open, and untouched by any of it:* the
+W's twist topology, `M_W`, `G_F`, the propagator, and every transition rate (§6). Nothing here
+computes a weak amplitude.
 
 ---
 

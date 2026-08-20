@@ -117,6 +117,7 @@ import QLF_RiemannMRE
 #print axioms QLF.electron_capture_charge_balanced
 #print axioms QLF.capture_changes_exactly_one_slot
 #print axioms QLF.local_capture_charge_conserved
+#print axioms QLF.electron_capture_factors_through_wminus
 
 #print axioms QLF.transportCurvature_nonempty
 #print axioms QLF.LorentzCover.properOrthochronous_id

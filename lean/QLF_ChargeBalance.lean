@@ -173,6 +173,10 @@ theorem capture_flips_exactly_one :
     "changes flavour without untying colour"; the representation supplies the frame, the theorem
     supplies the claim. -/
 
+-- `Ax` (the three colour axes) lives in `QLF.BaryonWinding`, not `QLF`; without this the bare
+-- name is auto-bound as an implicit type variable rather than resolving to the inductive.
+open BaryonWinding
+
 /-- The proton as three colour slots: `u` on `x`, `u` on `y`, `d` on `z`. -/
 def protonSlots : Ax → Flavour
   | .x => .up
@@ -209,6 +213,39 @@ theorem capture_changes_exactly_one_slot :
     · rfl
     · exact absurd rfl ha
     · rfl
+
+/-! #### The mediator's charge is not put in — it is over-determined
+
+    Resolve the vertex and it has two halves joined by a charged relation: `e⁻ → ν + W⁻` on the
+    lepton side, `u + W⁻ → d` on the quark side. The point of the theorems below is that **the
+    mediator's charge is never assumed**. Each half determines it alone, from data the other half
+    never sees, and the two answers coincide at `−1`.
+
+    That is why the `W` is not an arbitrary extra object here: it carries exactly the gauge unit the
+    `u → d` flip costs, and exactly the unit the electron gives up in becoming a neutrino. -/
+
+/-- **The lepton half fixes the mediator's charge.** Whatever relation carries `e⁻` to `ν`, its
+    charge is forced to `−1` — nothing about quarks enters. -/
+theorem wminus_charge_from_lepton_vertex (w : ℚ) (h : chargeE = chargeNu + w) : w = -1 := by
+  rw [chargeE, chargeNu] at h; linarith
+
+/-- **The quark half fixes it independently.** Whatever relation carries `u` to `d`, its charge is
+    forced to `−1` — nothing about leptons enters. -/
+theorem wminus_charge_from_quark_vertex (w : ℚ) (h : chargeU + w = chargeD) : w = -1 := by
+  rw [chargeU, chargeD] at h; linarith
+
+/-- **The two halves agree, and the mediator is unique.** There is exactly one charge making both
+    vertices work, and it is `−1` — computed twice from independent sides. So the direct pair-flip
+    bookkeeping *factors through* an intermediate charged relation rather than merely tolerating one.
+
+    What this does **not** establish: that the relation is a particle, its topology, `M_W`, `G_F`,
+    the propagator, or any rate. Those are open (`Weak_Force.md` §4c, §6). This is charge
+    bookkeeping, and it is stated at exactly that strength. -/
+theorem electron_capture_factors_through_wminus :
+    ∃! w : ℚ, chargeE = chargeNu + w ∧ chargeU + w = chargeD := by
+  refine ⟨-1, ⟨by norm_num [chargeE, chargeNu], by norm_num [chargeU, chargeD]⟩, ?_⟩
+  rintro w ⟨hl, -⟩
+  exact wminus_charge_from_lepton_vertex w hl
 
 /-- **Charge is balanced across the capture** — and not by cancelling something against something,
     but because each side is *separately* neutral: `p + e⁻` is the hydrogen-class closure and
