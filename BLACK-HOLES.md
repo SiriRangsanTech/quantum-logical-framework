@@ -160,6 +160,38 @@ carried, and none has been checked exhaustively. It also gives the Personal Orig
 change of which directions the rendering calls spatial is exactly a change of basis, and on balanced
 histories a change of basis changes nothing that is physically read.
 
+**Measured: the obvious candidate mechanism is *not* one of these rebases.** QLF is physics, so the
+question "does a horizon induce a rebasing?" is answerable here rather than deferred — and the
+census answers it for the natural candidate. [`Tunnelling.md`](Tunnelling.md) §2 says unresolved
+spatial action is pushed into the gauge twists, so take that literally as a **spatial↔gauge**
+relabeling (the `Z` axis exchanged with the gauge pair) and test it against the two conditions a
+`HorizonRebasis` must meet ([`lean/QLF_HorizonBasis.lean`](lean/QLF_HorizonBasis.lean)):
+
+```
+    over all 5296 balanced histories of length 2, 4, 6
+      balance preserved : 5296 / 5296     ✓
+      fold    preserved : 3536 / 5296     ✗   — fails on exactly one third
+    control, the gauge swap (a proven rebasis)
+      both preserved    : 5296 / 5296     ✓
+```
+
+So **it is not a rebasing**: it satisfies `balance_iff` and fails `fold_eq`. The smallest
+counterexample is `^/v\` ↦ `^+v−`, folding to `−I` before and `+I` after.
+
+**And the failure is structured, not noisy.** All 1760 changes are `±I` sign flips, 880 each way,
+perfectly symmetric — `±iI` never appears, consistent with the proven fact that balance forces the
+real sector. Since `−I` is the half-spin signature (the `4π` return, [`Spin_QLF.md`](Spin_QLF.md)),
+what this mechanism changes is **spin character**: a third of half-spin closures become full ones
+and conversely. An interior reached that way would not be a relabeled copy of the exterior — the
+phases would differ, and differ in exactly the quantity spin is read from.
+
+Three readings are open and the census does not choose between them: the horizon map is some *other*
+transformation, still to be identified; or the gauge-push is right and the nested claim is **false as
+stated**, the interior being a genuinely different inventory rather than a rebasing; or the fold-flip
+is itself physical, and what crosses a horizon is a spin-character change worth predicting. The first
+is the assumption this section has been making. **It has not been earned, and now there is a
+measurement saying so.**
+
 **The honest boundary of that claim.** What is proven is invariance under the *discrete* relabeling
 group — the 48 signed axis permutations, plus the gauge swap. The horizon-crossing chart change
 (where a fold opens an orthogonal direction, [`Tunnelling.md`](Tunnelling.md) §2) is **not literally
