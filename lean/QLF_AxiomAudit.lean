@@ -115,7 +115,8 @@ import QLF_RiemannMRE
     axiom — the point of proving only the invariants is to keep "allowed" apart from "derived". -/
 
 #print axioms QLF.electron_capture_charge_balanced
-#print axioms QLF.capture_preserves_quark_count
+#print axioms QLF.capture_changes_exactly_one_slot
+#print axioms QLF.local_capture_charge_conserved
 
 #print axioms QLF.transportCurvature_nonempty
 #print axioms QLF.LorentzCover.properOrthochronous_id

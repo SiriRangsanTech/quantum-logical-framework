@@ -1,4 +1,5 @@
 import QLF_ChargeCensus
+import QLF_BaryonWinding
 
 set_option linter.unusedVariables false
 
@@ -135,11 +136,20 @@ theorem chargeOf_proton : chargeOf protonQuarks = protonCharge := by
 theorem chargeOf_neutron : chargeOf neutronQuarks = neutronCharge := by
   norm_num [chargeOf, neutronQuarks, flavourCharge, neutronCharge, chargeU, chargeD]
 
-/-- **`u → d` costs exactly one unit of charge** — which is exactly the electron's, and the reason
-    the electron is the partner the flip requires. -/
+/-- **`u → d` costs exactly one unit of charge**, and the electron supplies exactly that unit.
+    Note what this does *not* say: it does not single the electron out. Any `−1` lepton serves, which
+    is why **muon capture** (`μ⁻ + p → n + ν_μ`) is the same vertex with a heavier completer —
+    see the completing-lepton table in `Weak_Force.md` §4a. -/
 theorem up_to_down_one_charge_unit :
     flavourCharge .down - flavourCharge .up = chargeE := by
   norm_num [flavourCharge, chargeU, chargeD, chargeE]
+
+/-- **The local vertex conserves charge** — `u + e⁻ → d + ν`, both sides `−1/3`. Distinguish this
+    from the *global* reaction, where both sides are `0`: the embedded vertex is charge-conserving,
+    not neutral, and conflating the two is easy to do in a table. -/
+theorem local_capture_charge_conserved :
+    chargeU + chargeE = chargeD + chargeNu := by
+  norm_num [chargeU, chargeD, chargeE, chargeNu]
 
 /-- **Exactly one quark's flavour moves.** The up-count falls by one and the down-count rises by
     one — a single edge, not two, which is what makes this a pair-flip rather than a rearrangement. -/
@@ -148,11 +158,57 @@ theorem capture_flips_exactly_one :
     neutronQuarks.count .down = protonQuarks.count .down + 1 := by
   constructor <;> rfl
 
-/-- **The quark count is untouched**, so the three-axis colour closure survives the flip: capture
-    rethreads flavour through the knot, it does not untie it (`baryon_needs_all_three_axes`). This is
-    what separates capture from deconfinement, where the closure itself ceases to exist. -/
-theorem capture_preserves_quark_count :
-    protonQuarks.length = neutronQuarks.length := rfl
+/-! #### The colour slots
+
+    The flavour lists above carry no colour information, so a statement about their *length* says
+    nothing about colour — `[u,u,d].length = [u,d,d].length` is `3 = 3`, true of any two triples
+    whatever. To say something about the knot the nucleon has to be represented as three **colour
+    slots** carrying flavour, `Ax → Flavour`, over the same `Ax = {x,y,z}` the baryon winding uses
+    (`QLF_BaryonWinding`, and `baryon_needs_all_three_axes` in `QLF_QuarkStructure`).
+
+    Be exact about the division of labour. That every axis stays occupied is true **by construction
+    of the representation** — a total function on `Ax` occupies all of `Ax` — so it is a modelling
+    choice made explicit, not a discovery. What is then genuinely proved on top of it is that the
+    flip moves **exactly one slot** and leaves the other two literally equal. That is the content of
+    "changes flavour without untying colour"; the representation supplies the frame, the theorem
+    supplies the claim. -/
+
+/-- The proton as three colour slots: `u` on `x`, `u` on `y`, `d` on `z`. -/
+def protonSlots : Ax → Flavour
+  | .x => .up
+  | .y => .up
+  | .z => .down
+
+/-- The neutron, the same slots with `y` flipped. -/
+def neutronSlots : Ax → Flavour
+  | .x => .up
+  | .y => .down
+  | .z => .down
+
+/-- The charge of a slot assignment. -/
+def chargeOfSlots (f : Ax → Flavour) : ℚ :=
+  flavourCharge (f .x) + flavourCharge (f .y) + flavourCharge (f .z)
+
+theorem chargeOfSlots_proton : chargeOfSlots protonSlots = protonCharge := by
+  norm_num [chargeOfSlots, protonSlots, flavourCharge, protonCharge, chargeU, chargeD]
+
+theorem chargeOfSlots_neutron : chargeOfSlots neutronSlots = neutronCharge := by
+  norm_num [chargeOfSlots, neutronSlots, flavourCharge, neutronCharge, chargeU, chargeD]
+
+/-- **Exactly one colour slot changes flavour; the other two are untouched.** The `y` slot goes
+    `u → d` and the `x` and `z` slots are literally equal before and after — so the flip rethreads
+    flavour through the knot rather than untying it. Contrast deconfinement, where there is no
+    slot assignment at all because there is no hadron closure. -/
+theorem capture_changes_exactly_one_slot :
+    protonSlots Ax.y ≠ neutronSlots Ax.y ∧
+    ∀ a : Ax, a ≠ Ax.y → protonSlots a = neutronSlots a := by
+  constructor
+  · decide
+  · intro a ha
+    cases a
+    · rfl
+    · exact absurd rfl ha
+    · rfl
 
 /-- **Charge is balanced across the capture** — and not by cancelling something against something,
     but because each side is *separately* neutral: `p + e⁻` is the hydrogen-class closure and

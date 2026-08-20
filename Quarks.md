@@ -182,9 +182,12 @@ and the charge arithmetic is why the electron is the right partner. From §3's p
     q_d − q_u = −1/3 − (+2/3) = −1
 ```
 
-which is exactly the electron's charge. The electron does not have to be pictured as a small object
-inserted into a quark: the **joint neutral closure supplies the one gauge unit the `u → d` flip
-costs**, and the residual weak relation leaves as the neutrino.
+which is exactly the electron's charge — so the electron **supplies exactly the gauge unit the
+`u → d` flip costs**. Note what that does *not* say: it does not single the electron out. Any `−1`
+lepton serves, which is why **muon capture** `μ⁻ + p → n + ν_μ` is the same vertex with a heavier
+completer, exactly as `Weak_Force.md` §4a's completing-lepton table would predict. And the electron
+need not be pictured as a small object inserted into a quark: the joint neutral closure supplies the
+unit, and the residual weak relation leaves as the neutrino.
 
 **What does *not* change is the sharper half of the statement.** §1 and §2 make the baryon a
 three-axis Borromean colour closure, and a nonzero baryon needs all three axes
@@ -203,22 +206,42 @@ That is what separates it cleanly from the other ways a proton's stability can b
 | deconfinement | **destroyed** — no hadron closure at all | — | conserved (quarks carry it) |
 | sphaleron | — | — | **violated** |
 
-The bookkeeping, stage by stage:
+The bookkeeping — and the two levels must be kept apart, because the embedded vertex is
+**charge-conserving, not neutral**:
+
+| Level | process | baryon | charge |
+|---|---|---:|---:|
+| **global** | `uud + e⁻ → udd + ν` | `1 → 1` | `0 → 0` |
+| **local** (the one edge) | `u + e⁻ → d + ν` | `ΔB = 0` | `−1/3 → −1/3` |
+
+Reading the local row: `q_u + q_e = 2/3 − 1 = −1/3` and `q_d + q_ν = −1/3 + 0 = −1/3`. Conservation
+holds at *both* scales, which is a stronger statement than neutrality at one — the global reaction
+is neutral, the vertex inside it merely conserves. Stage by stage on the global line:
 
 | Stage | organization | `B` | charge |
 |---|---|---:|---:|
 | proton | `uud` | 1 | `+1` |
 | electron | external completer | 0 | `−1` |
 | joint neutral system | `uud + e⁻` | 1 | `0` |
-| the weak pair-flip | `u + e⁻ → d + ν` | 1 | `0` |
-| neutron | `udd` | 1 | `0` |
+| neutron + neutrino | `udd + ν` | 1 | `0` |
 
 **Machine-verified, and only this far** ([`lean/QLF_ChargeBalance.lean`](lean/QLF_ChargeBalance.lean)):
-`up_to_down_one_charge_unit` (`q_d − q_u = −1`), `capture_flips_exactly_one` (the up-count falls by
-one and the down-count rises by one — one edge moves, not two), `capture_preserves_quark_count`
-(three quarks in, three out, so the colour content is untouched), and
-`electron_capture_charge_balanced` (`p + e⁻` and `n + ν` are both exactly neutral). Together these
-say **capture is allowed by QLF's invariants**. They say nothing whatever about the *rate* — the
+`up_to_down_one_charge_unit` (`q_d − q_u = −1`, so the electron supplies exactly the unit),
+`local_capture_charge_conserved` (the vertex, `−1/3` both sides) alongside
+`electron_capture_charge_balanced` (the global reaction, `0` both sides), `capture_flips_exactly_one`
+(the up-count falls by one and the down-count rises by one — one edge moves, not two), and
+`capture_changes_exactly_one_slot`.
+
+That last one is where the colour claim actually lives, and it is worth being exact about the
+division of labour. A statement about the *length* of the flavour lists would say nothing about
+colour — `[u,u,d].length = [u,d,d].length` is `3 = 3`, true of any two triples whatever. So the
+nucleon is represented as three **colour slots** carrying flavour, `Ax → Flavour` over the same
+`Ax = {x,y,z}` the baryon winding uses. That every axis stays occupied is then true **by
+construction of the representation**, not discovered — a modelling choice, made explicit. What is
+*proved* on top of it is that the flip moves exactly one slot and leaves the other two literally
+equal. The representation supplies the frame; the theorem supplies the claim.
+
+Together these say **capture is allowed by QLF's invariants**. They say nothing whatever about the *rate* — the
 weak transition amplitude is the open flavour-vertex question of §4 and §6, and isolating the two is
 the point of proving only the first.
 
