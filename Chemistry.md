@@ -19,7 +19,11 @@ Every element has a **valence**: how many closures it still needs to complete it
 |---|---|----|---|---|---|----|
 | valence | 1 | **0** | 4 | 3 | 2 | 3 |
 
-Helium's is **0** — its shell is closed, so it shares nothing and never bonds (a noble gas). Iron is a **metal**:
+Helium's is **0** — its shell is closed, so it shares nothing and never bonds (a noble gas). That rule
+does work elsewhere: a valence-0 species has no unshared closure to offer, so two helium atoms can only
+*scatter*, which is exactly what a billiard ball has to do. [`Fredkin_QLF.md`](Fredkin_QLF.md) builds
+Fredkin & Toffoli's billiard-ball computer on that — the idealization they had to impose on their balls
+falls out of the valence rule here. Iron is a **metal**:
 it shares with non-metals (oxides) but not with other iron atoms (metals lattice, they don't form discrete `Fe₂`).
 
 ## 2. The one rule

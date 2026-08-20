@@ -178,3 +178,6 @@ What QLF derives that the SM treats as free input, and the falsifiable predictio
 - [`Open_Problems.md`](Open_Problems.md) — the honest gap registry (closed / principled-boundary / open).
 - [`Beyond_Standard_Model.md`](Beyond_Standard_Model.md) — the derived / predicted / open scorecard.
 - [`Alpha.md`](Alpha.md) — one result mapped end to end, as a worked example.
+- [`Fredkin_QLF.md`](Fredkin_QLF.md) — conservative logic on the substrate: Fredkin's conservation law
+  **is** ZFA count balance ([`QLF_Fredkin`](lean/QLF_Fredkin.lean), no axioms), so a reversible computer
+  runs **free** and only erasure is charged. Run it: [`fredkin_machine.html`](fredkin_machine.html).

@@ -217,6 +217,12 @@ verified facts.)
 | **Cellular** | Two daughters cannot be the *same* instance | Mitosis copies DNA + spends ATP to make distinguishable daughters (structural analogy) |
 | **Mathematical** | Banach–Tarski "free" ball-from-nothing is excluded | Realizable duplication pays `ΔF = −log 2` per distinguishing bit (`duplication_pays_log_two`) |
 
+A sixth costume shows up in *computation*, where the same principle is visible as ordinary circuit
+bookkeeping: Fredkin's `FANOUT` gate is `FREDKIN(x; 0, 1)`, and its third line carries `NOT x` away as
+garbage — a duplicate arrives with its complement attached, and the garbage is what you eventually pay
+`ΔF = −log 2` per line to erase. Copying is not free, and the ledger says so
+([`Fredkin_QLF.md`](Fredkin_QLF.md) §5).
+
 Read top to bottom, it is one statement: **no free identical copy** — the Pauli/no-cloning floor — and
 its corollary **realizable duplication needs distinguishability, bought at a cost**. The quantum
 no-cloning theorem is the *quantum* form of "no free Banach–Tarski"; the no-diproton is its *nuclear*

@@ -290,6 +290,13 @@ timing and alignment error would finally become measurable instead of assumed aw
 **Acknowledgement.** The idea of building Fredkin's machine on the QLF substrate is
 Van Hovey's.
 
-**In QLF:** [`Reversibility.md`](Reversibility.md) · [`Chemistry.md`](Chemistry.md) ·
-[`Banach_Tarski_QLF.md`](Banach_Tarski_QLF.md) ·
-[`Related_Frameworks.md`](Related_Frameworks.md) · [`Philosophy.md`](Philosophy.md)
+**In QLF.** [`Reversibility.md`](Reversibility.md) §7 carries the argument this file is the worked case
+for — reversible theories are half-right, and Fredkin is the half they get right.
+[`Chemistry.md`](Chemistry.md) is where helium's valence 0 comes from, which is why it can be a billiard
+ball. [`Banach_Tarski_QLF.md`](Banach_Tarski_QLF.md) §4 lists `FANOUT`'s garbage line as the computational
+costume of *no free duplication*. [`Related_Frameworks.md`](Related_Frameworks.md) places Fredkin among
+the neighbours with a discrete substrate and no selection principle — the gap this file closes.
+[`QuantumOS.md`](QuantumOS.md) cites him as a digital-physics ancestor.
+[`Philosophy.md`](Philosophy.md) §3a is the counting method the 168-ball figure answers to.
+[`lean/README.md`](lean/README.md) has the module's full theorem list, and
+[`FlowChart.md`](FlowChart.md) places it on the map.
