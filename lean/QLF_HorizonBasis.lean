@@ -178,10 +178,17 @@ def swapGaugeRebasis : HorizonRebasis where
   unbase_rebase := swapGauge_involutive
   rebase_unbase := swapGauge_involutive
   balance_iff := fun h => by
+    -- `QLF_BasisIndependence` proves the map-level involution only for `swapXY`; the gauge one is
+    -- the same two-line induction off `swapGauge_involutive`.
+    have inv : ∀ l : History, (l.map swapGauge).map swapGauge = l := by
+      intro l
+      induction l with
+      | nil => rfl
+      | cons a t ih => rw [List.map_cons, List.map_cons, swapGauge_involutive a, ih]
     constructor
     · intro hb
-      have := countBalanced_map_swapGauge hb
-      rwa [map_swapGauge_involutive] at this
+      have hb' := countBalanced_map_swapGauge hb
+      rwa [inv] at hb'
     · exact countBalanced_map_swapGauge
   fold_eq := fun _ hb => fold_invariant_swapGauge hb
 
