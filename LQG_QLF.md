@@ -37,8 +37,9 @@ quantum, the same `log 2` as the Yang–Mills mass gap `gaugeMassGap` and the fr
 
 $$
 S(R) \;=\; \underbrace{4\pi R^2}_{N(R)\ \text{punctures}} \times \underbrace{\log 2}_{\text{per } j=\tfrac12 \text{ puncture}}
-\qquad(\texttt{lqg\_horizon\_is\_holographic},\ \texttt{holographic\_entropy\_eq})
 $$
+
+(Lean: `lqg_horizon_is_holographic`, `holographic_entropy_eq`.)
 
 The LQG horizon-as-a-bag-of-`j=½`-punctures **is** QLF's holographic horizon-as-`4πR²`-half-spin-closures.
 The Immirzi parameter is not a free dial in QLF — it is the `log 2` every half-spin closure carries by

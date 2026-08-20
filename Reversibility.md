@@ -1,10 +1,7 @@
 # Reversibility in QLF — the reverse *is* the Hermitian conjugate
 
-> **Worked case:** [`Fredkin_QLF.md`](Fredkin_QLF.md) builds Fredkin & Toffoli's conservative-logic
-> computer on the substrate, where the logic stays reversible all the way to the end and the process
-> never has to commit. The payoff is a ledger: an instantaneous zero-free-action closure is **free**,
-> because `ΔF = −log 2` receipts a *many-to-one* closure and a Fredkin gate is a bijection. Landauer
-> and Bennett come out rather than going in.
+> **Worked case:** Fredkin's conservative-logic computer, built on the substrate — §7 and
+> [`Fredkin_QLF.md`](Fredkin_QLF.md).
 
 In the [Quantum Logical Framework (QLF)](README.md), **time-reversal is the Hermitian conjugate** (the
 dagger `†`), and this resolves the old tension between *reversible microscopic laws* and the *forward
@@ -18,7 +15,9 @@ make themselves.
 
 Machine-verified: the dagger of a process is the conjugate-transpose of its operator,
 
-$$\texttt{eval}(\texttt{dagger}\;p) \;=\; (\texttt{eval}\;p)^{\dagger} \qquad(\text{Lean: } \texttt{eval\_dagger}).$$
+$$\texttt{eval}(\texttt{dagger}\;p) \;=\; (\texttt{eval}\;p)^{\dagger}$$
+
+(Lean: `eval_dagger`.)
 
 The Hermitian conjugate is *complex-conjugate* **and** *reverse-order* — which is exactly quantum
 mechanics' antiunitary time-reversal `T = K · (order reversal)`. QLF says it literally at the twist level:
@@ -146,7 +145,35 @@ measurement — and can only do so by **smuggling in a non-reversible ingredient
 - coarse-graining **by ignorance** ("we just don't track the microstate").
 
 QLF needs none of these crutches — the closure **is** the arrow, constructively (`full_zeno_prune` +
-`disjunctive_closure` + `ΔF = −log 2`). So reversible theories are not *false*; they are **incomplete** —
+`disjunctive_closure` + `ΔF = −log 2`).
+
+**The worked case: Fredkin's machine** ([`Fredkin_QLF.md`](Fredkin_QLF.md)). Conservative logic is the
+half-right theory built out on the substrate, and building it makes the line above concrete rather than
+programmatic. Fredkin & Toffoli's gate is a controlled swap — its own inverse, and *conservative*, its
+outputs a permutation of its inputs. Encode a ball as one closed plaquette and a register as the
+concatenation of its lines and the gate acts on the history **by permutation**
+(`encode_fredkin_perm`), so the twist multiset never moves and the history stays realized:
+`fredkin_preserves_zfa`, machine-verified with no QLF axiom. **Fredkin's conservation law and ZFA
+count balance are the same law**, which is why his half was right.
+
+What the machine then shows is exactly where the other half goes:
+
+- **The reversible core is free.** `fredkin_bijective` — the gate maps its state space onto itself
+  one-to-one, so no two histories merge, nothing becomes unrecoverable, and there is no many-to-one
+  closure to receipt. An **instantaneous zero-free-action closure costs nothing**. Run a full adder,
+  19 gates, and the ledger stays at zero.
+- **The bill is the forgetting, and only that.** Resetting `k` garbage lines is a `2^k → 1` map, and
+  *there* the `ΔF = −log 2` quantum is charged, `k` times over.
+
+So Landauer (1961) and Bennett (1973) come **out** of the single closure quantum rather than being
+assumed beside it: erasure costs, computation does not, and the boundary between them is whether the
+closure is many-to-one — §4's distinction, priced. A reversible theory is not wrong about its own
+half; it simply never reaches the step where anything is paid for. Fredkin's machine is the case
+where the logic stays reversible all the way to the end and the process never has to commit — and you
+can watch it, [`fredkin_machine.html`](fredkin_machine.html) runs the adder backwards to the input it
+started from.
+
+So reversible theories are not *false*; they are **incomplete** —
 the timeless half (the possibility space, the dagger) without the rendering half (the forward, lossy
 closure in synthesized time).
 
@@ -215,6 +242,8 @@ conservation has mistaken the present-local balance of the closure for the whole
 | time is synthesized, `f = 1/t` | `ZFAEventDynamics` |
 | `H = H†` fixed points = the critical line | `spectral_hilbert_polya` (`QLF_Riemann`), `functional_equation_fixed_real` |
 | **capstone:** reverse is involutive **but** forward closure is many-to-one | `time_reverse_involutive_but_closure_degenerate` (`QLF_Reversibility`) |
+| **conservative logic is ZFA**: a Fredkin gate acts by permutation, so it preserves closure | `encode_fredkin_perm`, `fredkin_preserves_zfa` (`QLF_Fredkin`) |
+| a reversible gate is a bijection — nothing merges, so nothing is receipted | `fredkin_involutive`, `fredkin_bijective` (`QLF_Fredkin`) |
 
 ## Honest scope
 
@@ -223,9 +252,12 @@ The pieces are each machine-verified; this document is the **synthesis** that na
 time*, *`H ↔ H†` = critical line*. The packaging theorem contrasting the **involutive** time-reverse
 (`antiparticle_involutive`, a bijection) with the **non-injective** forward closure (`C(2n,n) ≥ 2`
 histories per closure) is verified as **`time_reverse_involutive_but_closure_degenerate`**
-(`QLF_Reversibility`, no new axioms — both halves reuse existing theorems). The remaining
-synthesized-time framing (there is no meta-axis in which to *run* the reverse) is prose grounded in
-`ZFAEventDynamics` (`f = 1/t`), not a further Lean obligation. The `†` here is the `*`-involution of
+(`QLF_Reversibility`, no new axioms — both halves reuse existing theorems). §7's Fredkin case is verified on the same footing —
+`encode_fredkin_perm` and `fredkin_preserves_zfa` (`QLF_Fredkin`, no QLF axiom in the footprint), with
+`fredkin_bijective` carrying the free-ledger claim; what is *not* a Lean statement there is the reading
+of a gate as one physical event, which [`Fredkin_QLF.md`](Fredkin_QLF.md) §6 marks as modelled. The
+remaining synthesized-time framing (there is no meta-axis in which to *run* the reverse) is prose
+grounded in `ZFAEventDynamics` (`f = 1/t`), not a further Lean obligation. The `†` here is the `*`-involution of
 the substrate's state ring — a finite-rank `ℤ[i]`-lattice, not Hilbert space; see
 [`The_QLF_State_Space.md`](The_QLF_State_Space.md). See [`Decoherence.md`](Decoherence.md),
 [`Entropy.md`](Entropy.md), [`Conservation.md`](Conservation.md), [`Philosophy.md`](Philosophy.md), and the
