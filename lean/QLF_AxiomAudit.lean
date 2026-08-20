@@ -51,6 +51,7 @@ import QLF_Hodge
 import QLF_BSD
 import QLF_PvsNP
 import QLF_Fredkin
+import QLF_HorizonBasis
 import QLF_MassGap
 import QLF_NavierStokes
 import QLF_ChargeBalance
@@ -74,6 +75,13 @@ import QLF_RiemannMRE
 
 #print axioms QLF.Fredkin.fredkin_preserves_zfa
 #print axioms QLF.Fredkin.fredkin_bijective
+
+/-! The horizon rebasing. `horizon_rebasis_is_closure_order_iso` must show no QLF axiom — the whole
+    point of the module is that the basis algebra is mathematics and the black-hole step is not in
+    it. A QLF name here would mean the open bridge had been quietly assumed. -/
+
+#print axioms QLF.HorizonBasis.horizon_rebasis_is_closure_order_iso
+#print axioms QLF.HorizonBasis.reachable_rebased_iff
 
 /-! The Yang-Mills measurement. `continuumGap_nonempty` builds a realization by `rfl` and
     `continuumGap_gap_unique` shows the interface pins its own value, so both must show no
