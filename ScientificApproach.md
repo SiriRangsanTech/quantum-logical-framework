@@ -240,6 +240,31 @@ back in hours later (`3 = 3` by `rfl`, with prose beside it claiming something t
 touched). The failure mode is always the same shape: **a true statement adjacent to the one you
 wanted, asserted as if it were the one you wanted.**
 
+**R2a — A fitted *mechanism* is a fitted kernel too.** R2 forbids choosing a contribution rule to
+make an answer emerge. The same prohibition reaches further than it looks, and the sharpest instance
+so far was not a weighting but a **group action**.
+
+Testing whether apparatus blindness is representation-theoretic ([`Born_Rule.md`](Born_Rule.md) §8)
+needed the relabeling group to act on the transfer operator. The naive permutation action does not
+commute with it. A sign twist restores commutation — and the twist was obtained by *solving* for a
+diagonal sign matrix that made `TG = GT` hold. That is under-determined: the constraint graph fixes
+signs only up to one choice per connected component. The solution found commuted exactly, closed at
+the right group order, and made the hypothesis come out `240/240`, then `1584/1584` under a stronger
+test.
+
+It was wrong. Deriving the action instead from the phase rule — `flipX ↦ (−1)^{p_X}`,
+`swapXY ↦ (−1)^{p_X p_Y}` — gives a *different* commuting action of the same order, and under it the
+hypothesis fails and its kill condition is met. The derived action is the physical one, checked
+against ground truth by relabeling every word and rebuilding the census; the solved one was an
+artifact.
+
+**The lesson is that "it commutes" was not enough of a constraint, and passing two stress tests did
+not detect it** — a fitted object reproduces the data it was fitted to, at whatever scale you test.
+The check that caught it was not a bigger sample but an independent derivation: the action had to
+come from the phase rule, not from the requirement it was supposed to satisfy. Where a proof needs a
+structure, **derive the structure from the substrate and verify it against ground truth; never solve
+for the structure that makes the proof work.**
+
 **R7 — State the kill condition first** (Popper's falsifiability [Po59] in Platt's operational
 form, strong inference [Pl64]). See §6.
 

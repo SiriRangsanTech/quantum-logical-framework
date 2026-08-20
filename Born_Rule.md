@@ -312,6 +312,44 @@ QLF reading: the path-integral sum gives $\cos(\theta/2)$ as the constructively-
     of the alphabet be secretly the same `8`. The earlier imbalance-based rules (antipodal targets,
     shared component anti-aligned with the preparation) are **proxies** for this orthogonality and
     fail as proxies do — antipodal geometries converge only 52% of the time.
+  * **The representation-theoretic explanation is refuted — tested and killed.** *Which* apparatus
+    words are dominant-blind looked like it should be a symmetry question: exact orthogonality to a
+    16-dimensional eigenspace, for 15.6% of readouts, wants a reason. The operator has a candidate
+    symmetry — the axis-relabeling group of [`QLF_BasisIndependence`](lean/QLF_BasisIndependence.lean)
+    — and the hypothesis was that a readout is blind exactly when its irrep support misses the
+    dominant eigenspace's. **It does not.** All 24 blind readouts among 240 tested (`R = 2`, apparatus
+    words up to length 3) have isotypic support that *overlaps* the dominant eigenspace, which is the
+    kill condition stated in advance, met unambiguously rather than marginally.
+
+    Two structural facts came out of the attempt and stand on their own:
+
+    - **The operator carries a *sign-twisted* action of the relabeling group, not a permutation
+      action.** The naive permutation of states does **not** commute with the transfer operator —
+      `max|TP − PT| = 2` for every generator. The twist is forced by the phase rule and is a function
+      of the state summary: `flipX ↦ (−1)^{p_X}`, `swapXY ↦ (−1)^{p_X p_Y}`, `swapG ↦ (−1)^{|imb_G|}`,
+      and so on. With it, commutation is exact (`0.00e+00`) for all six generators, the group closes
+      at order 96, and the action reproduces the relabeled census on actual words — checked against
+      ground truth by relabeling every word of length ≤ 3 and rebuilding. This is basis independence
+      *at the operator level*, and it is why the relabeling theorem needs balance: off balance the
+      sign is real, and here it is exactly what makes the action work.
+    - **The dominant eigenspace is `8·trivial ⊕ 4·standard` of an `S₃`.** It is `G`-invariant, 16 of
+      the 96 elements act trivially on it, so it carries a faithful representation of `G/K ≅ S₃` with
+      character `(16, 8, 4)` on classes of size `(1, 3, 2)` — and contains **no copy of the sign
+      representation**. That is a genuine constraint on the operator; it simply is not the constraint
+      that decides blindness.
+
+    **A near-miss worth recording, because it nearly passed.** A first attempt obtained the twist by
+    *solving* for a diagonal sign matrix making the action commute. That is under-determined — the
+    constraint graph fixes signs only per connected component — and the solution found was a
+    *different* commuting action of the same order 96, under which the criterion appeared to hold
+    `240/240`, then `1584/1584` at length 4. It survived two stress tests and failed only when the
+    action was *derived* from the phase rule instead of fitted to the commutation requirement, and
+    checked against relabeled words. The group action had been fitted, and it fitted the answer too
+    ([`ScientificApproach.md`](ScientificApproach.md) R2).
+
+    So the question returns to the operator, as the kill condition said it would: the fallback is the
+    transfer-operator characteristic polynomial per apparatus word, with no symmetry shortcut.
+
   * **What that changes, and what it does not.** The sub-additivity theorem stands exactly as proven
     — it bounds the *normalized* weight everywhere. What was wrong was the conclusion drawn from it:
     the substrate is not universally unable to carry an amplitude. **Still open, and now sharper:**
