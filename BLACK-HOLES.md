@@ -193,16 +193,28 @@ both are real. The method's question is not which is true but **which happens in
 `3536/5296` turns out to have been hiding the answer, because it averages over lengths that behave
 differently. Counted per length:
 
-| length | balanced | fold kept | flipped | kept fraction |
-|---:|---:|---:|---:|---|
-| 2 | 8 | 8 | **0** | **1** — exactly a rebasing |
-| 4 | 168 | 136 | 32 | `17/21 ≈ 0.810` |
-| 6 | 5120 | 3392 | 1728 | `53/80 ≈ 0.663` |
+and counted as **multiplicities**, which is the quantity the principle is about — a fraction is a
+derived statistic, the count of ways is the physical content:
+
+| length | `W_keep` | `W_flip` | `R(L) = W_keep/W_flip` |
+|---:|---:|---:|---|
+| 2 | 8 | **0** | ∞ — no flip channel exists |
+| 4 | 136 | 32 | `17/4 = 4.250` |
+| 6 | 3392 | 1728 | `53/27 ≈ 1.963` |
+| 8 | 110248 | 79872 | `13781/9984 ≈ 1.380` |
 
 At length 2 the push **is** a rebasing: every balanced history keeps its fold, with no exceptions.
-The flip sector does not exist until length 4, and from there it grows. So the three readings are not
-alternatives — they are **one depth-dependent split**, and each is the correct description of a
-different regime:
+The flip channel does not exist until length 4, and from there it grows — **but the rebasing channel
+still happens in more ways at every depth enumerated**, `R(L) > 1` throughout. So the three readings
+are not alternatives; they are **one depth-dependent split**, and each is the correct description of
+a different regime:
+
+and it reframes what `HorizonRebasis` is for. It was written as though the crossing were *one*
+deterministic map that must preserve the fold everywhere. The census says the crossing is a
+**channel decomposition** with a depth-dependent multiplicity spectrum, and `HorizonRebasis`
+describes its **fold-preserving sector** — an exact and useful object, but not the whole of the
+physical crossing. Reading it as the whole is what made a populated minority channel look like a
+refutation.
 
 - a **shallow** crossing is a rebasing, and the interior *is* the exterior in another basis;
 - a **deep** crossing increasingly carries fold flips, and there the nested claim is false as stated;
@@ -212,13 +224,25 @@ Which is the same capacity story as everything else here (§4a.1 of
 [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md)): the answer is not a fact about horizons in general
 but about **how deep the crossing is**.
 
-**What is not claimed.** Sampling deeper (`L = 8, 10, 12`) suggests the kept fraction keeps falling —
-roughly `0.65`, `0.61`, `0.58` — but those come from a *different and non-uniform* sampling measure
-than the exact enumeration above and are indicative only, not comparable numbers. Three exact points
-and a suggestive tail are **not an asymptotic law** ([`ScientificApproach.md`](ScientificApproach.md)
-R5), and nothing here says where the fraction goes, whether it has a limit, or that `L = 2`'s
-perfection survives any physical reading of "shallow". What *is* solid: both sectors are real, the
-split is depth-dependent, and it is exact at the lengths enumerated.
+**Depths are not comparable to each other.** `W_flip(6) = 1728` exceeds `W_keep(4) = 136`, and that
+comparison means nothing: length-6 histories are not *available* until that closure depth is, so the
+counts sit in different accessible sets. This is the method's count-versus-listening distinction
+(rule 2) and it forces the principle into two stages — **accessibility by depth first, then
+multiplicity among what is accessible**. Within each accessible set the rebasing channel is the
+most-way one at every depth enumerated.
+
+**The open question is the shape of `R(L)`,** and it is sharp enough to have distinct answers:
+`R → 1` means neither character dominates in the deep limit; `R → c > 1` means rebasing stays
+preferred at every depth; `R < 1` beyond some depth means the **flipped** sector becomes the most-way
+outcome, and the nested claim would fail exactly there. Four exact points — `∞, 4.25, 1.963, 1.380` —
+are falling toward `1` and are **not a law** ([`ScientificApproach.md`](ScientificApproach.md) R5);
+extending the enumeration is the way to settle it.
+
+**A correction to an earlier draft of this paragraph.** It reported sampled estimates at
+`L = 8, 10, 12` (`≈0.65, 0.61, 0.58` kept) with a caveat that the measure differed. Exact enumeration
+at `L = 8` gives `0.5799`, not `0.655` — so the sampler was biased toward the kept sector and those
+figures are **withdrawn**, not merely qualified. The caveat was right that they were not comparable;
+it was too gentle about their being wrong.
 
 **The honest boundary of that claim.** What is proven is invariance under the *discrete* relabeling
 group — the 48 signed axis permutations, plus the gauge swap. The horizon-crossing chart change
