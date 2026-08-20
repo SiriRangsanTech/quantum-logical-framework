@@ -253,13 +253,36 @@ surface field enormously — which is the structural reason a neutron star can c
 magnetic fields known, and the point at which this chain hands over to
 [`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md).
 
+**And one rung further — where black holes come from.** Neutron degeneracy is not unlimited either.
+Above a maximum mass no static neutron-star solution exists (the Tolman–Oppenheimer–Volkoff limit;
+measured constraints put it near `2.2–2.3 M_☉`, NICER-era), and collapse continues with nothing left
+to halt it. That is the rung the ladder above stops one short of, and it is where the capacity
+reading hands over to [`BLACK-HOLES.md`](BLACK-HOLES.md):
+
+```
+    neutron degeneracy exhausted  →  collapse continues  →  horizon forms
+```
+
+Read as capacity, the pattern is the same one the whole ladder follows, one level higher. Electron
+capture *replaced* a closure; deconfinement *dissolved* one; here the entire externally accessible
+matter organization is replaced by a **horizon-level closure** — and what changes is which system is
+the relevant object. The old closure was not wrong; a larger enclosing one became the thing there is
+to describe, which is the Law of Exceptions in its most extreme physical form
+([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1).
+
+**Two things this rung does not do.** QLF derives no TOV limit — the `2.2–2.3 M_☉` is measured
+input, exactly as the `0.782 MeV` above is. And forming a horizon is not the same as forming a child
+domain: whether a sealed interior re-closes with a history of its own is explicitly the open
+question of [`BLACK-HOLES.md`](BLACK-HOLES.md) §4a, tagged there as a structural reading rather than
+a result. What the collapse ladder supplies is the *candidate*, not the conclusion.
+
 **Honest scope.** This is *structure*, and the numbers are not QLF's. What the substrate supplies
 is the ladder — that compression is a capacity, that a deeper closure of the same neutral content
 becomes available at a threshold, that capture is self-accelerating because it eats its own
 support, that degeneracy is exclusion one rung down, and that the neutrino burst is the closure
 receipt. What it does **not** supply: no derived Chandrasekhar mass, no mass–radius relation, no
-neutronization threshold computed from the census rather than taken from measured masses, and no
-equation of state. The `0.782 MeV` above is measured input, not a QLF output. Treat this as the
+neutronization threshold computed from the census rather than taken from measured masses, no
+equation of state, and no TOV limit. The `0.782 MeV` above is measured input, not a QLF output. Treat this as the
 capacity reading of known astrophysics, not a derivation of it.
 
 ---

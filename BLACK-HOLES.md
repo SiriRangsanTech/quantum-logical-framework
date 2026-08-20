@@ -104,6 +104,41 @@ The "bounce" needs **no torsion, no inflaton, no exotic pressure** — the drive
 
 > **QLF is a Big-Bang-singularity alternative, not a hot-Big-Bang-observation alternative.**
 
+**The threshold test — and QLF already answers it.** The obvious stress test on claim (1) is the
+high-temperature era. [`spacetime_constructor.html`](spacetime_constructor.html) shows Planck-mass
+black holes Hawking-cascading into hadrons as the vacuum cools
+([`Spacetime_Constructor.md`](Spacetime_Constructor.md)). If *every* horizon were a child domain,
+each of those fleeting objects would spawn a universe, and the ontology would be committed to an
+enormous proliferation nobody argued for.
+
+It is not committed, and the discriminator is **proven rather than invented**. In Planck units the
+Compton radius `1/μ` and Schwarzschild radius `2μ` coincide exactly at `μ² = 1/2`
+(`compton_eq_schwarzschild_iff`), and below that a sub-Planck object sits on the **Compton** side —
+`sub_planck_compton_gt_schwarzschild` ([`lean/QLF_QuantumBlackHole.lean`](lean/QLF_QuantumBlackHole.lean)).
+Its quantum extent *exceeds* its would-be horizon, so it is not inside one: what it has is the
+Planck-scale Markov blanket, **not a Schwarzschild horizon**. The child-domain question therefore
+does not arise for it — there is no causally sealed interior to be a child of.
+
+So the ladder is cut by an existing theorem, not by a criterion chosen after seeing which answer was
+convenient:
+
+| object | `μ²` | horizon | child domain? |
+|---|---|---|---|
+| Planck-era micro-hole | `< 1/2` | none — Compton side, a Markov blanket | **no** — nothing is sealed |
+| hadron | `< 1/2` | the same, which is why §1 reads particles as blanket-horizons | no |
+| stellar-collapse hole | `≫ 1/2` | genuine Schwarzschild horizon | **the candidate** |
+
+The honest residue: this settles *which* objects the speculation could even be about. It does not
+show that a sealed interior does re-close, and that step is still the open one below.
+
+**What is still missing, stated as targets.** Three things would move claim (1) from structural
+reading toward science, and none is done: a **horizon-formation** result deriving causal sealing
+from QLF density/capacity rather than importing the classical notion; an **interior-persistence**
+result giving a sealed interior a long causal chain `E₀ ≺ E₁ ≺ E₂ ≺ …` rather than a single closure,
+which is what makes an internal clock meaningful at all; and **autonomous synthesis** — that those
+interior events generate their own adjacency and order by the same constructor rules as the parent.
+Until the second exists, "child universe" is a name for something not yet shown to have a history.
+
 **Relation to the literature.** "Universe inside a black hole" is a respectable speculative direction — Smolin's *cosmological natural selection / fecund universes* (1992) and Popławski's Einstein–Cartan black-hole cosmology (2010) both realize nonsingular interiors that expand into new universes. QLF imports none of their machinery (torsion, bounce equations); it supplies its own — the discrete logical dynamics of ZFA closure on nested Markov blankets.
 
 **Penrose's Conformal Cyclic Cosmology (CCC) — shared spirit, opposite foundations.** Penrose's CCC (*Cycles of Time*, 2010; Meissner–Penrose, [arXiv:2503.24263](https://arxiv.org/abs/2503.24263)) is the closest well-known relative: it too removes the singular origin and gives black holes a generative role, joining each aeon's remote future to the next aeon's Big Bang by a **conformal rescaling** `ĝ = Ω²g`. But the foundations are opposite, and two contrasts are load-bearing for honest scope:
