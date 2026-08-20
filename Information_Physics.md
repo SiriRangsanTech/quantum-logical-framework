@@ -406,6 +406,43 @@ region's information *is* its inventory of realized ½-spin distinctions.
 
 ---
 
+### 5a. Reversible transport — information can move without being forgotten
+
+Landauer's `k_B T ln 2` is a price on **erasure**, and it is easy to read it as a price on
+computing. QLF says otherwise, and the Fredkin machine ([`Fredkin_QLF.md`](Fredkin_QLF.md)) is
+where the distinction becomes executable rather than rhetorical.
+
+The substrate charges one quantum per closure, `ΔF = −log 2`
+([`lean/QLF_FreeEnergy.lean`](lean/QLF_FreeEnergy.lean)) — and a closure is **many-to-one**. That
+is the whole of it. Two regimes follow:
+
+| | map | information | receipt |
+|---|---|---|---|
+| **Reversible transport** | bijection — no two inputs merge | moved, not lost; every input recoverable | **0** |
+| **Erasure** | `2^k` distinguishable states → 1 reset state | `k` distinctions destroyed | `k · log 2` |
+
+A Fredkin gate is a permutation of its register — `fredkin_bijective`
+([`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)) — so nothing merges, nothing becomes
+unrecoverable, and there is no many-to-one closure to receipt. **An instantaneous
+zero-free-action closure is free.** Run a full adder built only from such gates: 19 gates, and
+the ledger stays at zero the whole way. The bill arrives exactly where you decline to keep the
+garbage — 29 lines, so 29 bits — and nowhere else.
+
+So **Landauer and Bennett (1973) are recovered here, not assumed.** QLF has no separate postulate
+that erasure costs; it has one quantum attached to closure, and the boundary between free and
+charged is whether the closure is many-to-one. Conservative logic is simply the discipline of
+staying on the free side of that line.
+
+The `FANOUT` gate is the same principle read as information: `FREDKIN(x; 0, 1)` yields two copies
+of `x`, and its third line carries `NOT x` away as garbage. **You get a usable copy only by
+carrying the compensating distinction away with it** — no-free-duplication
+([`Banach_Tarski_QLF.md`](Banach_Tarski_QLF.md) §4) as a line item. Copying is not free; it is
+deferred, and the deferral is visible in the ledger.
+
+The mathematical face of the same fact — the gate is an *automorphism of the admissible closure
+space* — is [`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) Rung 5b. Watch it run:
+[`fredkin_machine.html`](fredkin_machine.html).
+
 ## 6. Quantum information — the load-bearing floor (a reading, not a rival)
 
 **Classical.** Von Neumann entropy `S(ρ) = −Tr(ρ log ρ)`; qubits; the stabilizer/Clifford
@@ -687,3 +724,4 @@ observed; both are sharp, standing targets.
 - [`AI.md`](AI.md) — the information-processing / dialectical-synthesis reading of the substrate that this doc grounds.
 - [`Completeness_Evidence.md`](Completeness_Evidence.md) §3 — the empirical evidence for *it from bit*: parameter-free overdetermination (the *its* come from the *bits*).
 - [`UniversalRelativity.md`](UniversalRelativity.md) — the physics that emerges from the same closures: spacetime, the four forces, mass, and gravity as *its* from *bits*.
+- [`Fredkin_QLF.md`](Fredkin_QLF.md) — §5a worked out: a reversible computer runs at **zero receipt** because a bijection forgets nothing, and only the many-to-one reset of garbage is charged. Landauer and Bennett recovered from the one closure quantum. Watch it: [`fredkin_machine.html`](fredkin_machine.html).

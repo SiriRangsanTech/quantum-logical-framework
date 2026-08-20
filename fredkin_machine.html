@@ -63,6 +63,39 @@ the twist action stay at zero, and the whole computation run backwards.
 <a href="https://github.com/jimscarver/quantum-logical-framework/blob/main/lean/QLF_Fredkin.lean">QLF_Fredkin.lean</a></p>
 <p class="sub" style="margin-top:-14px">Built at the suggestion of <strong>Van Hovey</strong>.</p>
 
+
+<div class="panel">
+  <div class="row" style="margin-bottom:4px">
+    <strong style="font-size:.95rem">The billiard collision</strong>
+    <span class="dim" style="font-size:.88rem">— conservation of logic <em>is</em> conservation of balls</span>
+  </div>
+  <div class="note" style="margin:0 0 12px">Two balls on crossing tracks. Present reads as
+    <code>1</code>, absent as <code>0</code>. If both arrive they collide and leave on the two
+    inner exits; otherwise each continues on its own outer one. Fredkin &amp; Toffoli's
+    <em>interaction gate</em>, and the primitive the circuits below are built from.</div>
+  <div class="row" style="margin-bottom:10px">
+    <button data-bbm="00">00 — empty</button>
+    <button data-bbm="10">10 — ball A</button>
+    <button data-bbm="01">01 — ball B</button>
+    <button data-bbm="11" class="primary">11 — collision</button>
+    <span style="flex:1"></span>
+    <button id="bbm-cycle">Cycle all four</button>
+    <button id="bbm-rev">Reverse ◀◀</button>
+  </div>
+  <div class="scroll"><svg id="bbm" height="300"></svg></div>
+  <div class="grid" style="margin-top:12px">
+    <div><div class="dim" style="font-size:.8rem">BALLS IN → OUT</div>
+      <div class="big"><span id="bbm-in">0</span> → <span id="bbm-out">0</span></div>
+      <div id="bbm-cons" class="ok" style="font-size:.88rem">conserved</div></div>
+    <div><div class="dim" style="font-size:.8rem">SIGNED TWIST ACTION</div>
+      <div class="big mono" id="bbm-act">(0, 0, 0, 0)</div>
+      <div class="ok" style="font-size:.88rem">ZFA throughout the collision</div></div>
+    <div><div class="dim" style="font-size:.8rem">INFORMATION DISCARDED</div>
+      <div class="big">0 <span class="dim" style="font-size:.9rem">bit</span></div>
+      <div class="ok" style="font-size:.88rem">the collision forgets nothing</div></div>
+  </div>
+</div>
+
 <div class="panel">
   <div class="row">
     <select id="prog"></select>
@@ -393,6 +426,143 @@ document.getElementById('reset').onclick = function(){ build(); };
 
 drawInputs();
 build();
+
+// ---------------------------------------------------------------------------
+// The billiard interaction gate — Fredkin & Toffoli's collision primitive.
+// Outputs are the four exit paths (a∧¬b, a∧b, a∧b, b∧¬a): balls are deflected,
+// never created or destroyed, so the logical 1s are conserved because the balls are.
+// ---------------------------------------------------------------------------
+const BBM_C  = [300, 150];                       // the interaction point
+const BBM_IN = { a: [160, 50], b: [160, 250] };  // A comes down, B comes up
+// Exits, and which output channel each one is. Straight-through for a lone ball;
+// the two inner tracks when they collide.
+const BBM_OUT = { aStraight: [440, 250], bStraight: [440, 50],
+                  aDeflect:  [440, 120], bDeflect:  [440, 180] };
+
+let bbmInput = '11', bbmT = 0, bbmDir = 1, bbmRAF = null, bbmCycle = null;
+
+function bbmOutputs(a, b){
+  return [a && (1 - b), a && b, a && b, b && (1 - a)];   // matches fredkin_qlf.py
+}
+
+function bbmPath(which, a, b){
+  const collide = a && b;
+  if (which === 'a') return [BBM_IN.a, BBM_C, collide ? BBM_OUT.aDeflect : BBM_OUT.aStraight];
+  return [BBM_IN.b, BBM_C, collide ? BBM_OUT.bDeflect : BBM_OUT.bStraight];
+}
+
+function bbmAt(path, t){
+  // first half entry→interaction point, second half interaction point→exit
+  const [p0, p1, p2] = path;
+  const u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
+  const [q0, q1] = t < 0.5 ? [p0, p1] : [p1, p2];
+  return [q0[0] + (q1[0] - q0[0]) * u, q0[1] + (q1[1] - q0[1]) * u];
+}
+
+function drawBBM(){
+  const a = +bbmInput[0], b = +bbmInput[1];
+  const outs = bbmOutputs(a, b);
+  const svg = document.getElementById('bbm');
+  const W = 600, H = 300;
+  svg.setAttribute('width', W); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+  const line = (p, q, col, w, dash) =>
+    '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] +
+    '" stroke="' + col + '" stroke-width="' + w + '"' +
+    (dash ? ' stroke-dasharray="4 4"' : '') + '/>';
+
+  let out = '';
+  // every track, faint — so the unused ones are visible as roads not taken
+  for (const [p, q] of [[BBM_IN.a, BBM_C], [BBM_IN.b, BBM_C],
+                        [BBM_C, BBM_OUT.aStraight], [BBM_C, BBM_OUT.bStraight],
+                        [BBM_C, BBM_OUT.aDeflect],  [BBM_C, BBM_OUT.bDeflect]])
+    out += line(p, q, 'var(--line)', 1.2, true);
+
+  // the tracks this run actually uses
+  if (a) for (let i = 0; i < 2; i++){ const pa = bbmPath('a', a, b); out += line(pa[i], pa[i+1], 'var(--wire)', 2); }
+  if (b) for (let i = 0; i < 2; i++){ const pb = bbmPath('b', a, b); out += line(pb[i], pb[i+1], 'var(--wire)', 2); }
+
+  // the interaction point, lit only while a collision is happening
+  const hot = a && b && bbmT > 0.44 && bbmT < 0.56;
+  out += '<circle cx="' + BBM_C[0] + '" cy="' + BBM_C[1] + '" r="' + (hot ? 13 : 5) +
+         '" fill="none" stroke="' + (hot ? 'var(--ctrl)' : 'var(--line)') +
+         '" stroke-width="' + (hot ? 2.4 : 1.2) + '"/>';
+
+  // entry labels
+  out += '<text x="' + (BBM_IN.a[0]-12) + '" y="' + (BBM_IN.a[1]+4) + '" text-anchor="end" font-size="11" fill="var(--ctrl)" font-family="ui-monospace,monospace">a=' + a + '</text>';
+  out += '<text x="' + (BBM_IN.b[0]-12) + '" y="' + (BBM_IN.b[1]+4) + '" text-anchor="end" font-size="11" fill="var(--ctrl)" font-family="ui-monospace,monospace">b=' + b + '</text>';
+
+  // exit labels, top to bottom, each tagged with its output channel
+  const exits = [[BBM_OUT.bStraight, 3, 'b∧¬a'], [BBM_OUT.aDeflect, 1, 'a∧b'],
+                 [BBM_OUT.bDeflect, 2, 'a∧b'],   [BBM_OUT.aStraight, 0, 'a∧¬b']];
+  for (const [p, ch, lbl] of exits){
+    const on = outs[ch] === 1;
+    out += '<text x="' + (p[0]+12) + '" y="' + (p[1]+4) + '" font-size="11" font-family="ui-monospace,monospace" fill="' +
+           (on ? 'var(--ok)' : 'var(--dim)') + '">' + lbl + ' = ' + outs[ch] + '</text>';
+  }
+
+  // the balls
+  for (const [w, present] of [['a', a], ['b', b]]){
+    if (!present) continue;
+    const pt = bbmAt(bbmPath(w, a, b), bbmT);
+    out += '<circle cx="' + pt[0] + '" cy="' + pt[1] + '" r="8" fill="var(--ball)" opacity="0.93"/>';
+  }
+  svg.innerHTML = out;
+
+  const n = a + b;
+  document.getElementById('bbm-in').textContent  = n;
+  document.getElementById('bbm-out').textContent = outs.reduce((x, y) => x + y, 0);
+  const cons = document.getElementById('bbm-cons');
+  const ok = outs.reduce((x, y) => x + y, 0) === n;
+  cons.textContent = ok ? 'conserved' : 'BROKEN';
+  cons.className = ok ? 'ok' : 'warn';
+  // the balls in flight are the same closures throughout, so the action never moves
+  document.getElementById('bbm-act').textContent = '(' + action(BALL.repeat(n)).join(', ') + ')';
+}
+
+function bbmStop(){ if (bbmRAF){ cancelAnimationFrame(bbmRAF); bbmRAF = null; }
+                    if (bbmCycle){ clearTimeout(bbmCycle); bbmCycle = null; } }
+
+function bbmRun(dir, onDone){
+  bbmStop();
+  bbmDir = dir;
+  bbmT = dir > 0 ? 0 : 1;
+  const step = function(){
+    bbmT += dir * 0.006;
+    if (bbmT >= 1){ bbmT = 1; drawBBM(); bbmRAF = null; if (onDone) onDone(); return; }
+    if (bbmT <= 0){ bbmT = 0; drawBBM(); bbmRAF = null; if (onDone) onDone(); return; }
+    drawBBM();
+    bbmRAF = requestAnimationFrame(step);
+  };
+  bbmRAF = requestAnimationFrame(step);
+}
+
+document.querySelectorAll('[data-bbm]').forEach(function(btn){
+  btn.onclick = function(){
+    document.querySelectorAll('[data-bbm]').forEach(function(o){ o.classList.remove('primary'); });
+    btn.classList.add('primary');
+    bbmInput = btn.getAttribute('data-bbm');
+    bbmRun(+1);
+  };
+});
+document.getElementById('bbm-rev').onclick = function(){ bbmRun(-1); };
+document.getElementById('bbm-cycle').onclick = function(){
+  const order = ['00', '10', '01', '11'];
+  let i = 0;
+  const next = function(){
+    bbmInput = order[i];
+    document.querySelectorAll('[data-bbm]').forEach(function(o){
+      o.classList.toggle('primary', o.getAttribute('data-bbm') === bbmInput); });
+    bbmRun(+1, function(){
+      i++;
+      if (i < order.length) bbmCycle = setTimeout(next, 550);
+    });
+  };
+  bbmStop(); next();
+};
+
+bbmRun(+1);
+
 </script>
 </div>
 </body>

@@ -62,6 +62,14 @@ multiset of twists. The signed action vector is a function of that multiset alon
 Therefore **the gate cannot take a realized history to an unrealized one** — not because
 we checked, but because it is a relabelling.
 
+This has two faces, and both are load-bearing elsewhere. Mathematically the gate is an
+**automorphism of the admissible closure space** — the first rung of the emergence ladder that is a
+*map* on the structure rather than more structure ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md)
+Rung 5b). Informationally it is a **bijection**, so information moves without being forgotten and
+the receipt is zero — the executable converse of Landauer
+([`Information_Physics.md`](Information_Physics.md) §5a). Invertible map, reversible logic,
+conserved quantity: on the substrate these are one operation.
+
 The final step is already machine-verified and is what makes this cheap: the keystone
 **`count_balanced_pauli_closed`** ([`lean/QLF_TwistAlphabet.lean`](lean/QLF_TwistAlphabet.lean))
 proves count balance *entails* Pauli closure for every twist history, cross-axis
@@ -88,6 +96,16 @@ The billiard ball model needs balls that **collide and never stick**. In QLF a b
 shell with no unshared closure to offer. Two helium atoms therefore have nothing to share
 and cannot bond; they can only scatter. The idealization Fredkin and Toffoli had to
 *impose* on their balls is here a consequence of the valence rule.
+
+**The bits are physical closures, and you can look at them.** The spacetime constructor takes
+deep-linked initial conditions — `kind @ x,y,z v vx,vy,vz` — so the Boolean `11` can be opened as
+what it actually is: [two helium closures approaching an interaction region](spacetime_constructor.html#qc=He%20%40%20-6%2C-2%2C0%20v%201.2%2C0.4%2C0%0AHe%20%40%20-6%2C2%2C0%20v%201.2%2C-0.4%2C0).
+Not two marks in a truth table but two closures with positions, clocks and trajectories, each able
+to enter a later joint closure. **Scope, so the link is not overread:** the constructor *renders*
+those closures, it carries no elastic-collision dynamics, and it is a reading rather than a cause
+([`Spacetime_Constructor.md`](Spacetime_Constructor.md)). It shows you the inputs; it does not run
+the gate. The dynamical two-history question — causal diamonds intersecting into a joint closure —
+belongs to [`MultiParticle.py`](MultiParticle.py).
 
 Buckyballs (C₆₀) qualify for the same structural reason — a closed cage, every carbon
 saturated within it — and have the practical advantage of being massive enough to behave
@@ -137,6 +155,13 @@ input: True**.
 ```
 
 The `11` row is the collision proper: two balls in, deflected onto the two inner exits.
+
+**Watch the conservation law.** [`fredkin_machine.html`](fredkin_machine.html) animates exactly
+these four rows at the top of the page — two balls on crossing tracks, `11` the one to look at:
+they meet, deflect onto the inner exits, and the three readouts beside them do not move. Balls in
+equals balls out, the signed twist action stays `(0,0,0,0)`, and the information discarded stays
+`0`. Press **Reverse** and the collision runs backwards. Everything §2 argues is visible in one
+screen there.
 
 **Universality.** Every primitive from the one gate, each verified on its full truth table:
 

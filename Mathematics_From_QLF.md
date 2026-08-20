@@ -137,6 +137,46 @@ non-tensorial spinor irreps are the complete list for every orthogonal group —
 not formalize. The identification "half-spin = atomic bit" is the assembled reading of the
 verified facts.
 
+### Rung 5b — reversible computation, from automorphisms of closure space
+
+Every rung so far builds *structure*. This one is the first **map on that structure** — and it is
+where computation enters the ladder, not as something added to the mathematics but as a symmetry
+of the objects that generated it.
+
+Encode a register as a history: a set bit is one closed plaquette `[up, left, down, right]`, a
+clear bit contributes nothing, and the register is the concatenation of its lines. Fredkin &
+Toffoli's gate `CSWAP(c; a, b)` — the controlled swap of *Conservative Logic* (1982) — then acts
+on that history **by permutation**, exchanging two sub-blocks and touching nothing else:
+
+> `encode_fredkin_perm` ([`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)) — `encode (fredkin r)`
+> is a `List.Perm` of `encode r`. Hence every twist count is preserved
+> (`fredkin_preserves_counts`), hence count balance is (`fredkin_preserves_countBalanced`), and by
+> the Rung 5 fold `count_balanced_pauli_closed` the output is Pauli-closed —
+> **`fredkin_preserves_zfa`**. The gate is involutive (`fredkin_involutive`), hence bijective
+> (`fredkin_bijective`). No axioms.
+
+So the gate is an **automorphism of the admissible closure space**, not a Boolean circuit that
+happens to conserve bits. It cannot carry a realized history to an unrealized one, and the reason
+is not that it was checked against admissibility but that permuting letters cannot change a
+multiset. **Fredkin's conservation law and ZFA count balance are the same law** — which is the
+substantive content, and why his programme had the algebra right
+([`Related_Frameworks.md`](Related_Frameworks.md)).
+
+The ladder step:
+
+> closures → objects · concatenation → monoid · parallel/sequence → `+`, `×` · dagger → `*` ·
+> **closure-preserving permutations → reversible computation**
+
+Two things this does *not* claim. It does not say Fredkin gates are universal for QLF dynamics —
+only that reversible computation is available as a symmetry of the admissible set, and is
+machine-verified to be. And the encoding is a modelling choice: the conclusion follows from the
+permutation structure rather than from the particular plaquette chosen, but a different encoding
+would need its own check ([`Fredkin_QLF.md`](Fredkin_QLF.md) §6).
+
+The information-physics face of the same fact — a bijection moves information without forgetting
+it, so it is free — is [`Information_Physics.md`](Information_Physics.md) §5a. Watch it run:
+[`fredkin_machine.html`](fredkin_machine.html).
+
 ### Rung 6 — the Lie algebras su(2), su(3)
 
 The twist commutators close the gauge Lie algebras: `weak_isospin_su2` ([`lean/BraKetRhoQuCalc.lean`](lean/BraKetRhoQuCalc.lean), `[τᵢ,τⱼ] = −2εᵢⱼₖτₖ`), and the traceless 3-axis directional tensor gives strong `su(3)` ([`lean/QLF_StrongAlgebra.lean`](lean/QLF_StrongAlgebra.lean)). The continuous symmetry algebras are properties of the discrete twist alphabet.
@@ -296,3 +336,4 @@ So QLF does not merely say "mathematics is effective because reality is mathemat
 - [`BraKetRhoQuCalc.md`](BraKetRhoQuCalc.md) — `+` = parallel, `×` = sequence; the bra-ket ↔ ρ-calculus correspondence.
 - [`Physical_Pi.md`](Physical_Pi.md) — `π` from the closure census, the exemplar of a continuum constant recovered finitely.
 - [`Related_Frameworks.md`](Related_Frameworks.md) Part II — the mathematics of information as a *measure stack over an unspecified ontology* (Shannon counts, AIT prices, Fisher measures); ZFA supplies the missing bottom layer (information = realized distinction = closure receipt), the same "realizable math = the substrate" move as §4 here (Wigner dissolved).
+- [`Fredkin_QLF.md`](Fredkin_QLF.md) — Rung 5b worked out: Fredkin & Toffoli's conservative logic on the substrate, where the gate is an **automorphism of the admissible closure space** ([`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean), no axioms). Watch it: [`fredkin_machine.html`](fredkin_machine.html).
