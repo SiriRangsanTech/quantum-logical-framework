@@ -121,6 +121,40 @@ domain's clock is synthesized along a fold direction (`f = 1/t`), not borrowed f
 time axis, which is why "its own synthesized clock" above is meant literally rather than as a
 figure of speech.
 
+**Take the interior's dimensions independently, and something better than inheritance happens.** If
+the child's directions are genuinely its own, the natural next question is why it should have three
+of them rather than any other number — and the answer is that it does not get them from the parent
+at all. It **re-derives** them.
+
+[`SpaceTime.md`](SpaceTime.md) §3a settles the count from graph embedding, not from observation:
+every finite graph embeds in `ℝ³` without crossings (vertices on the moment curve `(t,t²,t³)`, no
+four coplanar), while `ℝ²` admits only planar graphs and fails on `K₅`/`K₃,₃` (Kuratowski). Space is
+the faithful rendering of the closure graph, so **three is the minimum that renders an arbitrary
+relational structure without spurious identification**. That argument mentions no parent. Run it on
+the interior's own closure network and it returns three again — for the interior's own reasons.
+
+The same holds for the constants, and more sharply, because **the alphabet is the substrate, not a
+per-universe parameter**. The `6 spatial + 2 gauge` split is not something a domain inherits; it is
+what a domain is made of. So the numbers read off it — `α` via `N = 3² = 9`, `Ω_Λ` via the gauge
+fraction `2/8`, `sin²θ_W = 3/8` ([`Alpha.md`](Alpha.md),
+[`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) §5a) — come out the same in a child domain
+because it is running on the same substrate, **not because anything was transmitted across the
+horizon**. Nothing crosses; nothing needs to.
+
+**This is where QLF and Smolin part company, and it is worth stating plainly.** Cosmological natural
+selection *requires* constants to vary slightly from parent to child — without variation there is no
+selection, and the fine-tuning explanation collapses. QLF has no such variation to offer: the
+substrate is identical in every domain, so the constants are identical, so **there is no selection
+and no need for any**. The two frameworks agree that universes nest and disagree about the whole
+point of it — QLF explains the constants by *derivation from the alphabet* and therefore cannot
+also explain them by *selection among variants*. Committing to one forecloses the other.
+
+Two honesties. The re-derivation assumes the interior's closure network is a *general* graph
+(containing non-planar substructure); a degenerate interior with only planar structure would render
+in two. And none of this is checkable from inside — by the non-identifiability result below, a
+finite observer cannot reach across the seal either way. It is a structural commitment, not a
+prediction anyone can test.
+
 **What this does and does not settle.** It removes the objection and supplies a *mechanism* for an
 independent interior clock that GR does not have. It does not show that a sealed interior actually
 folds that way, or that the resulting chain is long enough to be a history — the interior-persistence
