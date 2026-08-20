@@ -98,6 +98,34 @@ The "bounce" needs **no torsion, no inflaton, no exotic pressure** — the drive
 
 **(2) We have no reason to assume we are *not* in one.** This is an *epistemic* point, from **causal sealing**, not a positive assertion. A horizon is one-way: the parent domain is causally inaccessible from inside. QLF's synthesized, purely-local time (`f = 1/t`) makes the interior view fully self-contained, so **no internal observation can distinguish "we are inside a parent horizon" from "we are not."** Planck's 13.8 Gyr is the age of *our* clock measured from *our* birth-surface; everything "before" it belongs to the parent and is unobservable to us. The possibility that our observable universe is itself the interior of a parent ZFA closure is therefore **coherent and unfalsifiable from within** — so there is no reason to assume we are not in one. QLF neither asserts we *are* nor that we aren't; the honest stance is **agnosticism**, and the point is precisely about the *limits of internal observation*.
 
+**Where QLF's time claim is stronger than GR's, and why the usual objection misses.** A standard
+objection runs: *the interior has one timelike direction like anywhere else, so there is no "new"
+time.* That is true of a signature count within a single manifold and beside the point twice over.
+
+First, even in GR the child's time is **independent of the parent's**: the interior's future
+direction is the parent's *radial* direction, not the parent's `t`. Two clocks, not one clock shared
+— which is all "its own time" needs to mean.
+
+Second, and this is QLF's own contribution: the substrate is **not** a `3+1` manifold whose axis
+budget is fixed. The 8-twist alphabet splits `6 spatial + 2 gauge`
+([`Magic_numbers.md`](Magic_numbers.md)), and a gauge fold **opens a direction that was not there** —
+[`Tunnelling.md`](Tunnelling.md) §2 states the mechanism outright: the engine *"synthesizes an extra
+orthogonal dimension using the gauge twists `+` and `−`"*, the same move that produces superposition.
+So a fold is not a relabelling of an existing axis; it is a new orthogonal direction in the
+substrate, and the `3+1` signature is a property of the **rendering**, not a budget the substrate has
+to respect ([`Mathematics_From_QLF.md`](Mathematics_From_QLF.md) Rung 7).
+
+Policing the substrate with the rendering's axis count is exactly the category error QLF's
+rendering thesis exists to prevent — and it is worth naming, because it is easy to make. The child
+domain's clock is synthesized along a fold direction (`f = 1/t`), not borrowed from the parent's
+time axis, which is why "its own synthesized clock" above is meant literally rather than as a
+figure of speech.
+
+**What this does and does not settle.** It removes the objection and supplies a *mechanism* for an
+independent interior clock that GR does not have. It does not show that a sealed interior actually
+folds that way, or that the resulting chain is long enough to be a history — the interior-persistence
+target below.
+
 **The "may be" is provable; the "are" is not.** Claim (2) is stronger than a shrug — its load-bearing part is machine-checked, as an instance of QLF's **non-identifiability** theorems. An observer's determinable state is a function only of its **causal past** ([`QLF_ReachableEvent`](lean/QLF_ReachableEvent.lean)); a *sealed parent* lies outside that past cone, so the observer's data is identical whether the parent exists or not; and a **finite-capacity** observer cannot determine facts outside its record — `capacity_bound` (a `C`-bit record distinguishes at most `2^C` states) and `consistent_set_continuum` (any finite-precision record leaves a continuum consistency fiber) in [`QLF_Identifiability`](lean/QLF_Identifiability.lean), with `tail_unconstrained` making that non-identifiable tail a *defined* set. Together: **"was our origin an absolute beginning or a sealed parent horizon?" is one bit sitting in that unconstrained fiber** — not a function of any finite internal record, hence not refutable from within. So *"we may be in a black hole"* reduces to a proven statement about finite-observer non-identifiability of causally-sealed facts. What stays speculative is the *physics* — that a black-hole interior **is** a universe — not the *epistemics* of whether one could tell from inside, which is proven: one cannot.
 
 **Observational constraint (essential — read this before the picture).** This is *only* an alternative to the **absolute singular origin**, never to the hot, dense early universe. The CMB, primordial abundances (BBN), the expansion history, and the six-parameter ΛCDM fit all remain intact; the nested picture sits *underneath* the origin and rewrites nothing above it. QLF's own dark sector — `Ω_Λ = log 2`, inflation-as-high-`V`-epoch, the de Sitter horizon (§4, [`Cosmological_Constant.md`](Cosmological_Constant.md), [`DarkMatter.md`](DarkMatter.md)) — is *internal to our domain* and untouched.
