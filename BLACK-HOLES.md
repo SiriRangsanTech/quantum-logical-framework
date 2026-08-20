@@ -133,6 +133,36 @@ the faithful rendering of the closure graph, so **three is the minimum that rend
 relational structure without spurious identification**. That argument mentions no parent. Run it on
 the interior's own closure network and it returns three again — for the interior's own reasons.
 
+**The sharpest form: the closures inside are the closures outside, in a different basis.** This is
+not a metaphor, and the machinery for it is already proven —
+[`QLF_BasisIndependence`](lean/QLF_BasisIndependence.lean), whose own headline is *"the basis belongs
+to the question, not to reality."* Relabel the axes however you like — swap two, reverse one, swap
+the gauge pair — and for a **count-balanced** history two things hold:
+
+- balance survives (`countBalanced_map_swapXY`, `…_swapYZ`, `…_flipX`, `…_swapGauge`), so the
+  relabeling maps the closure inventory *onto itself* — the same set, not a similar one;
+- the fold is **unchanged** (`fold_invariant_swapXY`, `…_swapGauge`, and their composites covering
+  the order-48 signed axis-permutation group), so anything read off the fold is unchanged with it.
+
+Balance is what earns this: relabeling perturbs the sign count and the inversion count by products
+and sums of axis multiplicities, and balance makes every axis multiplicity even, so each correction
+is `(−1)^even = 1`. Outside balance the corrections are real and an unbalanced word genuinely changes
+phase — the invariance is a property of *closures* specifically.
+
+Read into the nested picture: a child domain is not a different physics but **the same closure
+inventory in a rotated chart**. And that upgrades the argument above from "same substrate, so
+presumably the same numbers" to a proven reason — the constants are read off the fold, and the fold
+is invariant. It also gives the Personal Origin's *"time becomes space"* a precise counterpart: a
+change of which directions the rendering calls spatial is exactly a change of basis, and on balanced
+histories a change of basis changes nothing that is physically read.
+
+**The honest boundary of that claim.** What is proven is invariance under the *discrete* relabeling
+group — the 48 signed axis permutations, plus the gauge swap. The horizon-crossing chart change
+(where a fold opens an orthogonal direction, [`Tunnelling.md`](Tunnelling.md) §2) is **not literally
+one of those relabelings**, and no theorem here says it is. So "inside = outside in a different
+basis" is a *statable and partly proven* claim rather than an established one: the invariance is
+real, its applicability to the horizon chart is the reading.
+
 The same holds for the constants, and more sharply, because **the alphabet is the substrate, not a
 per-universe parameter**. The `6 spatial + 2 gauge` split is not something a domain inherits; it is
 what a domain is made of. So the numbers read off it — `α` via `N = 3² = 9`, `Ω_Λ` via the gauge
