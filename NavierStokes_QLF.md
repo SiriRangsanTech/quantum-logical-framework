@@ -6,7 +6,7 @@
 > (a physics sum-over-everything that proved rigorous mathematics, discharged by Reshetikhin–Turaev).
 > **Generate:** all flow histories. **Select:** ZFA closure ⟹ no realized history blows up
 > (`realized_flow_is_stable`; the quantized vorticity cap). **Bridge (settled-math, couched Witten→RT):**
-> `navier_stokes_continuum_limit` — *reduced* in [`QLF_NavierStokesBKM`](lean/QLF_NavierStokesBKM.lean) to the
+> `continuum_vorticity_planck_capped` — *reduced* in [`QLF_NavierStokesBKM`](lean/QLF_NavierStokesBKM.lean) to the
 > cited Beale–Kato–Majda theorem + the sharp Planck vorticity-cap bridge, the nearest to the knot sector's
 > finished end-state. See [Millennium.md](Millennium.md) § *The engine*.
 
@@ -17,7 +17,7 @@
 > proven (the reformulation):* realized flows achieve ZFA and are stable closures (reusing
 > `encode_is_zfa` / `qlf_universality`), so **no realized history blows up** —
 > [`lean/QLF_NavierStokes.lean`](lean/QLF_NavierStokes.lean). *The gap:* continuum-PDE inheritance
-> under the limit, carried by the one bridge axiom `navier_stokes_continuum_limit`. This is a genuine
+> under the limit, carried by the one bridge axiom `continuum_vorticity_planck_capped`. This is a genuine
 > continuum step — QLF's **thesis** (not a proof of this problem) is that the continuum sector is where
 > ZFC's machinery struggles ([Continuum_Choice_Fallacy.md](Continuum_Choice_Fallacy.md)); the Clay
 > problem itself is open analysis, not a known independence result, so the bridge is the honest gap.
@@ -92,7 +92,7 @@ Within QLF's frame, global smoothness is *structurally expected*: a discrete
 substrate that prunes every never-closing (infinite-frequency) history cannot
 realize a finite-time singularity, so the physical flows it synthesizes are smooth.
 The remaining step is a regularity theorem for the continuum PDE, carried by the bridge axiom
-`navier_stokes_continuum_limit`. This is a genuine continuum step — QLF's *thesis* (not a proof
+`continuum_vorticity_planck_capped`. This is a genuine continuum step — QLF's *thesis* (not a proof
 of this specific problem) is that the continuum sector is where ZFC's machinery is pathological;
 but the Clay problem is open analysis, not a known independence result, so the bridge is stated
 as the honest open step. The document claims the substrate no-blow-up result as genuine progress,
@@ -100,7 +100,7 @@ not a finished classical proof.
 This is Lean-anchored in [`lean/QLF_NavierStokes.lean`](lean/QLF_NavierStokes.lean):
 realized flows achieve ZFA (`realized_flow_achieves_zfa`, reusing `encode_is_zfa`) and are
 stable closures (`realized_flow_is_stable`, reusing `qlf_universality`), with the
-continuum-limit step named as the explicit boundary axiom `navier_stokes_continuum_limit`
+continuum-limit step named as the explicit boundary axiom `continuum_vorticity_planck_capped`
 and the `navier_stokes_proof_in_progress` status marker.
 
 ## References

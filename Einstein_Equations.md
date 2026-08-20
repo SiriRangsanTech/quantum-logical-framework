@@ -214,7 +214,7 @@ verified discrete `|L_k|` counts pass to those expectations through the Poisson 
 `ρ → ∞` Benincasa–Dowker convergence of the mean to `−½R` is the explicit **bridge axiom**
 [`benincasa_dowker_limit`](lean/QLF_CausalContinuum.lean) — the settled Poisson-process + curved-
 interval-volume machinery of CST, the `RCA₀ → Lorentzian-analytic` boundary parallel to
-`yang_mills_continuum_gap` ([`QLF_MassGap`](lean/QLF_MassGap.lean)) and `navier_stokes_continuum_limit`
+`yang_mills_continuum_gap` ([`QLF_MassGap`](lean/QLF_MassGap.lean)) and `continuum_vorticity_planck_capped`
 ([`QLF_NavierStokes`](lean/QLF_NavierStokes.lean)). From it, **flat space reads `R = 0` in the mean**
 ([`flat_curvature_zero_in_mean`](lean/QLF_CausalContinuum.lean)) — the statistical survival of the
 discrete flat baseline. So the curvature side now stands on the same footing as Riemann / Yang–Mills /

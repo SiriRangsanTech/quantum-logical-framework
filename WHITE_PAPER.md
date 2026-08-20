@@ -241,7 +241,7 @@ All six Clay Millennium problems have a Lean module reducing each to a construct
 | Birch–Swinnerton-Dyer | `QLF_BSD` | `modularity_mirror_invariant` (rank = ord is a theorem) |
 | Hodge conjecture | `QLF_Hodge`, `QLF_CohomologyAlgebra`, `QLF_HodgeStructure` | `substrate_realization_is_algebraic` (both sides built; gap = geometric realization — see below) |
 | P vs NP | `QLF_PvsNP` | `qlf_cost_model` |
-| Navier–Stokes | `QLF_NavierStokes`, `QLF_AngularMomentum` | `navier_stokes_continuum_limit` (no-blow-up *mechanism* now anchored — see below) |
+| Navier–Stokes | `QLF_NavierStokes`, `QLF_AngularMomentum` | `continuum_vorticity_planck_capped` (no-blow-up *mechanism* now anchored — see below) |
 
 Read each as **contrast-then-focus**: the classical Clay conjecture is a different statement (not
 proved here); the reformulation's substrate content is proven plainly — *it is a proof within the

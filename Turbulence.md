@@ -41,7 +41,7 @@ The load-bearing fact ([`QLF_AngularMomentum`](lean/QLF_AngularMomentum.lean)):
 
 This is the mechanism behind the no-blow-up: the continuum PDE inherits a *uniform* vorticity cap
 `|ω| ≤ 1/L_P²` (`planck_caps_vorticity`), and BKM (cited, 1984) then gives global smoothness — a *reduction*
-of the `navier_stokes_continuum_limit` axiom to a sharp vorticity-rendering bridge, not a Clay proof.
+of the opaque Navier–Stokes boundary (now removed; the live bridge is `continuum_vorticity_planck_capped`) to a sharp vorticity-rendering bridge, not a Clay proof.
 
 ---
 

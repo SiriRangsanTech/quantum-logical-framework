@@ -245,7 +245,7 @@ Run: `python3 brownian_closures.py`.
 - **Proven on the substrate:** angular momentum = circulation, its pseudovector law, vorticity =
   quantized discrete curl, `|ω| ≤ 1`, `|L| ≤ n`, and the unrealizability of continuum vorticity in a
   finite cell — all machine-verified, no new axioms.
-- **The boundary, now reduced — not eliminated.** The opaque `navier_stokes_continuum_limit`
+- **The boundary, now removed — the work moved, not the wording.** The opaque `navier_stokes_continuum_limit`
   ([`QLF_NavierStokes`](lean/QLF_NavierStokes.lean)) is replaced (§5) by the *proven* Planck vorticity cap
   + the *cited* BKM theorem + a *sharp* faithfulness bridge `continuum_vorticity_planck_capped`, from
   which `navier_stokes_no_blowup` is a theorem. The residual gap is just the vorticity-rendering

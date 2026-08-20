@@ -56,7 +56,7 @@ intensity `ρ → ∞`). This is settled CST reconstruction mathematics that Mat
 so it enters as the explicit boundary axiom **`order_metric_continuum_limit`**: the `ρ → ∞` reconstruction
 of the proper-time line element from order + number converges to the continuum value. It is exactly
 parallel to the curvature-side `benincasa_dowker_limit`, and to `yang_mills_continuum_gap` /
-`navier_stokes_continuum_limit` — QLF's standard *RCA₀ → analytic* boundary marker.
+`continuum_vorticity_planck_capped` — QLF's standard *RCA₀ → analytic* boundary marker.
 
 ## The Millennium shape
 

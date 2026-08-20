@@ -210,6 +210,36 @@ independent layers — the **measure** over ways, the **phase/amplitude** rule, 
 geometry** (how a physical arrangement is encoded). Changing all three at once until the answer
 appears is fitting. Establish them separately, and when something breaks, name the layer.
 
+**R6a — Measure an assumption's strength; do not describe it.** Zero `sorry` says every goal was
+closed and nothing about *what* closed it, so an assumption has to be tested the way a hypothesis is.
+The test is one question: **is the interface satisfied by a trivial reading?** Bundle the assumption
+into a structure and try to build an instance out of nothing.
+
+The answers sort into kinds that had previously been run together, and the sorting is the point:
+
+| the toy model | reading | what to do |
+|---|---|---|
+| builds, and the assumption was already superseded | it excludes nothing and something else does the work | **delete it** — an axiom that assumes nothing is not a boundary, it inflates the count while carrying none of the weight |
+| builds, but the claim is a real theorem the formalisation cannot state | **cited, not posited** — vacuous *in Lean*, not *in the world*; discharge is labour with a known answer | keep, and label |
+| builds, and the intended reading is what nobody has established | the assumption's force is entirely interpretive | keep, and record the measurement beside it so it stops looking like it does work |
+| **does not build, because nothing is left to choose** | every object is concrete; the gap is labour, not knowledge | **the standard** — compare new boundaries against it |
+
+Two supporting rules. *Merging assumptions is legitimate only with a proved equivalence* — otherwise
+it is a smaller number and the same commitment. And *"construct an inhabitant" does not always
+discharge*: a satisfiable interface is evidence only when its instances are hard to come by, so
+building the toy is what tells you which case you are in, and there is no way to know in advance.
+
+Read the dependency footprint afterwards rather than trusting the source: an absent `propext` in a
+`#print axioms` report is the signature of a pure application — the "theorem" restates its axiom.
+Machinery: [`scripts/axiom_audit.sh`](scripts/axiom_audit.sh) pins what exists to be assumed,
+[`lean/QLF_AxiomAudit.lean`](lean/QLF_AxiomAudit.lean) reports what the proofs actually consume.
+
+**The rule applies to new work, not only to inherited work** — and that is the part that is easy to
+skip. The same pass that removed a vacuous colour claim from the axiom inventory saw one written
+back in hours later (`3 = 3` by `rfl`, with prose beside it claiming something the theorem never
+touched). The failure mode is always the same shape: **a true statement adjacent to the one you
+wanted, asserted as if it were the one you wanted.**
+
 **R7 — State the kill condition first** (Popper's falsifiability [Po59] in Platt's operational
 form, strong inference [Pl64]). See §6.
 
