@@ -185,12 +185,40 @@ what this mechanism changes is **spin character**: a third of half-spin closures
 and conversely. An interior reached that way would not be a relabeled copy of the exterior — the
 phases would differ, and differ in exactly the quantity spin is read from.
 
-Three readings are open and the census does not choose between them: the horizon map is some *other*
-transformation, still to be identified; or the gauge-push is right and the nested claim is **false as
-stated**, the interior being a genuinely different inventory rather than a rebasing; or the fold-flip
-is itself physical, and what crosses a horizon is a spin-character change worth predicting. The first
-is the assumption this section has been making. **It has not been earned, and now there is a
-measurement saying so.**
+**And "which one is it?" is the wrong question — things happen every way.** Reading those as three
+rival hypotheses smuggles in a single-history assumption the framework does not make. Both sectors
+above are *populated*: some balanced histories cross as rebasings and some cross with a flip, and
+both are real. The method's question is not which is true but **which happens in the most ways**
+([`Philosophy.md`](Philosophy.md) §3a, rules 1 and 3) — and once asked that way, the aggregate
+`3536/5296` turns out to have been hiding the answer, because it averages over lengths that behave
+differently. Counted per length:
+
+| length | balanced | fold kept | flipped | kept fraction |
+|---:|---:|---:|---:|---|
+| 2 | 8 | 8 | **0** | **1** — exactly a rebasing |
+| 4 | 168 | 136 | 32 | `17/21 ≈ 0.810` |
+| 6 | 5120 | 3392 | 1728 | `53/80 ≈ 0.663` |
+
+At length 2 the push **is** a rebasing: every balanced history keeps its fold, with no exceptions.
+The flip sector does not exist until length 4, and from there it grows. So the three readings are not
+alternatives — they are **one depth-dependent split**, and each is the correct description of a
+different regime:
+
+- a **shallow** crossing is a rebasing, and the interior *is* the exterior in another basis;
+- a **deep** crossing increasingly carries fold flips, and there the nested claim is false as stated;
+- the flips are `±I` sign changes, so what grows with depth is a **spin-character** difference.
+
+Which is the same capacity story as everything else here (§4a.1 of
+[`Law_Of_Exceptions.md`](Law_Of_Exceptions.md)): the answer is not a fact about horizons in general
+but about **how deep the crossing is**.
+
+**What is not claimed.** Sampling deeper (`L = 8, 10, 12`) suggests the kept fraction keeps falling —
+roughly `0.65`, `0.61`, `0.58` — but those come from a *different and non-uniform* sampling measure
+than the exact enumeration above and are indicative only, not comparable numbers. Three exact points
+and a suggestive tail are **not an asymptotic law** ([`ScientificApproach.md`](ScientificApproach.md)
+R5), and nothing here says where the fraction goes, whether it has a limit, or that `L = 2`'s
+perfection survives any physical reading of "shallow". What *is* solid: both sectors are real, the
+split is depth-dependent, and it is exact at the lengths enumerated.
 
 **The honest boundary of that claim.** What is proven is invariance under the *discrete* relabeling
 group — the 48 signed axis permutations, plus the gauge swap. The horizon-crossing chart change
