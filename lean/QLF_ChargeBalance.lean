@@ -130,10 +130,10 @@ def protonQuarks : List Flavour := [.up, .up, .down]
 def neutronQuarks : List Flavour := [.up, .down, .down]
 
 theorem chargeOf_proton : chargeOf protonQuarks = protonCharge := by
-  norm_num [chargeOf, protonQuarks, flavourCharge, protonCharge]
+  norm_num [chargeOf, protonQuarks, flavourCharge, protonCharge, chargeU, chargeD]
 
 theorem chargeOf_neutron : chargeOf neutronQuarks = neutronCharge := by
-  norm_num [chargeOf, neutronQuarks, flavourCharge, neutronCharge]
+  norm_num [chargeOf, neutronQuarks, flavourCharge, neutronCharge, chargeU, chargeD]
 
 /-- **`u → d` costs exactly one unit of charge** — which is exactly the electron's, and the reason
     the electron is the partner the flip requires. -/
