@@ -53,6 +53,7 @@ import QLF_PvsNP
 import QLF_Fredkin
 import QLF_MassGap
 import QLF_NavierStokes
+import QLF_ChargeBalance
 import QLF_CensusCurvature
 import QLF_LorentzCover
 import QLF_RiemannMRE
@@ -109,6 +110,12 @@ import QLF_RiemannMRE
     quantifies over a fully concrete class with nothing uninterpreted in it, so there is no
     trivial model to exhibit — there is nothing left to choose. That is the standard the
     other boundaries fall short of. -/
+
+/-! Electron capture: the invariants are proved, the rate is not claimed. These must show no QLF
+    axiom — the point of proving only the invariants is to keep "allowed" apart from "derived". -/
+
+#print axioms QLF.electron_capture_charge_balanced
+#print axioms QLF.capture_preserves_quark_count
 
 #print axioms QLF.transportCurvature_nonempty
 #print axioms QLF.LorentzCover.properOrthochronous_id

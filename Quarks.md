@@ -166,6 +166,66 @@ tier), the absolute scale, the per-flavour **twist signature**, and the quark CK
 "Flavour = the Yukawa structure" — and in QLF that structure is **fold depth**: demystified, partly
 derived (Koide tier relation + exponential hierarchy), not yet fully.
 
+### 4a. Electron capture — flavour changes inside a preserved colour knot
+
+The `u↔d` pair-flip above is the whole of what electron capture does, seen from inside the hadron.
+`p + e⁻ → n + ν_e` is, at the quark level,
+
+```
+    uud + e⁻ → udd + ν_e        globally
+    u   + e⁻ → d   + ν_e        locally, the one edge that moves
+```
+
+and the charge arithmetic is why the electron is the right partner. From §3's proven thirds,
+
+```
+    q_d − q_u = −1/3 − (+2/3) = −1
+```
+
+which is exactly the electron's charge. The electron does not have to be pictured as a small object
+inserted into a quark: the **joint neutral closure supplies the one gauge unit the `u → d` flip
+costs**, and the residual weak relation leaves as the neutrino.
+
+**What does *not* change is the sharper half of the statement.** §1 and §2 make the baryon a
+three-axis Borromean colour closure, and a nonzero baryon needs all three axes
+(`baryon_needs_all_three_axes`). `uud → udd` still has three confined colour components; the knot is
+not untied, not loosened, not re-tied. So:
+
+> **Electron capture is an internal rethreading of gauge/flavour through the same `B = 1` colour
+> knot.** The weak interaction changes flavour without untying colour.
+
+That is what separates it cleanly from the other ways a proton's stability can be exceeded
+([`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1):
+
+| | colour knot | flavour | baryon winding |
+|---|---|---|---|
+| **electron capture** | **preserved** | one `u → d` | **conserved** |
+| deconfinement | **destroyed** — no hadron closure at all | — | conserved (quarks carry it) |
+| sphaleron | — | — | **violated** |
+
+The bookkeeping, stage by stage:
+
+| Stage | organization | `B` | charge |
+|---|---|---:|---:|
+| proton | `uud` | 1 | `+1` |
+| electron | external completer | 0 | `−1` |
+| joint neutral system | `uud + e⁻` | 1 | `0` |
+| the weak pair-flip | `u + e⁻ → d + ν` | 1 | `0` |
+| neutron | `udd` | 1 | `0` |
+
+**Machine-verified, and only this far** ([`lean/QLF_ChargeBalance.lean`](lean/QLF_ChargeBalance.lean)):
+`up_to_down_one_charge_unit` (`q_d − q_u = −1`), `capture_flips_exactly_one` (the up-count falls by
+one and the down-count rises by one — one edge moves, not two), `capture_preserves_quark_count`
+(three quarks in, three out, so the colour content is untouched), and
+`electron_capture_charge_balanced` (`p + e⁻` and `n + ν` are both exactly neutral). Together these
+say **capture is allowed by QLF's invariants**. They say nothing whatever about the *rate* — the
+weak transition amplitude is the open flavour-vertex question of §4 and §6, and isolating the two is
+the point of proving only the first.
+
+The same edge run the other way is β decay (`d → u + e⁻ + ν̄`), so capture and β decay are one
+pair-flip read in two directions ([`Weak_Force.md`](Weak_Force.md) §4b). Where nature runs this at
+macroscopic scale, and what it leaves, is [`Decay.md`](Decay.md) §2.4a.
+
 ## 5. Predictions
 
 Graded honestly — what is a **genuine/falsifiable** prediction vs a **reproduction with a new reason**.

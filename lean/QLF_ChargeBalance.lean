@@ -98,4 +98,67 @@ theorem neutron_charge_zero : neutronCharge = 0 := by
 theorem hydrogen_neutral : protonCharge + chargeE = 0 := by
   rw [proton_charge_one, chargeE]; norm_num
 
+/-! ### Electron capture — what the invariants allow
+
+    `p + e⁻ → n + ν_e` is the `u↔d` gauge-fold pair-flip embedded in a neutral closure
+    (`Quarks.md` §4a, `Weak_Force.md` §4b). The four results below establish that the process is
+    **allowed by QLF's invariants**: one unit of charge is exactly what the flip costs, exactly one
+    quark's flavour moves, the quark count is untouched so the colour knot is not untied, and both
+    sides of the reaction are exactly neutral.
+
+    They establish nothing about the **rate**. The weak transition amplitude is the open
+    flavour-vertex question (`Quarks.md` §6, `Weak_Force.md` §6), and proving only the invariants is
+    how the two are kept apart. -/
+
+/-- A quark flavour in the first-generation weak doublet. -/
+inductive Flavour
+  | up
+  | down
+deriving DecidableEq, Repr
+
+/-- The charge of a flavour, from the proven thirds. -/
+def flavourCharge : Flavour → ℚ
+  | .up   => chargeU
+  | .down => chargeD
+
+/-- The charge of a quark content. -/
+def chargeOf (qs : List Flavour) : ℚ := (qs.map flavourCharge).sum
+
+/-- The proton's content, `uud`. -/
+def protonQuarks : List Flavour := [.up, .up, .down]
+/-- The neutron's content, `udd`. -/
+def neutronQuarks : List Flavour := [.up, .down, .down]
+
+theorem chargeOf_proton : chargeOf protonQuarks = protonCharge := by
+  norm_num [chargeOf, protonQuarks, flavourCharge, protonCharge]
+
+theorem chargeOf_neutron : chargeOf neutronQuarks = neutronCharge := by
+  norm_num [chargeOf, neutronQuarks, flavourCharge, neutronCharge]
+
+/-- **`u → d` costs exactly one unit of charge** — which is exactly the electron's, and the reason
+    the electron is the partner the flip requires. -/
+theorem up_to_down_one_charge_unit :
+    flavourCharge .down - flavourCharge .up = chargeE := by
+  norm_num [flavourCharge, chargeU, chargeD, chargeE]
+
+/-- **Exactly one quark's flavour moves.** The up-count falls by one and the down-count rises by
+    one — a single edge, not two, which is what makes this a pair-flip rather than a rearrangement. -/
+theorem capture_flips_exactly_one :
+    protonQuarks.count .up = neutronQuarks.count .up + 1 ∧
+    neutronQuarks.count .down = protonQuarks.count .down + 1 := by
+  constructor <;> rfl
+
+/-- **The quark count is untouched**, so the three-axis colour closure survives the flip: capture
+    rethreads flavour through the knot, it does not untie it (`baryon_needs_all_three_axes`). This is
+    what separates capture from deconfinement, where the closure itself ceases to exist. -/
+theorem capture_preserves_quark_count :
+    protonQuarks.length = neutronQuarks.length := rfl
+
+/-- **Charge is balanced across the capture** — and not by cancelling something against something,
+    but because each side is *separately* neutral: `p + e⁻` is the hydrogen-class closure and
+    `n + ν` is the neutron one, two organizations of the same neutral content. -/
+theorem electron_capture_charge_balanced :
+    protonCharge + chargeE = neutronCharge + chargeNu := by
+  rw [proton_charge_one, neutron_charge_zero, chargeE, chargeNu]; norm_num
+
 end QLF
