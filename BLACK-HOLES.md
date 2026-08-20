@@ -150,9 +150,13 @@ is `(−1)^even = 1`. Outside balance the corrections are real and an unbalanced
 phase — the invariance is a property of *closures* specifically.
 
 Read into the nested picture: a child domain is not a different physics but **the same closure
-inventory in a rotated chart**. And that upgrades the argument above from "same substrate, so
-presumably the same numbers" to a proven reason — the constants are read off the fold, and the fold
-is invariant. It also gives the Personal Origin's *"time becomes space"* a precise counterpart: a
+inventory in a rotated chart**. That upgrades the argument above, though it should be claimed one
+constant at a time rather than wholesale: what the theorems give is invariance of *balance* and of
+the *fold*, so a constant is carried across only once it is exhibited as a function of something
+those preserve. The alphabet counts qualify directly — `3` axes survive any axis permutation and the
+gauge fraction `2/8` survives the gauge swap, which covers `α`'s `N = 3² = 9`, `Ω_Λ`, and
+`sin²θ_W = 3/8`. A constant depending on something the relabeling group does *not* fix would not be
+carried, and none has been checked exhaustively. It also gives the Personal Origin's *"time becomes space"* a precise counterpart: a
 change of which directions the rendering calls spatial is exactly a change of basis, and on balanced
 histories a change of basis changes nothing that is physically read.
 
@@ -187,13 +191,20 @@ observer and closed to a deeper one (`closedAtHorizon R s`, `horizon_relative`,
 rendering and none is privileged. An interior observer therefore sees a 3-D world around itself —
 and so does every other interior observer, each at its own origin.
 
-That is exactly why **the gravity at the centre is zero**: there is no *the* centre. "The middle of
-the hole" is a parent-side description of a region the parent cannot resolve; inside, there is no
-distinguished point for it to name, only closures each of which is its own here. The founding
-intuition's three parts fall out together — *huge inside* (the interior's scale is set by its own
-rendering, not by the parent's measure of it), *no singularity* (curvature bounded by finite event
-density, [`Curvature.md`](Curvature.md) §3), *zero gravity at the centre* (no privileged origin to
-have gravity at).
+**Two claims here that must not be run together.** *No privileged coordinate origin* is what
+horizon-relativity gives, and it is an **epistemic** statement about rendering. *Zero gravitational
+acceleration at a regular symmetric core* is a **dynamical** statement, and it does not follow from
+the first — an earlier draft of this paragraph derived it that way, which was a conflation. The
+right route is the ordinary one: gravity in QLF is the gradient of closure latency
+([`Gravity_From_Delay.md`](Gravity_From_Delay.md)), and at the centre of a spherically symmetric
+distribution that gradient vanishes **by symmetry** — the shell-theorem reason, needing no QLF
+novelty and no observer argument at all.
+
+With that separation kept, the founding intuition's three parts do stand, each on its own footing:
+*huge inside* — the interior's scale is set by its own rendering, not by the parent's measure of it
+(horizon-relativity, above); *no singularity* — curvature bounded by finite event density
+([`Curvature.md`](Curvature.md) §3); *zero gravity at the centre* — the symmetric latency gradient,
+independent of both.
 
 **You can already look at this.** [`spacetime_constructor.html`](spacetime_constructor.html) is
 built as exactly that view — a world drawn from one movable observer's frame, a draggable figure who
@@ -236,17 +247,33 @@ Its quantum extent *exceeds* its would-be horizon, so it is not inside one: what
 Planck-scale Markov blanket, **not a Schwarzschild horizon**. The child-domain question therefore
 does not arise for it — there is no causally sealed interior to be a child of.
 
-So the ladder is cut by an existing theorem, not by a criterion chosen after seeing which answer was
-convenient:
+**But the theorem covers `μ² < 1/2` strictly, and the constructor's holes sit *at* the crossing.**
+That distinction matters and an earlier draft of this paragraph elided it. A Planck-*mass* object has
+`μ² = 1/2`, where `r_s = λ_C` exactly — the boundary the theorem characterises rather than a case it
+decides. Nothing proved here says whether such an object is causally sealed, supports an internal
+causal sequence, or immediately re-enters. So the ladder cuts cleanly at the bottom and is genuinely
+open in the middle:
 
 | object | `μ²` | horizon | child domain? |
 |---|---|---|---|
-| Planck-era micro-hole | `< 1/2` | none — Compton side, a Markov blanket | **no** — nothing is sealed |
-| hadron | `< 1/2` | the same, which is why §1 reads particles as blanket-horizons | no |
-| stellar-collapse hole | `≫ 1/2` | genuine Schwarzschild horizon | **the candidate** |
+| sub-Planck hadron | `< 1/2` | none — Compton side, a Markov blanket, which is why §1 reads particles as blanket-horizons | **no** — nothing is sealed |
+| Planck-crossing micro-hole | `= 1/2` | `r_s = λ_C`, the crossing itself | **open** — sealing and persistence both undecided here |
+| stellar-collapse hole | `≫ 1/2` | genuine Schwarzschild horizon | the candidate, with the interior step still open |
 
-The honest residue: this settles *which* objects the speculation could even be about. It does not
-show that a sealed interior does re-close, and that step is still the open one below.
+The honest residue: the theorem removes the *sub-Planck* objects from the speculation's scope, which
+is worth having and is less than it first looked. It leaves the Planck crossing as a live
+consistency test — whatever criterion eventually settles sealing must decide that row without being
+tuned to it — and it says nothing at all about whether a sealed interior re-closes.
+
+**The central target, stated precisely enough to attempt.** The gap above has a shape: a horizon
+re-basing map `ρ_H` from the parent's balanced census to the child's, with four properties —
+`ZFA(h) ↔ ZFA(ρ_H h)`; `fold(ρ_H h) = fold(h)`; `ρ_H` a bijection of censuses; and
+`h₁ ≺ h₂ ↔ ρ_H h₁ ≺_C ρ_H h₂`. The first three would establish *the same physical possibilities,
+independently rendered* — the claim of this section. **The fourth is the one that matters for the
+word "universe"**, because reachability transported across the map is what gives the interior a
+chain `E₀ ≺ E₁ ≺ E₂ ≺ …` rather than a single closure, and a chain is what an internal clock needs
+in order to have anything to count. A `QLF_HorizonBasis` module proving those is a better next step
+than more black-hole phenomenology.
 
 **What is still missing, stated as targets.** Three things would move claim (1) from structural
 reading toward science, and none is done: a **horizon-formation** result deriving causal sealing

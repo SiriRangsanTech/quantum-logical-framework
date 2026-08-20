@@ -82,7 +82,7 @@ The engine keeps expanding every permitted continuation until it finds a sequenc
 
 Net action = 0 → stable history that appears to have tunneled.
 
-All other branches that never reach ZFA are pruned.
+All other branches never reach ZFA — they remain generable and real as possibility, they simply do not *close*, so they never become events. (ZFA decides closure, not existence; see [`Philosophy.md`](Philosophy.md).)
 
 ---
 
