@@ -56,7 +56,6 @@ class ConstantsMapper:
         "pi": 3.141592653589793,
         "e": 2.718281828459045,
         "gamma": 0.5772156649015329,
-        "feigenbaum_delta": 4.669201609102990,
         "alpha": 1.0 / 137.035999084,   # fine-structure constant, q²→0 (IR/Thomson) limit
         "G": 6.67430e-11,
     }
@@ -349,16 +348,38 @@ class ConstantsMapper:
 
     def emerge_feigenbaum(self) -> Optional[float]:
         """
-        Native QLF period-doubling estimate.
+        REJECTED ROUTE — kept because a rejected route is a result.
 
-        Construction:
-        - Use reduced primitive periods.
-        - Choose prime reduced periods as irreducible base modes.
-        - For each prime base p, look for the ladder:
-              p, 2p, 4p, 8p, ...
-        - Define lambda_n as the minimum entropy density at reduced period 2^n p.
-        - Estimate:
-              delta_Q = (lambda_{n-1} - lambda_{n-2}) / (lambda_n - lambda_{n-1})
+        This was reported as a DERIVED native constant next to Feigenbaum's
+        4.669201609. It is not a derivation, and it is removed from the report.
+
+        What it actually does: takes reduced primitive periods, keeps the prime ones
+        as "irreducible base modes", searches for ladders p, 2p, 4p, 8p, reads a
+        "load" off the *minimum* entropy density at each rung, discards any ladder
+        that is not monotone, and averages the last five successive interval ratios.
+
+        Every one of those is chosen before the number appears. The period-doubling
+        structure is not found, it is searched for; `2**k` is written into the
+        construction. That is a free fitted kernel, which ScientificApproach.md R2
+        forbids, and the multiplicity rule ("a claim earns physical content only when
+        it changes a count of ways") gives the same verdict — no distribution over
+        ways would make this come out differently, so it is bookkeeping.
+
+        The deeper reason not to expect a substrate answer: Feigenbaum delta is a
+        property of *smooth unimodal maps with a quadratic critical point*, and the
+        constant is class-dependent — quartic gives ~7.2846, sextic ~9.296. A discrete
+        substrate has no critical-point order until a rendering is chosen. So delta
+        belongs to the rendering layer, which is exactly what QLF's own thesis
+        predicts, not to the census.
+
+        (Scoping a claim made too strongly in discussion: an integer parameter R can
+        perfectly well generate derived reals lambda_R that accumulate at a finite
+        limit, so discreteness is no bar to an accumulation point. The narrower and
+        correct statement is that delta should not be a *primitive substrate constant*.)
+
+        The better question, which needs no target number and has a natural kill
+        condition, is in Open_Problems.md: do microscopically different closure rules
+        flow to the same coarse-grained census statistics? See the entry there.
         """
         loads = self._native_loads_by_reduced_period()
         if not loads:
@@ -507,7 +528,6 @@ class ConstantsMapper:
         gamma_val = self.emerge_gamma()
         alpha_val = self.emerge_alpha()
         gauge_spatial_val = self.gauge_spatial_count_ratio()
-        delta_val = self.emerge_feigenbaum()
         G_Q = self.emerge_G_Q()
         G_pred = self.emerge_G_prediction()
         mean_mq = self.mean_prime_mass()
@@ -558,13 +578,6 @@ class ConstantsMapper:
                 "gauge/spatial twist count ratio over stable QuCalc histories "
                 "(structural ensemble observable; NOT α — α is the separate DERIVED line above)",
                 provenance="NATIVE",
-            ),
-            self._format_dimensionless_line(
-                "delta",
-                delta_val,
-                self.CODATA["feigenbaum_delta"],
-                "native reduced-period doubling ratio from prime irreducible modes",
-                provenance="DERIVED",
             ),
             self._format_dimensionless_line(
                 "G_Q",
