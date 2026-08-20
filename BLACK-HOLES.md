@@ -149,6 +149,31 @@ and no need for any**. The two frameworks agree that universes nest and disagree
 point of it — QLF explains the constants by *derivation from the alphabet* and therefore cannot
 also explain them by *selection among variants*. Committing to one forecloses the other.
 
+**And from inside it is a 3-D perspective, with no centre — which is the Personal Origin's third
+claim, arrived at from the machinery.** The interior is not abstractly three-dimensional at some
+vantage-free "middle". Closure in QLF is **horizon-relative**: a history reads open to a shallow
+observer and closed to a deeper one (`closedAtHorizon R s`, `horizon_relative`,
+[`QLF_HorizonClosure`](lean/QLF_HorizonClosure.lean)), so *every* closure is the origin of its own
+rendering and none is privileged. An interior observer therefore sees a 3-D world around itself —
+and so does every other interior observer, each at its own origin.
+
+That is exactly why **the gravity at the centre is zero**: there is no *the* centre. "The middle of
+the hole" is a parent-side description of a region the parent cannot resolve; inside, there is no
+distinguished point for it to name, only closures each of which is its own here. The founding
+intuition's three parts fall out together — *huge inside* (the interior's scale is set by its own
+rendering, not by the parent's measure of it), *no singularity* (curvature bounded by finite event
+density, [`Curvature.md`](Curvature.md) §3), *zero gravity at the centre* (no privileged origin to
+have gravity at).
+
+**You can already look at this.** [`spacetime_constructor.html`](spacetime_constructor.html) is
+built as exactly that view — a world drawn from one movable observer's frame, a draggable figure who
+*is* the origin, "every perspective its own world"
+([`Spacetime_Constructor.md`](Spacetime_Constructor.md)). Nothing about it is black-hole-specific,
+and that is the point: an interior perspective needs no special apparatus, because it is what a QLF
+observer frame *is*. The "logical bang" it renders when the vacuum is heated — Planck-temperature
+holes cascading into hadrons and then atoms — is, read this way, what a child domain's first
+internally meaningful events would look like from inside it.
+
 Two honesties. The re-derivation assumes the interior's closure network is a *general* graph
 (containing non-planar substructure); a degenerate interior with only planar structure would render
 in two. And none of this is checkable from inside — by the non-identifiability result below, a
