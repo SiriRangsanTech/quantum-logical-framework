@@ -149,6 +149,7 @@ appears, as nature already exhibits:
 | Capacity raised to | What happens | Status |
 |---|---|---|
 | `T ≳ T_c ≈ 155 MeV` (`≈ 1.8 × 10¹² K`) | **deconfinement** — the proton is not a closure at all; quarks and gluons roam free | **observed** (RHIC, LHC quark–gluon plasma) |
+| electron Fermi energy `≳ 0.782 MeV` (compression, not heat) | **electron capture** — `p + e⁻ → n + ν_e`; the proton closure is *replaced*, not broken (§4a.1) | **observed** (stellar collapse, neutron-star matter) |
 | above the electroweak crossover (`≈ 160 GeV`) | **baryon number itself violated** — sphaleron transitions (§4b) | standard, and already admitted here ([`Conservation.md`](Conservation.md) §7: QLF carries *no* exact global symmetry beyond the gauge charges, matching Banks–Seiberg / swampland) |
 
 Note the exception's shape: the proton does not *decay*, it **dissolves**. That distinction matters and
@@ -169,6 +170,54 @@ are the same variable, and §4's multiplicity reading applies directly: at every
 overwhelming majority of ways that close keep the proton bound, so it looks exceptionless; raise `T` and
 the deconfined ways come to dominate. What happens in the most ways happens first — and *which* ways are
 most is temperature-dependent.
+
+---
+
+## §4a.1 Forced electron capture — changing the closure without destroying it
+
+The middle row of that table is a **third category**, and it makes the law's point better than
+dissolution does.
+
+Deconfinement breaks the proton: above `T_c` it is not a closure at all. The sphaleron goes
+further and violates the winding invariant itself. **Electron capture does neither.**
+
+```
+    p + e⁻ → n + ν_e
+```
+
+Baryon number goes `1 → 1`; the winding is untouched. Charge goes `0 → 0`. The proton has not
+decayed, dissolved, or been annihilated — the *joint* `p + e⁻` closure has **restructured** into a
+different closure of the same neutral `B = 1` content, one quark flipping `uud → udd`, with the
+neutrino carrying the residual weak relation ([`Weak_Force.md`](Weak_Force.md) §4b). The proton
+closure has been **replaced**, not broken.
+
+And the capacity knob is different too. §4a's ladder is driven by **temperature**; this rung is
+driven by **compression**. Squeeze matter and the electrons' Fermi energy rises; once it clears the
+`0.782 MeV` the neutron costs, the deeper closure is affordable and the census tips toward it. Heat
+and density are both capacity, but they open different exceptions — which is worth noting, because
+it means "capacity" is not a single scalar dial.
+
+**The lesson, sharper than "everything eventually breaks."** A proton is stable against
+spontaneous decay and is *not thereby invariant under every larger joint closure it can become part
+of*. Its low-energy stability claim is exactly right and exactly bounded: the prime lock says
+nothing can factor the proton *within its capacity*, and says nothing about what a bigger joint
+event can do with it as a constituent. **The exception here is not a failure of the closure but a
+promotion of the system that contains it** — which is the Law of Exceptions in its cleanest
+physical form, and closer to §2's proof (`[+^{R+1} −^{R+1}]` is unadmitted at `R` and *genuinely
+closes* at `R+1`) than dissolution is.
+
+Keeping the four apart matters:
+
+| | what happens to the proton | baryon number |
+|---|---|---|
+| spontaneous cold decay | — QLF predicts **it does not happen** | would be violated |
+| **electron capture** | **closure replaced** by a neutron | **conserved** |
+| deconfinement | closure **dissolves**; quarks roam | conserved (quarks carry the winding) |
+| sphaleron | — | **violated** |
+
+Only the last two are exceptions to a *proton* law at all, and only the last is an exception to
+baryon conservation. Where nature runs the middle row at scale — and what it leaves behind — is
+[`Decay.md`](Decay.md) §2.4a.
 
 ---
 

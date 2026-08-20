@@ -196,6 +196,74 @@ resonance** (`Φ_p → ω_b`) — the prime‑synchronized cascade dump.
 
 ---
 
+### 2.4a The remnant — how a neutron star is made
+
+The supernova above is the *event*; this is what it leaves, and it is the one place in physics
+where QLF's capacity ladder is run to completion by nature at macroscopic scale.
+
+**The chain, as capacity.** Fusion stops at iron — past it, binding energy no longer rises, so the
+core has no further exothermic closure to make ([`Fusion.md`](Fusion.md)). Support fails, the core
+contracts, and **compression takes over from heat as the capacity knob**. Electrons are fermions,
+so squeezing them raises their Fermi energy (Pauli exclusion read spatially,
+[`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md)). Once that energy clears the
+`0.782 MeV` a neutron costs, the deeper closure of the neutral `B = 1` content becomes affordable
+and electron capture switches on ([`Weak_Force.md`](Weak_Force.md) §4b,
+[`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1):
+
+```
+    p + e⁻ → n + ν_e
+```
+
+**And it is self-accelerating, which is the whole mechanism.** The electrons being captured are
+the same electrons whose degeneracy pressure was holding the core up. Capture removes the support
+that resists the compression that drives the capture. That is a positive feedback of exactly the
+form §2.4's cascade model already carries (`Φ_p → Φ_p + κ·E`, releases pushing neighbours toward
+the lock) — here the feedback runs on density rather than flux, and it runs away. The core
+**neutronizes**: the census of ways the matter can close shifts wholesale from the shallow
+hydrogen-class closure to the deep neutron one, because at that capacity the neutron ways are the
+ways that close.
+
+**What stops it.** Neutrons are fermions too. When neutron degeneracy — the same spatial-exclusion
+principle one rung deeper — plus the repulsive core of the nuclear closure takes over, the collapse
+halts and bounces. The gravitational binding energy released is carried off almost entirely by
+neutrinos, which is §2.4's coherent `log 2`-per-octave dump seen from outside: the burst is not
+incidental to the collapse, it *is* the collapse's receipt.
+
+**The ladder, end to end.** Each rung is a capacity, and each opens a closure the rung below cannot
+reach:
+
+| Capacity | How the `B = 1` content closes | Held up by |
+|---|---|---|
+| ordinary | `uud` + electron **outside** — hydrogen | electron shells |
+| white-dwarf density | still electron-outside, compressed | **electron** degeneracy |
+| `E_F ≳ 0.782 MeV` | `udd` — the `−1` folded **in**, `ν_e` away | (support removed — runaway) |
+| neutron-star density | neutron closures packed | **neutron** degeneracy + nuclear repulsion |
+| `T ≳ 155 MeV` | no baryon closure at all — quarks roam | nothing (deconfined) |
+
+Two rungs are the *same* Pauli exclusion at different depths, which is why
+[`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) lists white dwarfs and neutron
+stars in one breath: degeneracy pressure is spatial exclusion, and the substrate reading is that
+identical same-orientation closures must occupy distinct events.
+
+**Magnetars, briefly.** Circulation is a winding quantity on the substrate
+([`Navier_Stokes_Geometry.md`](Navier_Stokes_Geometry.md): vorticity is the discrete curl,
+quantized per cell), so compressing a magnetized core concentrates the flux it already carries
+rather than manufacturing new field. Collapse by a large factor in radius therefore amplifies the
+surface field enormously — which is the structural reason a neutron star can carry the strongest
+magnetic fields known, and the point at which this chain hands over to
+[`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md).
+
+**Honest scope.** This is *structure*, and the numbers are not QLF's. What the substrate supplies
+is the ladder — that compression is a capacity, that a deeper closure of the same neutral content
+becomes available at a threshold, that capture is self-accelerating because it eats its own
+support, that degeneracy is exclusion one rung down, and that the neutrino burst is the closure
+receipt. What it does **not** supply: no derived Chandrasekhar mass, no mass–radius relation, no
+neutronization threshold computed from the census rather than taken from measured masses, and no
+equation of state. The `0.782 MeV` above is measured input, not a QLF output. Treat this as the
+capacity reading of known astrophysics, not a derivation of it.
+
+---
+
 ## 3. Summary of the decay chain
 
 | Stage | ZFA object | Turbulent trigger | Effect in the core |

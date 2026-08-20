@@ -31,7 +31,7 @@ Spatially, this means same-orientation closures occupy *distinct* substrate even
 This is the QLF mechanism behind:
 
 - **Atomic-shell filling and the periodic table** ([HALF-SPIN-ZFA-EMBEDDING.md](HALF-SPIN-ZFA-EMBEDDING.md) §3a, [`Atom.md`](Atom.md), [`Magic_numbers.md`](Magic_numbers.md))
-- **Fermi pressure in degenerate matter** (white dwarfs, neutron stars)
+- **Fermi pressure in degenerate matter** (white dwarfs, neutron stars) — the same exclusion two rungs apart: electron degeneracy holds a white dwarf up, neutron degeneracy a neutron star, and what carries the star from one to the other is forced electron capture ([`Decay.md`](Decay.md) §2.4a, [`Weak_Force.md`](Weak_Force.md) §4b). Compressing a magnetized core concentrates the circulation it already carries, which is the structural reason the remnant can hold the strongest magnetic fields known
 - **Hund's rule energy ordering** in atoms — half-filled shells with maximally parallel spins have higher energy because the spatial expansion of like-spin pairs requires more orbital extent
 - **Electron-electron repulsion in molecular orbitals** that goes beyond the bare Coulomb repulsion — the exclusion contribution is non-Coulombic
 - **The 8-twist alphabet's 6+2 split** (six spatial twists, two gauge twists; [`Magic_numbers.md`](Magic_numbers.md)) — the spatial 6 is what supports the three-dimensional exclusion structure

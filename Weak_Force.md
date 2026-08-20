@@ -80,6 +80,51 @@ So "which lepton variety closes the proton" is a **generation** choice, and the 
 
 ---
 
+### 4b. Electron capture — the same pair-flip, run the other way
+
+β decay converts a neutron into a proton-deficit plus its completer. The **inverse** process runs
+the identical gauge-fold pair-flip in the opposite direction:
+
+```
+    β⁻ decay      n → p + e⁻ + ν̄        (d → u, the completer ejected)
+    e⁻ capture    p + e⁻ → n + ν_e       (u → d, the completer absorbed)
+```
+
+Both are one operation — the weak pair-flip of §1 — read in two directions, and §4a is why the
+reverse reads so naturally here. A bare proton is a *deficit*; the observable is the neutral
+`B = 1` content, ordinarily realized as the hydrogen-class closure with the electron **outside**.
+Electron capture is that same neutral content finding a **different, deeper closure of itself**,
+with the `−1` folded **in** — exactly the contrast [`proton_neutron_demo.py`](proton_neutron_demo.py)
+draws: *hydrogen = `uud` + electron outside; neutron = `udd`, the `−1` folded in (one `u → d`)*.
+Nothing is destroyed and nothing is created; one quark flips and the neutral closure reorganizes.
+
+Nothing is smuggled in, either — the electron is not a pre-existing little object pushed inside
+the baryon. The **joint** `p + e⁻` closure restructures: the baryon's flavour content changes
+`uud → udd`, and the neutrino carries off the residual weak relation.
+
+**What is conserved, stated exactly.** Electric charge: `(+1) + (−1) = 0 → 0`. Baryon number:
+`1 → 1` — the signed 3-axis winding is untouched (`baryonNumber`,
+[`lean/QLF_BaryonWinding.lean`](lean/QLF_BaryonWinding.lean)), which is what makes this
+**not proton decay**. Lepton number is a different matter and QLF has already committed: the
+neutrino is Majorana, so it carries no conserved lepton charge and `L` is not exact
+([`Beta_Decay_Neutrino_Nature.md`](Beta_Decay_Neutrino_Nature.md) §1). Nothing here needs `L`.
+
+**It costs, which is the whole point.** For a *free* proton and electron the neutron is heavier:
+
+```
+    m_n − (m_p + m_e) ≈ 939.565 − 938.272 − 0.511 ≈ 0.782 MeV
+```
+
+so capture cannot happen spontaneously — ordinary hydrogen is stable precisely because the shallow
+closure is the only one its energy budget reaches. Supply that `0.782 MeV`, by heat or by
+compression, and a **deeper closure of the same neutral content becomes available**. That is the
+capacity reading, and [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §4a.1 takes it up: a closure
+can stay protected against decay and still be transformable once it is a constituent of a
+higher-capacity joint event. Where nature does this at scale is
+[`Decay.md`](Decay.md) §2.4a — stellar collapse, and the neutron star it leaves.
+
+---
+
 ## 5. The τ-decay vertex — where the W is the named blocker
 
 The electron and muon are handled as two-body bound-state ("Bohr") half-loop closures. The **τ breaks this pattern**: it is too short-lived for bound-state binding. Its decay `τ⁻ → ν_τ + W⁻` is a **multi-body joint ZFA closure** (one in, several out) that fires at an energetic threshold, and the **W's QLF closure topology is the named missing piece** needed to derive `m_τ` ([`Atomic_Structure_QLF.md`](Atomic_Structure_QLF.md) §6, [`Bound_States_QLF.md`](Bound_States_QLF.md) §4). So the W is not peripheral — it is the structural blocker for completing the lepton mass spectrum.

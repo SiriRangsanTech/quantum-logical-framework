@@ -255,6 +255,12 @@ This output demonstrates the full QLF narrative in action: gauge-fold handshake,
 
 ## 7. Experimental & Stellar Implications
 
+> **Where fusion stops.** Past iron there is no exothermic closure left to make, and the core's
+> support fails. What follows is the other end of the same story — compression replacing heat as
+> the capacity knob, forced electron capture `p + e⁻ → n + ν_e` running the β pair-flip backwards,
+> and the neutron star it leaves: [`Decay.md`](Decay.md) §2.4a, [`Weak_Force.md`](Weak_Force.md) §4b.
+
+
 - Explains why fusion cross-sections peak at specific energies (topological resonance frequencies).  
 - Predicts new low-energy fusion pathways when gauge folds are externally stimulated (future QuCalc simulations).  
 - In stars: plasma increases logical density → blanket mergers become statistically favored → nucleosynthesis chain emerges automatically.  
