@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **207 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **208 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,9 +14,9 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## Modules — 207, machine-verified, zero `sorry`
+## Modules — 208, machine-verified, zero `sorry`
 
-Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 207 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 208 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
@@ -27,6 +27,9 @@ Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **T
 | `RhoQuCalc` | ρ-process algebra (`RhoProcess`, `eval`, dagger) |
 | `BraKetRhoQuCalc` | Bra-ket ↔ RhoQuCalc; the Σ₈ / `τ = iσ` weak-isospin algebra |
 | `QLF_TwistAlphabet` | 8-twist σ-mapping; `count_balanced_pauli_closed` (count balance ⟹ Pauli closure) |
+| `QLF_AlphabetNecessity` | Why eight twists: the alphabet is the signed axis frame, so `\|Σ\| = 2·\|axes\|` and a closed axis set is a Klein-four subgroup — `\|Σ\| ∈ {2,4,8}`, **six impossible**, eight forced by two spatial axes |
+| `QLF_Handedness` | **Handedness is the primitive**; ZFA *is* zero net handedness on every axis; **charge is its gauge component**, one of four |
+| `QLF_ElectronClosure` | The electron as a closed periodic mode; charge as the residue of non-closure; **no event is ever charged**; Coulomb as a count of joint closures |
 | `QLF_Pauli` | 4-element Pauli scalar group `{±I, ±iI}` = μ₄ |
 | `QLF_Spin` | Spin IS the twists; genuine SU(2)→SO(3) double cover |
 | `QLF_FreeEnergy` | Per-event `ΔF = −log 2` at half-spin ZFA closure; `binary_kl` |
@@ -361,7 +364,7 @@ Avoid framings that contradict the above:
 | Path | Purpose |
 |---|---|
 | `lean/` | All Lean source files |
-| `lakefile.lean` | Build config; `roots` array lists all 207 modules |
+| `lakefile.lean` | Build config; `roots` array lists all 208 modules |
 | `lean/README.md` | Module table and proof chain documentation |
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |

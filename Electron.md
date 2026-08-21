@@ -7,6 +7,8 @@
 
 ## Abstract
 
+> **Handedness is fundamental; charge is not.** A twist *is* a handedness on an axis and nothing else, ZFA *is* zero net handedness on every axis, and charge is the **gauge component** of it — one of four (`zfa_iff_handedness_balanced`, `chiralCharge_eq_handednessOn_gauge`).
+>
 > **An electron is a closed half-spin periodic mode, not a point carrying a localized charge.** Its internal cycle `^<v>` *is* Zero-Free-Action closed and folds to `−I`. What is **not** closed is its **gauge** twist — and that unmatched gauge count *is* the charge. So the electron is closed on the spatial axes and open on the gauge axis, and the two are different axes of the same alphabet. A **manifest physical event** — preparation, binding, detection — is the larger joint closure in which the gauge deficit is matched. The electron's intrinsic scale is therefore the **period of its closed mode**, never a radius.
 
 In QLF **the electron is not an independent stable observable**, but not because it is an unfinished fragment. It is a completed half-spin cycle carrying one unmatched gauge distinction, which is why it must join a Hermitian-conjugate partner (positron → positronium), a heavier lepton (antimuon → muonium), or a baryon (proton → hydrogen) before the *whole* event closes. The "electron's mass" reported by experiment, `m_e ≈ 0.511 MeV`, is the electron's **gauge-fold-depth contribution** to the bound-state mass — half of `m(positronium)`, the analogous contribution to `m(hydrogen)`, and so on.
@@ -45,7 +47,7 @@ Machine-verified, zero axioms, in [`lean/QLF_ElectronClosure.lean`](lean/QLF_Ele
 - `electronCharged_not_countBalanced` — …and is therefore *not* closed. **The charge is exactly the part that did not close.**
 - `positronium_countBalanced` / `positronium_neutral` — the joint event closes, and is neutral.
 
-So the electron is not an unfinished particle fragment. It is a **completed periodic mode carrying one open gauge distinction** — and that distinction does not *do* anything. It is not a pending effect, and the electron does not seek a partner. A history carrying non-zero charge simply does not close, and what does not close is not an event (§1b'). What we call the electron's charge shows up only *inside* joint histories that do close.
+So the electron is not an unfinished particle fragment. It is a **completed periodic mode carrying one open gauge distinction** — and that distinction does not *do* anything. It is not a pending effect, and the electron does not seek a partner. A history carrying non-zero charge simply does not close, and what does not close is not an event (§1b″). What we call the electron's charge shows up only *inside* joint histories that do close.
 
 $$
 \boxed{\text{electron} = \text{closed periodic mode} + \text{one unmatched gauge twist}}
@@ -83,7 +85,48 @@ $$
 
 **Charge is not a fundamental property carried by an object.** It is a *count of what has not yet closed*. There is no charge field, no charged point, no charge substance: a history that closes has charge zero, necessarily, and a history that carries charge is by that fact incomplete. This is why charge is conserved (counts of conjugate twists cannot be created singly), why it is quantized (it is an integer count), and why an electron cannot be isolated as a completed event.
 
-### 1b′. No event is ever charged — and Coulomb is a count, not a force
+### 1b′. What *is* fundamental: handedness
+
+Charge being emergent leaves a question, and it has an answer
+([`lean/QLF_Handedness.lean`](lean/QLF_Handedness.lean), zero axioms).
+
+A twist **is** a handedness together with an axis, and nothing else — the alphabet is the signed axis
+frame, `Twist ≃ Bool × Axis` ([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)). The only
+two data an elementary distinction carries are *which axis it distinguishes along* and *which of the
+two ways it went*. **Charge is nowhere in the primitives.**
+
+$$
+\boxed{\text{ZFA} \;\Longleftrightarrow\; \text{zero net handedness on every axis}}
+\qquad \texttt{zfa\_iff\_handedness\_balanced}
+$$
+
+$$
+\boxed{\text{charge} \;=\; \text{the \emph{gauge} component of handedness — one of four}}
+\qquad \texttt{chiralCharge\_eq\_handednessOn\_gauge}
+$$
+
+Count balance was always a statement about handedness: one component per conjugate pair, which is
+**why `F(h)` has four terms**. And this is *why* charge cannot see a spin or an energy (§1c) — those
+are the other three components, and components of a vector do not mix. Charge is not a different kind
+of thing from spin; it is the same primitive read on a different axis.
+
+Three more, each machine-verified:
+
+- **`handedness_ne_zero`** — there is no unhanded distinction. To distinguish at all is to go one way
+  rather than the other.
+- **`handednessOn_map_conj`** — conjugation negates *every* component. So charge flips **because**
+  handedness does, not the other way round; `chiralCharge_conj` is its `Axis.I` case.
+- **`electron_neutral_but_handed`** — the electron's cycle has zero net handedness on every axis, and
+  every twist in it is handed. **The primitive never vanishes; the derived quantity does.** *Neutral
+  does not mean handedness-free — it means handedness balanced.*
+
+**C and P in one line.** `C` flips every component of handedness; `P` (`reflect`) flips one. Charge
+is the gauge component, so spatial reflection leaves charge alone by construction
+(`reflect_preserves_charge`) while conjugation negates it. The asymmetry between the two is a fact
+about how many handedness components each touches — see
+[`CP-Violation-and-Chirality.md`](CP-Violation-and-Chirality.md) §1a.
+
+### 1b″. No event is ever charged — and Coulomb is a count, not a force
 
 The contrapositive of `zfa_closure_is_neutral` is the load-bearing direction, and it is where the ontology bites:
 
@@ -129,7 +172,7 @@ Two independent confirmations of the same structure, in the coherent channel rat
 
 Together: `channelKernel_diagonal` gives `Γ[(m,s),(n,s')] = δ_mn δ_ss'`. **Different harmonics or orthogonal spin channels carry no persistent coherent cross term.**
 
-> **Scope, stated once and precisely.** What is proven is that the charge *difference* between modes is exactly zero and the coherent cross term vanishes — so no closure channel is opened or closed by a difference of spin or energy, and the electromagnetic weight is **spin-blind and energy-blind**. What is *not* claimed is that the shared gauge imbalance disappears: both electrons carry the same unmatched `+`. But by §1b′ that imbalance is **not an effect** — it is what makes certain joint histories close and others not exist at all. Two electrons of different energies do enter joint events (§1e), in however many ways there are; QLF's content is that the count of those ways does not depend on their spins or energies *through the charge*.
+> **Scope, stated once and precisely.** What is proven is that the charge *difference* between modes is exactly zero and the coherent cross term vanishes — so no closure channel is opened or closed by a difference of spin or energy, and the electromagnetic weight is **spin-blind and energy-blind**. What is *not* claimed is that the shared gauge imbalance disappears: both electrons carry the same unmatched `+`. But by §1b″ that imbalance is **not an effect** — it is what makes certain joint histories close and others not exist at all. Two electrons of different energies do enter joint events (§1e), in however many ways there are; QLF's content is that the count of those ways does not depend on their spins or energies *through the charge*.
 >
 > **This is a prediction, not a retreat.** Standard QED agrees and QLF *derives* it: the direct Coulomb term is exactly spin-independent, and all spin dependence of two-electron energies (the singlet–triplet splitting) comes from exchange — which is closure blocking, not charge. QLF says that had to be so, because charge and spin do not live on the same axes.
 
@@ -215,6 +258,10 @@ Statuses on the two axes of [`ScientificApproach.md`](ScientificApproach.md) §3
 | The electron's internal cycle is ZFA-closed and folds to `−I` | **Proved** | **Internal** | `electronCycle_countBalanced`, `electronCycle_folds_negI` |
 | Hermitian ⇏ ZFA-closed | **Proved** | **Internal** | `hermitian_not_implies_zfa` |
 | Charge = unmatched gauge count; closed ⟹ neutral | **Proved** | **Consistency** — reproduces conservation and quantization of charge | `chiralCharge_eq_gauge_counts`, `zfa_closure_is_neutral` |
+| **ZFA is zero net handedness on every axis** | **Proved** | **Internal** — the selection principle restated in the primitive | `zfa_iff_handedness_balanced` |
+| **Charge is the gauge component of handedness, one of four** | **Proved** | **Internal** — explains §1c rather than restating it | `chiralCharge_eq_handednessOn_gauge` |
+| **Handedness never vanishes; a closure is balanced, not handedness-free** | **Proved** | **Internal** | `handedness_ne_zero`, `electron_neutral_but_handed` |
+| **C flips four components, P flips one; parity cannot touch charge** | **Proved** | **Consistency** — reproduces the C/P asymmetry structurally | `handednessOn_map_conj`, `reflect_preserves_charge` |
 | **No event is ever charged** | **Proved** | **Internal** — the ontological consequence: an unclosed history has no effect | `charge_nonzero_not_countBalanced` |
 | **Coulomb is a count of joint closures, not a force** | **Proved** | **Consistency** — like/unlike behaviour reproduced with no force, field, or action at a distance | `coulomb_is_a_counting_rule`, `like_charges_do_not_close`, `opposite_charges_close` |
 | **No charge difference between modes of different energy or spin** | **Proved** | **Consistency** — the direct Coulomb term *is* spin-independent in QED; here it is derived rather than computed | `no_charge_between_spatial_modes`, `chiralCharge_determined_by_gauge` |
@@ -328,6 +375,8 @@ The output describes the **joint** closure, not the electron alone. The "electro
 
 ## 5. Links to More Advanced Reading
 
+- [`lean/QLF_Handedness.lean`](lean/QLF_Handedness.lean) — **what is fundamental**: handedness is the primitive, ZFA is its balance on every axis, charge is its gauge component. Zero axioms.
+- [`CP-Violation-and-Chirality.md`](CP-Violation-and-Chirality.md) §1a — the same primitive at the cosmological scale: a universe whose primitive is handedness has no reason to be handedness-symmetric.
 - [`lean/QLF_ElectronClosure.lean`](lean/QLF_ElectronClosure.lean) — **the machine-verified core of §1**: the two closures, Hermitian ⇏ ZFA, charge as the gauge residue, no charge between spatial modes, harmonic and spin orthogonality, the closure period. Zero axioms.
 - [`lean/QLF_Spin.lean`](lean/QLF_Spin.lean) — `fold_electron`, `chiralCharge`, `chiralCharge_conj` (charge conjugation = view from behind), `electron_not_majorana`.
 - [`Bound_States_QLF.md`](Bound_States_QLF.md) — **the framing of this doc**: free leptons are not QLF observables; atomic systems are. Positronium, muonium, hydrogen as the natural mass observables. Reduced-mass Bohr binding structure.
@@ -356,6 +405,8 @@ $$
 \boxed{\text{charge} = \text{residue of non-closure}}, \qquad
 \boxed{\text{scale} = \text{closure wavelength},\; \text{not a radius}}
 $$
+
+And underneath all three, the primitive they are made of: **handedness**. A twist is a handedness on an axis and nothing else; ZFA is zero net handedness on every axis; charge is the gauge component of it. *Neutral does not mean handedness-free — it means handedness balanced.*
 
 And the sharp one: **charge is blind to spin and energy**, because charge lives on the gauge axis and spin and energy live on the spatial axes. There is no charge *between* two electrons of different energy or different spin — the difference is exactly zero (`no_charge_between_spatial_modes`), and the coherent cross term between distinct harmonics or opposite spin channels is exactly zero as well (`channelKernel_diagonal`).
 

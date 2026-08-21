@@ -7,6 +7,43 @@ In the Standard Model of particle physics, CP violation (Charge Parity violation
 
 In the Quantum Logical Framework (QLF), this asymmetry is not an anomaly. It is the inevitable mathematical outcome of **evolutionary game theory** operating over a discrete, possibilist topology. As outlined in [`Philosophy.md`](./Philosophy.md), the universe is an information ecology driven by active inference [2]. In this ecology, conjugate topologies (Matter and Antimatter) compete for stable Zero Free Action (ZFA) closure. 
 
+## 1a. Handedness is the primitive — charge is not
+
+The asymmetry is not an anomaly for a structural reason that is now machine-verified
+([`lean/QLF_Handedness.lean`](lean/QLF_Handedness.lean), zero axioms). **Handedness is not a property
+things have; it is what a distinction *is*.**
+
+The alphabet is the signed axis frame — `Twist ≃ Bool × Axis`
+([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)) — so the only two data an elementary
+distinction carries are *which axis it distinguishes along* and *which of the two ways it went*. The
+second is handedness. **Charge is nowhere in the primitives.** Four theorems make that exact:
+
+| Result | Statement |
+|---|---|
+| `handedness_ne_zero` | **There is no unhanded distinction.** To distinguish at all is to go one way rather than the other |
+| **`zfa_iff_handedness_balanced`** | **ZFA *is* zero net handedness, on every axis.** Count balance was always a statement about handedness — one component per conjugate pair, which is why `F(h)` has four terms |
+| **`chiralCharge_eq_handednessOn_gauge`** | **Charge is the gauge component of handedness** — one of four, derived. Not a substance, not a fifth axis |
+| `handednessOn_map_conj` | Conjugation negates **every** component; charge flips *because* handedness does, not the other way round (`chiralCharge_conj` is the `Axis.I` case) |
+
+So the ordering usually assumed — charge fundamental, chirality a property of charged things — is
+inverted. **Handedness is fundamental and charge is its gauge-axis reading**, exactly as spin content
+is its spatial-axis reading. This is also *why* charge cannot see a spin or an energy
+([`Electron.md`](Electron.md) §1c, `no_charge_between_spatial_modes`): those are the other three
+components, and components of a vector do not mix.
+
+**And the primitive never vanishes while the derived quantity does.** The electron's cycle is neutral
+*and made entirely of handed twists* (`electron_neutral_but_handed`). **Neutral does not mean
+handedness-free — it means handedness balanced.** A closure is not the absence of handedness; it is
+handedness that has cancelled, on all four axes at once.
+
+**C and P, in one line.** `C` flips *every* component of handedness; `P` (`reflect`) flips *one*.
+Charge is the gauge component — so spatial reflection leaves charge alone by construction
+(`reflect_preserves_charge`) while conjugation negates it. The familiar asymmetry between the two
+operations is a statement about *how many handedness components each one touches*, not about two
+unrelated symmetries. That is the structural setting for everything below: a universe whose
+primitive is handedness has no reason to be handedness-symmetric, and CP violation stops needing an
+explanation for why the asymmetry exists — only for its size.
+
 ## 2. The Markov Blanket of Matter
 To survive in a possibilist universe, a logical history must maintain its structural integrity against a chaotic environment. It does this by forming a **Markov blanket**—a statistical boundary that separates internal, stable states from external, unclosed free action, a concept central to the Free Energy Principle and active inference [2]. See ([Hadrons_Markov_Blankets.md](Hadrons_Markov_Blankets.md))
 

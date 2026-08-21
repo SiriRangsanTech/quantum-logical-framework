@@ -84,7 +84,30 @@ Under it, **charge and perpendicular-chirality co-negate** (`C_eq_motional_rever
 So the positron-from-behind *is* an electron: opposite charge **and** opposite handedness,
 together — **charge conjugation = motional reversal**.
 
-### 5a. Charge is the residue of non-closure — and it cannot see a spin
+### 5a. Handedness is the primitive; charge is one of its four components
+
+Before the charge statements, the ordering they sit in — machine-verified in
+[`QLF_Handedness`](lean/QLF_Handedness.lean), zero axioms. A twist **is** a handedness together with
+an axis and nothing else (`Twist ≃ Bool × Axis`, [`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)),
+so:
+
+- **`handedness_ne_zero`** — there is no unhanded distinction; to distinguish is to go one way rather
+  than the other;
+- **`zfa_iff_handedness_balanced`** — **ZFA is exactly zero net handedness on every axis.** The
+  selection principle is a statement about handedness and nothing else, with one component per
+  conjugate pair — which is why `F(h)` has four terms;
+- **`chiralCharge_eq_handednessOn_gauge`** — **charge is the gauge component of handedness**, one of
+  four. Not a substance, not a fifth axis, not fundamental;
+- **`handednessOn_map_conj`** — conjugation negates every component, so `chiralCharge_conj` above is
+  simply its `Axis.I` case: charge flips *because* handedness does.
+
+**The primitive never vanishes; the derived quantity does.** The electron's cycle is neutral *and
+built entirely of handed twists* (`electron_neutral_but_handed`) — neutral does not mean
+handedness-free, it means handedness balanced. And `C` flips all four components where `P`
+(`reflect`) flips one, which is why parity leaves charge alone by construction
+(`reflect_preserves_charge`) while conjugation negates it.
+
+### 5b. Charge is the residue of non-closure — and it cannot see a spin
 
 `twistCharge` weights the gauge pair `±1` and gives **zero to all six spatial twists**, so
 `chiralCharge` is the signed gauge count and nothing else (`chiralCharge_eq_gauge_counts`,
