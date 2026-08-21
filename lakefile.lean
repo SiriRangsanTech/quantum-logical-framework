@@ -74,6 +74,7 @@ lean_lib QLF where
     `QLF_RiemannMRE,
     `QLF_Spin,
     `QLF_ElectronClosure,
+    `QLF_Handedness,
     `QLF_PionMassRatio,
     `QLF_QuantumBlackHole,
     `QLF_DarkMatter,
