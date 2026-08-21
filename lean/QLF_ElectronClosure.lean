@@ -27,6 +27,14 @@
 --    axes. What is left over is the common gauge deficit, which is why an
 --    electron still needs a partner to close.
 --
+-- A note on framing, because the wording is load-bearing. An unmatched charge is
+-- **not** a pending effect and the electron does not "seek" a partner: a history
+-- with non-zero charge does not close (`charge_nonzero_not_countBalanced`), and
+-- what does not close is not an event and has no effect at all. What we call
+-- Coulomb attraction and repulsion is the count of joint histories that DO close
+-- (`coulomb_is_a_counting_rule`) — like charges admit none, opposite charges admit
+-- some. No force, no field, no action at a distance.
+--
 -- Two further results support the "manifest only at full cycles" reading:
 -- distinct full-cycle harmonics have zero coherent overlap (`harmonics_orthogonal`
 -- — Kronecker delta from Kraft-free geometry: a geometric sum of a root of unity)
@@ -170,8 +178,9 @@ theorem chiralCharge_determined_by_gauge (ts us : List Twist)
 
     Scope, stated sharply: this says the charge *difference* is zero, so no
     Coulomb channel is opened or closed by a difference of spin or energy. It
-    does not say the shared gauge deficit vanishes — that residue is the common
-    charge, and it is exactly why an electron must still find a partner. -/
+    does not say the shared gauge imbalance vanishes — but that imbalance is not
+    an effect either (§3a): a history carrying it does not close, and what does
+    not close is not an event. -/
 theorem no_charge_between_spatial_modes (gauge sp₁ sp₂ : List Twist)
     (h₁ : ∀ t ∈ sp₁, twistCharge t = 0) (h₂ : ∀ t ∈ sp₂, twistCharge t = 0) :
     chiralCharge (sp₁ ++ gauge) = chiralCharge (sp₂ ++ gauge) := by
@@ -222,6 +231,65 @@ theorem positronium_countBalanced : countBalanced positronium := by
 
 theorem positronium_neutral : chiralCharge positronium = 0 :=
   zfa_closure_is_neutral positronium_countBalanced
+
+-- ==========================================
+-- 3a. No event is ever charged — and Coulomb is a count, not a force
+-- ==========================================
+
+/-- **A charged history is never an event.** The contrapositive of
+    `zfa_closure_is_neutral`, and it is the load-bearing direction: non-zero
+    charge implies the history does not close, and what does not close is not an
+    event. So charge is not a property an object has *and acts with* — no event
+    ever carries net charge. What carries charge is a non-event. -/
+theorem charge_nonzero_not_countBalanced {ts : List Twist} (h : chiralCharge ts ≠ 0) :
+    ¬ countBalanced ts := fun hb => h (zfa_closure_is_neutral hb)
+
+/-- **A joint closure has zero total charge.** Not a conservation law imposed on
+    a dynamics — a counting condition on which joint histories close at all. -/
+theorem joint_closure_total_charge_zero {h₁ h₂ : List Twist}
+    (h : countBalanced (h₁ ++ h₂)) : chiralCharge h₁ + chiralCharge h₂ = 0 := by
+  rw [← chiralCharge_append]
+  exact zfa_closure_is_neutral h
+
+/-- **Like charges admit no joint closure at all — zero ways, not a repulsion.**
+    Nothing pushes them apart; there is simply no closed history in which both
+    occur. -/
+theorem like_charges_do_not_close {h₁ h₂ : List Twist}
+    (heq : chiralCharge h₁ = chiralCharge h₂) (hne : chiralCharge h₁ ≠ 0) :
+    ¬ countBalanced (h₁ ++ h₂) := by
+  intro hb
+  have hsum := joint_closure_total_charge_zero hb
+  rw [← heq] at hsum
+  omega
+
+/-- The positron with its gauge twist. -/
+def positronCharged : List Twist := positronCycle ++ [Twist.minus]
+
+theorem positronCharged_charge : chiralCharge positronCharged = -1 := by
+  unfold chiralCharge positronCharged positronCycle
+  decide
+
+/-- **Opposite charges do close — there are ways.** -/
+theorem opposite_charges_close :
+    countBalanced (electronCharged ++ positronCharged) := by
+  unfold countBalanced electronCharged positronCharged electronCycle positronCycle
+  decide
+
+/-- **The Coulomb rule, with no force in it.** Two histories admit a joint
+    closure only if their charges cancel; like charges admit *none*, opposite
+    charges admit some. Nothing attracts and nothing repels — what differs is
+    how many ways there are, and a closure's frequency is its multiplicity.
+    An unmatched charge is not a pending effect waiting for a partner: it is a
+    history that does not close, and so is not an event and has no effect. -/
+theorem coulomb_is_a_counting_rule :
+    (∀ h₁ h₂ : List Twist, countBalanced (h₁ ++ h₂) →
+        chiralCharge h₁ + chiralCharge h₂ = 0) ∧
+      ¬ countBalanced (electronCharged ++ electronCharged) ∧
+      countBalanced (electronCharged ++ positronCharged) := by
+  refine ⟨fun _ _ h => joint_closure_total_charge_zero h, ?_, opposite_charges_close⟩
+  refine like_charges_do_not_close rfl ?_
+  rw [electronCharged_charge]
+  decide
 
 -- ==========================================
 -- 4. A joint closure does not need matching components
