@@ -73,6 +73,7 @@ lean_lib QLF where
     `QLF_NavierStokes,
     `QLF_RiemannMRE,
     `QLF_Spin,
+    `QLF_ElectronClosure,
     `QLF_PionMassRatio,
     `QLF_QuantumBlackHole,
     `QLF_DarkMatter,
