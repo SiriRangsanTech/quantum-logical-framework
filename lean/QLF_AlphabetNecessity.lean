@@ -222,6 +222,8 @@ theorem sigma_xy_noncomm : σx * σy ≠ σy * σx := by
   -- read entry (0,0), where `σz` is non-zero: `i = −i` is false.
   have h00 := congrArg (fun A : M => A 0 0) h
   simp [σz, Complex.ext_iff] at h00
+  -- `h00 : (1 : ℝ) = -1` — the imaginary parts of `i` and `−i`.
+  norm_num at h00
 
 /-- The same statement at the axis level, tying §5's decision procedure to the
     matrices it is about. -/
