@@ -15,6 +15,30 @@ file that mixes protocol with claims will always end up grading its own work.
 
 ---
 
+## Glossary — the vocabulary this document uses
+
+Defined here so this file can be read on its own, without the rest of the repository. Each term links
+to where the object is defined or proved.
+
+| Term | What it is |
+|---|---|
+| **Twist** | One of the eight elementary distinctions `^ v < > / \ + −` — the substrate's alphabet. Each is a *signed Pauli frame element* (`^ = +σ_y`, `> = +σ_x`, `/ = +σ_z`, `+ = +I`, and their negations): [`twist_core.py`](twist_core.py), [`QLF_TwistAlphabet`](lean/QLF_TwistAlphabet.lean) |
+| **History** | A finite word over the alphabet — one *way* something can happen. Not a path through a pre-existing space; space is a reading of the history, not its container |
+| **Free action `F(h)`** | The unbound part of a history: its total conjugate-pair imbalance, defined in §1a |
+| **ZFA · closure** | `F(h) = 0` — every distinction matched by its conjugate. A history achieving it **closes** and persists as an event. Operationally `full_zeno_prune s = []` ([`QLF_QuCalc`](lean/QLF_QuCalc.lean)) |
+| **Fold · Pauli closure** | The matrix product of a history's twists. Count balance *entails* that the fold is a Pauli scalar `{±I, ±iI}` — [`count_balanced_pauli_closed`](lean/QLF_TwistAlphabet.lean) |
+| **Event** | A closure, and nothing else. No separate collapse, no observer act ([`Philosophy.md`](Philosophy.md)) |
+| **Census · inventory** | Exhaustive enumeration of ways, graded by length, depth and phase — [`census_inventory.py`](census_inventory.py). §8 explains why the inventory **is** the apparatus |
+| **Multiplicity** | How many ways a closure happens. A closure's frequency *is* its multiplicity ([`Philosophy.md`](Philosophy.md) §3a) |
+| **Capacity `R` · horizon** | A finite closure capacity — the deepest excursion a perspective can hold (`closedAtHorizon_iff_maxExcursion_le`). An axis of the census, not a fact about minds |
+| **Listening** | What a horizon of capacity `R` *receives*, as against what exists. Capacity-relative; a count is absolute |
+| **First closure** | The absorbing reading: a run stops at its first closure, because a closure *is* an event. First closures are prefix-free |
+| **Cylinder measure** | `μ(h) = 8^{−|h|}` — the measure Kraft's inequality **forces** on prefix-free first closures ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)). Derived, not chosen; the worked standard of §5 |
+| **Substrate · rendering** | The substrate is the finite combinatorial layer (`RCA₀`); a *rendering* is a continuum description read off it. The continuum is a rendering, never an ingredient ([`TheContinuum.md`](TheContinuum.md)) |
+| **Bridge** | A map from substrate structure to a physical observable. §5 is the protocol that governs them, and it is where circularity enters if it enters at all |
+
+---
+
 ## 1. The premise, and the ontological floor
 
 ### 1a. ZFA — what it is, where it came from, and why it is still on trial
@@ -93,6 +117,39 @@ the capacity that fixes which closures are received.
 possibilities are "merely potential until observed", or that an apparatus "chooses" an outcome.
 Write instead: which histories close jointly, at what capacity, in how many ways.
 
+### 1c. The assumption budget
+
+"One premise" is a true statement about **selection** and it should not be made to carry more than
+that. ZFA is the single principle deciding *what persists*; it is not the source of the substrate's
+**structure**, and it says nothing about **interpretation** — how a substrate object corresponds to a
+laboratory quantity. Those are three different kinds of commitment, and running them together is how
+a framework comes to look either more assumed or more derived than it is. The budget below counts
+them separately, and it is meant to be read as a live ledger: an item's row changes when the work
+changes it.
+
+| Item | Kind | Status |
+|---|---|---|
+| The information atom is a **two-valued** distinction | structural primitive | **Proved in-frame** — `spin_half_is_information_atom` ([`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean)) |
+| An elementary distinction **is a signed element of the observable frame** | structural posit | **Open** — the residual left by the necessity attack below; the one place "8" still rests on a choice |
+| The **8-twist alphabet** | derived structure | **Quantized, not chosen** — the alphabet is the signed axis frame, so `\|Σ\| = 2·\|axes\|`, and a composition-closed axis set is a subgroup of the Klein four-group: `\|Σ\| ∈ {2,4,8}`, **six is impossible**, and two distinguishable spatial axes force eight ([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean), [`alphabet_necessity.py`](alphabet_necessity.py), [`eight-twists-sufficiency.md`](eight-twists-sufficiency.md) §7) |
+| **Conjugate pairing = negation** | definition | Formal — the four pairs are exactly the four axes (`toSignedAxis_conj`), which is why `F(h)` has four terms |
+| `F(h)`, and `F(h) = 0` | definition | Formal |
+| **ZFA selects what persists** | **the premise** | Standing, under continuous test; kill condition in §1a |
+| Generable ⟹ real way | ontology | Interpretive commitment (§1b) — not testable in isolation, load-bearing for census methods |
+| **A closure *is* an event** (absorbing/first-closure reading) | event semantics | Physical hypothesis — adopted after the alternatives were rejected (§11) |
+| First closures are **prefix-free** | mathematical claim | **Proved** |
+| `8^{−\|h\|}` is the cylinder measure | mathematical claim | **Proved** given uniform generation (Kraft/McMillan, [`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)) |
+| **cylinder measure = event probability** | **physical bridge** | **Open** — the measure is derived; its identification with probability is not. This is the Born frontier (§14) |
+| capacity = apparatus resolution | physical bridge | Partially developed — capacity is an inventory axis (§8), which constrains it more than a free parameter |
+| twist geometry = physical orientation | physical bridge | **Open** — the context-geometry layer; a word is a history, not a direction |
+| substrate event scale = **Planck scale** | dimensional bridge (calibration) | One calibration; by §5 each dimensionful observable is allowed exactly one, and they are counted |
+| ZFA ⟹ continuum variational mechanics (`ℒ = 0`) | physical bridge | Open ([`Lagrangian_Formulation.md`](Lagrangian_Formulation.md)) |
+| The named Millennium axioms | open bridges | **Measured**, individually, by R6a — see the axiom inventory in [`CLAUDE.md`](CLAUDE.md) and [`Open_Problems.md`](Open_Problems.md) |
+
+Two things this exposes that prose was hiding. The alphabet was carrying a **sufficiency** argument
+where it reads as a necessity one — now half-closed, with the residual named. And the row that most
+looks like a result, the cylinder measure, is *two* rows: a proved measure and an open bridge.
+
 ---
 
 ## 2. A new kind of science — on a pruned ruliad
@@ -127,7 +184,7 @@ unpruned one:
    set of histories (`closedAtHorizon_iff_maxExcursion_le`), so a claim about the census can be
    settled by exhaustive enumeration rather than by exhibiting a suggestive picture.
 3. **A falsifier.** Because the census is complete at each length and capacity, a conjecture can be
-   *killed* by the inventory — as most of them have been (§10).
+   *killed* by the inventory — as most of them have been (§11).
 
 **What QLF inherits from NKS, and must guard against.** The characteristic failure mode of
 computational exploration is mistaking a suggestive computation for a law: a picture that looks like
@@ -144,10 +201,16 @@ pruned ruliad is a physical relation between histories, not an act of observatio
 
 ---
 
-## 3. Epistemic status labels
+## 3. Epistemic status — two axes
 
-Every claim in this repository should carry one of these, and the labels are not decorative — they
-determine what may be built on top of a result.
+Every claim in this repository carries a status, and the status is not decorative: it determines what
+may be built on top of the result. **The status has two axes, and they must be stated separately,**
+because they answer different questions — *what is established about the formal object* and *what is
+established about the world*. A single column forces those into one verdict, which is exactly the
+ambiguity that makes a machine-checked theorem look like a physical result, or a genuine theorem look
+like a hedge.
+
+**Axis 1 — mathematical status.** What is established about the formal object.
 
 | Status | Meaning | May be built on? |
 |---|---|---|
@@ -155,14 +218,44 @@ determine what may be built on top of a result.
 | **Exact computational result** | Exhaustive enumeration or exact rational/integer computation over a stated finite domain | Yes, within that domain |
 | **Numerical evidence** | Finite computation suggesting a pattern, no convergence guarantee | Only as motivation |
 | **Conjecture** | A proposed generalisation, stated so it can fail | No — state it as an open item |
-| **Phenomenological match** | Agrees with known physics, but mechanism or uniqueness not established | Cite as consistency, never as derivation |
-| **Open bridge** | A connection the argument needs and does not have (the named axioms) | Only with the bridge named at each use |
-| **Rejected route** | A candidate tested against its kill condition and failed | Keep — it constrains the next attempt |
-| **Superseded** | An earlier conclusion overturned by a better computation | Keep, with what failed and why |
+
+**Axis 2 — physical status.** What is established about the world. Every arrow in the bridge chain of
+§5 has to be typed before this column can be filled in honestly.
+
+| Status | Meaning | May be cited as evidence? |
+|---|---|---|
+| **Derived bridge** | The substrate→observable map is *forced*, not chosen (the standard: the Kraft measure, §5) | Yes — this is the strongest physical status QLF has |
+| **Pre-registered prediction** | Bridge frozen (named commit) before the comparison; consequence not used in constructing it | Yes, and it is the only status that can *confirm* |
+| **Retrodiction** | Correct, but the construction was made with the target number in view (R0a) | As consistency only — never as confirmation |
+| **Consistency** | Agrees with known physics; mechanism or uniqueness not established | Cite as consistency, never as derivation |
+| **Open bridge** | The argument needs a connection it does not have (the named axioms) | Only with the bridge named at each use |
+| **Predicted absent** | A falsifiable null: the substrate says the thing does not exist | Yes — this is where the premise is most exposed |
+| **Internal** | A fact about the substrate with no physical claim attached | Not applicable — and say so rather than leaving it blank |
+
+**Axis 3 is the record**, and it applies to either axis: **Rejected route** (a candidate tested
+against its kill condition and failed — keep it, it constrains the next attempt) and **Superseded**
+(an earlier conclusion overturned by a better computation — keep it, with what failed and why).
+
+Worked examples, in the form claims should actually carry:
+
+| Claim | Mathematical | Physical |
+|---|---|---|
+| `count_balanced_pauli_closed` | **Proved** | **Internal** — a substrate fact, no bridge involved |
+| `\|Σ\| ∈ {2,4,8}`, six impossible ([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)) | **Proved** | **Internal** — it constrains the *budget*, not an observable |
+| `hodge_realized_on_substrate` | **Proved** | **Open bridge** — `substrate_realization_is_algebraic` |
+| `gaugeMassGap = log 2 > 0` | **Proved** | **Open bridge** — the identification with the continuum gap |
+| `π` and `ζ(3)` from the census | **Exact computational** | **Consistency** |
+| `137 < α⁻¹ < 137.048` | **Proved** | **Retrodiction** — the comparison target was known |
+| `α(0)` carries no cosmological drift | **Proved** | **Predicted absent** — falsifiable, sharper than the SM |
+| `μ(h) = 8^{−\|h\|}` | **Proved** | **Derived bridge** for the measure; the *identification with probability* is a separate row, and it is **Open** |
+
+That last line is the pattern the two-axis split exists to make visible: one sentence was doing the
+work of two claims with different statuses.
 
 A programme that keeps producing *rejected routes* while its proved core grows is progressive in
 Lakatos's sense [La78]; one that keeps rescuing a claim by adjusting what it means is degenerating.
-The labels exist so the difference is visible from the outside.
+The labels exist so the difference is visible from the outside — and §7 states the criterion that
+decides which of the two this programme is.
 
 Two rules govern the labels:
 
@@ -173,6 +266,28 @@ Two rules govern the labels:
 ---
 
 ## 4. Core methodological rules
+
+**R0 — Pre-register the bridge.** Before any substrate result is compared with a measured number,
+state, in this order and in the document that will make the claim: the **physical inputs** held
+fixed; their **substrate representation**; the **calculation**; the **observable-extraction rule**;
+the **tolerance**; the **comparator** (what the number is being compared against, and its
+uncertainty); and the **kill condition**. §7’s blind-battery discipline already enforces this
+*inside* the census; R0 is the same discipline applied across the substrate→laboratory arrow, which
+is where circularity enters if it enters at all.
+
+> **A formal consequence of the substrate becomes physical evidence only when the
+> substrate-to-observable bridge was specified independently of the observation used to test it.**
+
+The issue is never the theorem. It is whether the physical interpretation was fixed independently of
+the result it is used to support.
+
+**R0a — The discovery/confirmation firewall.** Anything constructed while the target number was in
+view is a **retrodiction**, permanently, and is labelled so on the physical axis of §3 — however
+exact, however natural the construction looks. A construction becomes capable of *prediction* only
+once it is **frozen**, and freezing is a git fact rather than a rhetorical one: name the commit, and
+claim as predictions only those consequences that were not used in building it. The standing case is
+α's `+0.036` residual, which is to be **derived, never fitted**; a construction tuned to it would be
+a retrodiction even if it landed on every decimal.
 
 **R1 — Inventory before interpretation** (Chamberlin's multiple working hypotheses [Ch1890]). When a question reduces to the finite substrate census,
 ask the complete accessible inventory before proposing a mechanism. Constructed examples demonstrate
@@ -209,6 +324,21 @@ depth 90 and `0.19` at depth 200.
 independent layers — the **measure** over ways, the **phase/amplitude** rule, and the **context
 geometry** (how a physical arrangement is encoded). Changing all three at once until the answer
 appears is fitting. Establish them separately, and when something breaks, name the layer.
+
+**The rule does not stop at the census.** The same discipline applied to the whole stack gives three
+kinds of failure, which have entirely different consequences and must never be run together:
+
+| Failure | What broke | What follows |
+|---|---|---|
+| **Formal** | The claimed result does not follow from the definitions | Fix the proof. Says nothing about physics |
+| **Bridge** | The substrate→observable map was wrong; the substrate is untouched | Fix or abandon *that bridge* — and **record it**, because the count of abandoned bridges for one target is itself evidence (§7) |
+| **Substrate** | Every admissible, independently specified bridge fails to reproduce an established phenomenon — or a frozen prediction is contradicted | ZFA is wrong |
+
+R6's three census layers are the fine structure of the middle row. Collapsing the rows in either
+direction is a mistake with a name: reading a bridge failure as *"the experiment disagreed, so ZFA is
+false"* discards the framework for an encoding error, while reading a substrate failure as *"only
+that encoding failed, try another"* is the move that makes a theory unfalsifiable. §7 states when the
+second reading has been used up.
 
 **R6a — Measure an assumption's strength; do not describe it.** Zero `sorry` says every goal was
 closed and nothing about *what* closed it, so an assumption has to be tested the way a hypothesis is.
@@ -266,11 +396,95 @@ structure, **derive the structure from the substrate and verify it against groun
 for the structure that makes the proof work.**
 
 **R7 — State the kill condition first** (Popper's falsifiability [Po59] in Platt's operational
-form, strong inference [Pl64]). See §6.
+form, strong inference [Pl64]). See §7.
 
 ---
 
-## 5. The hypothesis lifecycle
+## 5. The bridge protocol
+
+A **bridge** is a map from substrate structure to a physical observable. Every empirical claim QLF
+makes passes through one, and a bridge is where a formally impeccable result can become a physically
+empty one. This section states how they are built and how they are graded.
+
+### 5a. Type every arrow
+
+No bridge is a single step. Write it out as a chain, and label each arrow with what *kind* of step it
+is — **definition**, **theorem**, **physical identification**, **calibration**, or **conjecture**:
+
+$$
+\text{twist history} \;\longrightarrow\; \text{closure invariant} \;\longrightarrow\;
+\text{effective physical variable} \;\longrightarrow\; \text{laboratory observable}
+$$
+
+An unlabelled arrow is the failure mode: it lets a definition and a conjecture sit in the same
+sentence looking alike. Worked, on the measure:
+
+| Arrow | Kind |
+|---|---|
+| history ⟶ its first closure | **definition** (the absorbing reading — itself a physical hypothesis, budgeted in §1c) |
+| first closures ⟶ prefix-free set | **theorem** |
+| prefix-free set ⟶ measure `8^{−\|h\|}` | **theorem** (Kraft/McMillan — nothing is chosen) |
+| measure ⟶ **event probability** | **physical identification — open** |
+
+Three arrows are settled and the fourth is the whole Born question. Typing them is what makes that
+visible in one glance instead of one paragraph.
+
+### 5b. What information physics already forbids
+
+Because the substrate is informational (§1b), a bridge is not a free function. Four constraints
+apply before any physics is done, and together they cut down the admissible maps sharply:
+
+1. **Closure invariants only.** Matter, geometry and duration are *readings* of closure structure, so
+   an observable must be a function of closure invariants — count, phase, depth, capacity — and
+   nothing else. A bridge that needs an ingredient the substrate does not carry is not a bridge; it
+   is a new posit, and belongs in the budget.
+2. **Calibrations are countable, and rationed.** Substrate quantities are dimensionless counts, so
+   each dimensionful observable requires **exactly one** calibration. A bridge introducing a second
+   is fitting under another name. Count them, in the budget, per observable.
+3. **Capacity is an axis, not a parameter.** An observer contributes only a capacity, and capacity is
+   one of the inventory's own axes (§8). "Tune the capacity until it fits" is therefore not available.
+4. **A bridge earns physical content only when it changes a count of ways.** A bridge invariant under
+   the census is bookkeeping, however faithful it looks ([`Philosophy.md`](Philosophy.md) §3a rule 4).
+   State what distribution over ways the bridge would be *false* for; if the answer is "none", it is
+   not a bridge.
+
+### 5c. The ladder, and the standard
+
+Bridges are graded, and the grade is a claim about the bridge, not about the result it produces:
+
+$$
+\text{arbitrary} \;\longrightarrow\; \text{pre-registered} \;\longrightarrow\;
+\text{constrained} \;\longrightarrow\; \textbf{derived}
+$$
+
+**The standard is the cylinder measure.** `μ(h) = 8^{−|h|}` was not chosen, and it was not merely
+frozen in advance: prefix-freeness plus Kraft's inequality **forces** it, machine-checked in
+[`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean). That is a *derived* bridge, and it is what the top
+of the ladder looks like in practice, so every new bridge is placed against it — exactly as R6a
+places every new axiom against the case where nothing is left to choose. R2's prohibition on free
+fitted kernels is the same demand stated negatively; this states it positively, with a worked
+example, so "derived" is a comparison rather than an aspiration.
+
+The point of the ladder is that **freezing an encoding is the weakest acceptable move, not the goal.**
+A framework that can only pre-register its interpretations has many encodings available and picks
+one; a framework that derives them has few, and that is what makes a substrate theory answerable.
+Where a bridge cannot yet be derived, the useful intermediate result is a **constraint**: show which
+maps §5b admits, and how few of them there are.
+
+### 5d. Three verifications, not two
+
+> **Lean verifies entailment. The census verifies the substrate's own facts. Experiment verifies the
+> bridge.**
+
+The two-part version of this maxim — *proof verifies derivation, experiment verifies interpretation* —
+omits QLF's middle term and misfiles everything in it. An exhaustive census is neither a derivation
+check nor an experiment: by §8 the inventory **is** the apparatus, so enumerating it is not simulating
+an experiment but reading the substrate's own facts, which is why *exact computational result* is a
+status in its own right (§3) and why calling that layer "simulation" understates it.
+
+---
+
+## 6. The hypothesis lifecycle
 
 $$
 \text{conjecture} \;\to\; \text{census} \;\to\; \text{falsification attempt} \;\to\;
@@ -289,7 +503,7 @@ A pattern that survives steps 1–4 is *numerical evidence*. Only step 5 makes i
 
 ---
 
-## 6. Kill conditions and blind tests
+## 7. Kill conditions and blind tests
 
 Every substantial conjecture states, **in advance**:
 
@@ -300,9 +514,41 @@ Every substantial conjecture states, **in advance**:
 And where a battery of cases is run, it is run **blind**: all geometries printed together, no
 per-case tuning, with the symmetry-lock check of R3 applied to every agreement before it counts.
 
+### 7a. The framework-level failure criterion
+
+Kill conditions on individual claims are not enough. A framework that replaces a failed bridge every
+time one fails is protected indefinitely, so the criterion for abandoning **ZFA itself** has to be
+stated in advance too. There are two, and the second is the one that does real work.
+
+> **(a) Contradiction.** A frozen, pre-registered prediction (R0a) is experimentally contradicted,
+> and the bridge that produced it was **derived or constrained** rather than merely chosen. Equally:
+> a persistent physical event requiring non-zero free action (§1a), or an observation of anything on
+> the predicted-absent list.
+>
+> **(b) Degeneration.** For some established phenomenon, the sequence of proposed bridges grows while
+> each replacement is selected *after* seeing the previous one fail against the target, without an
+> independent computation forcing the change — and the question does not sharpen. That is rescue, and
+> a long enough run of it means the substrate is not doing the work.
+
+The conclusion that would follow is worth writing out, because a programme that cannot state it is
+not answerable: *ZFA is an interesting mathematical and computational structure, and is not a
+fundamental description of physical reality.*
+
+**Self-applied, immediately.** §11's table is **eight discarded encodings for a single target** — the
+quantum weight. That is precisely the shape criterion (b) describes, so the programme owes the test
+rather than the reassurance. It passes, for two checkable reasons: every rejection was **forced by an
+independent census computation** rather than selected by proximity to a target number (the horizon
+limits degenerate, capacity provably changes only the rate, `merge_le_sum` is a theorem), and the
+sequence **narrowed** — it terminated in a *derived* measure and a sharper question than it started
+with. That is exclusion, not rescue.
+
+So the count is kept, and the criterion is the count's meaning: **if the number of discarded bridges
+for one target grows while the question does not sharpen and the census stops doing the excluding,
+(b) has been met.** Record the number in the owning document, not only the survivor.
+
 ---
 
-## 7. The role of the inventory — the apparatus itself
+## 8. The role of the inventory — the apparatus itself
 
 [`census_inventory.py`](census_inventory.py) and [`data/census_inventory.json`](data/census_inventory.json)
 hold what enumeration actually discovers: how many ways close, graded by length and depth; which
@@ -318,7 +564,7 @@ inventory's own axes.
 
 ---
 
-## 8. The role of formal proof
+## 9. The role of formal proof
 
 Lean is where a pattern becomes knowledge. The standard is:
 
@@ -329,11 +575,14 @@ Lean is where a pattern becomes knowledge. The standard is:
 - CI is the arbiter: a Lean claim is not a result until the build is green.
 
 Proof does not settle physics on its own. It settles what follows from what, which is the part that
-should never be in doubt while the physics is argued.
+should never be in doubt while the physics is argued. **Lean verifies entailment, not
+interpretation** — the interpretation is the bridge, and §5 is where it is graded. A `#print axioms`
+footprint tells you what a theorem consumed; it cannot tell you whether the theorem is about the
+world.
 
 ---
 
-## 9. The role of numerical simulation
+## 10. The role of numerical simulation
 
 Simulation generates candidates and kills them. It does not establish laws. Its outputs are labelled
 *exact computational result* (exhaustive/exact over a stated domain) or *numerical evidence*
@@ -342,7 +591,7 @@ computed data, so the claim and its check ship together.
 
 ---
 
-## 10. A worked example — attempting to derive quantum weights
+## 11. A worked example — attempting to derive quantum weights
 
 The Born-weight investigation is the clearest illustration of this method, because **most of the
 proposals failed**, and the failures are what produced the constraints.
@@ -367,7 +616,7 @@ than the one the investigation started with.
 
 ---
 
-## 11. Negative results and the correction protocol
+## 12. Negative results and the correction protocol
 
 > **Corrections remain part of the scientific record.** — the discipline Feynman called the
 > "utter honesty" of leaning over backwards to show how you may be wrong [Fe74].
@@ -386,7 +635,7 @@ result; it is not a section.
 
 ---
 
-## 12. Reproducibility requirements
+## 13. Reproducibility requirements
 
 Every quantitative claim in this repository must be reproducible from the repository:
 
@@ -398,7 +647,7 @@ Every quantitative claim in this repository must be reproducible from the reposi
 
 ---
 
-## 13. The current frontier
+## 14. The current frontier
 
 What the method says is *open* right now, stated as it should be stated:
 
@@ -406,11 +655,15 @@ What the method says is *open* right now, stated as it should be stated:
   is realized rather than straddled ([`Born_Rule.md`](Born_Rule.md) §8);
 - the **context geometry** layer — what substrate object represents a physical orientation, given
   that a word is a history and not a direction;
-- the named bridge axioms of the Millennium reformulations, each an *open bridge* by §3.
+- the named bridge axioms of the Millennium reformulations, each an *open bridge* by §3;
+- the **alphabet residual** — the alphabet size is now quantized to `{2,4,8}` with six impossible and
+  eight forced by two distinguishable spatial axes ([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)),
+  so what remains is the one posit underneath it: that an elementary distinction *is* a signed element
+  of the observable frame of a two-valued system.
 
 ---
 
-## 14. Where the evidence lives
+## 15. Where the evidence lives
 
 - [`Experimental_Consistency.md`](Experimental_Consistency.md) — the empirical ledger: matches,
   precisions, and the falsifier classes
@@ -421,6 +674,8 @@ What the method says is *open* right now, stated as it should be stated:
 - [`lean/README.md`](lean/README.md) — every module and its theorems
 - [`census_inventory.py`](census_inventory.py) · [`contextual_census.py`](contextual_census.py) — the
   inventory and the contextual layer
+- [`alphabet_necessity.py`](alphabet_necessity.py) · [`eight-twists-sufficiency.md`](eight-twists-sufficiency.md) —
+  the alphabet's own budget row: why the size is `2`, `4` or `8` and never `6`
 
 ---
 
@@ -434,7 +689,7 @@ would refute it.
 [Pl64] J. R. Platt, *Strong Inference*, Science **146** (1964) 347 — the operational form used here:
 enumerate alternatives, design the step that excludes one, iterate.
 [Fe74] R. P. Feynman, *Cargo Cult Science*, Caltech commencement address (1974) — leaning over
-backwards to report what might be wrong; the correction protocol of §11.
+backwards to report what might be wrong; the correction protocol of §12.
 [La78] I. Lakatos, *The Methodology of Scientific Research Programmes* (1978) — progressive versus
 degenerating programmes, which is what the status labels of §3 make visible.
 

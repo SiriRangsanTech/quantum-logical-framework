@@ -217,15 +217,11 @@ theorem noncommuting_iff_eight :
 /-- The cocycle asymmetry is not bookkeeping: the matrices themselves fail to
     commute. `σx σy = iσ_z` while `σy σx = −iσ_z`. -/
 theorem sigma_xy_noncomm : σx * σy ≠ σy * σx := by
-  rw [sigma_xy, sigma_yx]
   intro h
-  have h00 : (Complex.I • σz) 0 0 = (-(Complex.I • σz)) 0 0 := by rw [h]
-  simp only [Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul] at h00
-  have hz : σz 0 0 = 1 := by simp [σz]
-  rw [hz, mul_one] at h00
-  have him := congrArg Complex.im h00
-  rw [Complex.neg_im, Complex.I_im] at him
-  linarith
+  rw [sigma_xy, sigma_yx] at h
+  -- read entry (0,0), where `σz` is non-zero: `i = −i` is false.
+  have h00 := congrArg (fun A : M => A 0 0) h
+  simp [σz, Complex.ext_iff] at h00
 
 /-- The same statement at the axis level, tying §5's decision procedure to the
     matrices it is about. -/

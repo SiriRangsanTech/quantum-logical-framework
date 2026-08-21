@@ -113,6 +113,8 @@ Adding a 9th twist would be redundant:
 
 This is analogous to how 3 spatial + 1 time dimensions in general relativity suffice for all observed physics — extra dimensions, if they exist, are emergent or compactified within the same algebra.
 
+**Parsimony is a preference, not a derivation** — so §7 below closes most of the gap: the alphabet size is *quantized* to `{2, 4, 8}`, six is impossible, and eight is forced by two distinguishable spatial axes.
+
 ## 6. Practical Implications for RhoQuCalc Simulations
 
 - **Many-dimensional quantum systems** (e.g., 50-qubit circuits, quantum field theory on a lattice, many-body condensed matter) are modeled by scaling the number of parallel ZFA processes, not by enlarging the basis.
@@ -138,3 +140,83 @@ References (within repo):
 This completes the foundational justification for why RhoQuCalc needs nothing beyond the original 8 twists to model the full richness of quantum reality.
 
 See also: [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the 8-twist alphabet sufficiency proved here is what makes it the generative kernel of active-inference math (§2 of the meta-doc).
+
+## 7. Necessity — why the size is 8, and why it cannot be 6
+
+§5 argues *parsimony*: a ninth twist would be redundant. Parsimony is a preference, and a preference
+is not a derivation — so "8" read as a chosen number, which is exactly how the assumption budget in
+[`ScientificApproach.md`](ScientificApproach.md) §1c classified it. This section closes most of that
+gap. The alphabet size is not chosen; it is **quantized**, and the value `6` — three spatial axes with
+no gauge pair, the obvious rival — is **impossible**.
+
+Machine-verified in [`lean/QLF_AlphabetNecessity.lean`](lean/QLF_AlphabetNecessity.lean) (zero axioms);
+independently enumerated against the runtime mapping in
+[`alphabet_necessity.py`](alphabet_necessity.py).
+
+### 7a. The alphabet is the signed axis frame
+
+Read off the mapping [`twist_core.py`](twist_core.py) actually uses — the same one
+`QLF_TwistAlphabet` proves Pauli closure over:
+
+| Twist | `^` | `v` | `>` | `<` | `/` | `\` | `+` | `−` |
+|---|---|---|---|---|---|---|---|---|
+| Matrix | `+σ_y` | `−σ_y` | `+σ_x` | `−σ_x` | `+σ_z` | `−σ_z` | `+I` | `−I` |
+
+Every twist is a **sign together with an axis**, and every sign-axis pair is a twist — a bijection
+`Twist ≃ {±} × {I, X, Y, Z}` (`Twist.toSignedAxis`, `ofSignedAxis_toSignedAxis`,
+`toSignedAxis_ofSignedAxis`). It agrees with the normal form the Pauli-closure proof already uses
+(`twistNF_eq_signedAxis`), and conjugation is exactly sign flip at fixed axis
+(`toSignedAxis_conj`) — which is *why* the free-action functional `F(h)` has four terms and not some
+other number. Hence
+
+$$
+|\Sigma| \;=\; 2 \cdot |\text{axis set}|.
+$$
+
+The question "why eight twists" is therefore the question **"why four axes"**, and that one has an
+answer.
+
+### 7b. Axes compose, so the axis set is a group
+
+Composing two distinctions is a distinction, so an axis set must be closed under composition. Modulo
+phase, axis composition is the **Klein four-group**: `X·Y = Z`, `Y·Z = X`, `Z·X = Y`, every axis
+self-inverse (`axisMul`, and `axisToVec` embedding it in `(ZMod 2)²` — the same structure the
+Pauli-closure proof runs on). A closed non-empty subset of a group is a subgroup, so its size divides
+`4`. Exhaustively, over all 16 candidate axis sets:
+
+| Closed axis set | size | `\|Σ\|` | fold group | what it can do |
+|---|---|---|---|---|
+| `{I}` | 1 | **2** | order 2, abelian | no axes, no space; every fold a sign |
+| `{I,X}`, `{I,Y}`, `{I,Z}` | 2 | **4** | order 4, abelian | one axis; no non-commuting observables, no SU(2), no double cover, `±iI` unreachable |
+| `{I,X,Y,Z}` | 4 | **8** | order 16, **non-abelian** | three axes; the unique size with non-commuting observables |
+
+Four theorems fall out, each `decide`-checked over the full candidate space:
+
+- **`frame_axisCount_trichotomy`** — a frame has 1, 2 or 4 axes. Lagrange, by exhaustion.
+- **`no_six_twist_alphabet`** — there is **no six-twist alphabet**: `3 ∤ 4`, so "three spatial axes,
+  no gauge pair" is not an alphabet at all. The gauge pair `+`/`−` is not an addition to the spatial
+  six; it is the identity axis that closure forces (`frame_contains_I`).
+- **`two_spatial_axes_force_three`** — two distinct spatial axes force the third, because their
+  product *is* the third. **The spatial axis count is 0, 1 or 3 — never 2.** This is a second,
+  independent route to the substrate's `3`, and it is a stronger one than counting `6 = 2·3`: two is
+  group-theoretically unavailable.
+- **`noncommuting_iff_eight`** — non-commuting observables occur at `|Σ| = 8` and nowhere else
+  (`sigma_xy_noncomm`: `σ_xσ_y = iσ_z` while `σ_yσ_x = −iσ_z`). Everything downstream that needs
+  order to matter — an uncertainty relation, SU(2), the double cover, spin — exists only at eight.
+
+### 7c. What "8" now rests on
+
+$$
+|\Sigma| = 8 \;\Longleftarrow\; \text{two distinguishable spatial axes}
+\;\Longleftarrow\; \text{a distinction is a signed frame element of a two-valued system}
+$$
+
+The chain's last link is the residual. That the information atom is **two-valued** is proved
+in-frame (`spin_half_is_information_atom`, [`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean));
+for a `d`-valued atom the same argument gives `|Σ| = 2d²`, so `d = 2` is the smallest value admitting
+any distinction at all and `8` is the smallest non-degenerate alphabet. What remains **posited** is
+the step before that: that an elementary distinction *is* a signed element of the observable frame.
+
+So the budget row changes from *"chosen, with a sufficiency argument"* to *"derived from one named
+posit, with the alternatives enumerated and six excluded"* — and the posit is now a single sentence
+that can be attacked on its own, which it could not be while it was hidden inside a number.
