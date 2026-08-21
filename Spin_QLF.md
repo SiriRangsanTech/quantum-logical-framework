@@ -84,6 +84,31 @@ Under it, **charge and perpendicular-chirality co-negate** (`C_eq_motional_rever
 So the positron-from-behind *is* an electron: opposite charge **and** opposite handedness,
 together — **charge conjugation = motional reversal**.
 
+### 5a. Charge is the residue of non-closure — and it cannot see a spin
+
+`twistCharge` weights the gauge pair `±1` and gives **zero to all six spatial twists**, so
+`chiralCharge` is the signed gauge count and nothing else (`chiralCharge_eq_gauge_counts`,
+[`QLF_ElectronClosure`](lean/QLF_ElectronClosure.lean)). Three things follow, all machine-verified
+with zero axioms:
+
+- **A ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`). Charge is a *count of
+  what has not yet closed* — not a substance, not a field, not a property of a point. That is the
+  precise sense in which charge is **emergent**: conserved because conjugate twists cannot be created
+  singly, quantized because it is an integer count, and unable to belong to a completed object.
+- **Charge is a function of the gauge counts alone** (`chiralCharge_determined_by_gauge`).
+- Hence **there is no charge between modes of different energy or spin**
+  (`no_charge_between_spatial_modes`): spin and energy are *spatial* content, charge lives on the
+  *gauge* axis, and two modes differing only in spatial content carry **exactly zero** charge
+  difference. The electromagnetic weight cannot see a spin or an energy.
+
+The last point is where spin and charge come apart, and it is a derivation of something standard
+rather than a departure from it: in QED the **direct Coulomb term is exactly spin-independent**, and
+every spin dependence of two-electron energies (the singlet–triplet splitting) enters through
+**exchange** — which in QLF is closure blocking, not charge. Same conclusion, obtained here from the
+alphabet rather than computed. What is *not* claimed is that the common gauge deficit vanishes:
+both electrons carry it, and it is the ordinary charge. Full treatment in
+[`Electron.md`](Electron.md) §1b–§1c.
+
 ## 6. The neutrino — the self-conjugate spin is neutral
 
 The neutrino loop `^v` is its **own** antiparticle — a fixed point of conjugate-and-reverse

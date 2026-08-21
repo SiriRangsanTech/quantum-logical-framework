@@ -8,7 +8,15 @@ This is the same structural move that [`Delayed_Choice_Eraser.md`](Delayed_Choic
 
 ## §1 Free leptons are not stable QLF closures
 
-Standard particle physics tabulates `m_e ≈ 0.511 MeV`, `m_μ ≈ 105.66 MeV`, `m_τ ≈ 1776.86 MeV` as if these are properties of free particles. Operationally they are extracted from atomic and high-energy experiments; physically, a free lepton in the QLF sense is an **open Hermitian deficit** (per [`Collective_Electrodynamics.md`](Collective_Electrodynamics.md) §1 and [`HALF-SPIN-ZFA-EMBEDDING.md`](HALF-SPIN-ZFA-EMBEDDING.md)). It has not completed a joint-ZFA closure event.
+Standard particle physics tabulates `m_e ≈ 0.511 MeV`, `m_μ ≈ 105.66 MeV`, `m_τ ≈ 1776.86 MeV` as if these are properties of free particles. Operationally they are extracted from atomic and high-energy experiments; physically, a free lepton has not completed a joint-ZFA closure event.
+
+**Sharpened, and machine-verified** ([`lean/QLF_ElectronClosure.lean`](lean/QLF_ElectronClosure.lean), zero axioms; full account in [`Electron.md`](Electron.md) §1). "Open Hermitian deficit" was the right idea at the wrong level, and the level matters:
+
+- the lepton's **internal cycle** `^<v>` **is** ZFA-closed and folds to `−I` (`electronCycle_countBalanced`, `electronCycle_folds_negI`) — it is a completed half-spin periodic mode, not an unfinished fragment;
+- what is open is the **gauge** twist, and that unmatched gauge count **is** the electric charge (`electronCharged_charge = 1`, `electronCharged_not_countBalanced`);
+- so **a ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`) — charge is the *residue of non-closure*, which is exactly why a free lepton must find a partner before the whole event closes, and why the bound system is the QLF-physical state.
+
+Two consequences used below: **Hermitian ⇏ ZFA-closed** (`hermitian_not_implies_zfa` — the prefix `^<v` folds to the Hermitian `−σx` while carrying `F = 1`), and a joint closure places **no constraint on its components** (`joint_closure_allows_unequal_components` — two unbalanced halves of *different lengths* whose joint history closes), so unequal constituent depths are the normal case, not an obstruction.
 
 - A free electron's Hermitian conjugate is its antiparticle, the positron. The pair `(e⁻, e⁺)` together can form a joint ZFA closure — **positronium**.
 - A free electron + a proton can close jointly — **hydrogen** ([▶ see it self-assemble](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20p%2Be%20%40%200%2C0%2C0), and two H share into **H₂** — [▶ see](https://jimscarver.github.io/quantum-logical-framework/spacetime_constructor.html#qc=H%20%40%20-2%2C0%2C0%0AH%20%40%202%2C0%2C0); more molecules in [`Chemistry.md`](Chemistry.md)).

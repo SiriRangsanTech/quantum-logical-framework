@@ -121,7 +121,8 @@ theorem chiralCharge_eq_gauge_counts (ts : List Twist) :
     have hc : chiralCharge (a :: rest) = twistCharge a + chiralCharge rest := by
       simp [chiralCharge]
     rw [hc, ih]
-    cases a <;> simp [twistCharge, List.count_cons] <;> push_cast <;> ring
+    -- `Twist` derives `BEq` but not `LawfulBEq`, so the `==` guards need `decide`.
+    cases a <;> simp +decide [twistCharge, List.count_cons] <;> push_cast <;> ring
 
 /-- **A ZFA-closed history is electrically neutral.** Charge is precisely the
     residue of non-closure: what is left unmatched on the gauge axis. This is
@@ -146,7 +147,7 @@ theorem chiralCharge_eq_zero_of_all_zero {l : List Twist}
   induction l with
   | nil => rfl
   | cons a rest ih =>
-    have ha : twistCharge a = 0 := h a (List.mem_cons_self a rest)
+    have ha : twistCharge a = 0 := h a (by simp)
     have hr : chiralCharge rest = 0 := ih fun t ht => h t (List.mem_cons_of_mem a ht)
     have hc : chiralCharge (a :: rest) = twistCharge a + chiralCharge rest := by
       simp [chiralCharge]
