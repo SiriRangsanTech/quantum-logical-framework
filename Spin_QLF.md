@@ -91,10 +91,17 @@ together — **charge conjugation = motional reversal**.
 [`QLF_ElectronClosure`](lean/QLF_ElectronClosure.lean)). Three things follow, all machine-verified
 with zero axioms:
 
-- **A ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`). Charge is a *count of
-  what has not yet closed* — not a substance, not a field, not a property of a point. That is the
-  precise sense in which charge is **emergent**: conserved because conjugate twists cannot be created
-  singly, quantized because it is an integer count, and unable to belong to a completed object.
+- **A ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`) — and, contrapositively,
+  **a charged history is not an event at all** (`charge_nonzero_not_countBalanced`). Charge is a
+  *count of what has not closed* — not a substance, not a field, not a property of a point, and not a
+  pending effect: what does not close has no effect whatsoever. That is the precise sense in which
+  charge is **emergent**. Conservation and integer quantization follow from the count, and *no event
+  ever carries net charge*.
+- **Coulomb is a count, not a force** (`coulomb_is_a_counting_rule`). A joint closure exists only
+  where the charges cancel (`joint_closure_total_charge_zero`); like charges admit **zero** closed
+  histories (`like_charges_do_not_close`) and opposite charges admit some (`opposite_charges_close`).
+  Nothing attracts and nothing repels — what differs is how many ways there are, and a closure's
+  frequency *is* its multiplicity. No field, no action at a distance.
 - **Charge is a function of the gauge counts alone** (`chiralCharge_determined_by_gauge`).
 - Hence **there is no charge between modes of different energy or spin**
   (`no_charge_between_spatial_modes`): spin and energy are *spatial* content, charge lives on the

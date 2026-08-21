@@ -45,7 +45,7 @@ Machine-verified, zero axioms, in [`lean/QLF_ElectronClosure.lean`](lean/QLF_Ele
 - `electronCharged_not_countBalanced` — …and is therefore *not* closed. **The charge is exactly the part that did not close.**
 - `positronium_countBalanced` / `positronium_neutral` — the joint event closes, and is neutral.
 
-So the electron is not an unfinished particle fragment. It is a **completed periodic mode carrying one open gauge distinction**, and that distinction is what makes it seek a partner.
+So the electron is not an unfinished particle fragment. It is a **completed periodic mode carrying one open gauge distinction** — and that distinction does not *do* anything. It is not a pending effect, and the electron does not seek a partner. A history carrying non-zero charge simply does not close, and what does not close is not an event (§1b'). What we call the electron's charge shows up only *inside* joint histories that do close.
 
 $$
 \boxed{\text{electron} = \text{closed periodic mode} + \text{one unmatched gauge twist}}
@@ -83,6 +83,29 @@ $$
 
 **Charge is not a fundamental property carried by an object.** It is a *count of what has not yet closed*. There is no charge field, no charged point, no charge substance: a history that closes has charge zero, necessarily, and a history that carries charge is by that fact incomplete. This is why charge is conserved (counts of conjugate twists cannot be created singly), why it is quantized (it is an integer count), and why an electron cannot be isolated as a completed event.
 
+### 1b′. No event is ever charged — and Coulomb is a count, not a force
+
+The contrapositive of `zfa_closure_is_neutral` is the load-bearing direction, and it is where the ontology bites:
+
+$$
+\boxed{\text{charge} \neq 0 \;\Longrightarrow\; \text{does not close} \;\Longrightarrow\; \text{not an event}}
+\qquad \texttt{charge\_nonzero\_not\_countBalanced}
+$$
+
+**No event ever carries net charge.** What carries charge is a *non-event*. So an unmatched gauge twist is not a property an object has and acts with, not a field it sources, and not a pending effect waiting for a partner — **it will close or it will not, and if it does not there is no effect and no charge.** Nothing is stored, nothing is owed, nothing waits.
+
+Everything usually attributed to the Coulomb force is then a **count of joint histories that do close**:
+
+| | joint closure | ways |
+|---|---|---|
+| **any pair** | requires `Q₁ + Q₂ = 0` (`joint_closure_total_charge_zero`) | — |
+| **like charges** | **none exists** (`like_charges_do_not_close`) | **0** |
+| **opposite charges** | exists (`opposite_charges_close`) | > 0 |
+
+Assembled as **`coulomb_is_a_counting_rule`**. Read it carefully: like charges are not *pushed apart*. There is simply **no closed history in which both occur** — zero ways, and a closure's frequency *is* its multiplicity ([`Philosophy.md`](Philosophy.md) §3a). Opposite charges are not *pulled together*; there are ways, so it happens. **No force, no field, no action at a distance** — the same framing as [`Spacetime_Constructor.md`](Spacetime_Constructor.md): only closures that DO close.
+
+Charge conservation is not a law imposed on a dynamics either. It is the condition under which a joint history closes at all — there is nothing for it to be violated by.
+
 ### 1c. There is no charge *between* electrons of different energy or spin
 
 This is the sharpest consequence, and it is a theorem rather than a stance.
@@ -106,7 +129,7 @@ Two independent confirmations of the same structure, in the coherent channel rat
 
 Together: `channelKernel_diagonal` gives `Γ[(m,s),(n,s')] = δ_mn δ_ss'`. **Different harmonics or orthogonal spin channels carry no persistent coherent cross term.**
 
-> **Scope, stated once and precisely.** What is proven is that the charge *difference* between modes is exactly zero and the coherent cross term vanishes — so no Coulomb channel is opened or closed by a difference of spin or energy, and the electromagnetic coupling is **spin-blind and energy-blind**. What is *not* claimed is that the shared gauge deficit disappears: both electrons carry the same unmatched `+`, that common residue is the ordinary charge, and it is exactly why an electron must still find a partner. Two electrons of different energies therefore still enter a joint event (§1e) — QLF's content is that nothing in that event depends on their spins or energies *through the charge*.
+> **Scope, stated once and precisely.** What is proven is that the charge *difference* between modes is exactly zero and the coherent cross term vanishes — so no closure channel is opened or closed by a difference of spin or energy, and the electromagnetic weight is **spin-blind and energy-blind**. What is *not* claimed is that the shared gauge imbalance disappears: both electrons carry the same unmatched `+`. But by §1b′ that imbalance is **not an effect** — it is what makes certain joint histories close and others not exist at all. Two electrons of different energies do enter joint events (§1e), in however many ways there are; QLF's content is that the count of those ways does not depend on their spins or energies *through the charge*.
 >
 > **This is a prediction, not a retreat.** Standard QED agrees and QLF *derives* it: the direct Coulomb term is exactly spin-independent, and all spin dependence of two-electron energies (the singlet–triplet splitting) comes from exchange — which is closure blocking, not charge. QLF says that had to be so, because charge and spin do not live on the same axes.
 
@@ -163,6 +186,26 @@ verified as `compton_full_cycle`. Four distinct scales, kept distinct:
 | **localization width** | a context-dependent wavepacket property, not intrinsic |
 | ~~radius~~ | **no such quantity** — nothing in the closure predicate carries a length |
 
+### 1h. Where this could be falsified — and where it contradicts the Standard Model
+
+Sorted by the classes of [`Experimental_Consistency.md`](Experimental_Consistency.md) §10, because the distinction is what the claim is worth. **Class B contradicts the SM; Class A does not**, and calling a Class A result a discriminator is exactly the error [`ScientificApproach.md`](ScientificApproach.md) R0a exists to prevent.
+
+**Class B — QLF says what the SM does not.**
+
+| Prediction | Why it differs from the SM | Kill condition |
+|---|---|---|
+| **Exact global charge neutrality** | Every event is a closure and every closure is neutral (`zfa_closure_is_neutral`); a charged history is not an event at all (`charge_nonzero_not_countBalanced`). A net-charged universe is not suppressed — **there is no history that realizes it.** The SM conserves charge by gauge invariance but leaves the *total* a free initial condition | A confirmed non-zero net cosmic charge density, at any magnitude. Present bounds: `\|q_p+q_e\|/e < 10⁻²¹`, neutron charge `< 10⁻²¹ e`, CMB-isotropy limits |
+| **α(0) cannot drift** | Charge is an **integer count** of unmatched gauge twists (`chiralCharge_eq_gauge_counts`) and an integer has no dynamical variable to drift along — `no_cosmological_drift_of_alpha` ([`Alpha.md`](Alpha.md), scoped to the leading value). The SM permits promoting α to a slowly varying field, and varying-constant models do exactly that | A **confirmed** cosmological α drift — quasar absorption lines (Webb et al., `Δα/α ~ 10⁻⁵`), Oklo, optical clocks at `10⁻¹⁷/yr`. **The most accessible QLF-vs-SM discriminator in this sector** |
+| **Like charges admit zero joint closures** | `like_charges_do_not_close` — not a strong repulsion, *no closed history*, at any coupling and in any dimension. The SM computes a repulsive potential, which is a different kind of statement and does not forbid exotic like-charge binding a priori | A genuine **two-body** bound state of like charges with **no mediating third closure**. Cooper pairs and bipolarons do **not** count — they bind through the lattice, a third closure, so their joint history is neutral overall (`SharedClosure`) |
+
+**Class A — QLF derives what the SM computes.** These are *consistency*, not discriminators, and are listed so they are not mistaken for evidence:
+
+- exact spin-independence of the **electrostatic** coupling (§1c) — QED gets the same zero by computation;
+- exact `|q_e| = |q_p|` — the SM arranges it by anomaly cancellation, QLF gets it from the count;
+- no charge creation, no electron decay — gauge invariance forbids it in the SM too.
+
+> **One scope correction owed to §1c.** "All spin dependence is exchange" is right for the **charge–charge** term only. Spin also enters electromagnetism through the **current** sector — Breit, spin–orbit, spin–spin — which in QLF is the winding/circulation ([`QLF_AngularMomentum`](lean/QLF_AngularMomentum.lean), the discrete curl), a *different substrate object* from `chiralCharge`. The theorem says charge cannot see spin; it does not say electromagnetism cannot.
+
 ### 1g. Claim and evidence
 
 Statuses on the two axes of [`ScientificApproach.md`](ScientificApproach.md) §3 — mathematical (what is established about the formal object) and physical (what is established about the world).
@@ -172,6 +215,8 @@ Statuses on the two axes of [`ScientificApproach.md`](ScientificApproach.md) §3
 | The electron's internal cycle is ZFA-closed and folds to `−I` | **Proved** | **Internal** | `electronCycle_countBalanced`, `electronCycle_folds_negI` |
 | Hermitian ⇏ ZFA-closed | **Proved** | **Internal** | `hermitian_not_implies_zfa` |
 | Charge = unmatched gauge count; closed ⟹ neutral | **Proved** | **Consistency** — reproduces conservation and quantization of charge | `chiralCharge_eq_gauge_counts`, `zfa_closure_is_neutral` |
+| **No event is ever charged** | **Proved** | **Internal** — the ontological consequence: an unclosed history has no effect | `charge_nonzero_not_countBalanced` |
+| **Coulomb is a count of joint closures, not a force** | **Proved** | **Consistency** — like/unlike behaviour reproduced with no force, field, or action at a distance | `coulomb_is_a_counting_rule`, `like_charges_do_not_close`, `opposite_charges_close` |
 | **No charge difference between modes of different energy or spin** | **Proved** | **Consistency** — the direct Coulomb term *is* spin-independent in QED; here it is derived rather than computed | `no_charge_between_spatial_modes`, `chiralCharge_determined_by_gauge` |
 | Distinct harmonics / opposite spins carry no coherent cross term | **Proved** | **Internal** | `channelKernel_diagonal`, `harmonics_orthogonal`, `spin_projectors_orthogonal` |
 | Unequal components can enter one closed event | **Proved** | **Consistency** — Møller scattering at unequal energies | `joint_closure_allows_unequal_components` |
@@ -195,7 +240,7 @@ In each case the "electron" of this document contributes the same gauge-fold-dep
 python particles.py --particle electron
 ```
 
-**Sample output (electron half-loop, awaiting joint closure):**
+**Sample output (the electron's internal cycle):**
 ```text
 === ELECTRON ===
 open prefix         : ^<v>
@@ -276,7 +321,7 @@ The output describes the **joint** closure, not the electron alone. The "electro
 
 | Demonstration | Command | What you see |
 |---|---|---|
-| Electron half-loop (gauge-folded, awaiting joint closure) | `python particles.py --particle electron` | Gauge fold → contribution to bound-state mass and local time |
+| Electron cycle (closed) + its gauge twist (open) | `python particles.py --particle electron` | The internal cycle closing; the gauge twist that does not, and so is not an event on its own |
 | Photon half (massless) | `python particles.py --particle photon` | Pure forward-time spatial half-closure |
 | Photon gauge loop (massless) | `python particles.py --particle photon` | Net action = 0 (joint event) |
 | Hydrogen joint closure (e⁻ + p) | `python particles.py --particle atom` | Gauge handshake + photon emission; joint hydrogen bound state |
@@ -312,7 +357,9 @@ $$
 \boxed{\text{scale} = \text{closure wavelength},\; \text{not a radius}}
 $$
 
-And the sharp one: **charge is blind to spin and energy**, because charge lives on the gauge axis and spin and energy live on the spatial axes. There is no charge *between* two electrons of different energy or different spin — the difference is exactly zero (`no_charge_between_spatial_modes`), and the coherent cross term between distinct harmonics or opposite spin channels is exactly zero as well (`channelKernel_diagonal`). What remains is the common gauge deficit both carry, which is the ordinary charge and the reason an electron seeks a partner at all.
+And the sharp one: **charge is blind to spin and energy**, because charge lives on the gauge axis and spin and energy live on the spatial axes. There is no charge *between* two electrons of different energy or different spin — the difference is exactly zero (`no_charge_between_spatial_modes`), and the coherent cross term between distinct harmonics or opposite spin channels is exactly zero as well (`channelKernel_diagonal`).
+
+What remains is the common gauge imbalance both carry — and that is not an effect. **No event is ever charged** (`charge_nonzero_not_countBalanced`): a history with non-zero charge does not close, and what does not close is not an event and has no effect at all. The electron does not seek a partner and nothing is owed. It closes or it does not. What we call attraction and repulsion is the count of joint histories that DO close (`coulomb_is_a_counting_rule`) — **zero ways** for like charges, some for opposite. No force, no field, no action at a distance.
 
 Photons are the same structural class: joint emitter-absorber closures, not free projectiles. The difference is the gauge fold — present in the electron half-loop, absent in the photon half-loop. Hence electrons contribute mass to their joint closures and photons do not.
 

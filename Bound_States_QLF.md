@@ -14,7 +14,9 @@ Standard particle physics tabulates `m_e ≈ 0.511 MeV`, `m_μ ≈ 105.66 MeV`, 
 
 - the lepton's **internal cycle** `^<v>` **is** ZFA-closed and folds to `−I` (`electronCycle_countBalanced`, `electronCycle_folds_negI`) — it is a completed half-spin periodic mode, not an unfinished fragment;
 - what is open is the **gauge** twist, and that unmatched gauge count **is** the electric charge (`electronCharged_charge = 1`, `electronCharged_not_countBalanced`);
-- so **a ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`) — charge is the *residue of non-closure*, which is exactly why a free lepton must find a partner before the whole event closes, and why the bound system is the QLF-physical state.
+- so **a ZFA-closed history is electrically neutral** (`zfa_closure_is_neutral`) — charge is the *residue of non-closure*, and the contrapositive is the load-bearing half: **a charged history is not an event at all** (`charge_nonzero_not_countBalanced`). Nothing is pending. A free lepton does not *seek* a partner and nothing is owed — it closes or it does not, and if it does not there is no effect and no charge. The bound system is the QLF-physical state because that is where a closure exists, not because a constituent wanted one.
+
+What is usually called Coulomb attraction and repulsion is the **count of joint histories that do close** (`coulomb_is_a_counting_rule`): like charges admit **zero**, opposite charges admit some, and a joint closure exists only where the charges cancel (`joint_closure_total_charge_zero`). No force, no field, no action at a distance — the same framing as [`Spacetime_Constructor.md`](Spacetime_Constructor.md).
 
 Two consequences used below: **Hermitian ⇏ ZFA-closed** (`hermitian_not_implies_zfa` — the prefix `^<v` folds to the Hermitian `−σx` while carrying `F = 1`), and a joint closure places **no constraint on its components** (`joint_closure_allows_unequal_components` — two unbalanced halves of *different lengths* whose joint history closes), so unequal constituent depths are the normal case, not an obstruction.
 
