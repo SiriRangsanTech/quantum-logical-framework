@@ -42,6 +42,7 @@ lean_lib QLF where
     `QLF_FreeEnergy,
     `QLF_Pauli,
     `QLF_TwistAlphabet,
+    `QLF_AlphabetNecessity,
     `QLF_VacuumAlignment,
     `QLF_RhoProcessBridge,
     `QLF_LocalClock,
