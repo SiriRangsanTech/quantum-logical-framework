@@ -213,9 +213,11 @@ $$
 
 The chain's last link is the residual. That the information atom is **two-valued** is proved
 in-frame (`spin_half_is_information_atom`, [`QLF_SpinorInformation`](lean/QLF_SpinorInformation.lean));
-for a `d`-valued atom the same argument gives `|Σ| = 2d²`, so `d = 2` is the smallest value admitting
-any distinction at all and `8` is the smallest non-degenerate alphabet. What remains **posited** is
-the step before that: that an elementary distinction *is* a signed element of the observable frame.
+for a `d`-valued atom the observable frame has `d²` elements (`dim_ℝ Herm(d) = d²`), so signed steps
+give `|Σ| = 2d²` and `d = 2` is the smallest value admitting any distinction at all — `8` is the
+smallest non-degenerate alphabet. That counting generalizes; the Klein-group closure that *quantizes*
+the sub-alphabets does not, and is special to `d = 2`. What remains **posited** is the step before
+all of it: that an elementary distinction *is* a signed element of the observable frame.
 
 So the budget row changes from *"chosen, with a sufficiency argument"* to *"derived from one named
 posit, with the alternatives enumerated and six excluded"* — and the posit is now a single sentence
