@@ -45,6 +45,9 @@ import Mathlib
 
 namespace QLF
 
+-- `twistCharge` / `chiralCharge` live in `QLF.Spin`.
+open QLF.Spin
+
 -- ==========================================
 -- 1. Two closures: the cycle closes, the charge does not
 -- ==========================================
@@ -271,7 +274,7 @@ theorem cycleOverlap_distinct {ζ : ℂ} (N : ℕ) (hpow : ζ ^ N = 1) (hne : ζ
 theorem harmonics_orthogonal {ζ : ℂ} {N : ℕ} (hζ : IsPrimitiveRoot ζ N)
     {m n : ℕ} (hn : n < N) (hmn : m < n) :
     cycleOverlap N (ζ ^ (n - m)) = 0 := by
-  have hd0 : 0 < n - m := Nat.sub_pos_of_lt hmn
+  have hd0 : n - m ≠ 0 := Nat.sub_ne_zero_of_lt hmn
   have hdN : n - m < N := lt_of_le_of_lt (Nat.sub_le n m) hn
   have hne : ζ ^ (n - m) ≠ 1 := hζ.pow_ne_one_of_pos_of_lt hd0 hdN
   have hpow : (ζ ^ (n - m)) ^ N = 1 := by
