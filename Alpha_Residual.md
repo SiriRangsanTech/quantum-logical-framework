@@ -1,7 +1,9 @@
 # The α residual `+0.036` — 137 is the exact leading EM value; the residual is higher-order EM running
 
-> **Where it stands (§0):** `α⁻¹ = 128 + 9 = 137` is the *exact* leading pure-EM value — **confirmed** by
-> the running (`128 = 2⁷ ≈ α̂⁻¹(M_Z)` to `0.05`, `+9 = 3²` = EM running to the IR). The weak-sector
+> **Where it stands (§0):** `α⁻¹ = 128 + 9 = 137` is the *exact* leading pure-EM value — **matched** by
+> the running (`128 = 2⁷ ≈ α̂⁻¹(M_Z)` to `0.05`, `+9 = 3²` = EM running to the IR). *Matched, not
+> confirmed:* the comparison targets were known when the reading was built, so by
+> [`ScientificApproach.md`](ScientificApproach.md) **R0a** this is a **retrodiction** — see §0a. The weak-sector
 > hypothesis for `+0.036` was tested (W-loop running) and **closed** — the `W` is too heavy to run below
 > `M_W` and on-shell `α(0)` has no separate `W` piece. The residual sits at the higher-order-EM scale
 > (`~5α`), so `+0.036` is the **higher-order EM running** correction — the same object as the
@@ -34,9 +36,9 @@ as a *running*, with each integer pinned to a scale:
 | sum | **`137`** | the **pure-EM** `α⁻¹` in the IR — **exact** |
 | residual | `+0.036` | a **sub-leading, weak-scale** effect — the weak gauge bosons (W loops) in the photon vacuum polarization, where the bulk `+9` does not reach |
 
-So **137 is the right leading EM number** — and the structure is now quantitatively anchored.
+So **137 is the right leading EM number**, and the structure is quantitatively anchored.
 
-**The running half is CONFIRMED.** `2⁷ = 128` matches `α̂⁻¹(M_Z)` (MS-bar) to `0.05`, and the gap to the
+**The running half matches.** `2⁷ = 128` matches `α̂⁻¹(M_Z)` (MS-bar) to `0.05`, and the gap to the
 IR is `137.036 − 127.95 = 9.086 ≈ +9`. So `128 + 9 = 137` is *literally* "weak-scale coupling + EM
 running = pure-EM IR". This is real, not a coincidence.
 
@@ -53,7 +55,8 @@ partial resummation of the prime-closure series" ≡ "the higher-order QED runni
 §1–§5 are **not** demoted to the wrong sector — they are the combinatorial form of this sub-leading EM
 running. (Only the bracket *coincidentally* spanning `137.036` was never the mechanism.)
 
-**Net of the reframe + swing #1:** `137 = exact leading EM`, anchored to `α̂⁻¹(M_Z) = 2⁷` — **validated**.
+**Net of the reframe + swing #1:** `137 = exact leading EM`, anchored to `α̂⁻¹(M_Z) = 2⁷` — **matched
+(retrodiction, §0a)**.
 `+0.036 = higher-order EM running ≡ the closure-resummation tail` — one object, EM sector, scale `~5α`.
 The weak attribution is **closed** (W too heavy, `α(0)` clean).
 
@@ -68,6 +71,45 @@ right, but the kinematic weight that fixes `4.61`-of-`6` is the 2-loop log struc
 
 The sections below record the closure-census analysis — the combinatorial form of this sub-leading EM
 running.
+
+---
+
+## 0a. The discovery/confirmation firewall, applied to this file
+
+This document is the repository's standing case for **R0a** ([`ScientificApproach.md`](ScientificApproach.md)
+§4), so it should be the one that models the rule rather than the one that needs it applied.
+
+> **Anything constructed while the target number was in view is a retrodiction, permanently.** A
+> construction becomes capable of *prediction* only once frozen at a named commit, and only for
+> consequences that were not used in building it.
+
+Every scale match in §0 rests on knowing `α̂⁻¹(M_Z) ≈ 128` and `α⁻¹(0) = 137.036`, so the `2⁷ ↔ M_Z`
+and `3² ↔ EM running` identifications are **retrodictions**: correct, structurally suggestive, and not
+confirmation. Three items are not retrodictions, and they are the only things here that can confirm:
+
+| Claim | Physical status | Why |
+|---|---|---|
+| `α⁻¹ > 137` (one-sided, from `d_eff > 3`) | **Predicted absent** | A falsifiable null; nothing about `137.036` was used to obtain it |
+| the bracket `137.0159 < α⁻¹ < 137.0481` | **Predicted absent** (two-sided) | Derived from `central_binom_genfun`; CODATA merely *lands* inside it |
+| `no_cosmological_drift_of_alpha` | **Pre-registered prediction** | The SM permits a varying-α field; QLF forbids drift, and the test is not yet decisive |
+| `2⁷ ↔ α̂⁻¹(M_Z)`, `3² ↔ EM running` | **Retrodiction** | Targets known at construction time |
+| any future residual mechanism | **Retrodiction unless pre-registered** | See the R0 block in §9a |
+
+**The pre-filter, applied before any computation.** A candidate for the residual must (i) change a
+**count of ways** ([`Philosophy.md`](Philosophy.md) §3a rule 4) and (ii) be **horizon-dependent**,
+because the residual *runs* and capacity is the substrate's own scale axis
+(`closedAtHorizon_iff_maxExcursion_le`). **Any fixed rational fails the filter without being
+computed.** `dim Gr(3,15)`, `9/250` and `(3/15)²` are of that kind — static objects offered for a
+running quantity — and the filter is where they belong, ahead of the 5th-decimal comparison rather
+than behind it.
+
+**The local derived-bridge standard is this file's own result.** `censusTail_eq` — the exact census
+α-screening tail `512√62/31 − 130` — is a **theorem**, derived from Mathlib's generalized binomial
+theorem with nothing chosen ([`QLF_AlphaBound`](lean/QLF_AlphaBound.lean), zero axioms). It sits at the
+top of the bridge ladder (`arbitrary → pre-registered → constrained → **derived**`,
+[`ScientificApproach.md`](ScientificApproach.md) §5c), inside this problem. Every candidate residual
+mechanism is measured against it, as every new axiom is measured against the case where nothing is
+left to choose.
 
 ---
 
@@ -172,6 +214,47 @@ selecting *which* fraction and *why* it screens composite (vs irreducible) closu
 > `137.036`. The earlier framing also mislabeled the data weight: the data wants composites at `5/8`, not
 > `3/8`. **The gauge projection does not derive the residual.**
 
+### 3a. Which fractions a census can carry
+
+The alphabet does not admit an open menu of sub-fractions. The rule that selects them is the
+alphabet's own structure, machine-verified, and it is not a choice.
+
+**The alphabet is 4 axes × 2 handednesses.** `QLF_AlphabetNecessity` proves the alphabet is the signed
+axis frame, so `|Σ| = 2·|axes|`; a composition-closed axis set is a subgroup of the Klein four-group, so
+the axis count is `1, 2` or `4` and never `3` — two distinct spatial axes carry the third with them
+(`two_spatial_axes_force_three`), and the gauge axis is what closure requires rather than an addition to
+the spatial six (`frame_contains_I`). `6+2` is therefore `3 spatial axes + 1 gauge axis`, each doubled:
+the one split of the alphabet there is.
+
+**A census fraction must be a union of whole axes.** `QLF_Handedness` proves ZFA is *zero net handedness
+on every axis* (`zfa_iff_handedness_balanced`) — balance is per-axis. A sub-census that takes one
+handedness of an axis and not the other is not handedness-balanced and therefore is not a census of
+closures at all. So the closure-admissible fractions of the alphabet are exactly
+
+$$
+\frac{2}{8},\; \frac{4}{8},\; \frac{6}{8},\; \frac{8}{8} \qquad\text{i.e.}\qquad
+\tfrac14,\; \tfrac12,\; \tfrac34,\; 1 .
+$$
+
+$$
+\boxed{\tfrac38 \text{ and } \tfrac58 \text{ are not closure-admissible census fractions}}
+$$
+
+**Two consequences, cutting in opposite directions.**
+
+1. **The gauge-projection route is closed, not merely unlucky.** The available fractions are
+   `2/8, 4/8, 6/8, 8/8`, and none of them is the answer: `2/8 → 137.0239`, `4/8 → 137.0320`,
+   `6/8 → 137.0401`. There is nothing else to choose, so the route cannot be rescued by re-choosing.
+2. **The `5/8` "match" is structurally unavailable.** The fraction the data wants is not a census
+   fraction at all, so it is excluded by the alphabet rather than by judgement.
+
+> **A unit distinction, and it is what keeps the Weinberg result untouched.** `sin²θ_W = 3/8` is a ratio
+> of **axes to elements** — a gauge-coupling normalization, the SU(5) value, proven as
+> `sin2_weinberg_substrate_eq` ([`QLF_WeinbergAngle`](lean/QLF_WeinbergAngle.lean)). A *screening weight*
+> is a ratio of **elements to elements**. Two different objects with different admissibility rules, and
+> only the second is constrained to `{2/8, 4/8, 6/8, 8/8}`. The table above lists both conventions in one
+> column; read `3/8` there as the projection and the rest as census fractions.
+
 ---
 
 ## 4. What the test *did* establish (a forced structural fact)
@@ -239,6 +322,49 @@ So both routes converge on one open problem: the **partial-resummation rule** of
 ---
 
 ## 6. Status (corrected)
+
+### 6a. Two-axis status
+
+Mathematical status (what is established about the formal object) and physical status (what is
+established about the world) are different questions, and this file's central open item is open on the
+second axis only ([`ScientificApproach.md`](ScientificApproach.md) §3).
+
+| Claim | Mathematical | Physical |
+|---|---|---|
+| bracket `137.015874 < α⁻¹ < 137.048130` (`alphaInvCap_eq`, `irreducibleCap_eq`) | **Proved** | **Predicted absent** — a two-sided null CODATA lands inside |
+| `α⁻¹ > 137` from `d_eff > 3` | **Proved** | **Predicted absent** — one-sided, and the honest anchor |
+| `censusTail_eq` — the exact screening tail | **Proved** (discharged from axiom) | **Internal** |
+| `G = 1/(1−I)` — the Dyson/1PI structure of the closure census | **Proved** | **Internal** |
+| `128 + 9 = 137` as weak-scale coupling + EM running | **Exact computational** | **Retrodiction** (§0a) |
+| `3/8`, `5/8` not closure-admissible (§3a) | **Proved** | **Internal** — it constrains the menu, not an observable |
+| the residual **is** the higher-order EM running | **Conjecture** | **Open bridge** — *this is the whole open problem* |
+| the partial-Dyson truncation rule | **Conjecture** | **Open bridge** |
+
+The last two rows are the file's real content.
+
+### 6b. The failure-criterion test, self-applied
+
+Eight candidate bridges stand discarded for one target number: the weak/W-loop sector (§0),
+gauge projection at `3/8` (§3), hypercharge `5/8` (§3), the `w = 0.624` weighting (§2a), standalone
+curvature (§5), and the three one-term geometric patterns `dim Gr(3,15)`, `9/250`, `(3/15)²` (§9).
+
+That is exactly the shape [`ScientificApproach.md`](ScientificApproach.md) §7a's **criterion (b)**
+polices — a programme that replaces a failed bridge every time one fails is protected indefinitely — so
+the test is owed rather than the reassurance. It **passes**, for two checkable reasons:
+
+1. **Every rejection is forced by an independent computation**, never selected by proximity to
+   `0.036`: the `M_W` threshold (the `W` cannot run below it), the exact bracket, the
+   `O(1)`-vs-`O(α_bare)` scale argument, the 5th-decimal miss against `0.035999084(21)`, and the
+   per-axis handedness balance of §3a, which excludes two fractions structurally.
+2. **The question narrows.** From "which weighting between `I` and `G`" — a framing §4 calls
+   numerology-prone — to one named object: **the partial-Dyson truncation rule**.
+
+That is exclusion, not rescue. **The tripwire is recorded with the count:** if the number of discarded
+bridges keeps growing while that object does not sharpen further, and the census stops doing the
+excluding, criterion (b) has been met and the residual should be reported as beyond the substrate's
+reach rather than pending.
+
+### 6c. Summary
 
 - **Forced, exact, and machine-verified (both ends):** the bracket `137.015874 < α⁻¹ < 137.048130` —
   upper `alphaInvCap_eq`/`codata_below_alphaInvCap`, lower `irreducibleCap_eq` (`263 − 16√62`) — plus the
@@ -394,7 +520,7 @@ polarizations, so `residual ~ 5α = 0.0365` (a 4-D reading of the `5α` that kep
 is still the closer numeric lead, `5α` 1.3% high). Note `9 = 4-D traceless-symmetric tensor` count too
 (`4·5/2 − 1 = 9`), so the `9` itself has a spacetime reading.
 
-**Honest boundary — same address, better character.** The underived piece is now a single, *physical*
+**Honest boundary — same address, better character.** The underived piece is a single, *physical*
 quantity: the **time-suppression factor** (`0.5%`, i.e. `δd = 0.006`). It is a lead, not a derivation. But
 instead of "the residual is some unforced number," the open problem is "the residual is the suppressed
 leakage of the synthesized time dimension; derive the suppression from `f = 1/t` / the Lorentzian
@@ -492,3 +618,31 @@ nameable obstacles. Stated so the work can resume against a concrete target:
 
 Until (a) or (b) lands, the honest status holds: **leading structure derived; precision tail = the
 continuum running QLF brackets.** The obstacle is not a missing number — it is the continuum sector itself.
+
+---
+
+## 9a. The pre-registered bridge for route (a)
+
+Route (a) is the live one, and it runs under **R0** ([`ScientificApproach.md`](ScientificApproach.md)
+§4): the bridge is specified in full *before* any comparison, so that a match can count as evidence
+rather than as a ninth retrodiction. The target is deliberately **value-free** — the one-loop running
+coefficient, not `0.035999`.
+
+| R0 field | Specification |
+|---|---|
+| **Physical inputs held fixed** | The charged-fermion content below `M_Z` (`Σ Nᶜ Q_f²`), and nothing else. No use of `α⁻¹(0)`, `137.036`, or `0.036` at any step |
+| **Substrate representation** | The elementary (prime-count) closure **tower** graded by horizon capacity `R` (`closedAtHorizon`), with each closure weighted by the cylinder measure `8^{−\|h\|}` — *derived*, not chosen ([`QLF_KraftMeasure`](lean/QLF_KraftMeasure.lean)) |
+| **Calculation** | The census-weighted, horizon-dependent sum over that tower — the substrate reading of vacuum polarization |
+| **Observable-extraction rule** | Read the coefficient of the leading `log` in the horizon dependence as the one-loop running coefficient per unit charge per fermion |
+| **Tolerance** | Exact rational, or a stated bound. Floating-point asymptotics are contaminated past `k*` (R4) and do not count |
+| **Comparator** | The QED one-loop coefficient `2/(3π)` per unit charge per fermion — a *known* number, so the comparison is a **retrodiction** for the coefficient itself. What becomes a **prediction** is the next term, extracted from the same frozen construction without re-tuning |
+| **Kill condition** | If the census-weighted horizon sum yields no `log`, or a `log` whose coefficient is not `2/(3π)` at the stated tolerance, route (a) is closed and the residual is reported as belonging to the continuum sector |
+
+**Freezing.** The construction counts as frozen at the commit that records it, and only consequences
+not used in building it are claimable as predictions (R0a). The `2/(3π)` coefficient is census-anchored
+already; the **two-loop** coefficient is the first genuinely unused consequence, and is therefore the
+first thing here capable of confirming rather than retrodicting.
+
+**What route (a) does not require.** It requires no reference to `0.036` at any point. A derivation
+that reaches the running coefficients from counting delivers the residual as an output; one that
+reaches `0.036` by any other path delivers a ninth discarded bridge (§6b).

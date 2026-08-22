@@ -408,7 +408,15 @@ the `0.036` residual is the separate registry item (only the proven bound `137 <
    observed parameter — so this is not "137 was tuned to hit" but "the sectors could not have missed and
    didn't." *Residual:* that the admissible constructions are *exactly* `{128 + d²}` (no other
    expression-shape admissible) is the Step-0 restriction, not yet a free-grammar enumeration.
-2. **Why *this* grammar** — the Step-0 motivations (§6a), argued in prose, not proven.
+2. **Why *this* grammar** — two halves, at different statuses. The **alphabet** half is **proven**:
+   `|Σ| ∈ {2,4,8}` with `6` impossible, `8` forced by two distinguishable spatial axes, and the axis
+   count `3` unavoidable once more than one spatial direction exists
+   ([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)) — and the two smaller alphabets are
+   degenerate, being abelian with no SU(2), no double cover and no spin, so neither carries
+   electromagnetism at all. The `3` and the `8` that feed `128 + 3²` therefore come from a set of size
+   three, two of whose members have no α to speak of. The **expression-grammar** half — that the
+   admissible shapes are *exactly* `{128 + d²}` — remains the Step-0 restriction, argued in prose
+   (§6a), and the free-grammar census shows it is where the look-elsewhere lives.
 3. **Why this closure structure *is* the electromagnetic coupling** — the interpretive premise (§1),
    permanently uncertified by Lean.
 4. **Why 137.036** — open (the residual registry item).
@@ -477,7 +485,27 @@ converge in a complete theory (open cross-check).
 
 ## 8. α and the other substrate constants — the shared 6+2 split
 
-The `6 spatial + 2 gauge` split of the 8-twist alphabet (the `3` spatial axes) is the *same* structure
+**The split is forced, not observed.** The alphabet is the signed axis frame, so `|Σ| = 2·|axes|`, and a
+composition-closed axis set is a subgroup of the Klein four-group: the alphabet size is `2`, `4` or `8`
+and **never `6`**, the axis count is `1`, `2` or `4` and **never `3`** — two distinct spatial axes carry
+the third with them (`two_spatial_axes_force_three`), and the gauge axis is what closure requires rather
+than an addition to the spatial six (`frame_contains_I`). So `6+2` is `3 spatial axes + 1 gauge axis`,
+each doubled by handedness, and it is the one split of the alphabet there is
+([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean), [`QLF_Handedness`](lean/QLF_Handedness.lean),
+zero axioms).
+
+That matters for what follows: α's `3²`, the Weinberg `3/8`, and the cosmological `2/8` read off a
+partition with **no alternatives**, so agreement across them is overdetermination rather than a shared
+convention.
+
+**Two conventions live in the table below, and they are different objects.** A *projection* fraction is
+a ratio of **axes to elements** (`sin²θ_W = 3/8` — the SU(5) normalization). A *census* fraction is a
+ratio of **elements to elements**, and since ZFA is zero net handedness **per axis**
+(`zfa_iff_handedness_balanced`), a census fraction must be a union of whole axes: `2/8, 4/8, 6/8, 8/8`.
+`3/8` and `5/8` are not census fractions. See [`Alpha_Residual.md`](Alpha_Residual.md) §3a, where that
+constraint closes the gauge-projection route to the residual.
+
+The `6 spatial + 2 gauge` split (the `3` spatial axes) is the *same* structure
 behind several constants — α is one face of it:
 
 | Constant | Value | Tie to the `6+2` / `3` | Lean |
@@ -552,10 +580,32 @@ rational arithmetic (`norm_num`), no axioms beyond Lean/Mathlib.
 `von_klitzing_substrate`, `pion_electron_ratio_eq` (modules in §10).
 **Shared `6+2`:** `sin2_weinberg_substrate_eq`, `only_2_gauge_matches_observed_Omega_Lambda`,
 `num_generations_eq_three`, `generation_eq_fifteen`, `newton_exponent_only_3d_matches` (modules in §8).
+**The split itself:** `frame_axisCount_trichotomy`, `alphabetSize_trichotomy`, `no_six_twist_alphabet`,
+`two_spatial_axes_force_three`, `frame_contains_I`, `noncommuting_iff_eight`
+([`QLF_AlphabetNecessity`](lean/QLF_AlphabetNecessity.lean)); `zfa_iff_handedness_balanced`,
+`chiralCharge_eq_handednessOn_gauge` ([`QLF_Handedness`](lean/QLF_Handedness.lean)) — `6+2` is `3 spatial
+axes + 1 gauge axis`, each doubled by handedness, with `|Σ| = 6` impossible and an axis count of `2`
+unavailable.
 
 ---
 
 ## 13. Honest scope
+
+**Status on two axes** ([`ScientificApproach.md`](ScientificApproach.md) §3) — mathematical (what is
+established about the formal object) and physical (what is established about the world):
+
+| Claim | Mathematical | Physical |
+|---|---|---|
+| `α_lead = 1/(128 + 3²) = 1/137`, `alpha_QLF_eq` | **Proved** | **Retrodiction** — the comparison target was known |
+| `α(d) = 1/(128 + d²)`, `only_3d_substrate_gives_137` | **Proved** | **Internal** |
+| bounds `137 < α⁻¹ < 137.048` | **Proved** | **Predicted absent** — a two-sided null CODATA lands inside |
+| `no_cosmological_drift_of_alpha` | **Proved** (scoped to the leading value) | **Pre-registered prediction** — the SM permits a varying-α field; the test is not yet decisive |
+| the `6+2` split is the only split | **Proved** | **Internal** |
+| the exact `1/137.035999` | **Conjecture** | **Open bridge** ([`Alpha_Residual.md`](Alpha_Residual.md)) |
+
+`no_cosmological_drift_of_alpha` is the only row here that can *confirm* rather than retrodict — the
+leading value's agreement with CODATA is a retrodiction however exact, since `137.036` was in view when
+the reading was built ([`Alpha_Residual.md`](Alpha_Residual.md) §0a).
 
 - **Derived (zero free parameters, Lean-verified): the leading value `α_lead = 1/(128+9) = 1/137`** — why
   the substrate's combinatorics + 3-D rendering give the integer `137` (the `2⁻⁷` bare coupling, the
@@ -581,6 +631,10 @@ progress** — an internal census-tail target, not an external renormalization d
 ---
 
 ## See also
+
+- [`Alpha_Residual.md`](Alpha_Residual.md) §0a (the discovery/confirmation firewall and the pre-filter),
+  §3a (which fractions a census can carry), §6a–§6b (two-axis status; the failure-criterion test),
+  §9a (the pre-registered bridge for the running-coefficient route).
 
 - [`Magnetism_Spatial_Dynamics.md`](Magnetism_Spatial_Dynamics.md) §6.1 — full prose derivation + demo.
 - [`SpaceTime.md`](SpaceTime.md) §3a — why space renders 3-D, `α = N = 3²` as a consequence.
