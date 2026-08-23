@@ -166,6 +166,10 @@ inside that census (§2 above), not a value fixed in advance by correlated initi
 buys one actual world by correlating hidden data; QLF has all closing worlds, capacity-ordered, and needs
 no correlation to buy anything.
 
+**The agency corollary.** What this leaves of free will — none of the libertarian kind, and something
+sharper in its place: an **undeterminable autonomy** that determines the future by *making ways* rather
+than by choosing among them — is worked out in [`Philosophy.md`](Philosophy.md) §3c.
+
 **Placement.** Superdeterminism is a **neighbour, not a label QLF wears**: nearest at exactly one joint
 (no exogenous free variable), different at the two that carry Bell's theorem (no hidden values, no
 setting–state correlation), and free of the fine-tuning charge because it never incurs the debt. It sits
