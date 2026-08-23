@@ -231,5 +231,6 @@ lean_lib QLF where
     `QLF_AxiomAudit,
     `QLF_Fredkin,
     `QLF_HorizonBasis,
-    `QLF_Folding
+    `QLF_Folding,
+    `QLF_Unsaturation
   ]
