@@ -17,6 +17,8 @@ on:
     paths:
       - 'twist_core.py'
       - 'census_inventory.py'
+      - 'protein_census.py'
+      - 'data/folding_census.json'
       - 'data/census_inventory.json'
       - '.github/workflows/inventory-check.yml'
 
@@ -25,6 +27,8 @@ on:
     paths:
       - 'twist_core.py'
       - 'census_inventory.py'
+      - 'protein_census.py'
+      - 'data/folding_census.json'
       - 'data/census_inventory.json'
       - '.github/workflows/inventory-check.yml'
 
@@ -42,3 +46,9 @@ jobs:
 
       - name: Verify the census inventory
         run: python3 census_inventory.py --quick
+
+      # The folding census (protein_census.py) asserts the QLF_Folding theorems against
+      # freshly enumerated walks: a contact loop achieves ZFA, contacts fall only at odd
+      # sequence separation, closures compose, the fold census is mirror-symmetric.
+      - name: Verify the folding census
+        run: python3 protein_census.py --quick

@@ -100,7 +100,23 @@ The proven fact `boson_even_pairs`/`cooper_pair_boson` ([`QLF_CondensedMatter`](
   the bosonic pairs condense. Cool a handful of free electrons and watch them pair.
   [▶ see](https://rchain-community.github.io/quantum-logical-framework/spacetime_constructor.html#qc=electron%20%40%20-1%2C0%2C0%0Aelectron%20%40%201%2C0%2C0%0Aelectron%20%40%200%2C1%2C0%0Aelectron%20%40%200%2C-1%2C0)
 
-## 9. Honest scope
+## 9. Polymers — when the shared closure becomes a loop
+
+The one rule already makes a **chain**. A monomer with free valence at two distinct sites cannot
+saturate against a single partner, so it bonds at both ends and the bonds propagate: **valence 2 at
+two sites ⟹ a linear chain, valence 3+ ⟹ a crosslinked network, valence 1 ⟹ a cap that terminates
+one.** Nothing new is needed for polymerisation; it is saturation with nowhere to stop.
+
+What *is* new at chain scale is that the two partners of a shared closure may already be tied
+together by the backbone. Then the closure is a **loop** — and a loop of the backbone's twist history
+is a ZFA closure in the literal sense: zero net displacement, count-balanced, Pauli-closed.
+That is protein folding, and it is [`Protein_Folding.md`](Protein_Folding.md): a fold is a **closure
+inventory**, folding order is loop multiplicity, and the contact energy is the substrate's own
+`log 2` rather than a fitted parameter. The **hydrophobic/polar** split that drives it is this
+section's valence rule applied to side chains — a saturated hydrocarbon has no free valence, so it
+cannot share a closure with water, which is the helium argument of §1 one scale up.
+
+## 10. Honest scope
 
 The **shared-closure bond** is the QLF principle (proven for H₂/atoms; `Bound_States_QLF.md`,
 [`QLF_Confinement`](lean/QLF_Confinement.lean) for what *can't* close). The rest is an **illustrative** model:
@@ -111,6 +127,7 @@ self-assembling — not a quantum-chemistry solver.
 
 ---
 
-**See also:** [`Spacetime_Constructor.md`](Spacetime_Constructor.md) (the visualizer) · [`Bound_States_QLF.md`](Bound_States_QLF.md)
+**See also:** [`Protein_Folding.md`](Protein_Folding.md) (the rung above — folding as a closure census) ·
+[`Spacetime_Constructor.md`](Spacetime_Constructor.md) (the visualizer) · [`Bound_States_QLF.md`](Bound_States_QLF.md)
 (why atoms, not free leptons, are the observables) · [`Geometry_Of_Space.md`](Geometry_Of_Space.md) (crystals as
 resonant lattices) · [`SpaceTime.md`](SpaceTime.md) · [`Philosophy.md`](Philosophy.md).

@@ -6,7 +6,7 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 ## Project overview
 
-**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **208 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
+**Quantum Logical Framework (QLF)** is a formal proof system machine-verified in Lean 4 across **209 modules with zero `sorry` blocks**. It encodes quantum mechanics and spacetime dynamics using phase-string combinatorics (ZFA — Zero-phase Flux Algebra).
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
@@ -14,9 +14,9 @@ Core claim: *ZFA balance is the selection principle for physical reality.* Every
 
 ---
 
-## Modules — 208, machine-verified, zero `sorry`
+## Modules — 209, machine-verified, zero `sorry`
 
-Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 208 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
+Registered in `lakefile.lean` roots array (build order); sources in `lean/`. **The full per-module table — descriptions + key-theorem lists for all 209 — lives in [`lean/README.md`](lean/README.md); consult it when working on any specific module.** Thematic families and every individual result are also mapped in [`FlowChart.md`](FlowChart.md). The core anchors a session references most often:
 
 | Module | What it proves |
 |---|---|
@@ -364,7 +364,7 @@ Avoid framings that contradict the above:
 | Path | Purpose |
 |---|---|
 | `lean/` | All Lean source files |
-| `lakefile.lean` | Build config; `roots` array lists all 208 modules |
+| `lakefile.lean` | Build config; `roots` array lists all 209 modules |
 | `lean/README.md` | Module table and proof chain documentation |
 | `README.md` | Project overview with citations and convergence themes |
 | `CLAUDE.md` | This file — project context for new Claude sessions |
@@ -372,6 +372,7 @@ Avoid framings that contradict the above:
 | `MultiParticle.py` / `MultiParticle.md` | Two-history interactor: causal diamonds intersect → joint-ZFA closure = entanglement (ER=EPR); reuses `twist_core.is_zfa` (reconfirms the `count_balanced_pauli_closed` keystone at runtime), the discrete-curl vorticity, cascade `log 2` quantum, and `SpaceTime.SpacetimeGrid` latency field |
 | `spacetime_constructor.html` | Interactive 3-D tool ([live](https://rchain-community.github.io/quantum-logical-framework/spacetime_constructor.html)) — quantum logic + a movable 3-D observer generating a world *from nothing*: space = node position, time = clock rate, both = colour; matter from the ZFA closure census, **no forces / no fields / no action at a distance** (only closures that DO close, frequency = census multiplicity). Logical bang (Planck-temp black holes → hadrons → atoms), chemistry by one valence rule, crystals (Pauli), Cooper/BEC condensates, entanglement/exclusion overlays. Deep links `#qc=<QuCalc>&t=<temp>`. **Binding framing:** a *reading* (space/time/colour), never a cause. Full write-up [`Spacetime_Constructor.md`](Spacetime_Constructor.md) |
 | `Chemistry.md` | QLF chemistry: a bond is a **shared closure**, driven by one **valence** rule (H:1/O:2/C:4/Fe:3/He:0) → H₂/H₂O/CO₂/graphite/Fe₂O₃ self-assemble; metals lattice (Pauli), noble gases inert; plus superfluid-He/Cooper-pair condensation. Every reaction has a **(▶ see)** deep-link that opens the constructor with the scene preloaded (`#qc=…`). Honest scope: shared-closure bond is the principle; single-bond valence-saturation model (formulas right, not double bonds/angles/rates). Crosslinks `Spacetime_Constructor.md`, `Bound_States_QLF.md`, `Geometry_Of_Space.md` |
+| `Protein_Folding.md` / `protein_census.py` / `data/folding_census.json` | **Chemistry's next rung: a fold is a closure inventory.** A backbone on the cubic lattice steps by one of six signed axis displacements and the 8-twist alphabet **is** the signed axis frame — so a conformation **is** a twist history, no encoding to defend. A **contact** (segment displacing by exactly one lattice step) closes a loop with zero net displacement, hence count-balanced, hence Pauli-closed by the keystone: `contact_is_closure` gives both ZFA conjuncts free. Corollaries, not modelling choices: contacts only at **odd** sequence separation (the lattice-protein parity rule), closures **compose** (so contacts add — the substrate reply to Levinthal), the contact energy is the substrate's own `log 2` (derived, not fitted; and *only* H–H contacts pay, because a polar residue closes with solvent either way), and a **no-go** — mirroring is a closure-preserving bijection, so **counting cannot select a handedness** (homochirality is upstream, `QLF_Handedness`). Census: SAW counts reproduce OEIS A001411/A001412; loop-closure multiplicity falls `0.122 → 0.013` from span 3 to 9 (**contact order, counted**); 69 compact 4×4 structures with designability `21–521` and 21.8% of sequences folding (Li–Helling–Tang–Wingreen reproduced); the coil wins on shapes and the closure's own multiplicity `2^c` is what turns it over, with `T* ≈ 0.2–0.47` nats — **below** the closure quantum, so a 12-mer does not fold, which is right. Stored in the **shared `closures` schema**, so the Rust `qucalc` crate reads it unmodified and `most_ways_first` returns the folding order / the coil / the most designable structure with no new code |
 | `Spacetime_Constructor.md` | Full write-up of `spacetime_constructor.html`. Reframed thesis: **no forces, no fields, no action at a distance** — only ZFA closures that **DO** close (not "can"), because in quantum logic things happen **every way possible** and reality is what happens in the **most ways**; a closure's **frequency IS its multiplicity** (the census count of ways), read out as space/time/colour — never a cause. Generated *from nothing* by the first distinction unfolding the census, seen from one 3-D observer perspective, **enhanced** (not caused) by the background-radiation spectrum. Covers every panel: generation-from-nothing, the movable observer frame, band selector, foam Brownian walk, Pauli-bound crystals, black holes, QuCalc create, field readout, Vacuum ρ(T). Companion to `SpaceTime.md` (§7 is now just a live-see pointer) and the numerical `MultiParticle.py` |
 | `proton_neutron_demo.py` / `SEX.md` | Model of the proton♂/neutron♀ pairing (issues #53/#57): `pn` binds where `pp`/`nn` are Pauli-blocked, the bond stabilizes the decaying neutron; complementarity → collective intelligence. Room best practices live in quantum-os `Room_Best_Practices.md` |
 | `BraKetRhoQuCalc.md` | Reference doc for bra-ket ↔ RhoQuCalc correspondence |

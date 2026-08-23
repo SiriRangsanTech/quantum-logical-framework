@@ -1,0 +1,2638 @@
+{
+ "_comment": "Folding census: a backbone is a twist history, a contact is a ZFA closure. Rebuild with protein_census.py. The `closures` section is the shared inventory schema that qucalc/src/lib.rs loads.",
+ "_invariants_asserted": [
+  "a contact loop achieves ZFA: count-balanced AND Pauli-closed (contact_is_closure)",
+  "contacts occur only at odd sequence separation (contact_separation_odd)",
+  "a closed loop has even length (closedLoop_even_length)",
+  "closed loops compose under concatenation (closedLoop_append)",
+  "a count-balanced fold is real, +-I and never +-iI (balanced_phase_is_real)",
+  "no gauge twist appears in a backbone encoding (count_encode_plus/minus)",
+  "self-avoiding-walk counts match the published lattice series (external check)",
+  "fold free energy is -(contacts) x log 2 nats (foldFreeEnergy)",
+  "the fold census is mirror-symmetric: counting cannot pick a handedness (map_mirror_bijective)",
+  "ways is held as a coefficient: the inventory is smaller than the census it summarizes"
+ ],
+ "closures": {
+  "designability|4x4": {
+   "branches": [
+    "designability"
+   ],
+   "contacts_per_structure": [
+    9
+   ],
+   "designability_max": 521,
+   "designability_mean": 206.85507246376812,
+   "event_classes": {
+    "designability": {
+     "15": {
+      "signed": 330,
+      "ways": 330
+     },
+     "23": {
+      "signed": 403,
+      "ways": 403
+     },
+     "26": {
+      "signed": 305,
+      "ways": 305
+     },
+     "29": {
+      "signed": 334,
+      "ways": 334
+     },
+     "32": {
+      "signed": 428,
+      "ways": 428
+     },
+     "39": {
+      "signed": 305,
+      "ways": 305
+     },
+     "42": {
+      "signed": 403,
+      "ways": 403
+     },
+     "43": {
+      "signed": 330,
+      "ways": 330
+     },
+     "44": {
+      "signed": 330,
+      "ways": 330
+     },
+     "45": {
+      "signed": 347,
+      "ways": 347
+     },
+     "47": {
+      "signed": 330,
+      "ways": 330
+     },
+     "56": {
+      "signed": 521,
+      "ways": 521
+     },
+     "57": {
+      "signed": 301,
+      "ways": 301
+     },
+     "58": {
+      "signed": 347,
+      "ways": 347
+     },
+     "59": {
+      "signed": 428,
+      "ways": 428
+     },
+     "63": {
+      "signed": 521,
+      "ways": 521
+     }
+    }
+   },
+   "hamiltonian_paths": 552,
+   "preparation": "all 2^16 HP sequences on the 4x4 compact lattice",
+   "sequences_that_fold": 14273,
+   "structures": 69,
+   "truncated_to_top": 16
+  },
+  "foldweighted|seq=HHHHHHHHHHHH": {
+   "branches": [
+    "fold"
+   ],
+   "event_classes": {
+    "fold": {
+     "0": {
+      "signed": 7485,
+      "ways": 7485
+     },
+     "1": {
+      "signed": -8844,
+      "ways": 18488
+     },
+     "2": {
+      "signed": 6508,
+      "ways": 27600
+     },
+     "3": {
+      "signed": -3368,
+      "ways": 31104
+     },
+     "4": {
+      "signed": 1526,
+      "ways": 25696
+     },
+     "5": {
+      "signed": -776,
+      "ways": 28416
+     },
+     "6": {
+      "signed": 38,
+      "ways": 3968
+     }
+    }
+   },
+   "free_energy_nats": -4.1588830833596715,
+   "ground_state_degeneracy": 31,
+   "max_hh_contacts": 6,
+   "preparation": "HHHHHHHHHHHH",
+   "transition": {
+    "C_max": 3.214566,
+    "T_peak": 0.1981,
+    "T_peak_highest": 0.1981,
+    "T_units": "nats; T = 1 is the closure quantum log 2"
+   },
+   "unique_ground_state": false,
+   "weighted_by_closure_multiplicity": true
+  },
+  "foldweighted|seq=HPPHPHPHPPHH": {
+   "branches": [
+    "fold"
+   ],
+   "event_classes": {
+    "fold": {
+     "0": {
+      "signed": 3513,
+      "ways": 19573
+     },
+     "1": {
+      "signed": -790,
+      "ways": 16540
+     },
+     "2": {
+      "signed": -26,
+      "ways": 7704
+     },
+     "3": {
+      "signed": -106,
+      "ways": 2192
+     },
+     "4": {
+      "signed": -20,
+      "ways": 448
+     },
+     "5": {
+      "signed": -2,
+      "ways": 64
+     }
+    }
+   },
+   "free_energy_nats": -3.4657359027997265,
+   "ground_state_degeneracy": 1,
+   "max_hh_contacts": 5,
+   "preparation": "HPPHPHPHPPHH",
+   "transition": {
+    "C_max": 9.132835,
+    "T_peak": 0.2722,
+    "T_peak_highest": 0.2722,
+    "T_units": "nats; T = 1 is the closure quantum log 2"
+   },
+   "unique_ground_state": true,
+   "weighted_by_closure_multiplicity": true
+  },
+  "fold|seq=HHHHHHHHHHHH": {
+   "branches": [
+    "fold"
+   ],
+   "event_classes": {
+    "fold": {
+     "0": {
+      "signed": 7485,
+      "ways": 7485
+     },
+     "1": {
+      "signed": -8844,
+      "ways": 9244
+     },
+     "2": {
+      "signed": 6508,
+      "ways": 6900
+     },
+     "3": {
+      "signed": -3368,
+      "ways": 3888
+     },
+     "4": {
+      "signed": 1526,
+      "ways": 1606
+     },
+     "5": {
+      "signed": -776,
+      "ways": 888
+     },
+     "6": {
+      "signed": 38,
+      "ways": 62
+     }
+    }
+   },
+   "free_energy_nats": -4.1588830833596715,
+   "ground_state_degeneracy": 31,
+   "max_hh_contacts": 6,
+   "preparation": "HHHHHHHHHHHH",
+   "transition": {
+    "C_max": 3.214566,
+    "T_peak": 0.1981,
+    "T_peak_highest": 0.1981,
+    "T_units": "nats; T = 1 is the closure quantum log 2"
+   },
+   "unique_ground_state": false,
+   "weighted_by_closure_multiplicity": false
+  },
+  "fold|seq=HPPHPHPHPPHH": {
+   "branches": [
+    "fold"
+   ],
+   "event_classes": {
+    "fold": {
+     "0": {
+      "signed": 3513,
+      "ways": 19573
+     },
+     "1": {
+      "signed": -790,
+      "ways": 8270
+     },
+     "2": {
+      "signed": -26,
+      "ways": 1926
+     },
+     "3": {
+      "signed": -106,
+      "ways": 274
+     },
+     "4": {
+      "signed": -20,
+      "ways": 28
+     },
+     "5": {
+      "signed": -2,
+      "ways": 2
+     }
+    }
+   },
+   "free_energy_nats": -3.4657359027997265,
+   "ground_state_degeneracy": 1,
+   "max_hh_contacts": 5,
+   "preparation": "HPPHPHPHPPHH",
+   "transition": {
+    "C_max": 9.132835,
+    "T_peak": 0.2722,
+    "T_peak_highest": 0.2722,
+    "T_units": "nats; T = 1 is the closure quantum log 2"
+   },
+   "unique_ground_state": true,
+   "weighted_by_closure_multiplicity": false
+  },
+  "loopclosure|dim=2,n=12": {
+   "branches": [
+    "3",
+    "5",
+    "7",
+    "9",
+    "11"
+   ],
+   "closure_probability": {
+    "11": 0.014329151945637856,
+    "3": 0.12180271564511959,
+    "5": 0.03342853273915773,
+    "7": 0.018465401991801363,
+    "9": 0.013393571578053255
+   },
+   "event_classes": {
+    "11": {
+     "11": {
+      "signed": -440,
+      "ways": 2328
+     }
+    },
+    "3": {
+     "3": {
+      "signed": -98944,
+      "ways": 98944
+     }
+    },
+    "5": {
+     "5": {
+      "signed": -21724,
+      "ways": 21724
+     }
+    },
+    "7": {
+     "7": {
+      "signed": -6176,
+      "ways": 9000
+     }
+    },
+    "9": {
+     "9": {
+      "signed": -1688,
+      "ways": 4352
+     }
+    }
+   },
+   "preparation": "open chain, dim=2, 13 residues",
+   "walks_total": 324932
+  },
+  "loopclosure|dim=3,n=8": {
+   "branches": [
+    "3",
+    "5",
+    "7"
+   ],
+   "closure_probability": {
+    "3": 0.11621636947567571,
+    "5": 0.050231205827314766,
+    "7": 0.030806823278328514
+   },
+   "event_classes": {
+    "3": {
+     "3": {
+      "signed": -45088,
+      "ways": 45088
+     }
+    },
+    "5": {
+     "5": {
+      "signed": -8000,
+      "ways": 12992
+     }
+    },
+    "7": {
+     "7": {
+      "signed": -1424,
+      "ways": 3984
+     }
+    }
+   },
+   "preparation": "open chain, dim=3, 9 residues",
+   "walks_total": 387966
+  }
+ },
+ "designability": {
+  "hamiltonian_paths": 552,
+  "histogram": {
+   "120": 2,
+   "125": 2,
+   "154": 2,
+   "160": 2,
+   "171": 2,
+   "175": 2,
+   "186": 1,
+   "209": 2,
+   "21": 2,
+   "223": 2,
+   "232": 1,
+   "237": 2,
+   "259": 2,
+   "26": 1,
+   "264": 2,
+   "267": 1,
+   "274": 3,
+   "29": 2,
+   "295": 2,
+   "298": 2,
+   "301": 2,
+   "305": 2,
+   "330": 4,
+   "334": 1,
+   "347": 2,
+   "403": 2,
+   "428": 2,
+   "44": 1,
+   "49": 2,
+   "51": 2,
+   "521": 2,
+   "55": 2,
+   "61": 2,
+   "80": 2,
+   "84": 2,
+   "96": 2
+  },
+  "max": 521,
+  "mean": 206.85507246376812,
+  "sequences_that_fold": 14273,
+  "structures": 69,
+  "top10": [
+   521,
+   521,
+   428,
+   428,
+   403,
+   403,
+   347,
+   347,
+   334,
+   330
+  ]
+ },
+ "folds": {
+  "seq=HHHHHHHHHHHH": {
+   "conformations": 30073,
+   "distinct_contact_sets": 1113,
+   "dos": {
+    "0": 7485,
+    "1": 9244,
+    "2": 6900,
+    "3": 3888,
+    "4": 1606,
+    "5": 888,
+    "6": 62
+   },
+   "folding": {
+    "C_max": 3.214566,
+    "T_peak": 0.1981,
+    "T_peak_highest": 0.1981,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.002625
+     ],
+     [
+      0.2475,
+      3.106288
+     ],
+     [
+      0.445,
+      2.753436
+     ],
+     [
+      0.6425,
+      2.23168
+     ],
+     [
+      0.84,
+      1.565251
+     ],
+     [
+      1.0375,
+      1.07915
+     ],
+     [
+      1.235,
+      0.764245
+     ],
+     [
+      1.4325,
+      0.560602
+     ],
+     [
+      1.63,
+      0.425057
+     ],
+     [
+      1.8275,
+      0.331664
+     ],
+     [
+      2.025,
+      0.265158
+     ],
+     [
+      2.2225,
+      0.216381
+     ],
+     [
+      2.42,
+      0.179676
+     ],
+     [
+      2.6175,
+      0.15143
+     ],
+     [
+      2.815,
+      0.129266
+     ],
+     [
+      3.0125,
+      0.111578
+     ],
+     [
+      3.21,
+      0.097249
+     ],
+     [
+      3.4075,
+      0.085488
+     ],
+     [
+      3.605,
+      0.07572
+     ],
+     [
+      3.8025,
+      0.067524
+     ],
+     [
+      4.0,
+      0.06058
+     ]
+    ]
+   },
+   "free_energy_nats": -4.1588830833596715,
+   "ground_state_conformations": 62,
+   "ground_state_degeneracy": 31,
+   "max_hh_contacts": 6,
+   "note": "all-H control -- maximally degenerate",
+   "sequence": "HHHHHHHHHHHH",
+   "signed": {
+    "0": 7485,
+    "1": -8844,
+    "2": 6508,
+    "3": -3368,
+    "4": 1526,
+    "5": -776,
+    "6": 38
+   },
+   "unique_ground_state": false,
+   "zfa_failures": [],
+   "zfa_loops_checked": 1330
+  },
+  "seq=HPPHPHPHPPHH": {
+   "conformations": 30073,
+   "distinct_contact_sets": 1113,
+   "dos": {
+    "0": 19573,
+    "1": 8270,
+    "2": 1926,
+    "3": 274,
+    "4": 28,
+    "5": 2
+   },
+   "folding": {
+    "C_max": 9.132835,
+    "T_peak": 0.2722,
+    "T_peak_highest": 0.2722,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.002566
+     ],
+     [
+      0.2475,
+      8.923362
+     ],
+     [
+      0.445,
+      3.977823
+     ],
+     [
+      0.6425,
+      1.409095
+     ],
+     [
+      0.84,
+      0.665792
+     ],
+     [
+      1.0375,
+      0.378321
+     ],
+     [
+      1.235,
+      0.241476
+     ],
+     [
+      1.4325,
+      0.166668
+     ],
+     [
+      1.63,
+      0.121627
+     ],
+     [
+      1.8275,
+      0.092521
+     ],
+     [
+      2.025,
+      0.072672
+     ],
+     [
+      2.2225,
+      0.058552
+     ],
+     [
+      2.42,
+      0.04816
+     ],
+     [
+      2.6175,
+      0.040297
+     ],
+     [
+      2.815,
+      0.034205
+     ],
+     [
+      3.0125,
+      0.029393
+     ],
+     [
+      3.21,
+      0.025526
+     ],
+     [
+      3.4075,
+      0.022372
+     ],
+     [
+      3.605,
+      0.019767
+     ],
+     [
+      3.8025,
+      0.017591
+     ],
+     [
+      4.0,
+      0.015755
+     ]
+    ]
+   },
+   "free_energy_nats": -3.4657359027997265,
+   "ground_state_conformations": 2,
+   "ground_state_degeneracy": 1,
+   "max_hh_contacts": 5,
+   "note": "designed folder",
+   "sequence": "HPPHPHPHPPHH",
+   "signed": {
+    "0": 3513,
+    "1": -790,
+    "2": -26,
+    "3": -106,
+    "4": -20,
+    "5": -2
+   },
+   "unique_ground_state": true,
+   "zfa_failures": [],
+   "zfa_loops_checked": 1330
+  }
+ },
+ "hydrophobicity": {
+  "agree": 17,
+  "misses": [
+   "Gly",
+   "Pro",
+   "Cys"
+  ],
+  "rows": [
+   {
+    "agrees": false,
+    "free_valence": false,
+    "kyte_doolittle": -0.4,
+    "predicted": "H",
+    "reference": "P",
+    "residue": "Gly",
+    "side_chain": "H only -- no side chain at all"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 1.8,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Ala",
+    "side_chain": "-CH3"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 4.2,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Val",
+    "side_chain": "-CH(CH3)2"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 3.8,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Leu",
+    "side_chain": "-CH2CH(CH3)2"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 4.5,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Ile",
+    "side_chain": "-CH(CH3)CH2CH3"
+   },
+   {
+    "agrees": false,
+    "free_valence": false,
+    "kyte_doolittle": -1.6,
+    "predicted": "H",
+    "reference": "P",
+    "residue": "Pro",
+    "side_chain": "cyclic hydrocarbon, fused to the backbone"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 2.8,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Phe",
+    "side_chain": "-CH2-C6H5"
+   },
+   {
+    "agrees": true,
+    "free_valence": false,
+    "kyte_doolittle": 1.9,
+    "predicted": "H",
+    "reference": "H",
+    "residue": "Met",
+    "side_chain": "thioether -- S fully substituted, no free valence"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -0.9,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Trp",
+    "side_chain": "indole N-H"
+   },
+   {
+    "agrees": false,
+    "free_valence": true,
+    "kyte_doolittle": 2.5,
+    "predicted": "P",
+    "reference": "H",
+    "residue": "Cys",
+    "side_chain": "thiol S-H"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -1.3,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Tyr",
+    "side_chain": "phenol O-H"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -0.8,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Ser",
+    "side_chain": "hydroxyl O-H"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -0.7,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Thr",
+    "side_chain": "hydroxyl O-H"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.5,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Asn",
+    "side_chain": "amide N-H2"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.5,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Gln",
+    "side_chain": "amide N-H2"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.5,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Asp",
+    "side_chain": "carboxylate"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.5,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Glu",
+    "side_chain": "carboxylate"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.9,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Lys",
+    "side_chain": "ammonium"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -4.5,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "Arg",
+    "side_chain": "guanidinium"
+   },
+   {
+    "agrees": true,
+    "free_valence": true,
+    "kyte_doolittle": -3.2,
+    "predicted": "P",
+    "reference": "P",
+    "residue": "His",
+    "side_chain": "imidazole N-H"
+   }
+  ],
+  "total": 20
+ },
+ "saw": {
+  "dim2|n10": {
+   "closing": {
+    "3": 11020,
+    "5": 2384,
+    "7": 952,
+    "9": 436
+   },
+   "collapse": {
+    "C_max": 2.686179,
+    "T_peak": 0.3463,
+    "T_peak_highest": 0.3463,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.001138
+     ],
+     [
+      0.2475,
+      2.472431
+     ],
+     [
+      0.445,
+      2.558847
+     ],
+     [
+      0.6425,
+      1.891814
+     ],
+     [
+      0.84,
+      1.271947
+     ],
+     [
+      1.0375,
+      0.864547
+     ],
+     [
+      1.235,
+      0.610253
+     ],
+     [
+      1.4325,
+      0.447992
+     ],
+     [
+      1.63,
+      0.340426
+     ],
+     [
+      1.8275,
+      0.266321
+     ],
+     [
+      2.025,
+      0.213471
+     ],
+     [
+      2.2225,
+      0.174626
+     ],
+     [
+      2.42,
+      0.145326
+     ],
+     [
+      2.6175,
+      0.122726
+     ],
+     [
+      2.815,
+      0.104953
+     ],
+     [
+      3.0125,
+      0.090739
+     ],
+     [
+      3.21,
+      0.079202
+     ],
+     [
+      3.4075,
+      0.069715
+     ],
+     [
+      3.605,
+      0.061823
+     ],
+     [
+      3.8025,
+      0.055191
+     ],
+     [
+      4.0,
+      0.049565
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 3167,
+    "1": 3556,
+    "2": 2458,
+    "3": 1152,
+    "4": 596,
+    "5": 96
+   },
+   "opportunities": {
+    "10": 11025,
+    "3": 88200,
+    "4": 77175,
+    "5": 66150,
+    "6": 55125,
+    "7": 44100,
+    "8": 33075,
+    "9": 22050
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 11,
+   "signed": {
+    "3": -11020,
+    "5": -2384,
+    "7": -640,
+    "9": -148
+   },
+   "steps": 10,
+   "walks_first_step_fixed": 11025,
+   "walks_total": 44100,
+   "zfa_failures": [],
+   "zfa_loops_checked": 412
+  },
+  "dim2|n11": {
+   "closing": {
+    "11": 744,
+    "3": 33410,
+    "5": 7326,
+    "7": 3010,
+    "9": 1454
+   },
+   "collapse": {
+    "C_max": 3.214566,
+    "T_peak": 0.1981,
+    "T_peak_highest": 0.1981,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.002625
+     ],
+     [
+      0.2475,
+      3.106288
+     ],
+     [
+      0.445,
+      2.753436
+     ],
+     [
+      0.6425,
+      2.23168
+     ],
+     [
+      0.84,
+      1.565251
+     ],
+     [
+      1.0375,
+      1.07915
+     ],
+     [
+      1.235,
+      0.764245
+     ],
+     [
+      1.4325,
+      0.560602
+     ],
+     [
+      1.63,
+      0.425057
+     ],
+     [
+      1.8275,
+      0.331664
+     ],
+     [
+      2.025,
+      0.265158
+     ],
+     [
+      2.2225,
+      0.216381
+     ],
+     [
+      2.42,
+      0.179676
+     ],
+     [
+      2.6175,
+      0.15143
+     ],
+     [
+      2.815,
+      0.129266
+     ],
+     [
+      3.0125,
+      0.111578
+     ],
+     [
+      3.21,
+      0.097249
+     ],
+     [
+      3.4075,
+      0.085488
+     ],
+     [
+      3.605,
+      0.07572
+     ],
+     [
+      3.8025,
+      0.067524
+     ],
+     [
+      4.0,
+      0.06058
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 7485,
+    "1": 9244,
+    "2": 6900,
+    "3": 3888,
+    "4": 1606,
+    "5": 888,
+    "6": 62
+   },
+   "opportunities": {
+    "10": 60146,
+    "11": 30073,
+    "3": 270657,
+    "4": 240584,
+    "5": 210511,
+    "6": 180438,
+    "7": 150365,
+    "8": 120292,
+    "9": 90219
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 12,
+   "signed": {
+    "11": -192,
+    "3": -33410,
+    "5": -7326,
+    "7": -2050,
+    "9": -558
+   },
+   "steps": 11,
+   "walks_first_step_fixed": 30073,
+   "walks_total": 120292,
+   "zfa_failures": [],
+   "zfa_loops_checked": 1330
+  },
+  "dim2|n12": {
+   "closing": {
+    "11": 2328,
+    "3": 98944,
+    "5": 21724,
+    "7": 9000,
+    "9": 4352
+   },
+   "collapse": {
+    "C_max": 2.821049,
+    "T_peak": 0.4697,
+    "T_peak_highest": 0.4697,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.00063
+     ],
+     [
+      0.2475,
+      1.886435
+     ],
+     [
+      0.445,
+      2.818975
+     ],
+     [
+      0.6425,
+      2.414869
+     ],
+     [
+      0.84,
+      1.71937
+     ],
+     [
+      1.0375,
+      1.192868
+     ],
+     [
+      1.235,
+      0.847245
+     ],
+     [
+      1.4325,
+      0.622368
+     ],
+     [
+      1.63,
+      0.47222
+     ],
+     [
+      1.8275,
+      0.368588
+     ],
+     [
+      2.025,
+      0.294718
+     ],
+     [
+      2.2225,
+      0.240512
+     ],
+     [
+      2.42,
+      0.199709
+     ],
+     [
+      2.6175,
+      0.168304
+     ],
+     [
+      2.815,
+      0.143661
+     ],
+     [
+      3.0125,
+      0.123993
+     ],
+     [
+      3.21,
+      0.108061
+     ],
+     [
+      3.4075,
+      0.094984
+     ],
+     [
+      3.605,
+      0.084125
+     ],
+     [
+      3.8025,
+      0.075012
+     ],
+     [
+      4.0,
+      0.067294
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 17753,
+    "1": 23876,
+    "2": 19250,
+    "3": 11436,
+    "4": 5660,
+    "5": 2524,
+    "6": 734
+   },
+   "opportunities": {
+    "10": 243699,
+    "11": 162466,
+    "12": 81233,
+    "3": 812330,
+    "4": 731097,
+    "5": 649864,
+    "6": 568631,
+    "7": 487398,
+    "8": 406165,
+    "9": 324932
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 13,
+   "signed": {
+    "11": -440,
+    "3": -98944,
+    "5": -21724,
+    "7": -6176,
+    "9": -1688
+   },
+   "steps": 12,
+   "walks_first_step_fixed": 81233,
+   "walks_total": 324932,
+   "zfa_failures": [],
+   "zfa_loops_checked": 2126
+  },
+  "dim2|n4": {
+   "closing": {
+    "3": 8
+   },
+   "collapse": {
+    "C_max": 0.79447,
+    "T_peak": 0.2475,
+    "T_peak_highest": 0.2475,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000389
+     ],
+     [
+      0.2475,
+      0.79447
+     ],
+     [
+      0.445,
+      0.51823
+     ],
+     [
+      0.6425,
+      0.283415
+     ],
+     [
+      0.84,
+      0.170012
+     ],
+     [
+      1.0375,
+      0.111383
+     ],
+     [
+      1.235,
+      0.078026
+     ],
+     [
+      1.4325,
+      0.05748
+     ],
+     [
+      1.63,
+      0.04401
+     ],
+     [
+      1.8275,
+      0.034733
+     ],
+     [
+      2.025,
+      0.028086
+     ],
+     [
+      2.2225,
+      0.023167
+     ],
+     [
+      2.42,
+      0.019429
+     ],
+     [
+      2.6175,
+      0.016524
+     ],
+     [
+      2.815,
+      0.014222
+     ],
+     [
+      3.0125,
+      0.012368
+     ],
+     [
+      3.21,
+      0.010853
+     ],
+     [
+      3.4075,
+      0.009599
+     ],
+     [
+      3.605,
+      0.00855
+     ],
+     [
+      3.8025,
+      0.007664
+     ],
+     [
+      4.0,
+      0.006909
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 17,
+    "1": 8
+   },
+   "opportunities": {
+    "3": 50,
+    "4": 25
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 5,
+   "signed": {
+    "3": -8
+   },
+   "steps": 4,
+   "walks_first_step_fixed": 25,
+   "walks_total": 100,
+   "zfa_failures": [],
+   "zfa_loops_checked": 4
+  },
+  "dim2|n5": {
+   "closing": {
+    "3": 32,
+    "5": 6
+   },
+   "collapse": {
+    "C_max": 1.487209,
+    "T_peak": 0.2969,
+    "T_peak_highest": 0.2969,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000504
+     ],
+     [
+      0.2475,
+      1.371634
+     ],
+     [
+      0.445,
+      1.204582
+     ],
+     [
+      0.6425,
+      0.703045
+     ],
+     [
+      0.84,
+      0.423607
+     ],
+     [
+      1.0375,
+      0.275037
+     ],
+     [
+      1.235,
+      0.190532
+     ],
+     [
+      1.4325,
+      0.138894
+     ],
+     [
+      1.63,
+      0.105367
+     ],
+     [
+      1.8275,
+      0.082495
+     ],
+     [
+      2.025,
+      0.066251
+     ],
+     [
+      2.2225,
+      0.054326
+     ],
+     [
+      2.42,
+      0.045326
+     ],
+     [
+      2.6175,
+      0.038375
+     ],
+     [
+      2.815,
+      0.032898
+     ],
+     [
+      3.0125,
+      0.028508
+     ],
+     [
+      3.21,
+      0.024938
+     ],
+     [
+      3.4075,
+      0.021995
+     ],
+     [
+      3.605,
+      0.019542
+     ],
+     [
+      3.8025,
+      0.017476
+     ],
+     [
+      4.0,
+      0.01572
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 41,
+    "1": 22,
+    "2": 8
+   },
+   "opportunities": {
+    "3": 213,
+    "4": 142,
+    "5": 71
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 6,
+   "signed": {
+    "3": -32,
+    "5": -6
+   },
+   "steps": 5,
+   "walks_first_step_fixed": 71,
+   "walks_total": 284,
+   "zfa_failures": [],
+   "zfa_loops_checked": 14
+  },
+  "dim2|n6": {
+   "closing": {
+    "3": 108,
+    "5": 20
+   },
+   "collapse": {
+    "C_max": 1.167615,
+    "T_peak": 0.3216,
+    "T_peak_highest": 0.3216,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000367
+     ],
+     [
+      0.2475,
+      1.030456
+     ],
+     [
+      0.445,
+      1.02695
+     ],
+     [
+      0.6425,
+      0.659791
+     ],
+     [
+      0.84,
+      0.420964
+     ],
+     [
+      1.0375,
+      0.283181
+     ],
+     [
+      1.235,
+      0.200826
+     ],
+     [
+      1.4325,
+      0.148824
+     ],
+     [
+      1.63,
+      0.114271
+     ],
+     [
+      1.8275,
+      0.090293
+     ],
+     [
+      2.025,
+      0.073039
+     ],
+     [
+      2.2225,
+      0.060241
+     ],
+     [
+      2.42,
+      0.050501
+     ],
+     [
+      2.6175,
+      0.042927
+     ],
+     [
+      2.815,
+      0.036924
+     ],
+     [
+      3.0125,
+      0.03209
+     ],
+     [
+      3.21,
+      0.028141
+     ],
+     [
+      3.4075,
+      0.024875
+     ],
+     [
+      3.605,
+      0.022144
+     ],
+     [
+      3.8025,
+      0.019837
+     ],
+     [
+      4.0,
+      0.017871
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 99,
+    "1": 64,
+    "2": 32
+   },
+   "opportunities": {
+    "3": 780,
+    "4": 585,
+    "5": 390,
+    "6": 195
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 7,
+   "signed": {
+    "3": -108,
+    "5": -20
+   },
+   "steps": 6,
+   "walks_first_step_fixed": 195,
+   "walks_total": 780,
+   "zfa_failures": [],
+   "zfa_loops_checked": 20
+  },
+  "dim2|n7": {
+   "closing": {
+    "3": 366,
+    "5": 76,
+    "7": 28
+   },
+   "collapse": {
+    "C_max": 1.720305,
+    "T_peak": 0.3709,
+    "T_peak_highest": 0.3709,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000415
+     ],
+     [
+      0.2475,
+      1.317673
+     ],
+     [
+      0.445,
+      1.650056
+     ],
+     [
+      0.6425,
+      1.145263
+     ],
+     [
+      0.84,
+      0.739399
+     ],
+     [
+      1.0375,
+      0.494281
+     ],
+     [
+      1.235,
+      0.346943
+     ],
+     [
+      1.4325,
+      0.254462
+     ],
+     [
+      1.63,
+      0.19357
+     ],
+     [
+      1.8275,
+      0.151714
+     ],
+     [
+      2.025,
+      0.121863
+     ],
+     [
+      2.2225,
+      0.0999
+     ],
+     [
+      2.42,
+      0.083307
+     ],
+     [
+      2.6175,
+      0.070485
+     ],
+     [
+      2.815,
+      0.060383
+     ],
+     [
+      3.0125,
+      0.052289
+     ],
+     [
+      3.21,
+      0.045708
+     ],
+     [
+      3.4075,
+      0.040287
+     ],
+     [
+      3.605,
+      0.035771
+     ],
+     [
+      3.8025,
+      0.03197
+     ],
+     [
+      4.0,
+      0.028741
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 235,
+    "1": 184,
+    "2": 86,
+    "3": 38
+   },
+   "opportunities": {
+    "3": 2715,
+    "4": 2172,
+    "5": 1629,
+    "6": 1086,
+    "7": 543
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 8,
+   "signed": {
+    "3": -366,
+    "5": -76,
+    "7": -20
+   },
+   "steps": 7,
+   "walks_first_step_fixed": 543,
+   "walks_total": 2172,
+   "zfa_failures": [],
+   "zfa_loops_checked": 58
+  },
+  "dim2|n8": {
+   "closing": {
+    "3": 1152,
+    "5": 240,
+    "7": 88
+   },
+   "collapse": {
+    "C_max": 3.172837,
+    "T_peak": 0.2228,
+    "T_peak_highest": 0.2228,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.002419
+     ],
+     [
+      0.2475,
+      3.076483
+     ],
+     [
+      0.445,
+      2.049849
+     ],
+     [
+      0.6425,
+      1.303641
+     ],
+     [
+      0.84,
+      0.831357
+     ],
+     [
+      1.0375,
+      0.555643
+     ],
+     [
+      1.235,
+      0.390764
+     ],
+     [
+      1.4325,
+      0.287197
+     ],
+     [
+      1.63,
+      0.218871
+     ],
+     [
+      1.8275,
+      0.171807
+     ],
+     [
+      2.025,
+      0.138179
+     ],
+     [
+      2.2225,
+      0.113396
+     ],
+     [
+      2.42,
+      0.094646
+     ],
+     [
+      2.6175,
+      0.08014
+     ],
+     [
+      2.815,
+      0.068699
+     ],
+     [
+      3.0125,
+      0.059524
+     ],
+     [
+      3.21,
+      0.052059
+     ],
+     [
+      3.4075,
+      0.045905
+     ],
+     [
+      3.605,
+      0.040775
+     ],
+     [
+      3.8025,
+      0.036454
+     ],
+     [
+      4.0,
+      0.032782
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 561,
+    "1": 508,
+    "2": 268,
+    "3": 132,
+    "4": 10
+   },
+   "opportunities": {
+    "3": 8874,
+    "4": 7395,
+    "5": 5916,
+    "6": 4437,
+    "7": 2958,
+    "8": 1479
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 9,
+   "signed": {
+    "3": -1152,
+    "5": -240,
+    "7": -56
+   },
+   "steps": 8,
+   "walks_first_step_fixed": 1479,
+   "walks_total": 5916,
+   "zfa_failures": [],
+   "zfa_loops_checked": 86
+  },
+  "dim2|n9": {
+   "closing": {
+    "3": 3634,
+    "5": 782,
+    "7": 310,
+    "9": 140
+   },
+   "collapse": {
+    "C_max": 1.950887,
+    "T_peak": 0.445,
+    "T_peak_highest": 0.445,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000324
+     ],
+     [
+      0.2475,
+      1.17258
+     ],
+     [
+      0.445,
+      1.950887
+     ],
+     [
+      0.6425,
+      1.586802
+     ],
+     [
+      0.84,
+      1.093524
+     ],
+     [
+      1.0375,
+      0.750339
+     ],
+     [
+      1.235,
+      0.532171
+     ],
+     [
+      1.4325,
+      0.391787
+     ],
+     [
+      1.63,
+      0.298283
+     ],
+     [
+      1.8275,
+      0.23367
+     ],
+     [
+      2.025,
+      0.187491
+     ],
+     [
+      2.2225,
+      0.153497
+     ],
+     [
+      2.42,
+      0.127825
+     ],
+     [
+      2.6175,
+      0.108003
+     ],
+     [
+      2.815,
+      0.092403
+     ],
+     [
+      3.0125,
+      0.079918
+     ],
+     [
+      3.21,
+      0.06978
+     ],
+     [
+      3.4075,
+      0.061439
+     ],
+     [
+      3.605,
+      0.054497
+     ],
+     [
+      3.8025,
+      0.048661
+     ],
+     [
+      4.0,
+      0.043709
+     ]
+    ]
+   },
+   "dim": 2,
+   "dos": {
+    "0": 1331,
+    "1": 1344,
+    "2": 850,
+    "3": 346,
+    "4": 196
+   },
+   "opportunities": {
+    "3": 28469,
+    "4": 24402,
+    "5": 20335,
+    "6": 16268,
+    "7": 12201,
+    "8": 8134,
+    "9": 4067
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 10,
+   "signed": {
+    "3": -3634,
+    "5": -782,
+    "7": -206,
+    "9": -60
+   },
+   "steps": 9,
+   "walks_first_step_fixed": 4067,
+   "walks_total": 16268,
+   "zfa_failures": [],
+   "zfa_loops_checked": 266
+  },
+  "dim3|n4": {
+   "closing": {
+    "3": 32
+   },
+   "collapse": {
+    "C_max": 0.970082,
+    "T_peak": 0.2475,
+    "T_peak_highest": 0.2475,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.00051
+     ],
+     [
+      0.2475,
+      0.970082
+     ],
+     [
+      0.445,
+      0.565182
+     ],
+     [
+      0.6425,
+      0.29074
+     ],
+     [
+      0.84,
+      0.168576
+     ],
+     [
+      1.0375,
+      0.108148
+     ],
+     [
+      1.235,
+      0.0747
+     ],
+     [
+      1.4325,
+      0.054479
+     ],
+     [
+      1.63,
+      0.0414
+     ],
+     [
+      1.8275,
+      0.032483
+     ],
+     [
+      2.025,
+      0.026145
+     ],
+     [
+      2.2225,
+      0.021485
+     ],
+     [
+      2.42,
+      0.017962
+     ],
+     [
+      2.6175,
+      0.015236
+     ],
+     [
+      2.815,
+      0.013084
+     ],
+     [
+      3.0125,
+      0.011356
+     ],
+     [
+      3.21,
+      0.009948
+     ],
+     [
+      3.4075,
+      0.008785
+     ],
+     [
+      3.605,
+      0.007815
+     ],
+     [
+      3.8025,
+      0.006997
+     ],
+     [
+      4.0,
+      0.0063
+     ]
+    ]
+   },
+   "dim": 3,
+   "dos": {
+    "0": 89,
+    "1": 32
+   },
+   "opportunities": {
+    "3": 242,
+    "4": 121
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 5,
+   "signed": {
+    "3": -32
+   },
+   "steps": 4,
+   "walks_first_step_fixed": 121,
+   "walks_total": 726,
+   "zfa_failures": [],
+   "zfa_loops_checked": 16
+  },
+  "dim3|n5": {
+   "closing": {
+    "3": 224,
+    "5": 44
+   },
+   "collapse": {
+    "C_max": 1.787481,
+    "T_peak": 0.2969,
+    "T_peak_highest": 0.2969,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000657
+     ],
+     [
+      0.2475,
+      1.704753
+     ],
+     [
+      0.445,
+      1.312646
+     ],
+     [
+      0.6425,
+      0.705994
+     ],
+     [
+      0.84,
+      0.407259
+     ],
+     [
+      1.0375,
+      0.257844
+     ],
+     [
+      1.235,
+      0.175797
+     ],
+     [
+      1.4325,
+      0.126773
+     ],
+     [
+      1.63,
+      0.095428
+     ],
+     [
+      1.8275,
+      0.074281
+     ],
+     [
+      2.025,
+      0.059387
+     ],
+     [
+      2.2225,
+      0.048524
+     ],
+     [
+      2.42,
+      0.040368
+     ],
+     [
+      2.6175,
+      0.034095
+     ],
+     [
+      2.815,
+      0.02917
+     ],
+     [
+      3.0125,
+      0.025234
+     ],
+     [
+      3.21,
+      0.022041
+     ],
+     [
+      3.4075,
+      0.019415
+     ],
+     [
+      3.605,
+      0.017231
+     ],
+     [
+      3.8025,
+      0.015394
+     ],
+     [
+      4.0,
+      0.013835
+     ]
+    ]
+   },
+   "dim": 3,
+   "dos": {
+    "0": 369,
+    "1": 172,
+    "2": 48
+   },
+   "opportunities": {
+    "3": 1767,
+    "4": 1178,
+    "5": 589
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 6,
+   "signed": {
+    "3": -224,
+    "5": -28
+   },
+   "steps": 5,
+   "walks_first_step_fixed": 589,
+   "walks_total": 3534,
+   "zfa_failures": [],
+   "zfa_loops_checked": 68
+  },
+  "dim3|n6": {
+   "closing": {
+    "3": 1368,
+    "5": 328
+   },
+   "collapse": {
+    "C_max": 3.16908,
+    "T_peak": 0.2228,
+    "T_peak_highest": 0.2228,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.002016
+     ],
+     [
+      0.2475,
+      3.155499
+     ],
+     [
+      0.445,
+      1.83174
+     ],
+     [
+      0.6425,
+      0.959091
+     ],
+     [
+      0.84,
+      0.552361
+     ],
+     [
+      1.0375,
+      0.349966
+     ],
+     [
+      1.235,
+      0.238765
+     ],
+     [
+      1.4325,
+      0.172255
+     ],
+     [
+      1.63,
+      0.129695
+     ],
+     [
+      1.8275,
+      0.100966
+     ],
+     [
+      2.025,
+      0.080725
+     ],
+     [
+      2.2225,
+      0.065959
+     ],
+     [
+      2.42,
+      0.054871
+     ],
+     [
+      2.6175,
+      0.046342
+     ],
+     [
+      2.815,
+      0.039646
+     ],
+     [
+      3.0125,
+      0.034295
+     ],
+     [
+      3.21,
+      0.029954
+     ],
+     [
+      3.4075,
+      0.026384
+     ],
+     [
+      3.605,
+      0.023413
+     ],
+     [
+      3.8025,
+      0.020916
+     ],
+     [
+      4.0,
+      0.018797
+     ]
+    ]
+   },
+   "dim": 3,
+   "dos": {
+    "0": 1541,
+    "1": 896,
+    "2": 352,
+    "3": 32
+   },
+   "opportunities": {
+    "3": 11284,
+    "4": 8463,
+    "5": 5642,
+    "6": 2821
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 7,
+   "signed": {
+    "3": -1368,
+    "5": -200
+   },
+   "steps": 6,
+   "walks_first_step_fixed": 2821,
+   "walks_total": 16926,
+   "zfa_failures": [],
+   "zfa_loops_checked": 192
+  },
+  "dim3|n7": {
+   "closing": {
+    "3": 8052,
+    "5": 2184,
+    "7": 552
+   },
+   "collapse": {
+    "C_max": 6.744355,
+    "T_peak": 0.3463,
+    "T_peak_highest": 0.3463,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.0
+     ],
+     [
+      0.2475,
+      4.113363
+     ],
+     [
+      0.445,
+      4.81977
+     ],
+     [
+      0.6425,
+      1.980765
+     ],
+     [
+      0.84,
+      1.013197
+     ],
+     [
+      1.0375,
+      0.606081
+     ],
+     [
+      1.235,
+      0.400103
+     ],
+     [
+      1.4325,
+      0.282552
+     ],
+     [
+      1.63,
+      0.209565
+     ],
+     [
+      1.8275,
+      0.161326
+     ],
+     [
+      2.025,
+      0.127867
+     ],
+     [
+      2.2225,
+      0.103752
+     ],
+     [
+      2.42,
+      0.08582
+     ],
+     [
+      2.6175,
+      0.072136
+     ],
+     [
+      2.815,
+      0.061464
+     ],
+     [
+      3.0125,
+      0.052984
+     ],
+     [
+      3.21,
+      0.046137
+     ],
+     [
+      3.4075,
+      0.040531
+     ],
+     [
+      3.605,
+      0.035884
+     ],
+     [
+      3.8025,
+      0.03199
+     ],
+     [
+      4.0,
+      0.028695
+     ]
+    ]
+   },
+   "dim": 3,
+   "dos": {
+    "0": 6357,
+    "1": 4448,
+    "2": 1988,
+    "3": 748,
+    "5": 24
+   },
+   "opportunities": {
+    "3": 67825,
+    "4": 54260,
+    "5": 40695,
+    "6": 27130,
+    "7": 13565
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 8,
+   "signed": {
+    "3": -8052,
+    "5": -1352,
+    "7": -216
+   },
+   "steps": 7,
+   "walks_first_step_fixed": 13565,
+   "walks_total": 81390,
+   "zfa_failures": [],
+   "zfa_loops_checked": 840
+  },
+  "dim3|n8": {
+   "closing": {
+    "3": 45088,
+    "5": 12992,
+    "7": 3984
+   },
+   "collapse": {
+    "C_max": 4.622836,
+    "T_peak": 0.3216,
+    "T_peak_highest": 0.3216,
+    "T_units": "nats; T = 1 is the closure quantum log 2",
+    "curve": [
+     [
+      0.05,
+      0.000983
+     ],
+     [
+      0.2475,
+      3.964174
+     ],
+     [
+      0.445,
+      3.67672
+     ],
+     [
+      0.6425,
+      2.0084
+     ],
+     [
+      0.84,
+      1.151772
+     ],
+     [
+      1.0375,
+      0.721102
+     ],
+     [
+      1.235,
+      0.486055
+     ],
+     [
+      1.4325,
+      0.346935
+     ],
+     [
+      1.63,
+      0.258855
+     ],
+     [
+      1.8275,
+      0.199976
+     ],
+     [
+      2.025,
+      0.15885
+     ],
+     [
+      2.2225,
+      0.129074
+     ],
+     [
+      2.42,
+      0.106865
+     ],
+     [
+      2.6175,
+      0.089881
+     ],
+     [
+      2.815,
+      0.076616
+     ],
+     [
+      3.0125,
+      0.066064
+     ],
+     [
+      3.21,
+      0.057538
+     ],
+     [
+      3.4075,
+      0.050552
+     ],
+     [
+      3.605,
+      0.04476
+     ],
+     [
+      3.8025,
+      0.039904
+     ],
+     [
+      4.0,
+      0.035795
+     ]
+    ]
+   },
+   "dim": 3,
+   "dos": {
+    "0": 26329,
+    "1": 21480,
+    "2": 11032,
+    "3": 4904,
+    "4": 772,
+    "5": 144
+   },
+   "opportunities": {
+    "3": 387966,
+    "4": 323305,
+    "5": 258644,
+    "6": 193983,
+    "7": 129322,
+    "8": 64661
+   },
+   "parity_failures": [],
+   "phase_failures": [],
+   "residues": 9,
+   "signed": {
+    "3": -45088,
+    "5": -8000,
+    "7": -1424
+   },
+   "steps": 8,
+   "walks_first_step_fixed": 64661,
+   "walks_total": 387966,
+   "zfa_failures": [],
+   "zfa_loops_checked": 2384
+  }
+ }
+}
