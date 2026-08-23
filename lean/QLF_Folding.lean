@@ -99,7 +99,7 @@ theorem count_encode (s : Step) (b : Backbone) :
   | cons a b ih =>
       show (a.toTwist :: b.map Step.toTwist).count s.toTwist = (a :: b).count s
       rw [List.count_cons, List.count_cons, ih]
-      cases a <;> cases s <;> simp +decide [Step.toTwist]
+      cases a <;> cases s <;> simp +decide
 
 theorem count_encode_plus (b : Backbone) :
     (b.map Step.toTwist).count Twist.plus = 0 := by
@@ -108,7 +108,7 @@ theorem count_encode_plus (b : Backbone) :
   | cons a b ih =>
       show (a.toTwist :: b.map Step.toTwist).count Twist.plus = 0
       rw [List.count_cons, ih]
-      cases a <;> simp +decide [Step.toTwist]
+      cases a <;> simp +decide
 
 theorem count_encode_minus (b : Backbone) :
     (b.map Step.toTwist).count Twist.minus = 0 := by
@@ -117,7 +117,7 @@ theorem count_encode_minus (b : Backbone) :
   | cons a b ih =>
       show (a.toTwist :: b.map Step.toTwist).count Twist.minus = 0
       rw [List.count_cons, ih]
-      cases a <;> simp +decide [Step.toTwist]
+      cases a <;> simp +decide
 
 /-- Net displacement along each axis: the signed step count. -/
 def netX (b : Backbone) : ℤ := (b.count Step.xp : ℤ) - (b.count Step.xn : ℤ)
@@ -159,12 +159,14 @@ theorem closedLoop_append {a b : Backbone} (ha : ClosedLoop a) (hb : ClosedLoop 
 
 /-- Non-vacuity, the honest half: an open chain is **not** a closure. Closure is a
     condition on the fold, not a property every backbone enjoys. -/
-theorem open_chain_not_closed : ¬ ClosedLoop [Step.xp] := by decide
+theorem open_chain_not_closed : ¬ ClosedLoop [Step.xp] := by
+  unfold ClosedLoop; decide
 
 /-- Non-vacuity, the other half: the minimal contact loop, a unit plaquette. It is the
     same four-twist ball QLF_Fredkin uses for a billiard ball — the smallest thing that
     closes is one object in both readings. -/
-theorem minimal_loop_closed : ClosedLoop [Step.xp, Step.yp, Step.xn, Step.yn] := by decide
+theorem minimal_loop_closed : ClosedLoop [Step.xp, Step.yp, Step.xn, Step.yn] := by
+  unfold ClosedLoop; decide
 
 /-! ## A contact is a ZFA closure -/
 
@@ -290,8 +292,8 @@ theorem mirror_closedLoop {b : Backbone} (h : ClosedLoop b) :
   · exact hy
   · exact hz
 
-theorem mirror_length (b : Backbone) : (b.map Step.mirror).length = b.length :=
-  List.length_map _ _
+theorem mirror_length (b : Backbone) : (b.map Step.mirror).length = b.length := by
+  simp
 
 /-- **The mirror is a multiplicity-preserving bijection of the fold census.** It is an
     involution, it preserves length, and it carries closures to closures — so the left- and
