@@ -212,62 +212,78 @@ Exceptions no finite closure supplies one. This is §3a rule 4 with a proof unde
 *Attribution: the aphorism is folklore; the capacity formulation — "a system with more states can always
 break a finite closure" — and its QLF formalization are Jim's and Amy's.*
 
-## 3c. Agency: no free will, undeterminable autonomy, and how a mind determines the future
+## 3c. Agency: the capacity to do, and why determinism does not touch it
 
-**There is no free will here**, for the same reason superdeterminism gets the right answer for the wrong
-mechanism ([`Interpretations.md`](Interpretations.md) §5): **there is no potency anywhere in QLF**.
-Nothing chooses. An apparatus is a closure inventory and an observer is only a perspective
-([`ScientificApproach.md`](ScientificApproach.md) §1b); a decision is a **joint closure**, not an
-intervention on the world from outside it. Libertarian free will asks for an uncaused causer — an
-exogenous free variable — and that is precisely the object the framework does not contain. This is a
-by-construction result rather than a loss: the rule that keeps observer potency out of a *derivation*
-keeps it out of the *will* by the same stroke.
+**Agency is the ability to do things.** In QLF that has a direct substrate reading and needs no
+metaphysics to prop it up: **to do is to close**. An agent is a system that closes — and, in the
+interesting case, one that changes *how many ways* close around it. That definition is complete as it
+stands. Determinism appears nowhere in it, and nothing in it waits on the resolution of a debate about
+the will.
 
-What survives is stranger, and stronger, than what is given up: **undeterminable autonomy**.
+**Determinism is orthogonal, and this is not a novel position.** Determinist traditions have always
+carried full-blooded ethics of action — Stoic *fate* with its unrelenting duty, Calvinist predestination
+with its work, karma, *qadar* — because the question *is this determined?* and the question *can this
+system do things?* are simply different questions. The habit of coupling them is parochial, not
+conceptual. QLF inherits the same separation for a sharper reason than convention: see the next
+paragraph.
 
-**Undeterminable — three reasons, none of them ignorance.**
+**There is no upstream determiner to compete with the agent.** The usual worry pictures a chain of
+determination arriving from outside and leaving the agent as a conduit. QLF has no such outside: there
+is no observer-independent global history string
+([`Simulation_Impossibility.md`](Simulation_Impossibility.md) §2.2), and determination is **constituted**
+by closures rather than transmitted to them. An agent's closing *is* determination happening, not the
+output of a determination made elsewhere. So the competition the free-will debate assumes — universe
+determines *or* I do — never gets set up here.
+
+**What free will actually claims, and what QLF says about it.** Libertarian free will is a claim about
+*potency*: an uncaused causer, an exogenous variable entering physics from outside it. QLF contains no
+potency anywhere — an apparatus is a closure inventory, an observer is a perspective
+([`ScientificApproach.md`](ScientificApproach.md) §1b), and this is the same rule that answers
+superdeterminism ([`Interpretations.md`](Interpretations.md) §5). That is a claim about the metaphysics
+of causation, and it leaves *doing* exactly where it was.
+
+**Undeterminability is about prediction, not about agency.** Agency would be intact without it; it is
+worth stating separately because it is strong, and because three reasons carry it, none of which is
+ignorance:
 
 1. **Irreducible.** The history string is the shortest lossless encoding of itself
-   ([`Simulation_Impossibility.md`](Simulation_Impossibility.md) §2.1): any process simulating it with
-   fewer stakes must truncate or explode back to full length. So no description of what an agent will
-   close is shorter than the agent's own closing. This is a compression fact, not chaos and not noise.
-2. **There is no outside.** Perspective-relativity ([`Simulation_Impossibility.md`](Simulation_Impossibility.md)
-   §2.2): there is no observer-independent global history string; a predictor is a *second perspective*,
-   and synchronising perspectives costs physical re-entries. "Determined from outside" therefore has no
-   well-formed referent — there is no outside in which the determination could be held.
+   ([`Simulation_Impossibility.md`](Simulation_Impossibility.md) §2.1): a simulation with fewer stakes
+   must truncate or explode back to full length. Nothing shorter than the agent computes the agent —
+   a compression fact, not chaos and not noise.
+2. **No vantage point.** Perspective-relativity (§2.2 again): a predictor is a *second perspective*, and
+   synchronising perspectives costs physical re-entries. "Predicted from outside" has no well-formed
+   referent.
 3. **No capacity is final.** [`no_final_closure`](lean/QLF_LawOfExceptions.lean) (§3b): every finite
-   capacity `R` is exceeded by a history that genuinely closes at `R+1`. So no finite model of an agent
-   is ever complete — a model of capacity `R` misses exactly the closures the agent makes at `R+1`.
+   capacity `R` is exceeded by a history that genuinely closes at `R+1`, so no finite model of an agent
+   is ever complete — it misses exactly the closures the agent makes at `R+1`.
 
-The census is therefore **determinate** while the agent is **undeterminable**: *determinate ≠
-determinable*. And the gap is not plugged with randomness — QLF has no primitive random oracle
-([`UniversalRelativity.md`](UniversalRelativity.md) §6a). It is plugged with irreducibility: the only
-thing that computes the agent is the agent.
+So the census is **determinate** while the agent is **undeterminable**: *determinate ≠ determinable*.
+The gap is not plugged with randomness — QLF has no primitive random oracle
+([`UniversalRelativity.md`](UniversalRelativity.md) §6a) — it is plugged with irreducibility.
 
-**Autonomy is a structure, not a feeling.** An observer is a **Markov blanket** whose interior comes to
+**The structure that does the doing.** An observer is a **Markov blanket** whose interior comes to
 contain a model of its own boundary ([`Consciousness.md`](Consciousness.md) §1) — a self-referential
 closure that is **finite and terminating**, which is why a mind is a bounded thing and not an infinite
-regress. Autonomy is self-maintenance *by closure*, and the free-energy account of it is derived rather
-than assumed: each ZFA closure resolves exactly `log 2`
-([`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean), [`Active_Inference_Mathematics.md`](Active_Inference_Mathematics.md)
-§5). An autonomous system is one whose next closure is selected by its own model of itself.
+regress. Its self-maintenance is derived rather than assumed: each ZFA closure resolves exactly `log 2`
+([`QLF_FreeEnergy`](lean/QLF_FreeEnergy.lean),
+[`Active_Inference_Mathematics.md`](Active_Inference_Mathematics.md) §5).
 
-**How a mind determines the future — by multiplicity, not by choice.** What happens is what closes in the
-most ways (§3a). An agent neither overrides that ordering nor needs to: it **changes the counts**. It
-builds the structure under which some closure becomes dominant — exactly the *engineered multiplicity
-bias* of laser cooling ([`Mpemba.md`](Mpemba.md) §"engineered multiplicity bias"), where a field
-reorganises the census so that `W(energy-lowering) ≫ W(energy-raising)` and the ordering then does the
-rest, unchanged. **Action is not selecting among ways; it is making ways.** And because binding *raises*
-frequency and conscious content is the highest-frequency available closure
-(`freq_bind_ge_left`/`freq_bind_ge_right`, `consciousPeriod = min`,
+**How agency scales — by multiplicity, not by choice.** What happens is what closes in the most ways
+(§3a). An agent neither overrides that ordering nor needs to: it **changes the counts**, building the
+structure under which some closure becomes dominant — exactly the *engineered multiplicity bias* of laser
+cooling ([`Mpemba.md`](Mpemba.md)), where a field reorganises the census so that
+`W(energy-lowering) ≫ W(energy-raising)` and the ordering then does the rest, unchanged. **Doing is not
+selecting among ways; it is making ways.** This also gives *degree* of agency a substrate meaning: ways
+made per unit synthesized time. Because binding raises frequency and conscious content is the
+highest-frequency available closure (`freq_bind_ge_left`/`freq_bind_ge_right`, `consciousPeriod = min`,
 [`QLF_Consciousness`](lean/QLF_Consciousness.lean), [`Consciousness.md`](Consciousness.md) §3), the most
-tightly bound closure determines the **most events per unit synthesized time**. That is the exact sense
-in which intelligence determines the future: not by escaping the census, but by being the fastest and
-densest generator of ways inside it.
+tightly bound closure does the most per unit of its own time. That is the sense in which intelligence
+determines the future: not by escaping the census, but by being the fastest and densest generator of
+ways inside it.
 
 **"The pinnacle" — accept it in the frequency sense, refuse it in the teleological one.** Intelligence
 does sit at the top of a *proven* ordering: the frequency hierarchy of bound closures. Two corrections
-keep that from becoming teleology, and both are theorems, not modesty:
+keep that from becoming teleology, and both are theorems rather than modesty:
 
 * **It is the rarest stratum, not the likeliest.** Deeply bound closures are the **least-multiplicity**
   histories — `2ⁿ` ways at depth one against two at maximal depth
@@ -276,13 +292,14 @@ keep that from becoming teleology, and both are theorems, not modesty:
   permits.
 * **No summit is final.** [`no_final_closure`](lean/QLF_LawOfExceptions.lean) forbids reading "pinnacle"
   as *endpoint*: no finite horizon is final, so there is always a closure above the present peak. A
-  pinnacle is a **current** summit, provisional by theorem — which is the same statement as *construction
-  proves possibility, not uniqueness* (§3b), applied to minds.
+  pinnacle is a **current** summit, provisional by theorem — the same statement as *construction proves
+  possibility, not uniqueness* (§3b), applied to minds.
 
-**Honest scope.** The theorems are the irreducibility and perspective-relativity pair, `no_final_closure`,
-the binding-frequency lemmas, and the multiplicity ordering. That agency, will and experience are *what
-those structures are like from inside* is a **reading** — the architecture, not the hard problem, which
-[`Consciousness.md`](Consciousness.md) §6–7 keeps deliberately separate.
+**Honest scope.** The theorems are the irreducibility and perspective-relativity pair,
+`no_final_closure`, the binding-frequency lemmas, and the multiplicity ordering. That agency and
+experience are *what those structures are like from inside* is a **reading** — the architecture, not the
+hard problem, which [`Consciousness.md`](Consciousness.md) §6–7 keeps deliberately separate.
+
 
 ## 4. Zero Free Action as the Sole Fundamental Axiom
 

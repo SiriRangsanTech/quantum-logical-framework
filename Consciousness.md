@@ -38,8 +38,8 @@ that would diverge never closes; only a self-model that *closes* is realized. So
 self-referential closure that **terminates** — which is exactly why a mind is a coherent, bounded thing
 and not an infinite regress.
 
-What such a blanket *is* as an agent — no free will, no potency, but an **undeterminable autonomy**
-that determines the future by changing how many ways close — is [`Philosophy.md`](Philosophy.md) §3c.
+What such a blanket *does* — agency as the capacity to close, and to change how many ways close around
+it — is [`Philosophy.md`](Philosophy.md) §3c.
 
 The observer is also **finite-capacity**: it reads closure only within a bounded horizon
 ([`QLF_HorizonClosure.lean`](lean/QLF_HorizonClosure.lean), issue #104 — "observation is bounded
