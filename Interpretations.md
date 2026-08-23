@@ -15,6 +15,7 @@ pointers to where each is developed.
 | **Bohmian (pilot-wave)** | particles + a real guiding wave in configuration space | no hidden variables or configuration space; particles *are* the closed twist loops | [`possibilist-ontology.md`](possibilist-ontology.md) |
 | **Transactional (RTI)** | possibilities as *res potentia* (offer/confirmation waves) | ZFA = the completed transaction | [`possibilist-ontology.md`](possibilist-ontology.md) |
 | **QBism / Relational** | subjective / informational | objective logical possibilities, independent of any observer; the Born rule is *derived*, not imported | [`Born_Rule.md`](Born_Rule.md) |
+| **Superdeterminism** ('t Hooft, Hossenfelder–Palmer) | a deterministic hidden state, *correlated with the measurement settings* — statistical independence denied | QLF shares the deflation of "free choice" (a setting is a closure inventory, not an exogenous variable) but has **no hidden values to correlate**; independence of preparation and apparatus is the *factor* structure, and the Bell escape is contextual, not conspiratorial | this doc §5 · [`Entanglement.md`](Entanglement.md) §6 |
 | **QLF** | **constructive possibilist**: all admissible histories real until ZFA = 0 | — | [`possibilist-ontology.md`](possibilist-ontology.md) |
 
 ## 2. Many Worlds, in order
@@ -118,6 +119,59 @@ observer-relative *conditioning* (the Markov blanket's local possibility tree) b
 ensemble objective, and derives the Born rule from it rather than postulating it. The full treatment, and
 the open questions it still carries, is [`Born_Rule.md`](Born_Rule.md).
 
+## 5. Superdeterminism, and the free variable it correlates
+
+Superdeterminism keeps **both** locality and realism in Bell's theorem by giving up the third
+assumption — *statistical independence*, Bell's own "free variables" (1977): the hidden state `λ` is
+correlated with the settings `(a,b)`, so pre-assigned local values reproduce the correlations after all.
+The standing objection is that the correlation is unexplained and looks fine-tuned — the "conspiracy"
+charge (Shimony–Horne–Clauser 1976; the sympathetic modern treatment is Hossenfelder & Palmer 2020).
+
+QLF is regularly *read* as superdeterministic, and the reading deserves a precise answer, because it is
+right about the ontology and wrong about the mechanism.
+
+**What QLF shares — the deflation of free choice.** There is no exogenous free variable anywhere in the
+framework. A setting is not an input from outside physics: an **apparatus is a closure inventory** and an
+observer is only a *perspective*, a finite listening capacity
+([`ScientificApproach.md`](ScientificApproach.md) §1b, [`Philosophy.md`](Philosophy.md) §3a rule 2).
+Nothing chooses; there is no observer potency to be placed outside the census, and a measurement is a
+joint closure between histories rather than an intervention on one. That much of the superdeterminist's
+ontology QLF asserts outright — and it is why the Conway–Kochen free-will theorem finds nothing to bite
+on here: neither experimenter nor particle carries potency, both are closures.
+
+**What QLF does not share — and this half is decisive.** Superdeterminism's *mechanism* is a correlation
+between the setting and a **pre-existing** state. QLF has no such state to correlate. There are no
+pre-assigned values on unmeasured axes: `σx` and `σy` at one site do not both hold values, because the
+algebra is non-commutative and each axis is a **different closure with its own admissible branch set**
+([`Entanglement.md`](Entanglement.md) §6). QLF's Bell escape is therefore the **contextual/algebraic**
+one — locality kept, naive realism dropped — not the measurement-independence one. No step in the
+derivation of the correlations uses a setting–state correlation, and none would be repaired by adding
+one.
+
+**Statistical independence is not sacrificed here; it has an algebraic home.** Preparation and apparatus
+are specified **independently** and their censuses enumerated that way — that is literally how
+[`contextual_census.py`](contextual_census.py) is built. The substrate reason is
+[`indexed_factors_commute`](lean/QLF_IndexedFactors.lean): operators on distinct factors commute, so an
+apparatus on its own factor cannot steer the system's census — what it does is select which *joint*
+closures happen. Entanglement is exactly the residue that fails to factorize
+([`shared_closure_not_factorizable`](lean/QLF_IndexedFactors.lean)) — a shared **past**, not a shared
+setting ([`Entanglement.md`](Entanglement.md) §5–6). So measurement independence is a feature of the
+factor structure rather than a postulate QLF must give up.
+
+**And the determinism is a different kind.** QLF is not a single-history theory: everything happens every
+way that closes, and what happens in the most ways happens first ([`Philosophy.md`](Philosophy.md) §3a).
+The determinism is **relational and global** — the census is determinate and its ordering is determinate
+([`UniversalRelativity.md`](UniversalRelativity.md) §6a) — while *which* outcome is had is a perspective
+inside that census (§2 above), not a value fixed in advance by correlated initial data. Superdeterminism
+buys one actual world by correlating hidden data; QLF has all closing worlds, capacity-ordered, and needs
+no correlation to buy anything.
+
+**Placement.** Superdeterminism is a **neighbour, not a label QLF wears**: nearest at exactly one joint
+(no exogenous free variable), different at the two that carry Bell's theorem (no hidden values, no
+setting–state correlation), and free of the fine-tuning charge because it never incurs the debt. It sits
+with 't Hooft's cellular automaton in [`Related_Frameworks.md`](Related_Frameworks.md) §6 — a discrete
+substrate that runs everything, where QLF adds the selection principle that decides what closes.
+
 ## See also
 
 * [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) §2, §4, §4a — the capacity formulation, "rare and
@@ -126,3 +180,17 @@ the open questions it still carries, is [`Born_Rule.md`](Born_Rule.md).
   expands.
 * [`Measurement_Problem.md`](Measurement_Problem.md), [`Born_Rule.md`](Born_Rule.md),
   [`Decoherence.md`](Decoherence.md) — the adjacent readings.
+* [`Entanglement.md`](Entanglement.md) §5–6 — the shared-past account of the correlations and the
+  non-commutativity that supplies the Bell violation without hidden variables.
+* [`Related_Frameworks.md`](Related_Frameworks.md) §6 — the discrete-substrate neighbours ('t Hooft,
+  Fredkin, Wolfram) and the superdeterminism row.
+
+### External
+
+* Bell, J. S. (1977). *Free variables and local causality.* Epistemological Letters 15 — the
+  statistical-independence assumption named.
+* Shimony, A., Horne, M. A. & Clauser, J. F. (1976). *Comment on "The theory of local beables."*
+  Epistemological Letters 13 — the conspiracy objection.
+* Conway, J. & Kochen, S. (2006). *The free will theorem.* Found. Phys. 36, 1441.
+* Hossenfelder, S. & Palmer, T. (2020). *Rethinking superdeterminism.* Front. Phys. 8, 139.
+* 't Hooft, G. (2016). *The Cellular Automaton Interpretation of Quantum Mechanics.* Springer.

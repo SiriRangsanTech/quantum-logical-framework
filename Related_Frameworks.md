@@ -18,6 +18,7 @@
 | **Caticha — Entropic Dynamics** | inference-first derivation of QM | probabilistic-continuous, not closure-exact | Caticha 2011 |
 | **It-from-bit / finite capacity** | information is physical & finite | supplies *premises*, not a selection rule | Wheeler, Zeilinger–Brukner, Landauer, Bekenstein |
 | **Fredkin / 't Hooft / Wolfram** | reality is discrete computation | *no action-zero admissibility criterion* — everything runs, nothing is selected. Fredkin's own gate is built on the substrate in [`Fredkin_QLF.md`](Fredkin_QLF.md), where his conservation law turns out to **be** ZFA count balance — he had the law and not the selection principle | Fredkin 1990, 't Hooft 2016, Wolfram 2020 |
+| **Superdeterminism** ('t Hooft, Hossenfelder–Palmer) | settings are not exogenous free variables — "free choice" deflated | its *mechanism* is a hidden state **correlated with the settings**; QLF has no pre-assigned values to correlate, and independent factors commute (`indexed_factors_commute`), so the Bell escape is contextual rather than conspiratorial | 't Hooft 2016, Hossenfelder–Palmer 2020 |
 | **Deutsch–Marletto — Constructor Theory** | possibilist modality (possible vs. impossible) | no counting, no action, no constants | Deutsch–Marletto 2015 |
 
 ### 1. Friston's Free Energy Principle — the nearest relative (already linked in the repo)
@@ -43,6 +44,23 @@ Wheeler's *it-from-bit*, Zeilinger–Brukner's *an elementary system carries one
 ### 6. Discrete-substrate rivals *without* a selection principle — the embarrassment of riches
 
 Fredkin's reversible cellular automata (with an explicit information-conservation law), 't Hooft's cellular-automaton interpretation of QM, Wolfram's hypergraph rewriting. All share "**reality is discrete computation**" — QLF's substrate ontology. None has an **action-zero admissibility criterion** deciding what exists: everything runs, nothing is selected. That is the cleanest one-line differentiation available — *their* problem (everything computes) is exactly the gap ZFA fills (only closures are receipted). QLF's `full_zeno_prune` is the selection these frameworks lack. (Reversibility caveat: Fredkin/'t Hooft are *reversible* by construction; QLF's arrow is the many-to-one closure, [`Reversibility.md`](Reversibility.md).)
+
+### 6a. Superdeterminism — the neighbour QLF is most often mistaken for
+
+'t Hooft's automaton is usually classed as **superdeterministic**: locality and realism are kept, and
+Bell's third assumption — *statistical independence* of the measurement settings from the hidden state
+([Bell 1977](#external)) — is the one surrendered. QLF gets read the same way, and the read is half right.
+**Shared:** no exogenous free variable — an apparatus is a *closure inventory* and an observer only a
+perspective ([`ScientificApproach.md`](ScientificApproach.md) §1b), so nothing chooses and there is no
+observer potency to sit outside the census. **Not shared, and it is the half that carries Bell:** QLF has
+no pre-existing values to correlate with a setting — distinct axes are distinct closures on a
+non-commutative algebra ([`Entanglement.md`](Entanglement.md) §6) — and preparation and apparatus are
+specified *independently*, with `indexed_factors_commute`
+([`QLF_IndexedFactors`](lean/QLF_IndexedFactors.lean)) as the reason an apparatus on its own factor cannot
+steer the system's census. So QLF never incurs the fine-tuning debt superdeterminism is charged with, and
+never needs the credit either: the correlations come from a shared **past** that fails to factorize
+(`shared_closure_not_factorizable`), not a shared **setting**. Full comparison:
+[`Interpretations.md`](Interpretations.md) §5.
 
 ### 7. Constructor Theory (Deutsch–Marletto) — the possibilist cousin
 
@@ -127,6 +145,10 @@ Existing mathematics of information is a stack of **measure theories over an uns
 - Fredkin, E. (1990). *Digital mechanics.* Physica D 45, 254.
 - 't Hooft, G. (2016). *The Cellular Automaton Interpretation of Quantum Mechanics.* Springer.
 - Wolfram, S. (2020). *A Project to Find the Fundamental Theory of Physics.*
+- Bell, J. S. (1977). *Free variables and local causality.* Epistemological Letters 15 — the statistical-independence assumption named.
+- Shimony, A., Horne, M. A. & Clauser, J. F. (1976). *Comment on "The theory of local beables."* Epistemological Letters 13 — the conspiracy objection to superdeterminism.
+- Conway, J. & Kochen, S. (2006). *The free will theorem.* Found. Phys. 36, 1441.
+- Hossenfelder, S. & Palmer, T. (2020). *Rethinking superdeterminism.* Front. Phys. 8, 139 — the sympathetic modern treatment (§6a).
 - Deutsch, D. & Marletto, C. (2015). *Constructor theory of information.* Proc. R. Soc. A 471, 20140540.
 
 ### External — the mathematics of information (Part II)
