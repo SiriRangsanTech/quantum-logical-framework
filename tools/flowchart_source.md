@@ -1,10 +1,10 @@
 # QLF Flow Chart — a visual map of the framework
 
-> **This is a navigation map of the [Quantum Logical Framework (QLF)](README.md)** — one substrate, four
+> **This is a navigation map of the [Quantum Logical Framework (QLF)](README.md)** — one substrate, five
 > families, eleven domains, and the documents that derive each. The **Jump to** and **Open** links are the
 > navigation; the visual diagrams live in the rendered version linked below.
 
-The taxonomy: **one substrate → four domain families → eleven domains → the individual results.**
+The taxonomy: **one substrate → five domain families → eleven domains → the individual results.**
 
 ---
 
@@ -15,6 +15,7 @@ flowchart LR
   S["The QLF Substrate 8-twist alphabet - ZFA closure - synthesized spacetime"]
   S --> FND["Foundations"]
   S --> MAT["Matter and forces"]
+  S --> EMR["Emergent matter"]
   S --> GRV["Gravity and the cosmos"]
   S --> FRN["Frontiers"]
   FND --> D1["1 Space, time and the continuum"]
@@ -22,7 +23,7 @@ flowchart LR
   MAT --> D3["3 Forces"]
   MAT --> D4["4 Atoms and QED"]
   MAT --> D7["7 Particles and the Standard Model"]
-  MAT --> D11["11 Chemistry, molecules and folding"]
+  EMR --> D11["11 Chemistry, molecules and folding"]
   GRV --> D5["5 Gravity and GR"]
   GRV --> D6["6 Cosmology and the dark sector"]
   FRN --> D8["8 Quantum-gravity / TOE pillars"]
@@ -32,7 +33,12 @@ flowchart LR
 
 **Jump to:** [1 Space, time and the continuum](#1-space-time-and-the-continuum) &middot; [2 The fundamental constants](#2-the-fundamental-constants) &middot; [3 Forces](#3-forces) &middot; [4 Atoms and QED](#4-atoms-and-qed) &middot; [5 Gravity and GR](#5-gravity-and-gr) &middot; [6 Cosmology and the dark sector](#6-cosmology-and-the-dark-sector) &middot; [7 Particles and the Standard Model](#7-particles-and-the-standard-model) &middot; [8 Quantum-gravity / TOE pillars](#8-quantum-gravity--toe-pillars) &middot; [9 The Millennium Prize program](#9-the-millennium-prize-program) &middot; [10 Beyond the SM](#10-beyond-the-sm) &middot; [11 Chemistry, molecules and folding](#11-chemistry-molecules-and-folding)
 
-The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7, 11) &middot; **Gravity and the cosmos** (5-6) &middot; **Frontiers** (8-10).
+The five families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7) &middot; **Emergent matter** (11) &middot; **Gravity and the cosmos** (5-6) &middot; **Frontiers** (8-10).
+
+**Emergent matter** is the one family that is not fundamental physics. The other four ask what the
+substrate *is*; this one asks what it **assembles** once atoms exist — and it earns a family of its own
+precisely because nothing in it is a new law. Chemistry, polymers and folding all run on the rule domains
+3–4 already established, which is the claim being made by putting them on the map at all.
 
 **Open:** [`README.md`](README.md)
 
@@ -294,8 +300,9 @@ flowchart TD
 
 ## 11. Chemistry, molecules and folding
 
-Matter in bulk, from the same one rule: **a bond is a shared closure** — no forces, no orbitals put in
-by hand ([`Chemistry.md`](Chemistry.md)).
+The **Emergent matter** family: matter in bulk, from the same one rule — **a bond is a shared closure**,
+no forces and no orbitals put in by hand ([`Chemistry.md`](Chemistry.md)). Nothing here is a new law;
+everything is domains 3–4 assembled.
 
 ```mermaid
 flowchart TD
