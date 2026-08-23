@@ -116,12 +116,76 @@ inventory**, folding order is loop multiplicity, and the contact energy is the s
 section's valence rule applied to side chains — a saturated hydrocarbon has no free valence, so it
 cannot share a closure with water, which is the helium argument of §1 one scale up.
 
-## 10. Honest scope
+## 10. Double bonds and rings — the same thing, counted
+
+Of the gaps [§11](#11-honest-scope) names, one is really a counting question, and counting settles it.
+
+Organic chemistry teaches a formula to memorise — the **degree of unsaturation** —
+
+> `DoU = (2C + 2 + N − H − X) / 2`
+
+with a rider that oxygen and sulphur are left out, and no reason given. Read the molecule the way
+this page reads everything, as a graph whose vertex degrees are the **valences** of §1. The
+handshake lemma gives `2E = Σ vᵢ`, so the number of independent closures in a connected molecular
+graph — its cycle rank — is
+
+> `b₁ = E − V + 1 = Σ (vᵢ − 2)/2 + 1`
+
+which **is** that formula, with every element's coefficient revealed as `(valence − 2)/2`:
+
+| element | C | N | O, S | H, halogen |
+|---|---|---|---|---|
+| valence | 4 | 3 | **2** | 1 |
+| DoU coefficient | +1 | +½ | **0** | −½ |
+
+**Oxygen is absent from the textbook formula because its coefficient is zero.** A divalent atom
+adds one vertex and one edge, so it cannot change a cycle rank. Nothing was omitted by convention;
+it cancels ([`divalent_neutral`](lean/QLF_Unsaturation.lean)).
+
+Three things follow, and they are the reason this is worth stating in QLF rather than in a
+chemistry textbook:
+
+- **A double bond and a ring are the same phenomenon — one closure.** Both contribute exactly 1 to
+  `b₁`. Chemistry files them in separate chapters; on the substrate there is one object, a loop
+  that returns, which is the same object as a protein contact ([`Protein_Folding.md`](Protein_Folding.md) §2)
+  and as any ZFA-closed twist history. So **`C₆H₁₂` is one census class**, holding cyclohexane and
+  every hexene together — as it must, since they share a formula and therefore a closure count.
+- **"Saturated" means zero closures.** A saturated molecule is a *tree*, and `CₙH₂ₙ₊₂` follows
+  rather than being stipulated (`saturated_iff_alkane`). Each further closure costs two hydrogens,
+  whether it is drawn as a ring or as a double bond.
+- **Valence 2 is the neutral element of closure counting**, which is why [§9](#9-polymers--when-the-shared-closure-becomes-a-loop)'s
+  divalent monomer makes a **chain**: the backbone carries no closure of its own, so every closure
+  a polymer has is a contact. That was asserted in §9; here it is derived.
+
+**The census** ([`hydrocarbon_census.py`](hydrocarbon_census.py)) checks that the one valence rule
+is chemistry's own generator. Growing carbon skeletons a leaf at a time with **max degree 4 as the
+only rule applied**, the alkane isomer counts come out
+
+| n | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| skeletons | 1 | 1 | 1 | 2 | 3 | 5 | 9 | 18 | 35 | 75 | 159 | 355 | 802 | 1858 |
+
+— the published series (OEIS A000602) exactly, through C₁₄. Enumerating the *merged* closure class
+as multigraphs, with edge multiplicity as bond order so rings and double bonds come out of the same
+machine: **C₄H₈ → 5**, **C₅H₁₀ → 10**, **C₆H₁₂ → 25**, each the textbook constitutional-isomer
+total. Machine-verified core: [`lean/QLF_Unsaturation.lean`](lean/QLF_Unsaturation.lean), no axioms.
+
+**What is *not* closed by this.** The closure **count** is derived; **which** pairs of atoms carry
+the extra closure is not — so resonance, regiochemistry and bond placement remain open, and
+"not double bonds" narrows to "not *where* the double bonds are." And the enumeration counts
+**constitutional** isomers only: it cannot see *cis*/*trans* or a stereocentre, for exactly the
+reason [`Protein_Folding.md`](Protein_Folding.md) §7 proves the fold census cannot pick a
+handedness — a valence graph is mirror-symmetric, so counting alone never distinguishes a molecule
+from its reflection.
+
+## 11. Honest scope
 
 The **shared-closure bond** is the QLF principle (proven for H₂/atoms; `Bound_States_QLF.md`,
 [`QLF_Confinement`](lean/QLF_Confinement.lean) for what *can't* close). The rest is an **illustrative** model:
-a single-bond, valence-saturation rule that gets **stoichiometry and formulas** right (H₂O, CO₂, Fe₂O₃) but not
-double bonds, bond angles, resonance, or reaction rates; iron is fixed at +3 (→ Fe₂O₃). The specific valences and
+a single-bond, valence-saturation rule that gets **stoichiometry and formulas** right (H₂O, CO₂, Fe₂O₃) — and,
+since [§10](#10-double-bonds-and-rings--the-same-thing-counted), the **number** of extra closures a formula
+carries — but not *where* those closures sit (resonance, regiochemistry), nor bond angles, stereochemistry,
+or reaction rates; iron is fixed at +3 (→ Fe₂O₃). The specific valences and
 thresholds are chosen for illustration, not derived. It is chemistry *seen through the ZFA lens*, live and
 self-assembling — not a quantum-chemistry solver.
 

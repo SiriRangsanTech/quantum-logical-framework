@@ -50,7 +50,7 @@ namespace QLF.Unsaturation
     atoms, each given by its valence; `2E = Σ vᵢ` is the handshake lemma, so doubling keeps
     everything in `ℤ` with no division. -/
 def doubledClosures (atoms : List ℕ) : ℤ :=
-  (atoms.map (fun v => (v : ℤ))).sum - 2 * atoms.length + 2
+  (atoms.sum : ℤ) - 2 * (atoms.length : ℤ) + 2
 
 /-- **The master lemma: an atom contributes `valence − 2`.** Every statement below is this
     one counted up. An atom brings one vertex and half of each of its `v` bond-ends, so it
@@ -58,23 +58,14 @@ def doubledClosures (atoms : List ℕ) : ℤ :=
 theorem doubledClosures_cons (v : ℕ) (atoms : List ℕ) :
     doubledClosures (v :: atoms) = doubledClosures atoms + ((v : ℤ) - 2) := by
   unfold doubledClosures
-  rw [List.map_cons, List.sum_cons, List.length_cons]
+  rw [List.sum_cons, List.length_cons]
   push_cast
   ring
-
-/-- The closure count read off the valences directly. -/
-theorem doubledClosures_eq_sum (atoms : List ℕ) :
-    doubledClosures atoms = (atoms.map (fun v => (v : ℤ) - 2)).sum + 2 := by
-  induction atoms with
-  | nil => simp [doubledClosures]
-  | cons v rest ih =>
-      rw [doubledClosures_cons, ih, List.map_cons, List.sum_cons]
-      ring
 
 theorem doubledClosures_append (a b : List ℕ) :
     doubledClosures (a ++ b) = doubledClosures a + doubledClosures b - 2 := by
   unfold doubledClosures
-  rw [List.map_append, List.sum_append, List.length_append]
+  rw [List.sum_append, List.length_append]
   push_cast
   ring
 

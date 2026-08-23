@@ -18,6 +18,7 @@ on:
       - 'twist_core.py'
       - 'census_inventory.py'
       - 'protein_census.py'
+      - 'hydrocarbon_census.py'
       - 'data/folding_census.json'
       - 'data/census_inventory.json'
       - '.github/workflows/inventory-check.yml'
@@ -28,6 +29,7 @@ on:
       - 'twist_core.py'
       - 'census_inventory.py'
       - 'protein_census.py'
+      - 'hydrocarbon_census.py'
       - 'data/folding_census.json'
       - 'data/census_inventory.json'
       - '.github/workflows/inventory-check.yml'
@@ -52,3 +54,9 @@ jobs:
       # sequence separation, closures compose, the fold census is mirror-symmetric.
       - name: Verify the folding census
         run: python3 protein_census.py --quick
+
+      # The hydrocarbon census (hydrocarbon_census.py) asserts the QLF_Unsaturation
+      # theorems: the textbook degree of unsaturation IS the cycle rank, a divalent atom
+      # cannot change it, and the valence rule reproduces the published isomer counts.
+      - name: Verify the hydrocarbon census
+        run: python3 hydrocarbon_census.py --quick
