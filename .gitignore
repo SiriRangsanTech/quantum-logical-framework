@@ -1,3 +1,6 @@
 # Python
 __pycache__/
 *.py[cod]
+
+# downloaded PDB structures (contact_order_regression.py --fetch)
+.pdb_cache/

@@ -87,8 +87,11 @@ Levinthal's paradox assumes a searcher. QLF has none — but the combinatorics i
 handled, so here is how the framework actually pays for it.
 
 **First, closures compose.** Two closed loops concatenate to a closed loop (`closedLoop_append`), so
-a fold's contacts are **independent closures that add**, not a joint condition on the whole chain.
-There is no product space to search because the closures are not competing for one global solution.
+a fold's contacts **add** as closures rather than forming a joint condition on the whole chain. There
+is no product space to search because the closures are not competing for one global solution.
+*(Read narrowly: that is a statement about admissibility, and §5e records that the stronger reading —
+that a fold's **multiplicities** therefore factorize over its contacts — is false against experiment.
+The counting argument below does not depend on it.)*
 
 **Second, the multiplicity is a number, not an enumeration.** The census is stored in the shared
 inventory schema — the same `closures` layer as [`data/census_inventory.json`](data/census_inventory.json),
@@ -130,15 +133,18 @@ exponents are short-chain values, not asymptotic ones, and are quoted for the tr
 not as measurements of the SAW cyclization exponent. The `ℓ = 11` point in 2-D rises again
 (0.0143) — a free-chain-end effect, and it is excluded from the fit.
 
-**A distinguishable prediction.** If the ways multiply across independent closures
+**The prediction, and its result.** If the ways multiply across independent closures
 (`closedLoop_append`), the multiplicity of a whole contact set is `∏_c p(ℓ_c)`, so
 
 $$\ln(\text{ways}) \;=\; -\,\theta \sum_c \ln \ell_c$$
 
-— the folding rate should track the **log-mean** of contact separations, not the arithmetic mean
-that relative contact order uses (Plaxco, Simons & Baker 1998). **Kill condition:** take a published
-two-state folder set, regress `ln k_f` on both; if arithmetic CO wins consistently, the multiplicative
-composition here is wrong. Not yet run — see §8.
+— the folding rate should track the **sum of the logarithms** of the contact separations, not the
+arithmetic mean that relative contact order uses (Plaxco, Simons & Baker 1998). The kill condition
+was stated here before the data was looked at, and frozen in the commit that added this section:
+*regress `ln k_f` on both; if arithmetic contact order wins consistently, the multiplicative
+composition is wrong.*
+
+**It fired. The prediction is false** — see §5e.
 
 ### 5b. Designability: the structure that happens in the most ways
 
@@ -222,6 +228,51 @@ version of a different quantity than `ways` counted — the tell was a zero-cont
 `|A|/W = 0.179` when an empty product must give exactly 1. And the closure-weighted entry scaled
 `ways` by `2^c` while leaving `signed` unscaled. Both fixed; the numbers above are post-fix.
 
+### 5e. The contact-order test — the prediction fails, and where
+
+Run on the 26 crosslink-free two-state proteins of Weikl (2006), whose folding rates come from
+Table 1 of Grantcharova et al. (2001). Contact maps are computed here from the PDB structures under
+the Plaxco convention (heavy-atom pairs within 6 Å) — and the pipeline is **validated before any new
+measure is tested**, by reproducing Weikl's own published columns: 25 of the 26 rel.CO / rel.logCO /
+length values to the printed decimal, and all four of his published correlation coefficients.
+[`contact_order_regression.py`](contact_order_regression.py), [`data/contact_order.json`](data/contact_order.json).
+
+| measure | Pearson *r* vs `log k_f` (absolute) | jackknife (drop ≤ 2) |
+|---|---|---|
+| rel.CO `= (1/LN)·Σℓ` — Plaxco 1998 | **0.914** | [0.880, 0.937] |
+| rel.logCO `= (1/N·logL)·Σ logℓ` — Weikl 2006 | 0.898 | [0.860, 0.926] |
+| abs.logCO `= (1/N)·Σ logℓ` | 0.796 | [0.729, 0.851] |
+| abs.CO `= (1/N)·Σℓ` | 0.692 | [0.573, 0.768] |
+| **`Σ logℓ` — the QLF quantity** | **0.214** | [0.006, 0.486] |
+| `Σ logℓ`, residue-level contacts | 0.157 | [0.041, 0.445] |
+
+**The derived quantity fails, and not narrowly.** `Σ log ℓ` correlates with the folding rate at
+`0.21`, against `0.91` for plain contact order; its jackknife range reaches down to `0.006`. This is
+not the underpowered outcome anticipated above — that worry was that `Σ log ℓ` and arithmetic CO
+would be too alike to separate, and they are not alike at all (`r = 0.13` between them). The test had
+every chance to confirm and it refused.
+
+**Which layer failed** ([`ScientificApproach.md`](ScientificApproach.md) correction protocol): the
+**bridge**, not the formalism and not the substrate. `closedLoop_append` is true — two closed loops
+do concatenate to a closed loop. What does not follow, and what was silently assumed, is that the
+*multiplicities* therefore **factorize**: that a fold's ways are the product of its contacts' ways.
+The data rejects the independence, and the diagnosis is legible in the numbers — dividing by `N`
+lifts `0.21 → 0.80`, and dividing further by `log L` lifts it to `0.90`. **The mean carries the
+signal; the sum does not.** A fold with twice the contacts is not twice as improbable, because
+contacts are not independent closures in the folding process: once some are made the chain is
+short-circuited, and the remaining loops are cheaper than their sequence separation suggests. That
+is the *effective* contact order (ECO), and it is the repair direction if there is one — not a
+rescue, a different bridge that would have to be derived rather than fitted.
+
+**The log form is not ours, and it is not what failed.** `Σ log ℓ` normalized — Weikl's rel.logCO —
+does essentially as well as contact order (`0.898` vs `0.914`, correlated with each other at
+`0.949`), so the normalized log and arithmetic forms are near-degenerate on this set and it cannot
+separate them. But the log form is **prior art**: Weikl introduced rel.logCO in 2006, motivated as a
+loop-closure entropy after Jacobson & Stockmayer (1950), and QLF has no claim on it. The derivation
+here reached it independently, and reaching a published measure by another route is worth exactly
+what it is — a consistency, not a discovery, and the sharpened, unnormalized form that *would* have
+been ours is the one the data kills.
+
 ## 6. Hydrophobic and polar, from the valence rule
 
 The H/P split that drives everything above is not an extra rule. It is
@@ -256,7 +307,9 @@ which is upstream of chemistry entirely.
 ## 8. Honest scope — and the staged path from here
 
 What is **proven**: the identification of conformation with twist history, contact-as-closure, the
-parity rule, composability, the mirror no-go, and the `log 2` contact quantum. What is **exact
+parity rule, composability, the mirror no-go, and the `log 2` contact quantum. What is **withdrawn**:
+the multiplicity-factorization bridge — §5e tested it against experiment and it failed, so the fold
+census does not predict folding rates. What is **exact
 computational**: everything in §5, over the stated finite lattices. What is **neither**: any claim
 about a real protein.
 
@@ -273,7 +326,7 @@ The staged path, with what each stage needs:
 | 2. Contact quantum, HP energy function | **done**, derived | — |
 | 3. Loop multiplicity → folding order | **done**, exact computational | larger `N` for asymptotics |
 | 4. Designability → native selection | **done**, exact computational | 3-D 3×3×3 (27-mer) census |
-| 5. Contact-order regression vs experiment | **open**, kill condition stated (§5a) | a published two-state folder set |
+| 5. Contact-order regression vs experiment | **settled: the prediction FAILS** (§5e) | — the bridge, not the substrate; ECO is the repair direction |
 | 5b. Does the phase do any work? | **settled: no** (§5d) | — closed as a null |
 | 6. Peptide bond and the 20 residues as explicit closures | **open** | §6 is a one-bit rule, not a derivation |
 | 7. Secondary structure (helix, sheet) as named motifs | **open** | needs off-lattice geometry or a finer alphabet |
@@ -291,7 +344,9 @@ Stated first, per [`ScientificApproach.md`](ScientificApproach.md) R7:
 2. **A contact at even sequence separation.** Would falsify the parity corollary. Zero found.
 3. **A count-balanced fold that is `±iI`.** Would falsify `balanced_phase_is_real` at polymer scale.
    Zero found.
-4. **Arithmetic contact order beating log contact order** on a published folder set (§5a).
+4. ~~**Arithmetic contact order beating log contact order** on a published folder set.~~ **FIRED**
+   — and against the unnormalized `Σ log ℓ` that the derivation actually gives: `0.21` against
+   `0.91` (§5e). The multiplicity-factorization bridge is withdrawn.
 5. **A handedness preference emerging from a pure fold census.** Would contradict §7 — and would be
    a *finding*, since the bijection is proven; it would mean the census was mis-specified.
 
