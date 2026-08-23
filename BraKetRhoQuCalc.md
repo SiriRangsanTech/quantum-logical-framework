@@ -319,4 +319,4 @@ bra: ⟨0| + ⟨1|  (eval = ket†  =  ket  [Hermitian: Form.toMatrix_adjoint �
   bra_ket_always_balanced: ✓ (BraKetRhoQuCalc.lean)
 ```
 
-`|0⟩⟨0| + |1⟩⟨1| = I` — the identity matrix, confirming `{|0⟩, |1⟩}` is a complete orthonormal basis. States supported: `0`, `1`, `+`, `-`, `i`, `-i`. Open the app at **https://rchain-community.github.io/quantum-os/** and type `/help` for the full command list.
+`|0⟩⟨0| + |1⟩⟨1| = I` — the identity matrix, confirming `{|0⟩, |1⟩}` is a complete orthonormal basis. States supported: `0`, `1`, `+`, `-`, `i`, `-i`. Open the app at **https://rholang.io/quantum-os/** and type `/help` for the full command list.

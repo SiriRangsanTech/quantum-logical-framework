@@ -31,7 +31,7 @@ winner. Each decision step is two ingredients:
 
 Possessing the room capability token **is** the franchise. The cast: **Alice**
 (organizer), **Bob**, **Carol**, **Dave**, **Eve** — five peers in the room
-`https://rchain-community.github.io/quantum-os/#room=cap:room:…`. Lines prefixed `·` are
+`https://rholang.io/quantum-os/#room=cap:room:…`. Lines prefixed `·` are
 system output; `[Name→]` marks what other peers receive via broadcast.
 
 ---
