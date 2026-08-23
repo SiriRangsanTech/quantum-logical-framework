@@ -10,7 +10,7 @@ turn out to be the same law.**
 Implementation: [`fredkin_qlf.py`](fredkin_qlf.py) · run it with `python3 fredkin_qlf.py`
 Machine-verified core: [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)
 Interactive: [`fredkin_machine.html`](fredkin_machine.html) —
-[**run it live**](https://jimscarver.github.io/quantum-logical-framework/fredkin_machine.html)
+[**run it live**](https://rchain-community.github.io/quantum-logical-framework/fredkin_machine.html)
 
 ---
 
@@ -204,7 +204,7 @@ bookkeeping dominates, because nothing may be thrown away.
 
 ## 4a. Watching it run
 
-[`fredkin_machine.html`](https://jimscarver.github.io/quantum-logical-framework/fredkin_machine.html)
+[`fredkin_machine.html`](https://rchain-community.github.io/quantum-logical-framework/fredkin_machine.html)
 steps the circuits gate by gate, with the three readouts that matter live: the ball count,
 the signed twist action, and the ledger. It is worth opening for one reason — **the reverse
 button**. Run the adder to the end, press Reverse, and it walks back to the input it started

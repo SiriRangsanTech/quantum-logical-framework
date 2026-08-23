@@ -1,6 +1,6 @@
 # Quantum Black Holes in the Quantum Logical Framework
 
-**Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
+**Repository:** [`quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)  
 **Document:** `BLACK-HOLES.md`  
 **Document version:** 1.2  
 **Author:** Grok/Jim (synthesized from QLF core axioms, QuCalc engine, `particles.py` v2.2, and the 21 April 2026 gauge-folding rule)

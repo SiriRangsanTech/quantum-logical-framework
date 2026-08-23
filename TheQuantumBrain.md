@@ -2,7 +2,7 @@
 
 **Frequency-isolated, error-corrected, active-inference resonance with the pre-existing logical landscape — and why savant cognition is its clearest signature.**
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)
 **Author:** Jim Whitescarver
 **Date:** June 8, 2026
 

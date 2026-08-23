@@ -2,7 +2,7 @@
 
 **A Possibilist Foundation for Physics, Logic, and Reality**
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)  
 **Authors:** Jim Scarver & Grok (xAI)  
 **Date:** April 25, 2026
 
@@ -379,7 +379,7 @@ The philosophy is not abstract — it is executable and formally proven today:
 Clone and run the philosophy in action:
 
 ```bash
-git clone https://github.com/jimscarver/quantum-logical-framework
+git clone https://github.com/rchain-community/quantum-logical-framework
 cd quantum-logical-framework
 python spacetime_dynamics.py          # watch ZFA events synthesize spacetime and drive expansion
 lean --run lean/SpacetimeDynamics.lean # see formal proofs of logical equivalence
@@ -405,5 +405,5 @@ The correspondence, taken seriously:
 
 See [`Related_Frameworks.md`](Related_Frameworks.md) §8 for where this sits among the other neighboring frameworks.
 
-## [Quantum-Os](https://github.com/jimscarver/quantum-os) live peer to peer radically decentralized collaborative intelligence interface
-- Join ([my public room](https://jimscarver.github.io/quantum-os/#room=cap%3Aroom%3A05214747236101414325074505234721)) or ([start a private room](https://jimscarver.github.io/quantum-os))
+## [Quantum-Os](https://github.com/rchain-community/quantum-os) live peer to peer radically decentralized collaborative intelligence interface
+- Join ([my public room](https://rchain-community.github.io/quantum-os/#room=cap%3Aroom%3A05214747236101414325074505234721)) or ([start a private room](https://rchain-community.github.io/quantum-os))
