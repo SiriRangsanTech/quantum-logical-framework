@@ -83,7 +83,7 @@ Compute Time (h/E) : 0.0001 seconds
 
 The following is a transcript of two peers — **Alice** and **Bob** — working through the Aristotelian syllogism inside a shared [quantum-os](https://github.com/rchain-community/quantum-os) room. Each peer's input is shown as a prompt. Lines prefixed `·` are system output; lines prefixed `[Bob→]` or `[Alice→]` are messages the other peer receives via broadcast.
 
-The room is `https://rholang.io/quantum-os/#room=cap:room:…`. Both peers connect and see the `/help` list on startup. The **Room Process** sidebar shows `parallel(Alice, Bob)` — their combined ZFA process.
+The room is `https://rchain-community.github.io/quantum-os/#room=cap:room:…`. Both peers connect and see the `/help` list on startup. The **Room Process** sidebar shows `parallel(Alice, Bob)` — their combined ZFA process.
 
 ---
 
@@ -284,4 +284,4 @@ The three-step syllogism maps exactly onto ZFA Blanket Fusion:
 
 The room itself is the coprocessor. Two peers compose a valid argument by contributing ZFA-balanced processes; the `parallel(Alice, Bob)` Room Process stays ZFA-balanced throughout; the conclusion is a capability token — a proof object as authorization. This is the Neuro-Symbolic architecture made live and peer-to-peer.
 
-**Try it:** [quantum-os room](https://rholang.io/quantum-os/) · [QLF Lean proofs](https://github.com/rchain-community/quantum-logical-framework)
+**Try it:** [quantum-os room](https://rchain-community.github.io/quantum-os/) · [QLF Lean proofs](https://github.com/rchain-community/quantum-logical-framework)

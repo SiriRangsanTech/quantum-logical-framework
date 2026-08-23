@@ -213,8 +213,8 @@ banner = (
     "> **The diagrams don't render reliably on GitHub** (a known GitHub Mermaid/dark-theme issue), "
     "so this page is the text index. For the **rendered, clickable diagrams** and a **printable PDF** "
     "(with internal + external links), open the live version on GitHub Pages: "
-    "**[rholang.io/quantum-logical-framework/FlowChart.html]"
-    "(https://rholang.io/quantum-logical-framework/FlowChart.html)** "
+    "**[rchain-community.github.io/quantum-logical-framework/FlowChart.html]"
+    "(https://rchain-community.github.io/quantum-logical-framework/FlowChart.html)** "
     "(or clone/pull and open the local `FlowChart.html`). "
     "Regenerate with `python3 tools/build_flowchart_html.py`.\n"
 )

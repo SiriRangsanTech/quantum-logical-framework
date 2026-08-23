@@ -115,7 +115,7 @@ The reach extends well past particle constants.
 
 There is a striking corollary. If ZFA closure is the single invariant that makes a computation physically real, then it is also the single invariant a *quantum computer* needs to enforce. In **QuantumOS**, the security model, error correction, scheduling, garbage collection, and even the AI layer are not five subsystems — they are one operation: ZFA enforcement. Capability-secure by construction (an unforgeable name *is* a proof of authorization), formally grounded in linear logic and the no-cloning theorem.
 
-It is not just a design document — there is a **live peer-to-peer app** you can open in a browser, with AI agents that join rooms as full members. Try it at [rholang.io/quantum-os](https://rholang.io/quantum-os/), read the architecture in [QuantumOS.md](https://github.com/rchain-community/quantum-logical-framework/blob/main/QuantumOS.md), or browse the code at [github.com/rchain-community/quantum-os](https://github.com/rchain-community/quantum-os).
+It is not just a design document — there is a **live peer-to-peer app** you can open in a browser, with AI agents that join rooms as full members. Try it at [rchain-community.github.io/quantum-os](https://rchain-community.github.io/quantum-os/), read the architecture in [QuantumOS.md](https://github.com/rchain-community/quantum-logical-framework/blob/main/QuantumOS.md), or browse the code at [github.com/rchain-community/quantum-os](https://github.com/rchain-community/quantum-os).
 
 ---
 
@@ -133,14 +133,14 @@ A foundation earns trust by being honest about its boundaries, so here is the sc
 
 ## Where to go next
 
-The fastest way in is the **flow chart** — the whole framework as a single linked index, one substrate branching into four families, ten domains, and the individual results: [the rendered, clickable map with a printable PDF](https://rholang.io/quantum-logical-framework/FlowChart.html).
+The fastest way in is the **flow chart** — the whole framework as a single linked index, one substrate branching into four families, ten domains, and the individual results: [the rendered, clickable map with a printable PDF](https://rchain-community.github.io/quantum-logical-framework/FlowChart.html).
 
 From there:
 
 - **The big picture** — [Philosophy.md](https://github.com/rchain-community/quantum-logical-framework/blob/main/Philosophy.md) (the possibilist foundation) and the formal [White Paper](https://github.com/rchain-community/quantum-logical-framework/blob/main/WHITE_PAPER.md).
 - **The flagship derivation** — [Alpha.md](https://github.com/rchain-community/quantum-logical-framework/blob/main/Alpha.md): the fine-structure constant from counting.
 - **The proofs themselves** — [the Lean module index](https://github.com/rchain-community/quantum-logical-framework/blob/main/lean/README.md): every theorem name and proof chain, the whole tree.
-- **The application** — [QuantumOS](https://rholang.io/quantum-os/), live in your browser.
+- **The application** — [QuantumOS](https://rchain-community.github.io/quantum-os/), live in your browser.
 
 The whole thing lives at **[github.com/rchain-community/quantum-logical-framework](https://github.com/rchain-community/quantum-logical-framework)**. The universe is logical, its logic is constructive and complete where reality is, and you can read the source — then check it in Lean.
 

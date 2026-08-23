@@ -317,4 +317,4 @@ The correspondence, taken seriously:
 See [`Related_Frameworks.md`](Related_Frameworks.md) §8 for where this sits among the other neighboring frameworks.
 
 ## [Quantum-Os](https://github.com/rchain-community/quantum-os) live peer to peer radically decentralized collaborative intelligence interface
-- Join ([my public room](https://rholang.io/quantum-os/#room=cap%3Aroom%3A05214747236101414325074505234721)) or ([start a private room](https://rholang.io/quantum-os))
+- Join ([my public room](https://rchain-community.github.io/quantum-os/#room=cap%3Aroom%3A05214747236101414325074505234721)) or ([start a private room](https://rchain-community.github.io/quantum-os))
