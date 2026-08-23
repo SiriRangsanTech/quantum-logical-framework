@@ -421,5 +421,14 @@ law whatsoever" rests on the modelling assumption that a restrictive law *is* a 
 the content of the capacity formulation, not a further theorem. Reject that model and the aphorism
 returns to being an aphorism; accept it and the law is a corollary of `boundedPrune`.
 
+---
+
+## §9 The many-worlds reading
+
+The reading of §4's "rare and certain" against the many-worlds interpretation — the capacity-ordered
+stratification of the possibility space, the two kinds of zero (deferred vs pruned), and "our time" as a
+synthesized clock — is developed in full, alongside the other interpretations it is compared against, in
+[`Interpretations.md`](Interpretations.md) §2.
+
 *Attribution: the aphorism is folklore (late-16th-century base form). The capacity formulation — "a
 system with more states can always break a finite closure" — and this formalization are Jim's and Amy's.*

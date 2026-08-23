@@ -54,6 +54,8 @@ All terms in the parallel composition exist *simultaneously* until the engine pr
 
 QLF occupies a unique middle ground: **realist about possibilities** but **actualist about observed reality**. Only closed ZFA loops are “actual”; everything else is real-but-unresolved possibility.
 
+The interpretation-level comparison — in particular the capacity-ordered reading of Many-Worlds against the Law of Exceptions — is developed in [`Interpretations.md`](Interpretations.md).
+
 ## 4. Emergent Phenomena Under Possibilist Ontology
 
 - **Double-slit interference**: Both paths through the slits are *real possibilities*. The detection screen counts the multiplicity of ZFA closures. Interference is not “wave overlap” but the constructive/destructive counting of closed histories (exactly as implemented in the RhoQuCalc double-slit example).
