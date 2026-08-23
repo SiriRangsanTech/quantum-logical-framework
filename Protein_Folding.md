@@ -181,22 +181,20 @@ parity and is not monotone at these sizes, so no trend is claimed; see §8.
 
 ## 6. Hydrophobic and polar, from the valence rule
 
-[`Chemistry.md`](Chemistry.md) §1 already decides this, and the argument is the helium one. A side
-chain that is a **saturated hydrocarbon has no free valence**, so it cannot share a closure with
-water — the same reason a valence-0 species can only scatter. A side chain carrying an N, O or S with
-an unshared hydrogen, or a charge, **has** a free valence and shares with water. So:
+The H/P split that drives everything above is not an extra rule. It is
+[`Chemistry.md`](Chemistry.md) §6 — the helium argument, one scale up: a **saturated hydrocarbon
+side chain has no free valence**, so like a valence-0 species it cannot share a closure with water
+and can only scatter off it; a side chain carrying an N, O or S with an unshared hydrogen, or a
+charge, **has** a free valence and shares. That derivation lives there. Two things it settles here:
 
-> free valence on the side chain ⟹ **P** · none ⟹ **H**
+- **Why only H–H contacts pay** (§3). A polar residue closes with the solvent whether it is buried
+  or not, so burying it releases no *differential* free energy.
+- **How well the one-bit rule does.** Against the sign of Kyte & Doolittle (1982) hydropathy it
+  agrees **17 of 20**, missing on Gly, Pro and Cys — the three named and explained in
+  [`Chemistry.md`](Chemistry.md) §6, and none of them an accident.
 
-Against the sign of Kyte & Doolittle (1982) hydropathy: **17 of 20 agree**, and the three misses are
-named rather than hidden — **Gly** (no side chain at all), **Pro** (cyclic, fused to the backbone),
-and **Cys**. Cys is the interesting one: the rule calls it polar because the thiol S–H *does* share
-with water, and Kyte–Doolittle scores it hydrophobic because it is usually buried — but it is buried
-by forming a **disulfide**, which is a shared closure of a different kind, not solvent exclusion. The
-rule and the reference are measuring two different closures there.
-
-*Epistemic status: phenomenological match.* The classification is a one-bit rule read off the valence
-model; it is not a derivation of hydropathy values.
+*Epistemic status: phenomenological match.* The classification is a one-bit rule read off the
+valence model; it is not a derivation of hydropathy values.
 
 ## 7. A no-go: chirality is not a multiplicity effect
 

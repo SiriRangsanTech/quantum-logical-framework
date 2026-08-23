@@ -220,6 +220,59 @@ ISOMER_CASES = [
 
 
 # =============================================================================
+# REACTIONS: the closure count is the molecule count
+# =============================================================================
+# A balanced reaction conserves the atom inventory, so it pins BOTH terms of b1 = E - V + k
+# except k: V is the atom count and E = sum(v_i)/2 is fixed because the valences are. Only the
+# number of molecules is free, so the change in total closure count across any balanced reaction
+# is exactly its change in molecule count (lean/QLF_Unsaturation.lean, `reaction_delta`) -- and
+# organic chemistry's reaction taxonomy turns out to be that one number.
+
+REACTIONS = [
+    ("hydrogenation",      [(1, {'C': 2, 'H': 4}), (1, {'H': 2})],
+                           [(1, {'C': 2, 'H': 6})], "addition"),
+    ("hydration",          [(1, {'C': 2, 'H': 4}), (1, {'O': 1, 'H': 2})],
+                           [(1, {'C': 2, 'H': 6, 'O': 1})], "addition"),
+    ("bromine addition",   [(1, {'C': 2, 'H': 4}), (1, {'Br': 2})],
+                           [(1, {'C': 2, 'H': 4, 'Br': 2})], "addition"),
+    ("Diels-Alder",        [(1, {'C': 4, 'H': 6}), (1, {'C': 2, 'H': 4})],
+                           [(1, {'C': 6, 'H': 10})], "cycloaddition"),
+    ("ammonia synthesis",  [(1, {'N': 2}), (3, {'H': 2})],
+                           [(2, {'N': 1, 'H': 3})], "addition"),
+    ("dehydration",        [(1, {'C': 2, 'H': 6, 'O': 1})],
+                           [(1, {'C': 2, 'H': 4}), (1, {'O': 1, 'H': 2})], "elimination"),
+    ("dehydrohalogenation", [(1, {'C': 2, 'H': 5, 'Br': 1})],
+                           [(1, {'C': 2, 'H': 4}), (1, {'H': 1, 'Br': 1})], "elimination"),
+    ("cracking",           [(1, {'C': 4, 'H': 10})],
+                           [(1, {'C': 2, 'H': 6}), (1, {'C': 2, 'H': 4})], "elimination"),
+    ("halogen substitution", [(1, {'C': 1, 'H': 4}), (1, {'Cl': 2})],
+                           [(1, {'C': 1, 'H': 3, 'Cl': 1}), (1, {'H': 1, 'Cl': 1})], "substitution"),
+    ("esterification",     [(1, {'C': 2, 'H': 4, 'O': 2}), (1, {'C': 1, 'H': 4, 'O': 1})],
+                           [(1, {'C': 3, 'H': 6, 'O': 2}), (1, {'O': 1, 'H': 2})], "condensation"),
+    ("peptide bond",       [(2, {'C': 2, 'H': 5, 'N': 1, 'O': 2})],
+                           [(1, {'C': 4, 'H': 8, 'N': 2, 'O': 3}), (1, {'O': 1, 'H': 2})], "condensation"),
+    ("combustion",         [(1, {'C': 1, 'H': 4}), (2, {'O': 2})],
+                           [(1, {'C': 1, 'O': 2}), (2, {'O': 1, 'H': 2})], "oxidation"),
+]
+
+# The class fixes the SIGN of the change, not its magnitude: a reaction that joins four
+# molecules into two moves the count by -2, not -1 (ammonia synthesis, below).
+SIGN_BY_CLASS = {"addition": -1, "cycloaddition": -1, "elimination": +1,
+                 "substitution": 0, "condensation": 0, "oxidation": 0}
+
+
+def side(mixture):
+    """(total closure count, molecule count, atom inventory) of one side of a reaction."""
+    closures = sum(n * closure_count(m) for n, m in mixture)
+    molecules = sum(n for n, _ in mixture)
+    atoms = {}
+    for n, m in mixture:
+        for a, k in m.items():
+            atoms[a] = atoms.get(a, 0) + n * k
+    return closures, molecules, atoms
+
+
+# =============================================================================
 # INVARIANTS — each a theorem of lean/QLF_Unsaturation.lean, asserted against fresh data
 # =============================================================================
 INVARIANTS = [
@@ -231,6 +284,8 @@ INVARIANTS = [
     "every alkane skeleton the valence rule admits is a tree (b1 = 0)",
     "alkane isomer counts match the published series (external check)",
     "isomer counts of a merged closure class match the textbook total (external check)",
+    "a balanced reaction's change in closure count IS its change in molecule count "
+    "(reaction_delta)",
 ]
 
 
@@ -276,6 +331,21 @@ def check(alkane_max=10, isomer_cases=None):
         if E - V + 1 != 0:
             fails.append("J6: an alkane skeleton is not a tree (b1 = %d)" % (E - V + 1))
 
+    for name, lhs, rhs, cls in REACTIONS:                            # J9
+        bl, nl, al = side(lhs)
+        br, nr, ar = side(rhs)
+        if al != ar:
+            fails.append("J9 %s: the reaction is not balanced" % name)
+            continue
+        if abs((br - bl) - (nr - nl)) > 1e-9:
+            fails.append("J9 %s: closure change %r != molecule change %r"
+                         % (name, br - bl, nr - nl))
+        want_sign = SIGN_BY_CLASS[cls]
+        got_sign = (nr - nl > 0) - (nr - nl < 0)
+        if got_sign != want_sign:
+            fails.append("J9 %s: %s should move the count %s, moved it %+d"
+                         % (name, cls, ("down", "not at all", "up")[want_sign + 1], nr - nl))
+
     for name, n, m, want in (isomer_cases or []):                    # J8
         got, b1 = isomers(n, m)
         if got != want:
@@ -307,6 +377,13 @@ def report():
     print("   n        " + "".join("%6d" % n for n in range(1, 15)))
     print("   counted  " + "".join("%6d" % counts[n] for n in range(1, 15)))
     print("   series   " + "".join("%6d" % ALKANE_SERIES[n] for n in range(1, 15)))
+
+    print("\n== reactions: the change in closures IS the change in molecules ==")
+    print("%-22s %8s %8s   %s" % ("reaction", "d(b1)", "d(mol)", "class"))
+    for name, lhs, rhs, cls in REACTIONS:
+        bl, nl, _ = side(lhs)
+        br, nr, _ = side(rhs)
+        print("%-22s %+8.0f %+8.0f   %s" % (name, br - bl, nr - nl, cls))
 
     print("\n== one closure class: rings and double bonds counted together ==")
     print("%-8s %4s %9s %10s" % ("formula", "b1", "isomers", "textbook"))

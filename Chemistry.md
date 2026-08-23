@@ -15,11 +15,18 @@ opens the visualizer with that scene already loaded in its QuCalc box.
 
 Every element has a **valence**: how many closures it still needs to complete its shell.
 
-| Element | H | He | C | N | O | Fe |
-|---|---|----|---|---|---|----|
-| valence | 1 | **0** | 4 | 3 | 2 | 3 |
+| Element | H | He | C | N | O | S | Cl | Fe |
+|---|---|----|---|---|---|---|---|----|
+| valence | 1 | **0** | 4 | 3 | 2 | 2 | 1 | 3 |
+| closure contribution `(v−2)/2` | −½ | −1 | **+1** | +½ | **0** | **0** | −½ | +½ |
 
-Helium's is **0** — its shell is closed, so it shares nothing and never bonds (a noble gas). That rule
+The second row is the same number doing the work in [§10](#10-double-bonds-and-rings--the-same-thing-counted):
+an atom's valence is what it contributes to a molecule's **closure count**, and the contribution is
+`(valence − 2)/2`. Carbon is the only common element that contributes a *whole* closure, which is why
+organic chemistry is carbon's. Oxygen contributes **zero** — a fact §10 turns into the answer to a
+question textbooks leave unasked.
+
+Helium's valence is **0** — its shell is closed, so it shares nothing and never bonds (a noble gas). That rule
 does work elsewhere: a valence-0 species has no unshared closure to offer, so two helium atoms can only
 *scatter*, which is exactly what a billiard ball has to do. [`Fredkin_QLF.md`](Fredkin_QLF.md) builds
 Fredkin & Toffoli's billiard-ball computer on that — the idealization they had to impose on their balls
@@ -76,9 +83,32 @@ A **metal** (iron) doesn't form discrete metal molecules — its atoms **lattice
 oxide (rust, ~Fe₂O₃)**. Metal–metal bonds are forbidden (so crystals stay intact); metal–non-metal bonds oxidise.
 [▶ see rust](https://rchain-community.github.io/quantum-logical-framework/spacetime_constructor.html#qc=Fe%20%40%20-3%2C0%2C0%0AFe%20%40%203%2C0%2C0%0AO%20%40%200%2C-2%2C0%0AO%20%40%200%2C2%2C0%0AO%20%40%200%2C0%2C2)
 
-## 6. Noble gases — inert
+## 6. Noble gases, and why oil and water don't mix
 
 Helium (valence 0) never bonds — its closure is already complete. It is chemically inert.
+
+The same argument, one scale up, is the **hydrophobic effect**. Take any group and ask the §2
+question of it: does it have a free valence to share with water?
+
+- A **saturated hydrocarbon** group — `–CH₃`, `–CH(CH₃)₂`, a benzene ring, a thioether `–S–CH₃` —
+  has none. Every valence is already spent inside the group. Like helium, it can only *scatter* off
+  water; it cannot share a closure with it.
+- A group carrying an **N, O or S with an unshared hydrogen**, or a charge — `–OH`, `–NH₂`,
+  `–COO⁻`, `–SH` — has a free valence, and shares.
+
+So **hydrophobic** and **polar** are not two extra rules bolted on; they are the valence rule read
+against one particular partner. Applied to the twenty amino-acid side chains and scored against the
+sign of Kyte & Doolittle (1982) hydropathy, the one-bit rule agrees **17 times out of 20**, and the
+three misses are worth naming rather than hiding: **Gly** (no side chain at all), **Pro** (cyclic,
+fused to the backbone), and **Cys**. Cysteine is the instructive one — the rule calls the thiol
+polar because `–SH` genuinely does share with water, while the hydropathy scale calls it
+hydrophobic because cysteine is usually *buried*. Both are right: it is buried by forming a
+**disulfide**, which is a shared closure of a different kind, not solvent exclusion. The rule and
+the scale are counting two different closures.
+
+This is what drives folding in [`Protein_Folding.md`](Protein_Folding.md) §3, and it is why only
+H–H contacts pay there: a polar residue closes with the solvent whether it is buried or not, so
+burying it releases nothing.
 
 ## 7. Crystals — Pauli holds them up
 
@@ -118,7 +148,7 @@ cannot share a closure with water, which is the helium argument of §1 one scale
 
 ## 10. Double bonds and rings — the same thing, counted
 
-Of the gaps [§11](#11-honest-scope) names, one is really a counting question, and counting settles it.
+Of the gaps [§12](#12-honest-scope) names, one is really a counting question, and counting settles it.
 
 Organic chemistry teaches a formula to memorise — the **degree of unsaturation** —
 
@@ -178,14 +208,59 @@ reason [`Protein_Folding.md`](Protein_Folding.md) §7 proves the fold census can
 handedness — a valence graph is mirror-symmetric, so counting alone never distinguishes a molecule
 from its reflection.
 
-## 11. Honest scope
+## 11. Reactions — the closure count is the molecule count
+
+[§10](#10-double-bonds-and-rings--the-same-thing-counted) makes one more question answerable, and
+the answer is shorter than the question. A balanced reaction conserves the atom inventory, so it
+fixes **both** terms of the closure count except one: `V` is the atom count, `E = Σ vᵢ / 2` is fixed
+because the valences are, and for a mixture of `k` molecules
+
+> `b₁ = E − V + k`
+
+Only `k` is free. So the change in total closure count across any balanced reaction is **exactly its
+change in molecule count** ([`reaction_delta`](lean/QLF_Unsaturation.lean)) — and organic
+chemistry's reaction taxonomy turns out to be that one number:
+
+| class | molecules | Δ closures | example |
+|---|---|---|---|
+| **addition** | 2 → 1 | **−1** | hydrogenation `C₂H₄ + H₂ → C₂H₆`; Diels–Alder |
+| **elimination** | 1 → 2 | **+1** | dehydration `C₂H₆O → C₂H₄ + H₂O`; cracking |
+| **substitution / condensation** | 2 → 2 | **0** | `CH₄ + Cl₂ → CH₃Cl + HCl`; esterification |
+
+Joining two molecules **destroys** exactly one closure; splitting one **creates** exactly one. That
+is not a rule of thumb — a bond between two separate pieces merges two components rather than
+completing a loop, so the ledger has nowhere else to move.
+
+The class fixes the **sign**; the magnitude is however many pieces the reaction gains or loses.
+Ammonia synthesis `N₂ + 3H₂ → 2NH₃` is four molecules in and two out, so `Δ = −2` — an addition
+twice over. (The enumeration caught that: an earlier draft of this section asserted `−1` for every
+addition, and the check in [`hydrocarbon_census.py`](hydrocarbon_census.py) rejected it.)
+
+**The peptide bond is in the neutral class.** Two amino acids in, a dipeptide and a water out:
+`2 → 2`, `Δ = 0`. So a polypeptide backbone carries **no closure of its own**, however long it
+grows — which is exactly [§9](#9-polymers--when-the-shared-closure-becomes-a-loop)'s divalent-chain
+statement arriving from the other direction, and it is the premise
+[`Protein_Folding.md`](Protein_Folding.md) runs on: **every closure a folded chain has is a
+contact.**
+
+*Scope:* the taxonomy is exact for closed-shell neutral species where every atom spends its full
+valence. Radicals, ions and coordination complexes need their own bookkeeping, and `Δ = 0` marks the
+closure-**neutral** class rather than substitution specifically — balanced combustion sits there too
+(`CH₄ + 2O₂ → CO₂ + 2H₂O`, `3 → 3`). Verified over a table of named reactions in
+[`hydrocarbon_census.py`](hydrocarbon_census.py).
+
+## 12. Honest scope
 
 The **shared-closure bond** is the QLF principle (proven for H₂/atoms; `Bound_States_QLF.md`,
 [`QLF_Confinement`](lean/QLF_Confinement.lean) for what *can't* close). The rest is an **illustrative** model:
-a single-bond, valence-saturation rule that gets **stoichiometry and formulas** right (H₂O, CO₂, Fe₂O₃) — and,
-since [§10](#10-double-bonds-and-rings--the-same-thing-counted), the **number** of extra closures a formula
-carries — but not *where* those closures sit (resonance, regiochemistry), nor bond angles, stereochemistry,
-or reaction rates; iron is fixed at +3 (→ Fe₂O₃). The specific valences and
+a single-bond, valence-saturation rule that gets **stoichiometry and formulas** right (H₂O, CO₂, Fe₂O₃), and
+[§10](#10-double-bonds-and-rings--the-same-thing-counted)–[§11](#11-reactions--the-closure-count-is-the-molecule-count)
+add the **counting** layer: how many closures a formula carries, and how a reaction moves that number. What
+counting does **not** give is **placement** — *which* pairs of atoms carry the extra closure, hence resonance and
+regiochemistry; **bond angles**, which the naive cubic-lattice reading gets wrong (linear H₂O, square-planar CH₄),
+so VSEPR needs a different attack rather than more counting; **stereochemistry**, which is a *proven* no-go for
+counting alone, since a valence graph is mirror-symmetric — the same bijection that stops the fold census picking
+a handedness ([`Protein_Folding.md`](Protein_Folding.md) §7); and **reaction rates**, untouched; iron is fixed at +3 (→ Fe₂O₃). The specific valences and
 thresholds are chosen for illustration, not derived. It is chemistry *seen through the ZFA lens*, live and
 self-assembling — not a quantum-chemistry solver.
 
