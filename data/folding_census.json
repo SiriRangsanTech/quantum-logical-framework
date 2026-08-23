@@ -10,6 +10,7 @@
   "self-avoiding-walk counts match the published lattice series (external check)",
   "fold free energy is -(contacts) x log 2 nats (foldFreeEnergy)",
   "the fold census is mirror-symmetric: counting cannot pick a handedness (map_mirror_bijective)",
+  "the signed census's sign is (-1)^(contacts), a function of the class index (measured; Protein_Folding.md \u00a75d -- the signed census does no work)",
   "ways is held as a coefficient: the inventory is smaller than the census it summarizes"
  ],
  "closures": {
@@ -107,27 +108,27 @@
       "ways": 7485
      },
      "1": {
-      "signed": -8844,
+      "signed": -17688,
       "ways": 18488
      },
      "2": {
-      "signed": 6508,
+      "signed": 26032,
       "ways": 27600
      },
      "3": {
-      "signed": -3368,
+      "signed": -26944,
       "ways": 31104
      },
      "4": {
-      "signed": 1526,
+      "signed": 24416,
       "ways": 25696
      },
      "5": {
-      "signed": -776,
+      "signed": -24832,
       "ways": 28416
      },
      "6": {
-      "signed": 38,
+      "signed": 2432,
       "ways": 3968
      }
     }
@@ -152,27 +153,27 @@
    "event_classes": {
     "fold": {
      "0": {
-      "signed": 3513,
+      "signed": 19573,
       "ways": 19573
      },
      "1": {
-      "signed": -790,
+      "signed": -15060,
       "ways": 16540
      },
      "2": {
-      "signed": -26,
+      "signed": 7064,
       "ways": 7704
      },
      "3": {
-      "signed": -106,
+      "signed": -2064,
       "ways": 2192
      },
      "4": {
-      "signed": -20,
+      "signed": 448,
       "ways": 448
      },
      "5": {
-      "signed": -2,
+      "signed": -64,
       "ways": 64
      }
     }
@@ -246,23 +247,23 @@
    "event_classes": {
     "fold": {
      "0": {
-      "signed": 3513,
+      "signed": 19573,
       "ways": 19573
      },
      "1": {
-      "signed": -790,
+      "signed": -7530,
       "ways": 8270
      },
      "2": {
-      "signed": -26,
+      "signed": 1766,
       "ways": 1926
      },
      "3": {
-      "signed": -106,
+      "signed": -258,
       "ways": 274
      },
      "4": {
-      "signed": -20,
+      "signed": 28,
       "ways": 28
      },
      "5": {
@@ -531,6 +532,8 @@
      ]
     ]
    },
+   "folds_total": 1113,
+   "folds_with_mixed_phase": 1,
    "free_energy_nats": -4.1588830833596715,
    "ground_state_conformations": 62,
    "ground_state_degeneracy": 31,
@@ -653,6 +656,8 @@
      ]
     ]
    },
+   "folds_total": 1113,
+   "folds_with_mixed_phase": 1,
    "free_energy_nats": -3.4657359027997265,
    "ground_state_conformations": 2,
    "ground_state_degeneracy": 1,
@@ -660,11 +665,11 @@
    "note": "designed folder",
    "sequence": "HPPHPHPHPPHH",
    "signed": {
-    "0": 3513,
-    "1": -790,
-    "2": -26,
-    "3": -106,
-    "4": -20,
+    "0": 19573,
+    "1": -7530,
+    "2": 1766,
+    "3": -258,
+    "4": 28,
     "5": -2
    },
    "unique_ground_state": true,

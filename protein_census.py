@@ -479,8 +479,8 @@ def fold_closure(fc, weighted=False):
     closures outnumber the shapes -- which is the folding transition, not a re-ranking."""
     ec = {}
     for cls, ways in fc["dos"].items():
-        w = ways * (2 ** int(cls)) if weighted else ways
-        ec[str(cls)] = {"signed": fc["signed"].get(cls, 0), "ways": w}
+        scale = (2 ** int(cls)) if weighted else 1
+        ec[str(cls)] = {"signed": fc["signed"].get(cls, 0) * scale, "ways": ways * scale}
     return {
         "preparation": fc["sequence"],
         "branches": ["fold"],
@@ -498,10 +498,16 @@ def fold_census(seq, dim=2, topk=12, zfa_budget=5000):
     """Every conformation of one HP sequence, grouped by contact set.
 
     class = the number of H-H closures (the closure depth), ways = how many conformations
-    realize that contact set, signed = the product of the contact loops' Pauli phases,
-    summed over the ways."""
+    realize that contact set, signed = the product of those same closures' Pauli phases,
+    summed over the ways.
+
+    The phase multiplies over the H-H contacts ONLY -- the same set that defines the class and
+    that the energy function charges. Multiplying over every geometric contact instead would make
+    `signed` the signed version of a different quantity than `ways` counts, which is exactly the
+    mismatch that made an earlier reading of this census meaningless (a zero-contact class came
+    back with |A|/W = 0.179 when an empty product must give 1)."""
     nsteps = len(seq) - 1
-    groups = defaultdict(lambda: [0, 0, 0])   # contact-set -> [ways, signed, hh]
+    groups = defaultdict(lambda: [0, 0, 0, set()])  # contact-set -> [ways, signed, hh, phases]
     checked = set()
     failures = []
     for sites in walks(nsteps, dim):
@@ -512,12 +518,15 @@ def fold_census(seq, dim=2, topk=12, zfa_budget=5000):
                 j = occupied.get(q)
                 if j is not None and j >= i + 3:
                     contacts.append((i, j))
-        hh = sum(1 for (i, j) in contacts if seq[i] == 'H' and seq[j] == 'H')
+        hh_contacts = [(i, j) for (i, j) in contacts if seq[i] == 'H' and seq[j] == 'H']
+        hh = len(hh_contacts)
         phase = 1
-        for (i, j) in contacts:
+        for (i, j) in hh_contacts:
             loop = contact_loop(sites, i, j)
             ph = loop_phase(loop)
             phase *= 0 if ph is None else ph
+        for (i, j) in contacts:
+            loop = contact_loop(sites, i, j)
             if len(checked) < zfa_budget and loop not in checked:
                 checked.add(loop)
                 if not twist_core.is_zfa(loop):
@@ -527,6 +536,7 @@ def fold_census(seq, dim=2, topk=12, zfa_budget=5000):
         g[0] += 1
         g[1] += phase
         g[2] = hh
+        g[3].add(phase)
     ranked = sorted(groups.items(), key=lambda kv: (-kv[1][2], -kv[1][0]))
     native_hh = ranked[0][1][2]
     native = [k for k, v in ranked if v[2] == native_hh]
@@ -538,6 +548,14 @@ def fold_census(seq, dim=2, topk=12, zfa_budget=5000):
     dos = {str(k): v for k, v in sorted(dos.items())}
     signed = {str(k): v for k, v in sorted(signed.items())}
     return {"sequence": seq,
+            # The phase is very nearly an invariant of the CONTACT SET rather than of the
+            # conformation: 1112 of 1113 folds carry one phase across every realization, so
+            # |signed| = ways per fold and the class-level cancellation is an artefact of
+            # binning different folds together. The single exception is the fold whose only
+            # contact spans the whole chain -- the loosest one, and the only one with room for
+            # the inversion parity to differ between realizations (Protein_Folding.md 5d).
+            "folds_with_mixed_phase": sum(1 for v in groups.values() if len(v[3]) > 1),
+            "folds_total": len(groups),
             "conformations": sum(v[0] for v in groups.values()),
             "distinct_contact_sets": len(groups),
             "dos": dos,
@@ -567,6 +585,8 @@ INVARIANTS = [
     "fold free energy is -(contacts) x log 2 nats (foldFreeEnergy)",
     "the fold census is mirror-symmetric: counting cannot pick a handedness "
     "(map_mirror_bijective)",
+    "the signed census's sign is (-1)^(contacts), a function of the class index "
+    "(measured; Protein_Folding.md \u00a75d -- the signed census does no work)",
     "ways is held as a coefficient: the inventory is smaller than the census it summarizes",
 ]
 
@@ -640,6 +660,11 @@ def check(db, dim=2, nsteps=8):
                          % (key, fc["free_energy_nats"], want))
         if sum(fc["dos"].values()) != fc["conformations"]:
             fails.append("I8 %s: the density of states does not sum to the conformations" % key)
+        for c in fc["dos"]:                                                   # I11
+            a = fc["signed"].get(c, 0)
+            if a and (a > 0) != (int(c) % 2 == 0):
+                fails.append("I11 %s: sign of the signed census at class %s is not (-1)^c"
+                             % (key, c))
 
     # I10 -- ways as a coefficient.
     for name, c in sorted(db.get("closures", {}).items()):

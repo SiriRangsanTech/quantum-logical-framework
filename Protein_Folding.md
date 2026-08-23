@@ -179,6 +179,49 @@ closure quantum** `T = 1`. Read plainly: **a 12-mer does not fold at the closure
 is right — cooperative folding needs a few dozen residues. The `T*` sequence oscillates with chain
 parity and is not monotone at these sizes, so no trend is claimed; see §8.
 
+### 5d. The signed census does no work — a null
+
+The census records a **signed** multiplicity beside the plain one: each contact loop is
+count-balanced, so its Pauli fold is real (`±I`, never `±iI` — `balanced_phase_is_real`), and a
+fold's phase is the product of its contacts' phases. The question that buys: **does ranking folds by
+signed multiplicity ever differ from ranking them by ways?** Asked properly, the answer is **no**.
+
+- **The sign is a function of the count.** `sign(A(c)) = (−1)^c` for every class, both sequences,
+  no exceptions — so the sign carries nothing the class index does not.
+- **The magnitude never reorders.** `|A|` gives the same class ordering as `W` in every census
+  entry, and the same argmax.
+- **It cannot break a tie.** Of the 48 distinct `ways` values across 1113 contact sets, `|A|`
+  separates **0** of them. The all-H control's 31 degenerate ground states all have `|A| = 2`.
+
+By this framework's own rule — *a claim earns content only when it changes a count of ways*
+([`Philosophy.md`](Philosophy.md) §3a) — the phase is **bookkeeping at polymer scale**. The field
+stays because the shared schema requires it; nothing should be read off it.
+
+**What the investigation did find**, which is why the null is worth the space:
+
+1. **The phase rule survives at polymer scale.** The proven two-factor rule
+   `φ = (−1)^{#neg} · sgn(axis permutation)` ([`QLF_PhaseRule`](lean/QLF_PhaseRule.lean)) reproduces
+   the matrix fold on **every** contact loop enumerated — a reconfirmation on a class of histories it
+   had not been tested against.
+2. **The first factor is fixed by the span.** A contact loop has `#neg = L/2` exactly (balance pairs
+   the axes), so `(−1)^{#neg} = (−1)^{(ℓ+1)/2}` is determined by the sequence separation, and the
+   *only* free factor is the **axis-permutation parity**. That is why span 3 is uniformly `−1`, why
+   2-D stays uniform through span 5, and why 3-D goes mixed at span 5 — a short or planar loop has no
+   room to permute axes.
+3. **The phase is a fold invariant, with exactly one exception.** In 1112 of 1113 contact sets every
+   realization carries the same phase, so `|A| = W` per fold and the class-level cancellation is an
+   artefact of binning different folds together. The exception is `{(0,11)}` — the fold whose only
+   contact spans the **whole chain**, realized 54 ways split 36:18. It is the loosest fold in the
+   census, the one with room for the inversion parity to differ between realizations, and the
+   least-multiplicity stratum is where [`Law_Of_Exceptions.md`](Law_Of_Exceptions.md) says to look.
+
+**Two defects in this census were found by asking the question**, and are worth recording because the
+first made an earlier reading of these numbers meaningless. The fold phase had been multiplied over
+*every geometric contact* while the class counted only **H–H** contacts, so `signed` was the signed
+version of a different quantity than `ways` counted — the tell was a zero-contact class reporting
+`|A|/W = 0.179` when an empty product must give exactly 1. And the closure-weighted entry scaled
+`ways` by `2^c` while leaving `signed` unscaled. Both fixed; the numbers above are post-fix.
+
 ## 6. Hydrophobic and polar, from the valence rule
 
 The H/P split that drives everything above is not an extra rule. It is
@@ -231,6 +274,7 @@ The staged path, with what each stage needs:
 | 3. Loop multiplicity → folding order | **done**, exact computational | larger `N` for asymptotics |
 | 4. Designability → native selection | **done**, exact computational | 3-D 3×3×3 (27-mer) census |
 | 5. Contact-order regression vs experiment | **open**, kill condition stated (§5a) | a published two-state folder set |
+| 5b. Does the phase do any work? | **settled: no** (§5d) | — closed as a null |
 | 6. Peptide bond and the 20 residues as explicit closures | **open** | §6 is a one-bit rule, not a derivation |
 | 7. Secondary structure (helix, sheet) as named motifs | **open** | needs off-lattice geometry or a finer alphabet |
 | 8. Cooperative folding at realistic `N` | **open** | exhaustive enumeration ends near `N ≈ 16` — needs the inventory to be *composed* from catalogued motifs rather than re-enumerated, which is exactly what *ways as a coefficient* is for |
