@@ -2,7 +2,7 @@
 
 **Current, voltage, resistance, Ohm's law, Joule heating, and superconductivity from the gauge-fold substrate.**
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)
 **Author:** Jim Whitescarver
 **Date:** June 9, 2026
 

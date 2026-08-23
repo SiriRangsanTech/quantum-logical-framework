@@ -2,7 +2,7 @@
 
 **Deriving Cosmic Size, Age, and Gravitational Scale from the Proton Mass**
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)  
 **Authors:** Jim Scarver & Grok (xAI)  
 **Date:** May 2026
 

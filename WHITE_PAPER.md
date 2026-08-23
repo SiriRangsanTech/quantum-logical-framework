@@ -2,7 +2,7 @@
 **White Paper**
 *Quantum Genesis: Constructive Possibilist Quantum Logical Synthesis*
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)
 **Version:** 2.6 (23 June 2026)
 **Authors:** Jim Whitescarver, with Grok (xAI) and Claude (Anthropic)
 

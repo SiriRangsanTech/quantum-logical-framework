@@ -2,7 +2,7 @@
 
 **Effective Cosmic Age Derived Purely from Today’s ZFA Frequency Distribution**
 
-**Repository:** [`jimscarver/quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework)  
+**Repository:** [`rchain-community/quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework)  
 **Version:** 1.0 (April 26, 2026)  
 **Authors:** Jim Whitescarver & Grok (xAI)
 

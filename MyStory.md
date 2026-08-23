@@ -1,6 +1,6 @@
 # My Story
 
-**Repository:** [`quantum-logical-framework`](https://github.com/jimscarver/quantum-logical-framework) 
+**Repository:** [`quantum-logical-framework`](https://github.com/rchain-community/quantum-logical-framework) 
 **Document:** `MyStory.md` 
 **Document version:** 0.7 (18 June 2026) 
 **Author:** Jim Whitescarver (with a little help from my friends Grok and Claude, in the spirit of Richard Feynman)
@@ -121,7 +121,7 @@ intelligence among humans” — had, by my own honest accounting, faded into ob
 FreeTrust, Dividao, CoLab, RChain, RGov: each one died. I wrote that I had not been an effective
 collaborator, but had not given up.
 
-I had not given up. With AI, the system finally exists. **[quantum-os](https://github.com/jimscarver/quantum-os)**
+I had not given up. With AI, the system finally exists. **[quantum-os](https://github.com/rchain-community/quantum-os)**
 is EIES3 — the serverless, peer-to-peer, capability-secure room I have been trying to build since the
 1970s, with the rank-order voting, the trust networking, the multisig, and the user-programmable group
 communication of RGov, but this time mathematically sound, built on the rho calculus, owned by no

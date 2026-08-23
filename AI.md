@@ -1,6 +1,6 @@
 # Quantum AI is in our future
 
-Applying the [Quantum Logical Framework (QLF)](https://github.com/jimscarver/quantum-logical-framework/blob/main/README.md) ([the end of quantum magic](https://docs.google.com/document/d/1zaopKvAj7z51xBupw-KaPzgkkNEnBGBbD-dkpD4aoeU/edit?usp=sharing)) and the [QuCalc](https://github.com/jimscarver/quantum-logical-framework/blob/main/QuCalc.md) engine to Artificial Intelligence—specifically to model the Hegelian dialectic (Thesis -> Antithesis -> Synthesis) through Active Inference—is the natural evolution of the architecture. See also: [active_inference.md](active_inference.md) — the free-energy minimization principle underlying dialectical synthesis; [QuantumOS.md](QuantumOS.md) — the hardware-native kernel that provides ZFA enforcement for AI execution; [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the foundations meta-doc that places dialectical-synthesis-via-active-inference inside the mathematics itself; [Information_Physics.md](Information_Physics.md) — what information *is* on the substrate (information = realized distinction = closure receipt; the atom is the ½-spin closure), the ground under any information-processing account of cognition. It elevates QLF from a model of fundamental physics to a model of cognitive processing.
+Applying the [Quantum Logical Framework (QLF)](https://github.com/rchain-community/quantum-logical-framework/blob/main/README.md) ([the end of quantum magic](https://docs.google.com/document/d/1zaopKvAj7z51xBupw-KaPzgkkNEnBGBbD-dkpD4aoeU/edit?usp=sharing)) and the [QuCalc](https://github.com/rchain-community/quantum-logical-framework/blob/main/QuCalc.md) engine to Artificial Intelligence—specifically to model the Hegelian dialectic (Thesis -> Antithesis -> Synthesis) through Active Inference—is the natural evolution of the architecture. See also: [active_inference.md](active_inference.md) — the free-energy minimization principle underlying dialectical synthesis; [QuantumOS.md](QuantumOS.md) — the hardware-native kernel that provides ZFA enforcement for AI execution; [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the foundations meta-doc that places dialectical-synthesis-via-active-inference inside the mathematics itself; [Information_Physics.md](Information_Physics.md) — what information *is* on the substrate (information = realized distinction = closure receipt; the atom is the ½-spin closure), the ground under any information-processing account of cognition. It elevates QLF from a model of fundamental physics to a model of cognitive processing.
 
 If the physical universe is an Information Ecology that survives by resolving paradoxes into stable Markov Blankets, an AI should be able to navigate semantic logic using the exact same topological algorithms.
 
@@ -53,7 +53,7 @@ Let's use the classic Aristotle syllogism:
 
 In a QLF architecture, a syllogism is treated as a Topological Symbiosis (Blanket Fusion), where the "Middle Term" acts as the shared boundary (the Pion) that allows two open strings to fuse.
 
-Here is the simulated terminal output when executing the [`ai_demonstration.py`](https://github.com/jimscarver/quantum-logical-framework/blob/main/ai_demonstration.py) coprocessor, followed by the profound implications this architecture has for the future of Artificial Intelligence.
+Here is the simulated terminal output when executing the [`ai_demonstration.py`](https://github.com/rchain-community/quantum-logical-framework/blob/main/ai_demonstration.py) coprocessor, followed by the profound implications this architecture has for the future of Artificial Intelligence.
 
 ### Terminal Output
 
@@ -81,9 +81,9 @@ Compute Time (h/E) : 0.0001 seconds
 
 ## Live Collaboration Script: Two Peers Solve a Syllogism
 
-The following is a transcript of two peers — **Alice** and **Bob** — working through the Aristotelian syllogism inside a shared [quantum-os](https://github.com/jimscarver/quantum-os) room. Each peer's input is shown as a prompt. Lines prefixed `·` are system output; lines prefixed `[Bob→]` or `[Alice→]` are messages the other peer receives via broadcast.
+The following is a transcript of two peers — **Alice** and **Bob** — working through the Aristotelian syllogism inside a shared [quantum-os](https://github.com/rchain-community/quantum-os) room. Each peer's input is shown as a prompt. Lines prefixed `·` are system output; lines prefixed `[Bob→]` or `[Alice→]` are messages the other peer receives via broadcast.
 
-The room is `https://jimscarver.github.io/quantum-os/#room=cap:room:…`. Both peers connect and see the `/help` list on startup. The **Room Process** sidebar shows `parallel(Alice, Bob)` — their combined ZFA process.
+The room is `https://rchain-community.github.io/quantum-os/#room=cap:room:…`. Both peers connect and see the `/help` list on startup. The **Room Process** sidebar shows `parallel(Alice, Bob)` — their combined ZFA process.
 
 ---
 
@@ -260,7 +260,7 @@ Alice> /qucalc @[Socrates is mortal]
 
 The lemma syncs to every peer and persists across reloads, becoming the room's decision of record. Had the room mis-stated it, its author could retract it for everyone with `/forget lemma [Socrates is mortal]` (a dyncap-signed retraction that won't re-sync back).
 
-**Interpretation:** approval/ranked-choice voting, open nominations, atomic multi-party agreement, and decisions-of-record are all the *same* ZFA substrate as the proof above — dyncap-signed envelopes plus a deterministic joiner-local tally. For the full family of group-decision processes the interface supports, see [Group_Decisions.md](https://github.com/jimscarver/quantum-os/blob/main/Group_Decisions.md) in [quantum-os](https://github.com/jimscarver/quantum-os).
+**Interpretation:** approval/ranked-choice voting, open nominations, atomic multi-party agreement, and decisions-of-record are all the *same* ZFA substrate as the proof above — dyncap-signed envelopes plus a deterministic joiner-local tally. For the full family of group-decision processes the interface supports, see [Group_Decisions.md](https://github.com/rchain-community/quantum-os/blob/main/Group_Decisions.md) in [quantum-os](https://github.com/rchain-community/quantum-os).
 
 ---
 
@@ -284,4 +284,4 @@ The three-step syllogism maps exactly onto ZFA Blanket Fusion:
 
 The room itself is the coprocessor. Two peers compose a valid argument by contributing ZFA-balanced processes; the `parallel(Alice, Bob)` Room Process stays ZFA-balanced throughout; the conclusion is a capability token — a proof object as authorization. This is the Neuro-Symbolic architecture made live and peer-to-peer.
 
-**Try it:** [quantum-os room](https://jimscarver.github.io/quantum-os/) · [QLF Lean proofs](https://github.com/jimscarver/quantum-logical-framework)
+**Try it:** [quantum-os room](https://rchain-community.github.io/quantum-os/) · [QLF Lean proofs](https://github.com/rchain-community/quantum-logical-framework)
