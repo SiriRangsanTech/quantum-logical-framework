@@ -1,22 +1,22 @@
 # QLF Flow Chart — a visual map of the framework
 
 > **This is a navigation map of the [Quantum Logical Framework (QLF)](README.md)** — one substrate, four
-> families, ten domains, and the documents that derive each. The **Jump to** and **Open** links are the
+> families, eleven domains, and the documents that derive each. The **Jump to** and **Open** links are the
 > navigation; the visual diagrams live in the rendered version linked below.
 
-The taxonomy: **one substrate → four domain families → ten domains → the individual results.**
+The taxonomy: **one substrate → four domain families → eleven domains → the individual results.**
 
 
 > **The diagrams don't render reliably on GitHub** (a known GitHub Mermaid/dark-theme issue), so this page is the text index. For the **rendered, clickable diagrams** and a **printable PDF** (with internal + external links), open the live version on GitHub Pages: **[rchain-community.github.io/quantum-logical-framework/FlowChart.html](https://rchain-community.github.io/quantum-logical-framework/FlowChart.html)** (or clone/pull and open the local `FlowChart.html`). Regenerate with `python3 tools/build_flowchart_html.py`.
 
 ---
 
-## Master map — the substrate and its ten domains
+## Master map — the substrate and its eleven domains
 
 
-**Jump to:** [1 Space, time and the continuum](#1-space-time-and-the-continuum) &middot; [2 The fundamental constants](#2-the-fundamental-constants) &middot; [3 Forces](#3-forces) &middot; [4 Atoms and QED](#4-atoms-and-qed) &middot; [5 Gravity and GR](#5-gravity-and-gr) &middot; [6 Cosmology and the dark sector](#6-cosmology-and-the-dark-sector) &middot; [7 Particles and the Standard Model](#7-particles-and-the-standard-model) &middot; [8 Quantum-gravity / TOE pillars](#8-quantum-gravity--toe-pillars) &middot; [9 The Millennium Prize program](#9-the-millennium-prize-program) &middot; [10 Beyond the SM](#10-beyond-the-sm)
+**Jump to:** [1 Space, time and the continuum](#1-space-time-and-the-continuum) &middot; [2 The fundamental constants](#2-the-fundamental-constants) &middot; [3 Forces](#3-forces) &middot; [4 Atoms and QED](#4-atoms-and-qed) &middot; [5 Gravity and GR](#5-gravity-and-gr) &middot; [6 Cosmology and the dark sector](#6-cosmology-and-the-dark-sector) &middot; [7 Particles and the Standard Model](#7-particles-and-the-standard-model) &middot; [8 Quantum-gravity / TOE pillars](#8-quantum-gravity--toe-pillars) &middot; [9 The Millennium Prize program](#9-the-millennium-prize-program) &middot; [10 Beyond the SM](#10-beyond-the-sm) &middot; [11 Chemistry, molecules and folding](#11-chemistry-molecules-and-folding)
 
-The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7) &middot; **Gravity and the cosmos** (5-6) &middot; **Frontiers** (8-10).
+The four families: **Foundations** (1-2) &middot; **Matter and forces** (3, 4, 7, 11) &middot; **Gravity and the cosmos** (5-6) &middot; **Frontiers** (8-10).
 
 **Open:** [`README.md`](README.md)
 
@@ -171,6 +171,34 @@ What QLF derives that the SM treats as free input, and the falsifiable predictio
 
 ---
 
+## 11. Chemistry, molecules and folding
+
+Matter in bulk, from the same one rule: **a bond is a shared closure** — no forces, no orbitals put in
+by hand ([`Chemistry.md`](Chemistry.md)).
+
+
+**Connectors:** *saturate* &rarr; shared closure = bond &middot; *H2O, CO2, graphite, rust* &rarr; molecules and carbon allotropes &middot; *Pauli holds them apart* &rarr; crystals and condensates &middot; *(v-2)/2 each* &rarr; closure count &middot; *b1 counts them* &rarr; double bond = ring = one closure &middot; *only k is free* &rarr; reaction class &middot; *free valence for water?* &rarr; hydrophobic / polar &middot; *valence 2 is neutral* &rarr; divalent chains &middot; *backbone carries none* &rarr; folding &middot; *only H-H pays* &rarr; folding
+
+**Open:** [`Chemistry.md`](Chemistry.md) · [`Protein_Folding.md`](Protein_Folding.md) · [`lean/QLF_Unsaturation.lean`](lean/QLF_Unsaturation.lean) · [`lean/QLF_Folding.lean`](lean/QLF_Folding.lean) · [`hydrocarbon_census.py`](hydrocarbon_census.py) · [`protein_census.py`](protein_census.py)
+
+**The counting layer.** An atom's valence is what it contributes to a molecule's **closure count**,
+`(valence − 2)/2`, and the cycle rank `b₁ = E − V + 1` counts the closures the molecule carries. That
+identification does three things at once: the textbook **degree of unsaturation** *is* that count (with
+oxygen absent from the formula because its contribution is **zero**); a **ring and a double bond are one
+phenomenon**, so `C₆H₁₂` is a single census class; and since a balanced reaction pins `V` and `E`, a
+reaction's change in closure count **is** its change in molecule count — addition, elimination and
+substitution are that one number ([`QLF_Unsaturation`](lean/QLF_Unsaturation.lean), no axioms).
+
+**Up to folding.** Valence 2 is the neutral element of the count, which is why a divalent monomer makes a
+**chain** and why the peptide bond — closure-neutral, 2 molecules in and 2 out — leaves a polypeptide
+backbone carrying no closure of its own. So **every closure a folded chain has is a contact**, and a
+contact is a ZFA closure in the literal sense: zero net displacement, count-balanced, Pauli-closed by the
+keystone ([`QLF_Folding`](lean/QLF_Folding.lean)). The lattice-protein parity rule and the `log 2` contact
+quantum follow; the **mirror no-go** — counting cannot select a handedness — bounds what the census can
+ever answer ([`Protein_Folding.md`](Protein_Folding.md)).
+
+---
+
 ## See also
 
 - [`README.md`](README.md) · [`lean/README.md`](lean/README.md) — project overview + the full Lean module
@@ -178,6 +206,8 @@ What QLF derives that the SM treats as free input, and the falsifiable predictio
 - [`Open_Problems.md`](Open_Problems.md) — the honest gap registry (closed / principled-boundary / open).
 - [`Beyond_Standard_Model.md`](Beyond_Standard_Model.md) — the derived / predicted / open scorecard.
 - [`Alpha.md`](Alpha.md) — one result mapped end to end, as a worked example.
+- [`Chemistry.md`](Chemistry.md) · [`Protein_Folding.md`](Protein_Folding.md) — domain 11 end to end: one
+  rule (a bond is a shared closure) up through the closure count to a fold as a closure census.
 - [`Fredkin_QLF.md`](Fredkin_QLF.md) — conservative logic on the substrate: Fredkin's conservation law
   **is** ZFA count balance ([`QLF_Fredkin`](lean/QLF_Fredkin.lean), no axioms), so a reversible computer
   runs **free** and only erasure is charged. Run it: [`fredkin_machine.html`](fredkin_machine.html).
