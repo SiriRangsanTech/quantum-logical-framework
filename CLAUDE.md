@@ -144,6 +144,20 @@ for some time, and two rules had gone stale unnoticed.
     `(0,1)` proves nothing — `σz 0 1 = 0`, so both sides are `0` and the "contradiction" is vacuous.
     Read `(0,0)`.
 
+16. ✅ **A cast inside `List.map` over a `List ℕ` becomes a monadic lift, not a map.**
+    `(atoms.map (fun v => (v : ℤ))).sum` elaborates to `List.map (fun v => v) (do let a ← atoms; pure ↑a)`
+    — the `List ℕ → List ℤ` coercion fires on the *list*, and every subsequent
+    `rw [List.map_cons]` fails with *did not find an occurrence of the pattern*. Don't map a cast:
+    cast the aggregate instead (`(atoms.sum : ℤ)`), which needs no `map` lemmas at all. Cost one CI
+    cycle in `QLF_Unsaturation`.
+
+17. ✅ **`decide` cannot see through a `def : Prop`** — the same opacity as gotcha 3, but the symptom
+    is *failed to synthesize Decidable P* rather than an elaboration error, so it does not look
+    related. A predicate written `def ClosedLoop (b) : Prop := … = … ∧ …` is decidable in substance
+    but opaque to instance synthesis. `unfold ClosedLoop; decide` works; `decide` alone does not.
+    (Also on this toolchain: **`List.length_map` takes one explicit argument**, so
+    `List.length_map _ _` is *function expected*. `by simp` is the safe spelling.)
+
 ---
 
 ## Proof patterns
@@ -394,4 +408,5 @@ Avoid framings that contradict the above:
 | `contextual_census.py` | **The experiment layer to the inventory's substrate layer** — the contextual census, built as a falsification test for the Born question ([`Born_Rule.md`](Born_Rule.md) §8). Amplitudes come from the *proven* phase rule, never a matrix; a preparation is an **open** strand; apparatus and preparation are specified independently; every geometry runs at increasing horizons and is printed blind. Modes: `--depth-scan` (the raw wash-out), `--listening R` (capacity-relative closure: capacity sets the *rate* of forgetting, never the limit, and direction is erased), `--spectrum R` (the transfer operator behind that), `--first-closure R` (the **absorbing** census — a closure *is* an event, so the run chooses its own stopping depth; restores direction, and the cylinder measure `8^{−d}` is forced by prefix-freeness), `--two-path R` (the four-run interference test that found the sub-additivity no-go), `--coherent R` (the **unnormalized** amplitude, exact rationals — summable for those preparation–apparatus pairs whose signed census grows below the forced `√8^d` threshold, where interference works in both directions). **Exact integers throughout** — the float scan is contaminated past `k* ≈ 16 ln 10 / ln(λ₁/λ₂)`, where roundoff makes every preparation appear to share one limit |
 | `Mysteries_Of_Physics.md` | Physics-facing survey of the canonical open questions (quantum foundations, spacetime/gravity, cosmology, the Standard Model, the deep/meta questions) and what QLF says about each — addressed/structural, value-open, principled boundary, predicted-absent (falsifiable nulls), or genuinely open. The reader's-eye companion to `Open_Problems.md` (which is status-organized) |
 | `QuantumOS.md` | QLF as capability-secure OS kernel for QPUs |
+| `FlowChart.md` · `FlowChart.html` | **Both are GENERATED** — do not edit either. The source is [`tools/flowchart_source.md`](tools/flowchart_source.md) (the Mermaid original); `python3 tools/build_flowchart_html.py` emits the clickable HTML *and* the Mermaid-stripped `.md` index. Two side files are **per-block arrays indexed by section order** (0 = master map, 1..N = domains) and must be extended when a domain is added: `tools/flowchart_clickmaps.json` (node id → doc, makes boxes clickable) and `tools/flowchart_edge_labels.json` (`per_block_edges` restoring connector labels, plus `master_domain_verbs`). **Check for drift before rebuilding:** the checked-in `FlowChart.md` has been hand-edited ahead of its source before, and a rebuild silently discards that — simulate the build (strip ```mermaid blocks from the source, diff against `FlowChart.md`), port anything the live file has back into the source, and only then run the builder. The taxonomy line (*one substrate → N families → M domains*) is **copy-pasted into `README.md`, `Introducing_QLF.md` and `UniversalRelativity.md`** as well as the source and the builder's intro string — update all five or it goes stale |
 | `.github/workflows/` | CI configuration |
