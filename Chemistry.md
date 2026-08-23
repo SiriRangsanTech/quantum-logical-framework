@@ -141,8 +141,9 @@ What *is* new at chain scale is that the two partners of a shared closure may al
 together by the backbone. Then the closure is a **loop** — and a loop of the backbone's twist history
 is a ZFA closure in the literal sense: zero net displacement, count-balanced, Pauli-closed.
 That is protein folding, and it is [`Protein_Folding.md`](Protein_Folding.md): a fold is a **closure
-inventory**, folding order is loop multiplicity, and the contact energy is the substrate's own
-`log 2` rather than a fitted parameter. The **hydrophobic/polar** split that drives it is this
+inventory**, and the contact energy is the substrate's own `log 2` rather than a fitted parameter.
+(What the inventory does *not* give is folding **rates** — that bridge was tested against experiment
+and withdrawn, [`Protein_Folding.md`](Protein_Folding.md) §5e.) The **hydrophobic/polar** split that drives it is this
 section's valence rule applied to side chains — a saturated hydrocarbon has no free valence, so it
 cannot share a closure with water, which is the helium argument of §1 one scale up.
 

@@ -7,12 +7,21 @@ A polymer does.
 
 > **The one idea, continued.** A **contact** is a shared closure, exactly as a bond is. What is new
 > at polymer scale is that the two partners are already tied together by the backbone, so the closure
-> is a **loop** — and a loop is a twist history that returns. Folding is therefore not a search
-> through shapes. It is a **census of loops that close**, and what closes in the most ways happens
-> first.
+> is a **loop** — and a loop is a twist history that returns. A fold is therefore a **census of loops
+> that close**.
+
+**What this delivers, and what it does not.** The *structure* is proven and the *counts* are exact:
+a conformation is a twist history, a contact is a ZFA closure, contacts fall only at odd sequence
+separation, the contact energy is the substrate's own `log 2` rather than a fitted parameter, and
+counting provably cannot select a handedness. What it does **not** deliver is **folding rates**. The
+step from the census to kinetics needed a fold's multiplicity to factorize over its contacts; that
+bridge was regressed against 26 two-state proteins and **failed** (§5e), and it is withdrawn rather
+than repaired. Two of this page's own predictions were tested here and both came back negative
+(§5d, §5e) — they are kept in place, because a census that only reports its hits is not a census.
 
 Machine-verified core: [`lean/QLF_Folding.lean`](lean/QLF_Folding.lean) (no axioms).
 Runtime census: [`protein_census.py`](protein_census.py) → [`data/folding_census.json`](data/folding_census.json).
+Experimental test: [`contact_order_regression.py`](contact_order_regression.py) → [`data/contact_order.json`](data/contact_order.json).
 
 ---
 
@@ -106,14 +115,14 @@ this census:
 
 | entry | `most_ways_first` returns | which is |
 |---|---|---|
-| `loopclosure\|dim=2,n=12` | class 3 (98,944 ways), then 5, 7, 9 | the **folding order** — short loops first |
+| `loopclosure\|dim=2,n=12` | class 3 (98,944 ways), then 5, 7, 9 | short loops close in the most ways (§5a — *not* a folding order, §5e) |
 | `fold\|seq=…` | class 0 (19,573 ways) | the **coil** — correct at high temperature |
 | `foldweighted\|seq=…` | class 0 (19,573), class 1 (16,540) — nearly level | the **folding transition** |
 | `designability\|4x4` | structure 56 (521 ways) | the **most designable structure** |
 
 ## 5. What the census actually says
 
-### 5a. Loop closure falls steeply with span — contact order, counted
+### 5a. Loop closure falls steeply with span
 
 Exhaustive enumeration of every self-avoiding walk (the counts reproduce the published lattice
 series, OEIS A001411 / A001412 — an external check that the enumerator is right):
@@ -123,10 +132,14 @@ series, OEIS A001411 / A001412 — an external check that the enumerator is righ
 | closure probability, 2-D, 13 residues | 0.1218 | 0.0334 | 0.0185 | 0.0134 |
 | closure probability, 3-D, 9 residues | 0.1162 | 0.0502 | 0.0308 | — |
 
-A short loop closes in roughly **nine times more ways** than a span-9 loop. Since what happens in
-the most ways happens first, local structure closes first and long-range packing follows — the
-folding funnel's observed order, as a count rather than a landscape metaphor. Fitted power law
+A short loop closes in roughly **nine times more ways** than a span-9 loop. Fitted power law
 `p(ℓ) ∝ ℓ^{-θ}`: **θ ≈ 2.03** (2-D), **θ ≈ 1.64** (3-D, two points only).
+
+This is a statement about **one loop in isolation**, and that is all it is. The tempting next step —
+*so local structure closes first and long-range packing follows, which is the folding funnel's
+observed order* — is the step §5e tested against experiment and lost. It needed the multiplicities
+to compose across a fold's contacts, and they do not. What survives here is the single-loop count;
+what does not is any inference from it to the order or rate of folding.
 
 *Epistemic status: exact computational, finite-size limited.* These are 9–13 residue chains; the
 exponents are short-chain values, not asymptotic ones, and are quoted for the trend and the sign,
@@ -324,7 +337,7 @@ The staged path, with what each stage needs:
 |---|---|---|
 | 1. Backbone as twist history; contact = closure | **done**, proven | — |
 | 2. Contact quantum, HP energy function | **done**, derived | — |
-| 3. Loop multiplicity → folding order | **done**, exact computational | larger `N` for asymptotics |
+| 3. Loop multiplicity per span | **done**, exact computational | — but it does **not** give folding order (§5e) |
 | 4. Designability → native selection | **done**, exact computational | 3-D 3×3×3 (27-mer) census |
 | 5. Contact-order regression vs experiment | **settled: the prediction FAILS** (§5e) | — the bridge, not the substrate; ECO is the repair direction |
 | 5b. Does the phase do any work? | **settled: no** (§5d) | — closed as a null |
