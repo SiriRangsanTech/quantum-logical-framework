@@ -154,4 +154,59 @@ theorem c6h12_one_closure : doubledClosures (hydrocarbon 6 12) = 2 := by
   rw [dou_hydrocarbon]
   norm_num
 
+/-! ## Reactions: the closure count is the molecule count -/
+
+/-- A **mixture**: a list of molecules, each given as the list of its atoms' valences. -/
+def mixtureClosures (ms : List (List ℕ)) : ℤ := (ms.map doubledClosures).sum
+
+theorem mixtureClosures_cons (m : List ℕ) (ms : List (List ℕ)) :
+    mixtureClosures (m :: ms) = doubledClosures m + mixtureClosures ms := by
+  unfold mixtureClosures
+  rw [List.map_cons, List.sum_cons]
+
+/-- For a mixture of `k` molecules the closure count is `E − V + k`: the atom inventory fixes
+    `V` and `E = Σ vᵢ / 2`, and the only remaining freedom is **how many pieces the atoms are
+    distributed into**. -/
+theorem mixtureClosures_eq (ms : List (List ℕ)) :
+    mixtureClosures ms
+      = ((ms.map List.sum).sum : ℤ) - 2 * ((ms.map List.length).sum : ℤ)
+        + 2 * (ms.length : ℤ) := by
+  induction ms with
+  | nil => simp [mixtureClosures]
+  | cons m rest ih =>
+      rw [mixtureClosures_cons, ih]
+      simp only [List.map_cons, List.sum_cons, List.length_cons]
+      unfold doubledClosures
+      push_cast
+      ring
+
+/-- **A balanced reaction changes the closure count by exactly its change in molecule count.**
+
+    Both hypotheses say the atom inventory is conserved — the same valences (`hE`, so the same
+    edge count) over the same number of atoms (`hV`). Everything else in `E − V + k` is then
+    pinned, so organic chemistry's reaction taxonomy is a count of *molecules*:
+
+      * **addition** — two molecules become one, `Δ = −1`: one closure is destroyed;
+      * **elimination** — one becomes two, `Δ = +1`: one closure is created;
+      * **substitution / condensation** — same count, `Δ = 0`: closure-neutral. -/
+theorem reaction_delta (lhs rhs : List (List ℕ))
+    (hE : (lhs.map List.sum).sum = (rhs.map List.sum).sum)
+    (hV : (lhs.map List.length).sum = (rhs.map List.length).sum) :
+    mixtureClosures rhs - mixtureClosures lhs
+      = 2 * ((rhs.length : ℤ) - (lhs.length : ℤ)) := by
+  rw [mixtureClosures_eq, mixtureClosures_eq, hE, hV]
+  ring
+
+/-- **Condensation is closure-neutral.** The peptide bond is in this class — two amino acids in,
+    a dipeptide and a water out — which is why a polypeptide backbone carries no closure of its
+    own and every closure a folded chain has is a **contact** (QLF_Folding, Chemistry.md §9). -/
+theorem equal_molecule_count_preserves_closures (lhs rhs : List (List ℕ))
+    (hE : (lhs.map List.sum).sum = (rhs.map List.sum).sum)
+    (hV : (lhs.map List.length).sum = (rhs.map List.length).sum)
+    (hk : lhs.length = rhs.length) :
+    mixtureClosures rhs = mixtureClosures lhs := by
+  have h := reaction_delta lhs rhs hE hV
+  rw [hk] at h
+  linarith
+
 end QLF.Unsaturation
