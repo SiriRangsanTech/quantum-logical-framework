@@ -153,10 +153,12 @@ for some time, and two rules had gone stale unnoticed.
 
 17. ✅ **`field_simp` often CLOSES the goal, so a trailing `ring` then errors.** *Any* tactic run on
     zero goals fails with **"No goals to be solved"** — `ring_nf` and `simp` included, so swapping
-    the tactic does not help. Write `field_simp` alone first and add `ring` only if CI reports
-    unsolved goals; two theorems in `QLF_Inertia` needed it and two next to them did not, so it is
-    not predictable per-file. (This cost a CI cycle *after* being recorded in the session memory but
-    not here — which is the argument for gotchas living in this file.)
+    the tactic does not help. **Never write `field_simp; ring` speculatively.** Write `field_simp`
+    alone, push, and add `ring` only if CI reports *unsolved goals* — the reverse order costs a
+    cycle every time. It is not predictable per-file: two theorems in `QLF_Inertia` needed the
+    trailing `ring` and two beside them did not. (This rule cost **three** CI cycles in one session —
+    once before it was written down, and twice more *after*, in `QLF_HolographicDensity`. Reading a
+    gotcha is not the same as applying it; the mechanical form above is the one that works.)
 
 18. ✅ **`decide` cannot see through a `def : Prop`** — the same opacity as gotcha 3, but the symptom
     is *failed to synthesize Decidable P* rather than an elaboration error, so it does not look

@@ -106,7 +106,6 @@ theorem no_rational_packing_factor (hirr : Irrational (Real.log 2)) (p q : ℕ) 
 theorem suppression_cancels_the_quantum {N : ℝ} (hlog : Real.log 2 ≠ 0) :
     N * Real.log 2 * (1 / (4 * Real.log 2)) = N / 4 := by
   field_simp
-  ring
 
 /-- **Established (`Gravity_From_Delay.md` §9).** The holographic-density residual between QLF's
     one-bit-per-patch count `S_QLF = 4πR² log 2` and the thermodynamic Bekenstein–Hawking `S_BH = N/4`
@@ -128,6 +127,5 @@ theorem holographic_density_summary {R : ℝ} (hR : R ≠ 0) (hlog : Real.log 2 
   refine ⟨holographic_bh_ratio hR, ?_⟩
   unfold holographic_entropy bekensteinHawkingEntropy per_event_entropy
   field_simp
-  ring
 
 end QLF.HolographicDensity
