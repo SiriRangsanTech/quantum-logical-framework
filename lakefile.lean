@@ -232,5 +232,6 @@ lean_lib QLF where
     `QLF_Fredkin,
     `QLF_HorizonBasis,
     `QLF_Folding,
-    `QLF_Unsaturation
+    `QLF_Unsaturation,
+    `QLF_Inertia
   ]
