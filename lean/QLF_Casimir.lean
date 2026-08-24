@@ -23,18 +23,25 @@ dimensional theorem; no new axioms.
   between the plates are `ℏ`, `c`, and the gap `a` — *no* `G`, mass, or cutoff — so the energy density
   `E/A = C·ℏc·a^p` has its exponent fixed by `[ℏc·a^p] = [E/A]` to `p = −3`, hence the pressure exponent
   `p − 1 = −4`: `P ∝ 1/a⁴`. Parameter-free, like the mm-redshift `gΔh/c²` (`GR_Schwarzschild.md` §2a).
-* **`accelerated_boundary_is_unruh`** — an **accelerating boundary** (the dynamical Casimir effect) sees a
-  vacuum temperature that is the **Unruh master relation** `T = ℏa/(2πc k_B)` at its proper acceleration
-  `a` (reuse `unruh_temperature`) — the *same* relation that gives Hawking (`hawking_is_unruh`) and de
-  Sitter (`desitter_is_unruh`), the `2π` being the substrate loop phase (as in `g−2 = α/2π`). So the same
-  constructing-delay geometry that recovers gravitational time dilation recovers the accelerated-vacuum
-  phenomenology.
+* **`accelerated_boundary_is_unruh`** — the identification that an **accelerating boundary** (the dynamical
+  Casimir effect) is on the **Unruh master relation** `T = ℏa/(2πc k_B)` at its proper acceleration, the
+  *same* relation behind Hawking and de Sitter, the `2π` the substrate loop phase. **It is `rfl`, and it is
+  labelled so**: `unruh_temperature` is *defined* as that expression and no boundary appears in the
+  statement, so the theorem records the identification and is not evidence for it. The dynamical-Casimir /
+  Unruh correspondence is standard continuum QFT, cited and not derived here.
+* **`boundary_unruh_zero_iff_inertial`**, **`boundary_unruh_linear_in_acceleration`**,
+  **`static_boundary_no_unruh`** — the statements that are *not* `rfl`. A boundary reads a thermal vacuum
+  **exactly when it accelerates**, and at no constant velocity however large (Galileo's ship, and the
+  isotropy half of `Inertia.md` kill condition 2); the response is **exactly linear** in `a` (as inertia
+  is); and a **static** boundary has no bath, so the static Casimir force is **not** thermal in origin —
+  the finite-census argument carries it, not the temperature.
 
 ## Scope
 
 Anchors the **finiteness** (no divergent zero-point sum — the finite `log 2` quantum), the **`1/a⁴`
-scaling** (dimensional analysis, parameter-free), and the **accelerated-boundary = Unruh** identification
-(reuse). It does **not** derive the exact Casimir coefficient `−π²/240` (that is the `ζ(−3)` mode sum — the
+scaling** (dimensional analysis, parameter-free), and three **non-trivial** facts about the acceleration
+response (zero iff inertial, exactly linear, static ⟹ no bath). The **accelerated-boundary = Unruh**
+step is an *identification*, `rfl`, and is **not** anchored by it. It does **not** derive the exact Casimir coefficient `−π²/240` (that is the `ζ(−3)` mode sum — the
 continuum-QFT computation, the same kind of continuum step as `yang_mills_continuum_gap`) nor the
 dynamical-Casimir photon-pair-creation *rate* (the time-dependent-boundary continuum QFT). So: the scaling +
 finiteness + Unruh tie are anchored; the coefficient and the pair-rate are the named continuum pieces.

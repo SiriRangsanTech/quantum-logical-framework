@@ -24,15 +24,15 @@ is short because of it. Checked against the repo, not assumed:
 | Mass = constructing delay (gauge-fold depth) | built | [`Higgs.md`](Higgs.md), [`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md) |
 | **Equivalence principle** — one delay, read as inertia at the vertex and curvature in the geometry | **already claimed structurally** | [`Forces_From_Three_Axes.md`](Forces_From_Three_Axes.md) §144, [`UniversalRelativity.md`](UniversalRelativity.md) §436 |
 | Casimir as a **finite census**, not a subtracted infinity; `1/a⁴` parameter-free | **Lean-anchored** | [`QLF_Casimir`](lean/QLF_Casimir.lean) (`casimir_vacuum_quantum`, `casimir_scaling`) |
-| **Accelerated boundary = Unruh** (the dynamical-Casimir link grok proposes building) | **Lean-anchored** | `accelerated_boundary_is_unruh` |
+| **Accelerated boundary = Unruh** (the dynamical-Casimir link grok proposes building) | **NOT anchored — the theorem is `rfl`** (audited after this plan was first written; see §0a) | `accelerated_boundary_is_unruh` |
 | **Unruh master relation** `T = ℏa/(2πck_B)`, with Hawking and de Sitter as instances | **Lean-anchored** | [`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean) |
 | Holographic entropy `S(R)` | **Lean-anchored** | `holographic_entropy_eq` |
 | Lorentz boost = ratio of Markov-blanket internal ZFA event rates | built, boosts only | [`Cross_Frequency_Lorentz.md`](Cross_Frequency_Lorentz.md) |
 | Vacuum spectrum, per-event `log 2`, scale-free `ρ(ω)` | built | [`VacuumEnergy.md`](VacuumEnergy.md) |
 
-So **Phase 3 (Casimir/Unruh) and Phase 4 (equivalence) of the proposed plan are mostly done.** What
-is genuinely missing is the middle: the step from *acceleration* to a *force*, and its rotational
-counterpart. Two more facts matter for where to start:
+So **Phase 4 (equivalence) is mostly done, and Phase 3 (Casimir/Unruh) is less done than it looks** —
+see §0a immediately below. What is genuinely missing is the middle: the step from *acceleration* to a
+*force*, and its rotational counterpart. Two more facts matter for where to start:
 
 - [`Cross_Frequency_Lorentz.md`](Cross_Frequency_Lorentz.md) §6 says in as many words that
   **accelerations are out of scope** there — *"accelerations require a frequency-derivative term"* —
@@ -41,6 +41,35 @@ counterpart. Two more facts matter for where to start:
 - There is **no** inertia, Mach, or frame-dragging entry in
   [`Mysteries_Of_Physics.md`](Mysteries_Of_Physics.md). That is a gap in the registry independent of
   whether this programme succeeds.
+
+### 0a. An audit correction — the Casimir/Unruh tie is not anchored
+
+The first draft of this plan listed `accelerated_boundary_is_unruh` among the Lean-anchored assets.
+Reading the module rather than its name shows that is wrong, and the correction matters for where
+the work starts.
+
+**The theorem is `rfl`.** Its statement is `unruh_temperature ℏ a c k_B = ℏa/(2πc k_B)` — and that is
+the *definition* of `unruh_temperature`. No boundary appears in it. It records the identification QLF
+makes and is not evidence for it. Upstream [`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean)
+is scrupulous about exactly this — `hawking_is_unruh` and `desitter_is_unruh` both carry
+"(definitional)" in their docstrings — and it also carries two genuinely non-trivial theorems
+(`hawking_temperature_eq`, `desitter_temperature_eq`). [`QLF_Casimir`](lean/QLF_Casimir.lean) had
+inherited the relation without inheriting the label; it now carries it, and three statements that are
+**not** `rfl` have been added there:
+
+- **`boundary_unruh_zero_iff_inertial`** — a boundary reads a thermal vacuum **exactly when it
+  accelerates**, and at no constant velocity however large. This is the formal content of Galileo's
+  ship and the isotropy premise this programme needs; it is the first piece of Phase 1 that exists.
+- **`boundary_unruh_linear_in_acceleration`** — the response is exactly linear in `a`, with no
+  threshold. Inertia is linear in `a`, which is why any derivation must route through this.
+- **`static_boundary_no_unruh`** — a static boundary has no bath, so the **static Casimir force is not
+  thermal in origin**. The two effects are separate, and conflating them is the easy error.
+
+**Why this strengthens rather than weakens the plan.** The step the programme most wants to lean
+on — *accelerating mass as its own dynamical-Casimir boundary* — turns out to be the step that is
+asserted rather than established. That is now Phase 2's actual work rather than a free inheritance.
+It is also the second time in two sessions that reading a module instead of its name changed the
+picture, which is the argument for R6a being applied *before* the derivation, not after.
 
 ---
 
@@ -153,9 +182,10 @@ Run the thermodynamic route (§4) *with the R6a check first*. Only if it is defi
 deriving the window asymmetry directly — and only after §3 has established the asymmetry is real.
 Target theorems: `accelerating_window_imbalance`, `inertial_force_from_frequency_asymmetry`.
 Falsifier: a force that is not exactly `ma`, or an `m` that is not the substrate's `m`.
-**Do not add a `True` summary theorem** — `casimir_summary` and
-`gravity_from_delay_proven_constructively` are both `True := trivial` and carry nothing; the audit
-discipline treats that as noise.
+**Do not add a `True` summary theorem.** `casimir_summary` used to be `True := trivial` and has been
+replaced with the conjunction of what that module actually proves;
+`gravity_from_delay_proven_constructively` is still `True := trivial` and carries nothing. A summary
+every possible module satisfies reports no content.
 
 **Phase 3 — the rotational sector: Newton's bucket and frame dragging.**
 The two touchstone experiments are the two halves of this programme, and they pair exactly:

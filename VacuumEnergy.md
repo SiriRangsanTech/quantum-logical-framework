@@ -114,14 +114,26 @@ The Casimir effect is the cleanest test of the discrete-bounded-vacuum claim, an
   `kolmogorov_exponents`-style dimensional theorem). QLF reproduces the measured scaling with no free
   parameter; the exact coefficient `−π²/240` is the `ζ(−3)` mode sum — the continuum-QFT computation
   (a named continuum piece, not derived here).
-- **Accelerated boundary = Unruh.** An accelerating plate (the *dynamical* Casimir effect) sees a thermal
-  vacuum at the **Unruh master relation** `T = ℏa/(2πc k_B)` (`accelerated_boundary_is_unruh`, reusing
-  [`QLF_HorizonTemperature`](lean/QLF_HorizonTemperature.lean)) — the *same* relation behind Hawking and de
-  Sitter, the `2π` the substrate loop phase (as in `g−2 = α/2π`). So the constructing-delay geometry that
-  gives gravitational time dilation ([`GR_Schwarzschild.md`](GR_Schwarzschild.md) §2a) also gives the
-  accelerated-vacuum phenomenology — one mechanism, three scales (mm redshift, μm–nm Casimir, horizon
-  temperatures). **Open:** the dynamical-Casimir photon-pair-creation *rate* (time-dependent-boundary QFT),
-  the named continuum piece.
+- **Accelerated boundary = Unruh — an identification, and it is `rfl`.** An accelerating plate (the
+  *dynamical* Casimir effect) is placed on the **Unruh master relation** `T = ℏa/(2πc k_B)` — the *same*
+  relation behind Hawking and de Sitter, the `2π` the substrate loop phase (as in `g−2 = α/2π`). Read the
+  status honestly: `accelerated_boundary_is_unruh` is **`rfl`** — `unruh_temperature` is *defined* as that
+  expression and no boundary appears in the statement — so it **records** the identification rather than
+  establishing it, exactly as `hawking_is_unruh` is labelled "(definitional)" upstream. The
+  dynamical-Casimir/Unruh correspondence itself is standard continuum QFT, cited not derived.
+  What *is* proved about the acceleration response, and is not `rfl`: a boundary reads a thermal vacuum
+  **exactly when it accelerates**, and at no constant velocity however large
+  (`boundary_unruh_zero_iff_inertial` — Galileo's ship, and the isotropy premise
+  [`Inertia.md`](Inertia.md) needs); the response is **exactly linear** in `a`
+  (`boundary_unruh_linear_in_acceleration`); and a **static** boundary has no bath at all
+  (`static_boundary_no_unruh`), so the *static* Casimir force is **not** thermal in origin — the
+  finite-census argument above carries it, and conflating the two is the easy error. So the
+  constructing-delay geometry that gives gravitational time dilation
+  ([`GR_Schwarzschild.md`](GR_Schwarzschild.md) §2a) is *claimed* to give the accelerated-vacuum
+  phenomenology too — one mechanism, three scales (mm redshift, μm–nm Casimir, horizon temperatures) —
+  with that claim's Lean support being the three response theorems, not the identification.
+  **Open:** the dynamical-Casimir photon-pair-creation *rate* (time-dependent-boundary QFT), the named
+  continuum piece.
 
 Casimir gaps are micron-to-nanometre — far closer to the discrete floor than the mm-scale redshift — so
 this is where the continuum rendering must be shown to *stay* accurate; QLF passes by construction (finite
