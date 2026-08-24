@@ -13,6 +13,14 @@
   "a signed class total never exceeds its way count, |A| <= W",
   "the normalized-event weight sum A^2/(W.8^d) stays under the Kraft mass (QLF_KraftMeasure.normalized_event_mass_le_one)"
  ],
+ "_provenance": {
+  "closure_depth": 14,
+  "depth_census_to": 20,
+  "fold_census_to": 10,
+  "regenerate": "python3 census_inventory.py --twist-len 10 --phase-len 20",
+  "script": "census_inventory.py",
+  "script_commit": "9b8c7e7"
+ },
  "closures": {
   "aligned|R=3": {
    "amplitude_le_ways": true,
