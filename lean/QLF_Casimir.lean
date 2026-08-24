@@ -65,15 +65,55 @@ theorem casimir_scaling (p : ℝ) (hDim : 3 + p = 0) :
   refine ⟨by linarith, ?_⟩
   unfold pressureExponent; linarith
 
-/-- **The accelerated boundary sees the Unruh temperature.** A boundary with proper acceleration `a` (the
-    dynamical Casimir effect) sees a thermal vacuum at the **Unruh master relation**
-    `T = ℏa/(2πc k_B)` (`unruh_temperature`) — the *same* relation behind Hawking (`hawking_is_unruh`) and
-    de Sitter (`desitter_is_unruh`), the `2π` the substrate loop phase. So acceleration and gravity are one
-    constructing-delay geometry: the mechanism that gives gravitational time dilation
-    (`GR_Schwarzschild.md` §2a) also gives the accelerated-vacuum phenomenology. -/
+/-- **(Definitional.)** The temperature assigned to a boundary of proper acceleration `a` is the Unruh
+    master relation `T = ℏa/(2πc k_B)` — the *same* relation behind Hawking (`hawking_is_unruh`) and de
+    Sitter (`desitter_is_unruh`), the `2π` the substrate loop phase.
+
+    **Read the label.** This is `rfl`: `unruh_temperature` is *defined* as the right-hand side, and no
+    boundary appears in the statement. It records the identification QLF makes — that an accelerating
+    Casimir plate is on the same relation as a horizon — and it **is not evidence for it**. The physical
+    claim is the dynamical-Casimir/Unruh correspondence, which is standard continuum QFT, cited here and
+    not derived (the same status as `hawking_is_unruh`, which carries the same honest label upstream).
+    For statements that are *not* `rfl`, see the three below. -/
 theorem accelerated_boundary_is_unruh (hbar a c kB : ℝ) :
     unruh_temperature hbar a c kB = hbar * a / (2 * Real.pi * c * kB) :=
   rfl
+
+/-- **A boundary sees a thermal vacuum exactly when it accelerates** — and at **no** constant velocity,
+    however large. This is the formal content of Galileo's ship (*Dialogue*, 1632): uniform motion is
+    undetectable from inside, so the vacuum a boundary reads cannot depend on its speed, only on its
+    acceleration. Unlike `accelerated_boundary_is_unruh` this is not `rfl`; it needs `ℏ, c, k_B ≠ 0` and
+    has content — it is the isotropy half that [`Inertia.md`](../Inertia.md) §1 lists as kill condition 2. -/
+theorem boundary_unruh_zero_iff_inertial (hbar a c kB : ℝ)
+    (hbar0 : hbar ≠ 0) (hc : c ≠ 0) (hkB : kB ≠ 0) :
+    unruh_temperature hbar a c kB = 0 ↔ a = 0 := by
+  have hne : (2 : ℝ) * Real.pi * c * kB ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hc) hkB
+  unfold unruh_temperature
+  rw [div_eq_zero_iff]
+  constructor
+  · rintro (h | h)
+    · exact (mul_eq_zero.mp h).resolve_left hbar0
+    · exact absurd h hne
+  · intro h
+    exact Or.inl (by rw [h, mul_zero])
+
+/-- **The response is exactly linear in the acceleration** — no threshold, no onset. Inertia is linear in
+    `a` too, which is why this is the relation an inertia derivation would have to route through
+    ([`Inertia.md`](../Inertia.md) §4). -/
+theorem boundary_unruh_linear_in_acceleration (hbar a c kB lam : ℝ) :
+    unruh_temperature hbar (lam * a) c kB = lam * unruh_temperature hbar a c kB := by
+  unfold unruh_temperature
+  ring
+
+/-- **A static boundary has no Unruh bath at all**, so the *static* Casimir force is **not** a thermal
+    effect: the two phenomena this module treats are separate in origin, and the finite-census argument
+    (`casimir_vacuum_quantum`) is what carries the static force, not the temperature. Worth stating because
+    conflating them is the easy error when the same module holds both. -/
+theorem static_boundary_no_unruh (hbar c kB : ℝ) :
+    unruh_temperature hbar 0 c kB = 0 := by
+  unfold unruh_temperature
+  simp
 
 /-- **Established (`VacuumEnergy.md`, `QFT_QLF.md`).** The Casimir force is a **finite** difference of
     closed-mode censuses (the per-mode quantum is `log 2`, `casimir_vacuum_quantum` — no divergent
@@ -83,7 +123,14 @@ theorem accelerated_boundary_is_unruh (hbar a c kB : ℝ) :
     constructing-delay geometry as Hawking/de Sitter and the mm-scale redshift. **Open (the named continuum
     pieces, not gaps here):** the exact coefficient `−π²/240` (`ζ(−3)` mode sum) and the dynamical-Casimir
     pair-creation *rate* (time-dependent-boundary QFT). Reuses `QLF_HorizonTemperature` + `QLF_FreeEnergy`;
-    no new axioms. -/
-theorem casimir_summary : True := trivial
+    no new axioms.
+
+    Stated as a **conjunction of the two things actually proved** rather than as `True := trivial`, which
+    was what stood here and carried nothing: a `True` summary is satisfied by every possible module and so
+    reports no content (the audit discipline of `QLF_AxiomAudit`, and the deliberate absence noted in
+    `QLF_HorizonBasis`). -/
+theorem casimir_summary (hbar a c kB : ℝ) (hbar0 : hbar ≠ 0) (hc : c ≠ 0) (hkB : kB ≠ 0) :
+    binary_kl 1 (1 / 2) = Real.log 2 ∧ (unruh_temperature hbar a c kB = 0 ↔ a = 0) :=
+  ⟨casimir_vacuum_quantum, boundary_unruh_zero_iff_inertial hbar a c kB hbar0 hc hkB⟩
 
 end QLF.Casimir
