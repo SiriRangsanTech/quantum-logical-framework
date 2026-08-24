@@ -230,9 +230,15 @@ theorem gravity_substrate_summary :
       cosmological constant are Tier-3 open.
 
     - It does NOT reconcile per-event `log 2` with continuous
-      Bekenstein-Hawking `1/4`.  The factor `4/log 2 ≈ 5.77` is a
-      coarse-graining discrepancy between substrate and continuous
-      formulations. -/
+      Bekenstein-Hawking `1/4`.  The residual is **exactly `4·log 2 ≈
+      2.7726`** (`QLF_HolographicDensity.holographic_bh_ratio`): QLF's
+      naive one-bit-per-patch count *exceeds* the realized thermodynamic
+      entropy by that factor.  (An earlier draft of this docstring said
+      `4/log 2 ≈ 5.77` — a slip; the factor multiplies, it does not
+      divide.)  Of the three candidate explanations, the **packing**
+      branch is now closed: the required independent fraction
+      `1/(4 log 2)` is irrational, so no ratio of finite counts can
+      produce it (`no_rational_packing_factor`). -/
 theorem gravity_from_delay_proven_constructively : True := trivial
 
 end QLF

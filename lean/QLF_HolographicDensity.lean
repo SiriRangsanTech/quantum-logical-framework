@@ -73,6 +73,41 @@ theorem residual_is_quarter_times_quantum : 4 * Real.log 2 = 4 * per_event_entro
     `QLF_EinsteinEquations.entropy_density`), the object in the Einstein coefficient `8πG = 2π/η`. -/
 theorem eta_eq_quarter_inv_G (G : ℝ) : entropy_density G = 1 / (4 * G) := rfl
 
+/-- **No rational packing factor can explain the residual — branch (b) of the §9 classification is
+    closed.** Suppose the resolution were a correlation factor making only a fraction `p/q` of the
+    Planck patches independent, so that matching Bekenstein–Hawking requires `4·p·log 2 = q`. Then
+    `log 2 = q/(4p)` would be **rational**, and it is not.
+
+    Irrationality of `log 2` is taken as an explicit hypothesis rather than proved here (it is in fact
+    transcendental, by Lindemann–Weierstrass: an algebraic non-zero `α` with `e^α = 2` would make `2`
+    transcendental). A future session can discharge `hirr` if Mathlib gains the lemma; the content of
+    this theorem is the implication, which does not depend on it.
+
+    **Why this prunes the classification.** The required independent fraction is `1/(4 log 2) ≈
+    0.360674`. A packing fraction read off a ratio of finite counts is rational, so it can never hit
+    that value — the near misses confirm it numerically: the ZFA-balanced fraction `C(2n,n)/4ⁿ`
+    brackets it without touching (`n=2` gives `0.375`, `+4.0%`; `n=3` gives `0.3125`, `−13.4%`), and
+    `1/e ≈ 0.3679` is `+2.0%` off. Any surviving "packing" account must be a *limiting* density that
+    itself manufactures a `log 2`, at which point it is not a combinatorial packing fraction. -/
+theorem no_rational_packing_factor (hirr : Irrational (Real.log 2)) (p q : ℕ) (hp : p ≠ 0) :
+    4 * (p : ℝ) * Real.log 2 ≠ (q : ℝ) := by
+  intro h
+  have h4p : (4 : ℝ) * (p : ℝ) ≠ 0 := mul_ne_zero (by norm_num) (Nat.cast_ne_zero.mpr hp)
+  refine hirr ⟨(q : ℚ) / (4 * (p : ℚ)), ?_⟩
+  push_cast
+  rw [div_eq_iff h4p]
+  linear_combination -h
+
+/-- **The suppression would have to cancel the very quantum it suppresses.** `(N·log 2)·(1/(4 log 2))
+    = N/4`: the realized Bekenstein–Hawking entropy contains **no `log 2` at all**. So the horizon
+    entropy is not (a count) × (the per-event bit quantum) — which is the structural reason to read
+    the residual as an **area-element / what-counts-as-a-patch** question (branch (c)) rather than as
+    a suppression of a correct bit count (branch (b), closed above). -/
+theorem suppression_cancels_the_quantum {N : ℝ} (hlog : Real.log 2 ≠ 0) :
+    N * Real.log 2 * (1 / (4 * Real.log 2)) = N / 4 := by
+  field_simp
+  ring
+
 /-- **Established (`Gravity_From_Delay.md` §9).** The holographic-density residual between QLF's
     one-bit-per-patch count `S_QLF = 4πR² log 2` and the thermodynamic Bekenstein–Hawking `S_BH = N/4`
     (density `η = 1/4G`, `eta_eq_quarter_inv_G`) is **exactly `4·log 2`** (`holographic_bh_ratio`), which is
@@ -81,7 +116,18 @@ theorem eta_eq_quarter_inv_G (G : ℝ) : entropy_density G = 1 / (4 * G) := rfl
     **residual-independent** (the normalization cancels in `F = T dS/dx`). **Open:** *why* the realized
     entropy is `N/4` not `N log 2` — a genuine floor-scale deviation vs. a correlation/packing factor
     (`1/(4 log 2)` independent patches) vs. an area-element redefinition — plus the absolute SI `G`
-    (needs also `R_stable`/#121). Reuses `QLF_GravityFromDelay` + `QLF_EinsteinEquations`; no new axioms. -/
-theorem holographic_density_summary : True := trivial
+    (needs also `R_stable`/#121). **The packing branch is now closed** (`no_rational_packing_factor`),
+    and `suppression_cancels_the_quantum` says why the remaining weight is on the area-element reading.
+    Reuses `QLF_GravityFromDelay` + `QLF_EinsteinEquations`; no new axioms.
+
+    Stated as a conjunction of what is proved rather than `True := trivial`, which every possible
+    module satisfies and which therefore reports nothing. -/
+theorem holographic_density_summary {R : ℝ} (hR : R ≠ 0) (hlog : Real.log 2 ≠ 0) :
+    holographic_entropy R / bekensteinHawkingEntropy R = 4 * Real.log 2 ∧
+    holographic_entropy R * (1 / (4 * Real.log 2)) = bekensteinHawkingEntropy R := by
+  refine ⟨holographic_bh_ratio hR, ?_⟩
+  unfold holographic_entropy bekensteinHawkingEntropy per_event_entropy
+  field_simp
+  ring
 
 end QLF.HolographicDensity
