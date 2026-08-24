@@ -198,10 +198,8 @@ circulation, not a drag against an external sea.
 
 ## 4. Two routes to `F = ma`, and which to run first
 
-**Route A — the null circulation (§3), primary.** Derive the leg imbalance of an accelerated closed
-null loop directly and show its free-action cost is `ma`. This is now the recommended first attempt:
-it invokes no vacuum, so it is not exposed to KC1; its precedent is a correct standard derivation
-rather than a failed one; and its imbalance is a signed count the substrate already computes.
+**Route A — the null circulation (§3). Done: [`QLF_Inertia`](lean/QLF_Inertia.lean), no axioms.**
+See §4a.
 
 **Route B — the thermodynamic cross-check.** Because `unruh_temperature` and
 `holographic_entropy_eq` are **both already Lean-anchored**, there is also a two-step route that
@@ -228,6 +226,58 @@ whichever way it goes.
 
 ---
 
+### 4a. Route A, run — an accelerated null circulation weighs exactly `E/c²`
+
+Take the minimal such circulation, a two-leg Einstein light clock of size `L` and energy `E`, and let
+the legs differ by a fractional shift `δ`. Each reflection transfers `2E/c`; a round trip takes
+`2L/c`. Then:
+
+| theorem | statement |
+|---|---|
+| `netForce_eq` | `netForce = −E·δ / L` — **the circulation speed `c` cancels out of the force entirely** |
+| `inertial_reaction` | with `δ = a L/c²`, `netForce = −(E/c²)·a` — **and `L` cancels too** |
+| `inertial_reaction_mass` | hence `F = −m a`, once `E = mc²` |
+| `independent_of_circulation_size` | two circulations of different size but equal energy resist identically — it does not matter how the mass is built |
+| `no_force_without_acceleration` | `a = 0 ⟹ F = 0`: uniform motion is free at any speed (Galileo's ship, KC2) |
+| `legs_balanced_iff_no_shift` | the legs carry equal energy **exactly when** `δ = 0` — the directional sums cancel, which is what rest *is* |
+| `force_scales_with_shift` | **the shift law is forced, not fitted** — the force is exactly proportional to `δ`, so a redshift law scaled by `k` gives an inertia scaled by `k` |
+
+The last row is the one that makes this a derivation rather than an arrangement. `F = −Eδ/L` holds
+for *any* shift law; `F = −ma` singles out `δ = aL/c²`, which is exactly the equivalence-principle
+redshift. **A different redshift law would make the same energy weigh a different amount.** So the
+shift and the inertia are the same fact seen twice, and that is the demystification: inertia is not
+an extra property of matter, it is what a balanced null circulation costs to unbalance.
+
+Checked in exact rationals over varied `E, a, L, c` before any Lean was written; the `L`-cancellation
+is a real computation that could have failed — a surviving `L`, or a factor of 2, would have killed
+the picture.
+
+**What is input, and what is derived.** The shift `δ = aL/c²` is **input**: it is the repo's existing
+gravitational-redshift account ([`GR_Schwarzschild.md`](GR_Schwarzschild.md) §2a, the JILA/NIST
+millimetre-scale measurement, read off
+[`Cross_Frequency_Lorentz.md`](Cross_Frequency_Lorentz.md) as a Markov-blanket frequency ratio), not
+established here. What is **derived** is that this shift, and no other, turns a balanced null
+circulation into `F = −ma` with both `c` and `L` cancelling. A bridge reused plus an exact
+computation — not inertia from nothing.
+
+**What Route A does *not* establish**, and none of these should be glossed:
+
+1. **KC3 is still open.** That the circulation whose period gives `m = 1/R`
+   ([`Per_Qubit_Mass_Quantum.md`](Per_Qubit_Mass_Quantum.md)) is the *same object* as the gauge-fold
+   depth [`Higgs.md`](Higgs.md) already calls inertial mass. Until that is shown, this is a theorem
+   about light clocks that QLF *interprets* as universal, not a theorem about every mass.
+2. **The counting version is not done.** §3a's rule-4 gate wanted the imbalance as a *signed integer*
+   the substrate computes (`calculate_action`). What is proved above is the continuum algebra, with
+   energies as reals. Making the imbalance a count is the next increment and the one that would make
+   this QLF-native rather than QLF-compatible.
+3. **The rotational sector is untouched** — Newton's bucket and frame dragging remain Phase 3.
+
+So the honest status is: **the mechanism works and is exact, on the assumption that every rest mass
+is a null circulation.** That assumption is the framework's, is well-motivated (every substrate step
+runs at `c`), and is not yet a theorem.
+
+---
+
 ## 5. The phases
 
 Each phase names its deliverable, its owning doc, and the count that would falsify it.
@@ -249,10 +299,13 @@ Deliverable: the `lorentz_boost_from_zfa_frequencies` theorem that
 boosting a dense closure through a simulated ZFA vacuum and showing front/rear mode counts stay
 equal. Falsifier: any speed at which the counts differ.
 
-**Phase 2 — acceleration to force.**
-Run **Route A** (§3): an accelerated closed null loop, its leg imbalance as a signed count, and the
-free-action cost of restoring closure. Target `F = ma` **exactly**, with the `m` of KC3. Then run
-Route B as the independent cross-check, *with its R6a check first*.
+**Phase 2 — acceleration to force. Route A done (§4a); two pieces remain.**
+`F = −ma` is proved for a null circulation, exactly, with `c` and `L` cancelling and the shift law
+forced ([`QLF_Inertia`](lean/QLF_Inertia.lean)). Remaining: **(a)** the *counting* version — the
+imbalance as a signed integer `calculate_action` computes, rather than the continuum algebra, which
+is what rule 4 actually asked for; **(b)** KC3, the identification of the circulation with the
+gauge-fold depth. Then Route B as the independent cross-check, *with its R6a check first* — two
+routes landing on the same `ma` would be multiplicity.
 Target theorems: `accelerating_window_imbalance`, `inertial_force_from_frequency_asymmetry`.
 Falsifier: a force that is not exactly `ma`, or an `m` that is not the substrate's `m`.
 **Do not add a `True` summary theorem.** `casimir_summary` used to be `True := trivial` and has been
