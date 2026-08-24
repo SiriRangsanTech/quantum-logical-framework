@@ -98,6 +98,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 from fractions import Fraction
 from itertools import product
@@ -525,10 +526,55 @@ def build_closure_inventory(depth: int, keep: dict | None = None) -> dict:
     return out
 
 
+def _script_commit() -> str:
+    """The commit this script was last changed in, plus a dirty marker.
+
+    Deliberately no wall-clock timestamp: the database is a pure function of the
+    script and the requested lengths, so a run that adds nothing should rewrite
+    the file byte-for-byte identically. A build date would make every no-op run
+    a diff.
+    """
+    def git(*args: str) -> str | None:
+        try:
+            out = subprocess.run(("git", *args), cwd=_HERE, capture_output=True, text=True)
+        except OSError:
+            return None
+        return out.stdout.strip() if out.returncode == 0 else None
+
+    commit = git("log", "-1", "--format=%h", "--", "census_inventory.py")
+    if not commit:
+        return "unknown"
+    dirty = git("status", "--porcelain", "--", "census_inventory.py", "twist_core.py")
+    return f"{commit}-dirty" if dirty else commit
+
+
+def provenance(twist_len: int, phase_len: int) -> dict:
+    """What produced these numbers — for copies of this file living elsewhere.
+
+    Inside this repo it is decoration: `--quick` re-derives the cheap lengths on
+    every push, so the file cannot silently drift from the code. It earns its
+    place downstream, where a vendored copy (the Rust `qucalc` crate reads the
+    `closures` layer; so does quantum-os) otherwise has no way to say which
+    version of the census it is holding.
+    """
+    return {
+        "script": "census_inventory.py",
+        "script_commit": _script_commit(),
+        "fold_census_to": twist_len,
+        "depth_census_to": phase_len,
+        "closure_depth": CLOSURE_DEPTH,
+        "regenerate": f"python3 census_inventory.py --twist-len {twist_len} "
+                      f"--phase-len {phase_len}",
+    }
+
+
 def build(twist_len: int, phase_len: int, keep: dict | None = None) -> dict:
     keep = keep or {}
+    max_twist = max(twist_len, keep.get("max_twist_length", 0))
+    max_phase = max(phase_len, keep.get("max_phase_length", 0))
     return {
         "_comment": "Census inventory: counts and QuCalc folds. Rebuild with census_inventory.py.",
+        "_provenance": provenance(max_twist, max_phase),
         "_invariants_asserted": [
             "count balance => Pauli closure (count_balanced_pauli_closed)",
             "count balance => fold is +-I, never +-iI (balanced_phase_is_real)",
@@ -545,8 +591,8 @@ def build(twist_len: int, phase_len: int, keep: dict | None = None) -> dict:
             "the normalized-event weight sum A^2/(W.8^d) stays under the Kraft mass "
             "(QLF_KraftMeasure.normalized_event_mass_le_one)",
         ],
-        "max_twist_length": max(twist_len, keep.get("max_twist_length", 0)),
-        "max_phase_length": max(phase_len, keep.get("max_phase_length", 0)),
+        "max_twist_length": max_twist,
+        "max_phase_length": max_phase,
         "folds": build_fold_inventory(twist_len, keep.get("folds")),
         "depths": build_depth_inventory(phase_len, keep.get("depths")),
         "factors": build_factor_inventory(min(twist_len, 8), keep.get("factors")),
@@ -702,6 +748,12 @@ def main() -> int:
     print(f"   violations: {len(f['phase_rule_violations'])}")
     print(f"   unbalanced witnesses reaching +-i (length 3): "
           f"{f['unbalanced_imaginary_count_len3']}, e.g. {f['unbalanced_imaginary_witnesses'][:4]}")
+    here, nxt = fresh["max_twist_length"], fresh["max_twist_length"] + 2
+    grow = balanced_history_count(nxt) / balanced_history_count(here)
+    print(f"   next rung: --twist-len {nxt} enumerates "
+          f"{balanced_history_count(nxt):,} balanced histories, {grow:.0f}x length {here}.")
+    print("   This is the census at its ceiling -- push it only for a question that needs")
+    print("   folds, and expect the run to be the cost of the answer.")
 
     fa = fresh.get("factors", {})
     if fa:
@@ -752,6 +804,11 @@ def main() -> int:
         print(f"   {L:>3}  " + "".join(cells))
     print("   a shallow capacity hears only the shallow closures; no finite capacity")
     print("   hears everything (law_of_exceptions), and each step up adds lines (lines_mono).")
+    p_here = fresh["max_phase_length"]
+    print(f"   next rung: --phase-len {p_here + 2} sifts {2 ** (p_here + 2):,} walks, "
+          f"4x length {p_here}.")
+    print("   This census is nowhere near its ceiling -- it is the cheap one to push when")
+    print("   a question is about depth or listening rather than folds.")
 
     print()
     if fails:
