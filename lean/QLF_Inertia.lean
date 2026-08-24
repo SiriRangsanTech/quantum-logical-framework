@@ -100,7 +100,6 @@ theorem inertial_reaction (E a L c : ℝ) (hL : L ≠ 0) (hc : c ≠ 0) :
     netForce E (a * L / c ^ 2) L c = -(E / c ^ 2) * a := by
   rw [netForce_eq E _ L c hL hc]
   field_simp
-  ring
 
 /-- **`F = −ma`**, once `E = mc²` is used. -/
 theorem inertial_reaction_mass (E m a L c : ℝ) (hL : L ≠ 0) (hc : c ≠ 0)
@@ -130,7 +129,6 @@ theorem force_scales_with_shift (E a L c k : ℝ) (hL : L ≠ 0) (hc : c ≠ 0) 
     netForce E (k * (a * L / c ^ 2)) L c = k * (-(E / c ^ 2) * a) := by
   rw [netForce_eq E _ L c hL hc]
   field_simp
-  ring
 
 /-- **What Route A establishes**, as a conjunction rather than a `True` summary: the legs balance
     exactly when there is no shift (rest), and the equivalence-principle shift makes an accelerated

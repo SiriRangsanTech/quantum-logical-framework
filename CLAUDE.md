@@ -151,7 +151,14 @@ for some time, and two rules had gone stale unnoticed.
     cast the aggregate instead (`(atoms.sum : ℤ)`), which needs no `map` lemmas at all. Cost one CI
     cycle in `QLF_Unsaturation`.
 
-17. ✅ **`decide` cannot see through a `def : Prop`** — the same opacity as gotcha 3, but the symptom
+17. ✅ **`field_simp` often CLOSES the goal, so a trailing `ring` then errors.** *Any* tactic run on
+    zero goals fails with **"No goals to be solved"** — `ring_nf` and `simp` included, so swapping
+    the tactic does not help. Write `field_simp` alone first and add `ring` only if CI reports
+    unsolved goals; two theorems in `QLF_Inertia` needed it and two next to them did not, so it is
+    not predictable per-file. (This cost a CI cycle *after* being recorded in the session memory but
+    not here — which is the argument for gotchas living in this file.)
+
+18. ✅ **`decide` cannot see through a `def : Prop`** — the same opacity as gotcha 3, but the symptom
     is *failed to synthesize Decidable P* rather than an elaboration error, so it does not look
     related. A predicate written `def ClosedLoop (b) : Prop := … = … ∧ …` is decidable in substance
     but opaque to instance synthesis. `unfold ClosedLoop; decide` works; `decide` alone does not.
