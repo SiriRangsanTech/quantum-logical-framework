@@ -4,3 +4,8 @@ __pycache__/
 
 # downloaded PDB structures (contact_order_regression.py --fetch)
 .pdb_cache/
+
+# Lean build tree / Mathlib cache — a symlink to the Transcend SSD when mounted.
+# CI does `rm -rf .lake` on every run; it must never be committed.
+# No trailing slash: .lake is a symlink here, not a directory.
+.lake
