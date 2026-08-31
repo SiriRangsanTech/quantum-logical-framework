@@ -90,3 +90,134 @@ only the streamed line is materialised), so memory is dominated by `--max-concur
 result size. On a small box set `--max-depth-cap 6` (≈ 3 s worst case) and
 `--max-concurrent 2`. Depth 7 is ~2 M candidates (tens of seconds on a slow CPU); depth 8
 is disallowed by the hard cap.
+
+## Client examples
+
+The service is designed to be consumed by [quantum-os](https://github.com/rchain-community/quantum-os)
+(Rust/WASM core + WebRTC browser peers). Both examples below consume the stream
+incrementally — the first `_meta` line confirms the query, closures arrive shortest-first,
+and the `_done` line carries the final count.
+
+### TypeScript / browser peer (`fetch` + streaming NDJSON)
+
+Works in the browser and in Node ≥ 18. `QUCALC_SEARCH_URL` is the deployed endpoint.
+
+```ts
+const QUCALC_SEARCH_URL = "http://qucalc.internal:8765";
+
+export interface Closure {
+  cont: string;      // twist word appended to qc
+  history: string;   // the full closed history
+  len: number;
+  depth: number;     // appended twists
+  phase: "+1" | "-1" | "+i" | "-i";
+}
+
+/** Stream the admissible next closures from a QuCalc position. */
+export async function* qucalcSearch(
+  qc: string,
+  opts: { maxDepth?: number; limit?: number; signal?: AbortSignal } = {},
+): AsyncGenerator<Closure, { found: number; elapsedS: number; truncated: boolean }> {
+  const u = new URL("/search", QUCALC_SEARCH_URL);
+  u.searchParams.set("qc", qc);
+  if (opts.maxDepth != null) u.searchParams.set("max_depth", String(opts.maxDepth));
+  if (opts.limit != null) u.searchParams.set("limit", String(opts.limit));
+
+  const res = await fetch(u, { signal: opts.signal });
+  if (!res.ok) throw new Error(`qucalc_search ${res.status}: ${(await res.json()).error}`);
+
+  const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+  let buf = "";
+  let done = { found: 0, elapsedS: 0, truncated: false };
+  for (;;) {
+    const { value, done: end } = await reader.read();
+    if (end) break;
+    buf += value;
+    let nl: number;
+    while ((nl = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, nl).trim();
+      buf = buf.slice(nl + 1);
+      if (!line) continue;
+      const obj = JSON.parse(line);
+      if (obj._meta) continue;                      // params echo, after clamping
+      if (obj._done) { done = { found: obj.found, elapsedS: obj.elapsed_s, truncated: obj.truncated }; continue; }
+      yield obj as Closure;
+    }
+  }
+  return done;
+}
+
+// usage: offer the next closures at a room's current QuCalc state
+const ctrl = new AbortController();
+const byPhase: Record<string, string[]> = {};
+for await (const c of qucalcSearch("^<v>+-", { maxDepth: 6, limit: 10_000, signal: ctrl.signal })) {
+  (byPhase[c.phase] ??= []).push(c.cont);
+  if (Object.values(byPhase).flat().length >= 200) ctrl.abort();   // stop early, server sees the hangup
+}
+```
+
+### Rust peer / `zfa-core` (`ureq`, blocking, no async runtime needed)
+
+```rust
+// Cargo.toml:  ureq = { version = "2", features = ["json"] }  |  serde = { version = "1", features = ["derive"] }  |  serde_json = "1"
+use std::io::{BufRead, BufReader};
+
+#[derive(serde::Deserialize, Debug)]
+pub struct Closure {
+    pub cont: String,
+    pub history: String,
+    pub len: u32,
+    pub depth: u32,
+    pub phase: String, // "+1" | "-1" | "+i" | "-i"
+}
+
+/// Stream admissible next closures; `on_closure` is called per result as it arrives.
+pub fn qucalc_search(
+    base: &str, qc: &str, max_depth: u32, limit: u32,
+    mut on_closure: impl FnMut(Closure),
+) -> Result<(usize, f64), Box<dyn std::error::Error>> {
+    let resp = ureq::get(&format!("{base}/search"))
+        .query("qc", qc)
+        .query("max_depth", &max_depth.to_string())
+        .query("limit", &limit.to_string())
+        .call()?;
+
+    let (mut found, mut elapsed) = (0usize, 0.0);
+    for line in BufReader::new(resp.into_reader()).lines() {
+        let line = line?;
+        if line.trim().is_empty() { continue; }
+        let v: serde_json::Value = serde_json::from_str(&line)?;
+        if v.get("_meta").is_some() { continue; }
+        if v.get("_done").is_some() {
+            found = v["found"].as_u64().unwrap_or(0) as usize;
+            elapsed = v["elapsed_s"].as_f64().unwrap_or(0.0);
+            continue;
+        }
+        on_closure(serde_json::from_value(v)?);
+    }
+    Ok((found, elapsed))
+}
+
+// usage
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let (found, secs) = qucalc_search("http://qucalc.internal:8765", "^<v>+-", 6, 10_000, |c| {
+        println!("{:>8}  ->  {}  [{}]", c.cont, c.history, c.phase);
+    })?;
+    eprintln!("{found} closures in {secs:.3}s");
+    Ok(())
+}
+```
+
+### Notes for consumers
+
+- **Abort to stop early.** Dropping the reader / aborting the fetch closes the socket; the
+  server catches the hangup and stops enumerating. Don't rely on `limit` alone if you only
+  want the first few — a small `limit` is still the cheaper signal.
+- **`_meta` is the accepted-params echo.** If it shows a smaller `max_depth` than you asked,
+  the deployment's `--max-depth-cap` clamped it.
+- **`429`** means the host is at `--max-concurrent`; back off and retry, or run against a
+  second instance.
+- **Phase is always `±1` for a balanced history** (`QLF_BalancedPhaseReal`); `±i` only
+  appears if you pass an already-unbalanced `qc` whose continuation cannot rebalance the
+  gauge axis — which the search would not return as a closure anyway, so in practice
+  consumers see only `+1` / `-1`.
