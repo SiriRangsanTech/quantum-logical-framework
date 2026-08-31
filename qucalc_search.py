@@ -124,6 +124,7 @@ def search(
     max_depth: int = DEFAULT_MAX_DEPTH,
     limit: Optional[int] = DEFAULT_LIMIT,
     min_total_len: int = MIN_ZFA_LENGTH,
+    absorbing: bool = False,
 ) -> Iterator[dict]:
     """Yield ZFA closures reachable from `qc` by appending 1..`max_depth` twists.
 
@@ -131,6 +132,16 @@ def search(
     `cont`, `history`, `len`, `depth`, `phase`. If the `limit` is reached the
     generator stops without a marker — callers that need to know should compare
     the count to `limit`.
+
+    **possibilities vs events** (`absorbing`):
+
+    * `absorbing=False` (default) — the **possibilities**: *every* closure within
+      `max_depth`, including continuations whose own prefix already closed.
+    * `absorbing=True` — the **events**: a closure *is* an event, so a branch is
+      not extended past its first closure. The continuations are prefix-free —
+      each is the *first* way that branch closes — which is the absorbing census
+      of `contextual_census.py --first-closure` and the `closures` layer of
+      `census_inventory.py`.
 
     The count-balance constraint is applied to the continuation *before* any
     string is built or Pauli fold is run — the fold only touches the small
@@ -140,6 +151,7 @@ def search(
     seed_action = calculate_action(qc)
     need = tuple(-x for x in seed_action)          # continuation must supply this
     n_found = 0
+    closed_prefixes: set[str] = set()              # continuations that already closed
 
     for depth in range(1, max_depth + 1):
         if not _feasible(need, depth):
@@ -150,10 +162,15 @@ def search(
             if _action_of(combo) != need:
                 continue
             cont = "".join(combo)
+            if absorbing and any(cont[:k] in closed_prefixes
+                                 for k in range(max(1, min_total_len - len(qc)), depth)):
+                continue                            # a shorter prefix already closed
             history = qc + cont
             phase = _classify_phase(pauli_fold(history))
             if phase is None:                      # count-balanced but not Pauli-closed
                 continue
+            if absorbing:
+                closed_prefixes.add(cont)
             yield {
                 "cont": cont,
                 "history": history,
@@ -164,6 +181,184 @@ def search(
             n_found += 1
             if limit is not None and n_found >= limit:
                 return
+
+
+# --------------------------------------------------------------------------- #
+# listeners — one enumeration, several rollups reporting in parallel
+# --------------------------------------------------------------------------- #
+def max_excursion(history: str) -> int:
+    """Max over prefixes of the total free action `|v|+|h|+|d|+|l|` — how far the
+    walk strays from ZFA balance. A capacity-`R` listener hears a closure iff this
+    is `≤ R` (`QLF_ClosureDepthLaw.closedAtHorizon_iff_maxExcursion_le`)."""
+    v = h = d = l = 0
+    m = 0
+    for t in history:
+        if t == "^": v += 1
+        elif t == "v": v -= 1
+        elif t == ">": h += 1
+        elif t == "<": h -= 1
+        elif t == "/": d += 1
+        elif t == "\\": d -= 1
+        elif t == "+": l += 1
+        elif t == "-": l -= 1
+        e = abs(v) + abs(h) + abs(d) + abs(l)
+        if e > m:
+            m = e
+    return m
+
+
+class Listener:
+    """Consumes the closure stream once, reports a rollup. `feed` must be cheap —
+    it runs per closure, inside the enumeration."""
+    name = "listener"
+
+    def feed(self, rec: dict) -> None: ...
+    def report(self) -> dict: ...
+
+
+class _Count(Listener):
+    name = "count"
+
+    def __init__(self) -> None:
+        self.n = 0
+
+    def feed(self, rec):
+        self.n += 1
+
+    def report(self):
+        return {"total": self.n}
+
+
+class _Phase(Listener):
+    name = "phase"
+
+    def __init__(self) -> None:
+        self.c = {"+1": 0, "-1": 0, "+i": 0, "-i": 0}
+
+    def feed(self, rec):
+        self.c[rec["phase"]] += 1
+
+    def report(self):
+        return dict(self.c)
+
+
+class _Depth(Listener):
+    name = "depth"
+
+    def __init__(self) -> None:
+        self.c: dict[int, int] = {}
+
+    def feed(self, rec):
+        d = rec["depth"]
+        self.c[d] = self.c.get(d, 0) + 1
+
+    def report(self):
+        return {str(k): self.c[k] for k in sorted(self.c)}
+
+
+class _Capacity(Listener):
+    """The QLF *listening*: how many closures a capacity-`R` horizon receives."""
+
+    def __init__(self, r: int) -> None:
+        self.r = r
+        self.name = f"capacity:{r}"
+        self.heard = 0
+        self.missed = 0
+
+    def feed(self, rec):
+        if max_excursion(rec["history"]) <= self.r:
+            self.heard += 1
+        else:
+            self.missed += 1
+
+    def report(self):
+        return {"R": self.r, "heard": self.heard, "missed": self.missed}
+
+
+class _Head(Listener):
+    name = "head"
+
+    def __init__(self, n: int) -> None:
+        self.n = n
+        self.items: list[str] = []
+
+    def feed(self, rec):
+        if len(self.items) < self.n:
+            self.items.append(rec["cont"])
+
+    def report(self):
+        return {"n": self.n, "conts": self.items}
+
+
+def parse_listeners(spec: str) -> list[Listener]:
+    """`"phase,depth,capacity:2,capacity:3,head:20"` → listener objects.
+    `count` is always included."""
+    out: list[Listener] = [_Count()]
+    for tok in (spec or "").split(","):
+        tok = tok.strip()
+        if not tok:
+            continue
+        kind, _, arg = tok.partition(":")
+        if kind == "phase":
+            out.append(_Phase())
+        elif kind == "depth":
+            out.append(_Depth())
+        elif kind == "capacity":
+            out.append(_Capacity(max(0, int(arg or 0))))
+        elif kind == "head":
+            out.append(_Head(max(1, int(arg or 10))))
+        elif kind == "count":
+            pass  # already added
+        else:
+            raise ValueError(f"unknown listener {tok!r} "
+                             f"(phase|depth|capacity:R|head:N)")
+    return out
+
+
+def run_search(
+    seeds: list[str],
+    max_depth: int,
+    limit: Optional[int],
+    listeners: list[Listener],
+    on_closure=None,
+    absorbing: bool = False,
+) -> dict:
+    """Run `search` over one or more seeds, feeding every listener and calling
+    `on_closure(rec)` per result if given. Returns the assembled report.
+
+    `limit` is the total across all seeds. Multiple seeds run in sequence (the
+    host this is built for cannot parallelise usefully); the listeners aggregate
+    across all of them, which is the "concurrent search, one set of listeners"
+    shape. `absorbing` switches possibilities → events (see `search`).
+    """
+    t0 = time.time()
+    n = 0
+    per_seed: dict[str, int] = {}
+    for qc in seeds:
+        seed_n = 0
+        remaining = None if limit is None else max(0, limit - n)
+        if remaining == 0:
+            break
+        for rec in search(qc, max_depth=max_depth, limit=remaining, absorbing=absorbing):
+            rec = dict(rec, qc=qc) if len(seeds) > 1 else rec
+            for L in listeners:
+                L.feed(rec)
+            if on_closure is not None:
+                on_closure(rec)
+            n += 1
+            seed_n += 1
+        per_seed[qc] = seed_n
+    rep = {L.name: L.report() for L in listeners}
+    return {
+        "seeds": seeds,
+        "max_depth": max_depth,
+        "mode": "events" if absorbing else "possibilities",
+        "found": n,
+        "truncated": limit is not None and n >= limit,
+        "elapsed_s": round(time.time() - t0, 3),
+        "per_seed": per_seed if len(seeds) > 1 else None,
+        "listeners": rep,
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -212,10 +407,12 @@ def _make_handler(depth_cap: int, sem: threading.BoundedSemaphore):
                 self._send_json(200, {
                     "service": "qucalc_search",
                     "version": VERSION,
-                    "usage": "/search?qc=<history>&max_depth=<1..%d>&limit=<1..%d>"
-                             % (depth_cap, MAX_LIMIT_CAP),
+                    "usage": "/search?qc=<history[,history…]>&max_depth=<1..%d>"
+                             "&limit=<1..%d>&listeners=<phase,depth,capacity:R,head:N>"
+                             "&stream=<0|1>" % (depth_cap, MAX_LIMIT_CAP),
                     "alphabet": TWISTS,
                     "caps": {"max_depth": depth_cap, "max_limit": MAX_LIMIT_CAP},
+                    "listeners": ["phase", "depth", "capacity:R", "head:N", "count (always on)"],
                     "response": "application/x-ndjson; first line _meta, last line _done",
                 })
                 return
@@ -226,9 +423,14 @@ def _make_handler(depth_cap: int, sem: threading.BoundedSemaphore):
                 self._send_json(404, {"error": "not found", "path": route})
                 return
 
-            qc = (params.get("qc") or [""])[0]
+            raw_qc = (params.get("qc") or [""])[0]
+            seeds = [s for s in raw_qc.split(",") if s]
+            if not seeds:
+                self._send_json(400, {"error": "qc required (comma-separate for several)"})
+                return
             try:
-                validate_history(qc)
+                for s in seeds:
+                    validate_history(s)
             except ValueError as e:
                 self._send_json(400, {"error": str(e)})
                 return
@@ -238,6 +440,14 @@ def _make_handler(depth_cap: int, sem: threading.BoundedSemaphore):
             except ValueError:
                 self._send_json(400, {"error": "max_depth and limit must be integers"})
                 return
+            try:
+                listeners = parse_listeners((params.get("listeners") or [""])[0])
+            except ValueError as e:
+                self._send_json(400, {"error": str(e)})
+                return
+            stream = (params.get("stream") or ["1"])[0] != "0"
+            absorbing = (params.get("mode") or ["possibilities"])[0] == "events" \
+                or (params.get("absorbing") or ["0"])[0] == "1"
             max_depth = max(1, min(max_depth, depth_cap))
             limit = max(1, min(limit, MAX_LIMIT_CAP))
 
@@ -250,21 +460,22 @@ def _make_handler(depth_cap: int, sem: threading.BoundedSemaphore):
                 self.send_header("Content-Type", "application/x-ndjson")
                 self.end_headers()
                 self.wfile.write((json.dumps({
-                    "_meta": True, "qc": qc, "max_depth": max_depth,
-                    "limit": limit, "version": VERSION,
+                    "_meta": True, "qc": seeds, "max_depth": max_depth,
+                    "limit": limit, "stream": stream,
+                    "mode": "events" if absorbing else "possibilities",
+                    "version": VERSION,
                 }) + "\n").encode())
                 self.wfile.flush()
 
-                t0 = time.time()
-                n = 0
-                for rec in search(qc, max_depth=max_depth, limit=limit):
-                    self.wfile.write((json.dumps(rec) + "\n").encode())
-                    self.wfile.flush()
-                    n += 1
-                self.wfile.write((json.dumps({
-                    "_done": True, "found": n, "elapsed_s": round(time.time() - t0, 3),
-                    "truncated": n >= limit,
-                }) + "\n").encode())
+                def emit(rec):
+                    if stream:
+                        self.wfile.write((json.dumps(rec) + "\n").encode())
+                        self.wfile.flush()
+
+                rep = run_search(seeds, max_depth, limit, listeners,
+                                 on_closure=emit, absorbing=absorbing)
+                rep["_done"] = True
+                self.wfile.write((json.dumps(rep) + "\n").encode())
             except (BrokenPipeError, ConnectionResetError):
                 pass  # client hung up mid-stream
             finally:
@@ -305,11 +516,15 @@ def _time_mode() -> None:
 
 def main(argv: Optional[list[str]] = None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("qc", nargs="?", help="the QuCalc position (twist history) to search from")
+    p.add_argument("qc", nargs="?", help="QuCalc position(s) to search from — comma-separate for several")
     p.add_argument("--max-depth", type=int, default=DEFAULT_MAX_DEPTH,
                    help=f"max appended twists (default {DEFAULT_MAX_DEPTH})")
     p.add_argument("--limit", type=int, default=DEFAULT_LIMIT,
                    help=f"stop after this many closures (default {DEFAULT_LIMIT}; 0 = no limit)")
+    p.add_argument("--listeners", default="",
+                   help="rollups to report: phase,depth,capacity:R,head:N (count always on)")
+    p.add_argument("--events", action="store_true",
+                   help="absorbing: stop each branch at its first closure (events, not possibilities)")
     p.add_argument("--json", action="store_true", help="emit NDJSON instead of plain words")
     p.add_argument("--count-only", action="store_true", help="print only the closure count")
     p.add_argument("--serve", action="store_true", help="run the HTTP endpoint instead")
@@ -331,26 +546,33 @@ def main(argv: Optional[list[str]] = None) -> int:
         return 0
     if not args.qc:
         p.error("qc position required (or use --serve / --time)")
+    seeds = [s for s in args.qc.split(",") if s]
     try:
-        validate_history(args.qc)
+        for s in seeds:
+            validate_history(s)
+        listeners = parse_listeners(args.listeners)
     except ValueError as e:
         p.error(str(e))
 
     limit = None if args.limit == 0 else args.limit
-    t0 = time.time()
-    n = 0
-    for rec in search(args.qc, max_depth=args.max_depth, limit=limit):
-        n += 1
+
+    def show(rec):
         if args.count_only:
-            continue
+            return
         if args.json:
             print(json.dumps(rec))
         else:
-            print(f"{rec['cont']:<{args.max_depth}}  ->  {rec['history']}  [{rec['phase']}]")
-    if args.count_only:
-        print(n)
-    sys.stderr.write(f"{n} closures from {args.qc!r} within {args.max_depth} twists "
-                     f"in {time.time()-t0:.2f}s\n")
+            print(f"{rec['cont']:<{args.max_depth}}  ->  {rec['history']}  [{rec['phase']}]"
+                  + (f"  <{rec['qc']}>" if "qc" in rec else ""))
+
+    rep = run_search(seeds, args.max_depth, limit, listeners,
+                     on_closure=show, absorbing=args.events)
+    if args.count_only and not args.listeners:
+        print(rep["found"])
+    if args.listeners:
+        print(json.dumps(rep["listeners"], indent=2))
+    sys.stderr.write(f"{rep['found']} closures from {seeds} within {args.max_depth} twists "
+                     f"in {rep['elapsed_s']}s\n")
     return 0
 
 

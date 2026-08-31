@@ -39,12 +39,47 @@ exactly `−(v,h,d,l)`. So
    `QLF_TwistAlphabet.count_balanced_pauli_closed` those are *all* Pauli-closed, so the fold
    here only reads off **which** scalar (the phase), never gates admission.
 
+## Possibilities vs events
+
+The default stream is the **possibilities** — *every* closure within `max_depth`, including
+continuations whose own prefix already closed. Pass `mode=events` (`--events` on the CLI) for
+the **events**: a closure *is* an event, so a branch is not extended past its first closure.
+The event continuations are prefix-free — each the *first* way that branch closes — which is
+the absorbing census of [`contextual_census.py`](contextual_census.py) `--first-closure` and
+the `closures` layer of [`census_inventory.py`](census_inventory.py). From `^<v>+-` at
+depth 6: 5296 possibilities, 3056 events.
+
+## Listeners — one enumeration, several rollups
+
+`listeners=<spec>` runs the search once and reports aggregates alongside (or instead of) the
+stream. `count` is always on.
+
+| listener | reports |
+|---|---|
+| `phase` | closures per Pauli scalar `{+1,-1,+i,-i}` |
+| `depth` | closures per appended-twist count |
+| `capacity:R` | the QLF **listening** — `heard` / `missed` split by whether `max_excursion ≤ R` (`QLF_ClosureDepthLaw`) |
+| `head:N` | the first `N` continuation words verbatim |
+
+`stream=0` suppresses the per-closure lines and returns only the `_done` rollup — the right
+call when the consumer wants the ~10 K aggregate, not every string. `qc` may be
+comma-separated for a **concurrent search** over several seeds; listeners aggregate across
+all of them and `per_seed` carries the per-seed counts.
+
+```
+GET /search?qc=^<v>+-&max_depth=6&stream=0&listeners=phase,depth,capacity:2,capacity:3
+GET /search?qc=^<v>+-,+-+-&max_depth=6&mode=events&listeners=capacity:2,head:20
+```
+
 ## CLI
 
 ```
 python3 qucalc_search.py "^<v>+-" --max-depth 6                 # closures, plain words
 python3 qucalc_search.py "^<v>+-" --max-depth 6 --json          # NDJSON records
 python3 qucalc_search.py "^<v>+-" --max-depth 6 --count-only    # just the count
+python3 qucalc_search.py "^<v>+-" --max-depth 6 --events \
+        --listeners phase,depth,capacity:2                      # events + rollups
+python3 qucalc_search.py "^<v>+-,^^<" --max-depth 4 --listeners phase   # concurrent seeds
 python3 qucalc_search.py --time                                 # benchmark this host
 ```
 
@@ -62,17 +97,19 @@ python3 qucalc_search.py --serve --host 0.0.0.0 --port 8765 --max-depth-cap 7 --
 |---|---|
 | `GET /` | `{service, version, usage, alphabet, caps}` |
 | `GET /health` | `{ok: true}` |
-| `GET /search?qc=<hist>&max_depth=<int>&limit=<int>` | `200 application/x-ndjson`, streamed |
-| | `400 {error}` — bad `qc` / non-integer params |
+| `GET /search?qc=<hist[,hist…]>&max_depth=<int>&limit=<int>&mode=<possibilities\|events>&listeners=<spec>&stream=<0\|1>` | `200 application/x-ndjson`, streamed |
+| | `400 {error}` — bad `qc` / non-integer params / unknown listener |
 | | `429 {error}` — host at `--max-concurrent`, retry |
 
 The `/search` stream, one JSON object per line, flushed as produced:
 
 ```
-{"_meta": true, "qc": "...", "max_depth": D, "limit": L, "version": "1.0"}   ← params after clamping
-{"cont": "vv>", "history": "^^<vv>", "len": 6, "depth": 3, "phase": "-1"}    ← one closure
+{"_meta": true, "qc": ["..."], "max_depth": D, "limit": L, "stream": true,
+ "mode": "possibilities", "version": "1.0"}                                  ← params after clamping
+{"cont": "vv>", "history": "^^<vv>", "len": 6, "depth": 3, "phase": "-1"}    ← one closure (omitted if stream=0)
  …                                                                            shortest depth first
-{"_done": true, "found": K, "elapsed_s": F, "truncated": <hit limit?>}
+{"_done": true, "seeds": [...], "mode": "...", "found": K, "elapsed_s": F,
+ "truncated": <hit limit?>, "per_seed": {...}|null, "listeners": {...}}
 ```
 
 `depth` = appended twists; `phase` = the Pauli scalar the whole history folds to
