@@ -195,6 +195,11 @@ lossy float bookkeeping with exact integer closure ledgers and decidable admissi
 wins are **structural, not just numerical**: built-in falsehood-rejection (the ZFA filter), built-in
 persistence (the token), and no continuum UV-tail (the discrete floor).
 
+A worked application of this architecture to a specific solicitation is in
+[`DAICE_QLF_Framing.md`](DAICE_QLF_Framing.md) — QLF/QuantumOS framed for DARPA DAICE (Decentralized
+AI through Controlled Emergence): ZFA selection as a machine-verified controlled-emergence substrate,
+capability security from the five convergent foundations, and QuantumOS as the P2P runtime.
+
 **Honest scope.** This is an *architecture proposal*, not a built system or a benchmark: QLF does not
 yet ship a closure-token learner, and whether integer-ledger transitions *train* better than
 gradient descent on floats (e.g. credit assignment without differentiability) is genuinely open

@@ -369,7 +369,7 @@ This view restores a coherent, non-mystical picture of reality without dualism. 
 
 The philosophy is not abstract — it is executable and formally proven today:
 
-- Core engine: `qucalc_engine.py` + `twist_core.py`
+- Core engine: `qucalc_engine.py` + `twist_core.py` (engine reference: [`twist_core.md`](twist_core.md) — the 8-twist alphabet, signed action vectors, ZFA closure detection, Hermitian-adjoint helpers)
 - Spacetime synthesis: `SpaceTime.py`
 - RhoQuCalc (possibilist parallelism): `RhoQuCalc.lean`
 - Completed Einstein equations: `SpacetimeDynamics.lean`
@@ -385,7 +385,7 @@ python spacetime_dynamics.py          # watch ZFA events synthesize spacetime an
 lean --run lean/SpacetimeDynamics.lean # see formal proofs of logical equivalence
 ```
 
-See also: [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the modern foundations meta-doc, same possibilist + ZFA commitments framed as the math itself: a candidate ZFC replacement and TOE for the part of mathematics that is not mathematical fantasy.
+See also: [Active_Inference_Mathematics.md](Active_Inference_Mathematics.md) — the modern foundations meta-doc, same possibilist + ZFA commitments framed as the math itself: a candidate ZFC replacement and TOE for the part of mathematics that is not mathematical fantasy. And [YIN_YANG_LOGIC.md](YIN_YANG_LOGIC.md) — a visual shorthand (`YinYangYin.png`) for the recursive folding of quantum logical action: each Logical Fold a discrete, non-commutative operation that preserves zero-free-action balance, self-similar across scales.
 
 ## 9. Dialectical closure: cancel, preserve, lift
 
