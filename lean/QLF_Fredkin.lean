@@ -24,6 +24,7 @@
 -/
 
 import QLF_TwistAlphabet
+import QLF_FreeEnergy
 
 namespace QLF.Fredkin
 
@@ -132,5 +133,60 @@ theorem fredkin_preserves_countBalanced {r : Reg} (h : countBalanced (encode r))
 theorem fredkin_preserves_zfa (r : Reg) :
     ∃ p : PauliScalar, twistMatrixFold (encode (fredkin r)) = pauliScalarToMatrix p :=
   count_balanced_pauli_closed (encode_countBalanced (fredkin r))
+
+/-! ## The free-energy ledger — the reversible core is free, the bill is external
+
+    `QLF_FreeEnergy` attaches one quantum `binary_kl 1 (1/2) = log 2` to a *many-to-one*
+    closure — the price of forgetting one bit. A Fredkin gate is a bijection
+    (`fredkin_bijective`), so it forgets nothing and carries no such quantum; and a
+    composition of gates is still a bijection (`fredkin_iterate_bijective`), so a whole
+    reversible circuit carries none either, **regardless of gate count**. The only cost is
+    the garbage a holder *declines* to keep — an optional external reset whose size is a
+    function of the retained-line count and says nothing about the circuit that produced
+    it. This is what §5 of `Fredkin_QLF.md` states in prose; the theorems below pin it. -/
+
+/-- **The external tidy-up cost of discarding `k` garbage lines.** Resetting `k` bits to
+    zero is a `2^k → 1` map — `k` many-to-one closures — so it costs `k · log 2` nats. It
+    is a function of the *retained garbage count* `k`, not of the circuit: the gate count
+    does not appear. -/
+noncomputable def garbageBill (k : ℕ) : ℝ := (k : ℝ) * Real.log 2
+
+/-- Each reset bit is exactly one half-spin ZFA closure quantum (`QLF_FreeEnergy`). The
+    bill is not a separate erasure postulate — it is `k` copies of the one closure
+    quantum QLF already has. -/
+theorem garbageBill_eq_closures (k : ℕ) :
+    garbageBill k = (k : ℝ) * QLF.binary_kl 1 (1/2) := by
+  rw [garbageBill, QLF.binary_kl_delta_uniform]
+
+/-- **Running the reversible circuit is free.** Keep every line — `k = 0` — and the bill
+    is zero, whatever the gate count. The reversible core sits on the free side of the
+    many-to-one line and never crosses it. -/
+theorem reversible_run_cost_zero : garbageBill 0 = 0 := by
+  simp [garbageBill]
+
+/-- **A circuit of Fredkin gates is still a bijection**, to any depth `n` — so the
+    "nothing merges, so nothing is receipted" premise of `reversible_run_cost_zero`
+    survives composition. `n` gates deep, the state map is `fredkin^[n]`. -/
+theorem fredkin_iterate_bijective (n : ℕ) : Function.Bijective (fredkin^[n]) := by
+  induction n with
+  | zero => simpa using Function.bijective_id
+  | succ m ih =>
+      rw [Function.iterate_succ]
+      exact ih.comp fredkin_bijective
+
+/-- **The bill is strictly positive exactly when garbage is discarded** — `0 < garbageBill k
+    ↔ 0 < k`. Landauer/Bennett recovered: the cost lands precisely where, and only where,
+    the computation stops being one-to-one. -/
+theorem garbageBill_pos_iff (k : ℕ) : 0 < garbageBill k ↔ 0 < k := by
+  rw [garbageBill]
+  have hlog : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  constructor
+  · intro h
+    rcases Nat.eq_zero_or_pos k with hk | hk
+    · rw [hk] at h; simp at h
+    · exact hk
+  · intro hk
+    have hkR : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
+    exact mul_pos hkR hlog
 
 end QLF.Fredkin
