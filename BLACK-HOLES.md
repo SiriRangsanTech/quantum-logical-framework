@@ -62,6 +62,8 @@ Hawking radiation is **not** evaporation or pair creation in curved spacetime. I
 - The blanket statistically synchronizes with the exterior vacuum via a minimal active-inference handshake (`+-` pair).  
 - Information is preserved unitarily; the emitted spectrum matches the seed frequency.  
 
+The unwind is the closure **run backward** — a bijection, not a many-to-one step. There is no information *paradox* because there is no erasure *step*: the substrate has no intrinsic erase, so a QLF black hole never performs one. This is the same principle as Fredkin's reversible core being free and the [#148](https://github.com/rchain-community/quantum-logical-framework/issues/148) closure horizon shadowing distinctions without destroying them — the one-principle-three-faces synthesis in [`Reversibility.md`](Reversibility.md) §7a.
+
 See `immediate_reentry_unwind` in `particles.py` and the blanket logic in `Hadrons_Markov_Blankets.md`. This mechanism is identical at both particle and macroscopic black-hole scales.
 
 The **temperature** of this radiation is Lean-anchored: the canonical Hawking temperature `T = ℏc³/(8πGMk_B)` is the **Unruh master relation** `T = ℏa/(2πck_B)` at the horizon surface gravity `κ = c⁴/(4GM)`, with the universal `2π` being QLF's loop phase — the same relation gives the Unruh and de Sitter temperatures at their accelerations (`QLF_HorizonTemperature.lean`; [Gravity_From_Delay.md §5.1](Gravity_From_Delay.md)).

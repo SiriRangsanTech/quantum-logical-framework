@@ -431,7 +431,15 @@ garbage — 29 lines, so 29 bits — and nowhere else.
 So **Landauer and Bennett (1973) are recovered here, not assumed.** QLF has no separate postulate
 that erasure costs; it has one quantum attached to closure, and the boundary between free and
 charged is whether the closure is many-to-one. Conservative logic is simply the discipline of
-staying on the free side of that line.
+staying on the free side of that line. The ledger is pinned: `garbageBill k = k · log 2` is a
+function of the *retained-garbage count*, not the gate count (`garbageBill_eq_closures` — `k`
+copies of the one `QLF_FreeEnergy` quantum, not a new postulate); `reversible_run_cost_zero`
+(`garbageBill 0 = 0`, any depth); `fredkin_iterate_bijective` (an `n`-deep circuit is still a
+bijection); `garbageBill_pos_iff` (`0 < garbageBill k ↔ 0 < k`). The strong reading — the
+substrate has *no intrinsic erase*, so every `−log 2` is a reset a holder elects at a horizon —
+is [`Reversibility.md`](Reversibility.md) §7a, where it lines up with the black-hole unitary
+unwind and the [#148](https://github.com/rchain-community/quantum-logical-framework/issues/148)
+closure horizon as one principle.
 
 The `FANOUT` gate is the same principle read as information: `FREDKIN(x; 0, 1)` yields two copies
 of `x`, and its third line carries `NOT x` away as garbage. **You get a usable copy only by

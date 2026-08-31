@@ -206,6 +206,45 @@ dagger involution on that spinor (`H ↔ H†`, §1–§2), and the **irreversib
 the same ½-spin closure, two readings, with `ΔF = −log 2` the toll of the second (*it from bit*: the
 abstraction realized by the closure).
 
+## 7a. "Garbage is never erased" — one principle, three faces  *[structural reading]*
+
+The Fredkin ledger has a strong reading, and it is the same fact the repo already states about black
+holes and about closure horizons. **The substrate has no intrinsic erase.** Every twist history is
+`H ↔ H†` (§1); every gate that respects ZFA is a permutation of the twist multiset
+(`encode_fredkin_perm`) and hence a bijection; a composition of such gates is a bijection to any depth
+(`fredkin_iterate_bijective`). Nothing in the generate-and-close machinery is many-to-one. The only
+`ΔF = −log 2` bill anywhere is a **reset a holder chooses to perform** on garbage it declines to keep —
+`garbageBill k = k · log 2`, a function of the retained-line count and nothing about the circuit
+(`garbageBill_eq_closures`, `garbageBill_pos_iff`, [`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean)).
+
+Three faces of the one principle:
+
+- **Fredkin.** The reversible computer runs indefinitely at zero free-energy cost *as long as the
+  garbage is retained*. The bill is external, optional, and exactly the `k` bits you overwrite — not a
+  property of having computed.
+- **Black holes** ([`BLACK-HOLES.md`](BLACK-HOLES.md) §3, §3a). The Hawking unwind is the closure run
+  backward: the emitted spectrum matches the seed frequency, the unitary information ledger is returned,
+  and the exact *gauge* charge comes back as hair. A QLF black hole never performs the many-to-one
+  erase either — there is no information *paradox* because there is no erasure *step*. (What is not
+  returned is the non-conserved global `B−L`, because that was never an exactly-conserved signed count
+  — §3a — not because information was destroyed.)
+- **The closure horizon** ([#148](https://github.com/rchain-community/quantum-logical-framework/issues/148)).
+  Closure quotients generating histories by their surviving invariants (the ledger, the Pauli scalar,
+  the winding) — many microscopic histories map to one closed state. Those distinctions become
+  **inaccessible from the closed state**, not destroyed: an information horizon over generating history,
+  the paint-mixing analogy. "Closure forgets the right things" = it forgets the path and keeps the
+  homotopy class.
+
+So *"reversible logic, irreversible process"* sharpens: the **logic** is reversible all the way down
+(no erase primitive), and the **process** is irreversible only as forward sequencing in synthesized
+time (§3) plus whatever resets a holder elects. Erasure is never forced on the substrate — it is a
+choice made at a horizon, and the bill is precisely the garbage declined.
+
+**Falsifiability (method rule 4).** This claim would be false for a substrate carrying an intrinsic
+irreversible primitive — a many-to-one gate that no history can avoid. QLF has none: every closure is
+`H = H†` and every ZFA-respecting gate is a permutation. So this is a structural consequence of the
+existing theorems, not a new prediction — labelled accordingly.
+
 ## 8. What we can say, if the universe is quantum logical
 
 The second law, decoherence, measurement-without-collapse, and the arrow of time are **one thing** — the
@@ -244,6 +283,8 @@ conservation has mistaken the present-local balance of the closure for the whole
 | **capstone:** reverse is involutive **but** forward closure is many-to-one | `time_reverse_involutive_but_closure_degenerate` (`QLF_Reversibility`) |
 | **conservative logic is ZFA**: a Fredkin gate acts by permutation, so it preserves closure | `encode_fredkin_perm`, `fredkin_preserves_zfa` (`QLF_Fredkin`) |
 | a reversible gate is a bijection — nothing merges, so nothing is receipted | `fredkin_involutive`, `fredkin_bijective` (`QLF_Fredkin`) |
+| an `n`-deep reversible circuit is still a bijection (free-side premise survives composition) | `fredkin_iterate_bijective` (`QLF_Fredkin`) |
+| **the erasure bill is external**: `k · log 2` in the retained-garbage count, not the gate count; running is free | `garbageBill_eq_closures`, `reversible_run_cost_zero`, `garbageBill_pos_iff` (`QLF_Fredkin`) |
 
 ## Honest scope
 

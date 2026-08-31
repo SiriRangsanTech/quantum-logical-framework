@@ -258,6 +258,18 @@ conservation law is precisely what keeps it there. It is the same distinction
 process** — with the Fredkin computer as the case where the logic stays reversible all the
 way to the end and the process never has to commit.
 
+The ledger is now pinned in Lean, no new axioms
+([`lean/QLF_Fredkin.lean`](lean/QLF_Fredkin.lean), reusing `QLF_FreeEnergy`):
+`garbageBill k = k · log 2` is a function of the **retained-garbage count**, not the gate
+count (`garbageBill_eq_closures` — it is `k` copies of the one closure quantum, not a new
+postulate); `reversible_run_cost_zero` (`garbageBill 0 = 0`, any depth);
+`fredkin_iterate_bijective` (an `n`-deep Fredkin circuit is still a bijection);
+`garbageBill_pos_iff` (`0 < garbageBill k ↔ 0 < k` — the bill lands exactly where the map
+stops being one-to-one). The **strong reading** — the substrate has no intrinsic erase, so
+every `−log 2` is a reset a holder *elects* at a horizon, and a black hole's Hawking unwind
+never performs one either — is [`Reversibility.md`](Reversibility.md) §7a (one principle,
+three faces: Fredkin / black holes / the [#148](https://github.com/rchain-community/quantum-logical-framework/issues/148) closure horizon).
+
 ---
 
 ## 6. Honest scope
@@ -284,7 +296,10 @@ chain inside Lean, zero `sorry`: `fredkin_involutive`, `fredkin_bijective`,
 `fredkin_preserves_counts`, `encode_countBalanced`, `fredkin_preserves_countBalanced`, and
 the payoff `fredkin_preserves_zfa` — the output folds to a Pauli scalar, so both conjuncts
 of runtime ZFA hold and neither needed its own argument. `fredkin_bijective` is the ledger's
-premise in §5, stated where it can be checked.
+premise in §5, stated where it can be checked; `garbageBill_eq_closures`,
+`reversible_run_cost_zero`, `fredkin_iterate_bijective` and `garbageBill_pos_iff` pin the
+rest of §5 (the bill is external, in the retained-garbage count, and the reversible run is
+free to any depth).
 
 **Not done here.** No trajectory-level billiard simulation, so no
 timing, alignment or error analysis — the known Achilles heel of the billiard ball model,
