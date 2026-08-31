@@ -10,23 +10,21 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
-**Lean builds locally when the Transcend SSD is available.** `elan`/`lake` are installed
-(`~/.elan`, toolchain `leanprover/lean4:v4.34.0-rc1`), and `.lake` is a symlink to
-`quantum-lake-cache` on the Transcend SSD, which holds the Mathlib clone + build cache.
+**Do NOT build Lean locally on this machine. CI (GitHub Actions) is the only practical way to
+verify Lean changes.** Push to GitHub and wait for CI before reporting success.
 
-Before any Lean work, make the drive available if possible: plug in the Transcend and, in the
-ChromeOS Files app, right-click it → **Share with Linux**. Check with
-`ls /mnt/chromeos/removable/Transcend/` — if that succeeds the path is live (it is a 9p
-subdirectory, so `mountpoint` always says "not a mountpoint" — that check is useless here; use
-`ls` / a write test instead). Then:
+`elan`/`lake` are installed (`~/.elan`, toolchain `leanprover/lean4:v4.34.0-rc1`) and Mathlib is
+cloned under `.lake/packages/` (symlinked to the Transcend SSD), but local builds were tried and
+abandoned on 2026-08-31:
 
-- **Drive available:** `lake exe cache get && lake build`. First-time setup also clones Mathlib
-  (`lake` does it automatically) — several GB, tens of minutes; subsequent builds are fast.
-- **Drive not available:** `ls` on the path fails or `.lake/packages` is empty — do **not**
-  `lake build` (it would rebuild Mathlib from scratch in the wrong place); fall back to CI.
+- The machine has **~2.7 GB RAM and no swap**; `lake` + `leantar` OOM-killed the whole session.
+- The Transcend SSD is a ChromeOS 9p mount benchmarked at **~860 kB/s** — a warm `lake build`
+  must read ~8700 Mathlib oleans over it, and `lake`'s dependency check (`git diff` across the
+  ~3 GB of checkouts) alone took ~15 min. A faster USB port does not fix the 9p `sync` layer.
 
-**CI (GitHub Actions) remains the source of truth** — always push and confirm CI green before
-reporting a Lean change as verified, whether or not it also built locally.
+So: **run `free -m` before any heavy command; never start `lake`/`cargo`/parallel jobs without
+memory headroom.** If a future session genuinely needs local builds, the partial olean cache and
+setup notes are in the session memory (`local-lean-impractical`).
 
 ---
 
@@ -252,15 +250,11 @@ theorem foo (p : RhoProcess) : achieves_ZFA (toTopoString p) :=
 ## Workflow
 
 ### Lean file changes (`.lean` files only)
-0. Make the Transcend SSD available if possible (see the note under **Project overview**). If
-   `ls /mnt/chromeos/removable/Transcend/` succeeds and `.lake/packages` is populated:
-   `lake exe cache get && lake build` for a fast local check first. Otherwise skip straight to
-   CI — do **not** `lake build`.
 1. Edit files in `lean/`
 2. `git add lean/<file> && git commit -m "..." && git push`
 3. Check CI: `gh run list --limit 5`
 4. On failure: `gh run view <run-id> --log-failed`
-5. CI is the source of truth — confirm it green before reporting success, even if it built locally
+5. Do NOT run `lake build` locally — see the note under **Project overview** (OOM / slow mount)
 
 ### md-only changes (`.md`, `.py`, `lakefile.lean` roots array, `README.md`)
 1. Edit, commit, push — **CI does not run and does not need to.**
