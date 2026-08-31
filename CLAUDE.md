@@ -10,16 +10,20 @@ Project context for Claude Code sessions. Read this before making any changes.
 
 Core claim: *ZFA balance is the selection principle for physical reality.* Every terminating computation is a ZFA string; every ZFA string is symmetric (lies on the critical line). The Church-Turing universe filtered to ZFA-balanced strings is our physical universe.
 
-**Lean builds locally only when the Transcend SSD is mounted.** `elan`/`lake` are installed
-(`~/.elan`, toolchain `leanprover/lean4:v4.34.0-rc1`), and `.lake/` is a symlink to
-`quantum-lake-cache` on the Transcend SSD which holds the Mathlib build cache.
+**Lean builds locally when the Transcend SSD is available.** `elan`/`lake` are installed
+(`~/.elan`, toolchain `leanprover/lean4:v4.34.0-rc1`), and `.lake` is a symlink to
+`quantum-lake-cache` on the Transcend SSD, which holds the Mathlib clone + build cache.
 
-Before any Lean work, mount the drive if possible: plug in the Transcend and, in the ChromeOS
-Files app, right-click it → **Share with Linux**. Then check
-`mountpoint /mnt/chromeos/removable/Transcend` — it must report *is a mountpoint*. If it is,
-`lake exe cache get && lake build` works locally. If it is **not** mounted, `.lake` points at an
-empty stub on the slow 9p share — do **not** `lake build` (it writes the cache to the wrong
-place); fall back to CI.
+Before any Lean work, make the drive available if possible: plug in the Transcend and, in the
+ChromeOS Files app, right-click it → **Share with Linux**. Check with
+`ls /mnt/chromeos/removable/Transcend/` — if that succeeds the path is live (it is a 9p
+subdirectory, so `mountpoint` always says "not a mountpoint" — that check is useless here; use
+`ls` / a write test instead). Then:
+
+- **Drive available:** `lake exe cache get && lake build`. First-time setup also clones Mathlib
+  (`lake` does it automatically) — several GB, tens of minutes; subsequent builds are fast.
+- **Drive not available:** `ls` on the path fails or `.lake/packages` is empty — do **not**
+  `lake build` (it would rebuild Mathlib from scratch in the wrong place); fall back to CI.
 
 **CI (GitHub Actions) remains the source of truth** — always push and confirm CI green before
 reporting a Lean change as verified, whether or not it also built locally.
@@ -248,9 +252,10 @@ theorem foo (p : RhoProcess) : achieves_ZFA (toTopoString p) :=
 ## Workflow
 
 ### Lean file changes (`.lean` files only)
-0. Mount the Transcend SSD if possible (see the note under **Project overview**). Check
-   `mountpoint /mnt/chromeos/removable/Transcend`. If mounted: `lake exe cache get && lake build`
-   for a fast local check first. If not mounted: skip straight to CI — do **not** `lake build`.
+0. Make the Transcend SSD available if possible (see the note under **Project overview**). If
+   `ls /mnt/chromeos/removable/Transcend/` succeeds and `.lake/packages` is populated:
+   `lake exe cache get && lake build` for a fast local check first. Otherwise skip straight to
+   CI — do **not** `lake build`.
 1. Edit files in `lean/`
 2. `git add lean/<file> && git commit -m "..." && git push`
 3. Check CI: `gh run list --limit 5`
