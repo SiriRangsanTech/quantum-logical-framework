@@ -8,7 +8,9 @@ Given a twist history `qc`, it enumerates the **continuations** — twist words 
 append so the whole history is a ZFA closure (count-balanced ∧ Pauli-closed) — shortest
 first, and streams them. It is meant to be **exposed as a network service** for
 [quantum-os](https://github.com/rchain-community/quantum-os) and other research operations
-that need reachable-closure data without embedding the enumerator.
+that need reachable-closure data without embedding the enumerator. The quantum-os side —
+deploy target, browser/Rust client, room integration — is tracked in
+[rchain-community/quantum-os#117](https://github.com/rchain-community/quantum-os/issues/117).
 
 It is a **query, not a stored layer.** Nothing is cached, nothing is written, the answer
 is always current with [`twist_core.py`](twist_core.py). Contrast
